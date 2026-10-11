@@ -2,7 +2,7 @@
 
 A Rust port in progress of [WhiskeySockets/Baileys](https://github.com/WhiskeySockets/Baileys), based on upstream commit `0af2386292907f7d9742d8d41f830d8c48208fa1` (7.0.0-rc14).
 
-Currently provides the full generated WhatsApp protobuf model, JID helpers, binary stanza encoding/decoding, crypto primitives, the Noise handshake and encrypted framing, persistent authentication/key storage, connection/pairing protocol helpers, an async WebSocket connection, and persistent Signal direct/group sessions. This is not yet a usable WhatsApp messaging client: synchronization, messaging, and the high-level socket APIs remain to be ported. See [PORT_STATUS.md](PORT_STATUS.md) for scope and validation.
+Currently provides the full generated WhatsApp protobuf model, JID helpers, binary stanza encoding/decoding, crypto primitives, the Noise handshake and encrypted framing, persistent authentication/key storage, connection/pairing protocol helpers, an async WebSocket connection, persistent Signal direct/group sessions, and USync query protocols. This is not yet a usable WhatsApp messaging client: synchronization, messaging, and the high-level socket APIs remain to be ported. See [PORT_STATUS.md](PORT_STATUS.md) for scope and validation.
 
 ```rust
 use baileys_rs::binary::{BinaryNode, encode, decode};
@@ -43,6 +43,7 @@ node scripts/generate-connection-fixtures.mjs ../Baileys
 node scripts/generate-direct-fixtures.mjs
 node scripts/generate-group-fixtures.mjs ../Baileys
 node scripts/generate-mapping-fixtures.mjs ../Baileys
+node scripts/generate-usync-fixtures.mjs ../Baileys
 cargo test --test auth upstream_adapter_resumes_and_updates_rust_export -- --ignored
 ```
 
@@ -63,6 +64,10 @@ Login checks server prekey counts, uploads and acknowledges persisted batches, a
 `signal::Address` maps PN/LID/hosted JIDs to upstream Signal addresses. `SenderKeyName` supplies the group storage name and UTF-16 hash. `signal::group::Repository` creates/processes sender-key distributions and encrypts/decrypts group payloads in SQLite transactions. Encryption returns the distribution captured before the ciphertext, matching upstream. Records use the actual JSON/BufferJSON format stored by Baileys, retain five states and up to 2,000 skipped message keys, and resume across process/database reopen. Private state is redacted in debug output and zeroized on drop. `SqliteAuthStore::transaction_with_error` permits protocol errors to roll back writes without losing their type. These operations are synchronous; async callers should use a blocking executor.
 
 Group interoperability fixtures run the upstream TypeScript implementation against synthetic keys. Rust matches distribution bytes, signed AES-CBC ciphertext, chain/key-cache state, shuffled delivery, and the 2,000-message skip boundary. The pinned upstream cipher sends counters 0, 2, 4, ...; the Rust cipher preserves this behavior. Duplicate distribution IDs are appended and resolved using the oldest matching state, as upstream does. Rust rejects unsupported major versions, malformed records, and counter wraparound, and leaves state unchanged on authentication/decryption failure. Socket integration of direct/group messages remains unfinished.
+
+`usync::Query` constructs queries for devices, contacts, statuses, disappearing mode, LIDs, usernames, and bot profiles. Typed result parsing preserves the current upstream dispatch rules and empty side list. Status/disappearing-mode times are Unix milliseconds in Rust. `extract_device_jids` applies own-device, zero-device, and key-index filtering, retaining upstream's hosted-domain propagation through a user's device list. `Socket::execute_usync`, `on_whatsapp`, and `fetch_lid_mappings` execute these queries over encrypted transport. Fixtures compare five exact query configurations and every built-in parser, including the upstream username bytes/string and nested bot-profile behavior.
+
+`signal::wire` parses encrypt-IQ and retry-receipt prekey bundles and constructs session-key requests. `Socket::establish_sessions` fetches bundles and injects them on a blocking executor. The local encrypted peer verifies contact/LID queries and persisted session establishment. Malformed key sizes/integer widths/signatures are rejected explicitly; per-user stanza errors retain their status codes. Device-list caching, automatic session assertions, forced retry requests, custom USync protocols, and full message relay/receive integration still need implementation.
 
 `signal::direct::Repository` injects signed prekey bundles, encrypts direct messages as `pkmsg`/`msg`, decrypts replies and delayed messages, reports session information, and deletes explicit session addresses. It resolves PN addresses through the mapping store and persists the actual libsignal-node v1 JSON record format. Cipher operations commit ratchet state, incoming identity updates, and one-time prekey deletion together; failed authentication leaves them unchanged. Incoming identity changes re-establish the session, matching the upstream trust policy. The implementation uses the [X3DH](https://signal.org/docs/specifications/x3dh/) and [Double Ratchet](https://signal.org/docs/specifications/doubleratchet/) specifications and synthetic runtime fixtures; no libsignal implementation source or JavaScript runtime is included in the Rust client.
 

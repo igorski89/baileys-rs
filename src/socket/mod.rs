@@ -36,6 +36,8 @@ pub enum Error {
     #[error(transparent)]
     Signal(#[from] crate::signal::Error),
     #[error(transparent)]
+    USync(#[from] crate::usync::Error),
+    #[error(transparent)]
     Connection(#[from] connection::Error),
     #[error(transparent)]
     Noise(#[from] noise::Error),
@@ -66,6 +68,8 @@ impl Error {
             Self::Timeout => Some(408),
             Self::Closed(code) => Some(*code),
             Self::Auth(e) => e.status_code(),
+            Self::Signal(e) => e.status_code(),
+            Self::USync(e) => e.status_code(),
             Self::Binary(binary::Error::Stanza { code, .. }) => {
                 code.and_then(|n| n.try_into().ok())
             }
@@ -366,6 +370,96 @@ impl Socket {
             token,
         };
         receiver.await.map_err(|_| self.closed_error())?
+    }
+    pub async fn execute_usync(
+        &self,
+        query: &crate::usync::Query,
+    ) -> Result<Option<crate::usync::ResultList>, Error> {
+        let sequence = self
+            .inner
+            .sequence
+            .try_update(Ordering::Relaxed, Ordering::Relaxed, |n| n.checked_add(1))
+            .map_err(|_| Error::TagExhausted)?;
+        let stanza = query.stanza(&format!("{}{sequence}", self.inner.prefix))?;
+        Ok(query.parse(&self.query(stanza, None).await?)?)
+    }
+    pub async fn on_whatsapp(&self, inputs: &[String]) -> Result<Vec<(String, bool)>, Error> {
+        let query = crate::usync::contact_query(inputs);
+        if query.users.is_empty() {
+            return Ok(vec![]);
+        }
+        Ok(self
+            .execute_usync(&query)
+            .await?
+            .map(|results| {
+                results
+                    .list
+                    .into_iter()
+                    .filter_map(|user| {
+                        if matches!(
+                            user.protocols.get("contact"),
+                            Some(crate::usync::Value::Contact(true))
+                        ) {
+                            Some((user.id, true))
+                        } else {
+                            None
+                        }
+                    })
+                    .collect()
+            })
+            .unwrap_or_default())
+    }
+    pub async fn fetch_lid_mappings(
+        &self,
+        jids: &[String],
+    ) -> Result<Vec<crate::signal::mapping::Mapping>, Error> {
+        let mut query = crate::usync::Query::default().with_protocol(crate::usync::Protocol::Lid);
+        query.context = "background".into();
+        query.users = jids
+            .iter()
+            .filter(|jid| !crate::jid::Jid::parse(jid).is_some_and(|j| j.is_lid_user()))
+            .map(crate::usync::User::with_id)
+            .collect();
+        if query.users.is_empty() {
+            return Ok(vec![]);
+        }
+        Ok(self
+            .execute_usync(&query)
+            .await?
+            .map(|results| {
+                results
+                    .list
+                    .into_iter()
+                    .filter_map(|user| match user.protocols.get("lid") {
+                        Some(crate::usync::Value::Text(lid)) if !lid.is_empty() => {
+                            Some(crate::signal::mapping::Mapping {
+                                pn: user.id,
+                                lid: lid.clone(),
+                            })
+                        }
+                        _ => None,
+                    })
+                    .collect()
+            })
+            .unwrap_or_default())
+    }
+    /// Fetch bundles and establish sessions on a blocking executor.
+    pub async fn establish_sessions(
+        &self,
+        jids: &[String],
+        repository: crate::signal::direct::Repository,
+    ) -> Result<usize, Error> {
+        if jids.is_empty() {
+            return Ok(0);
+        }
+        let result = self
+            .query(crate::signal::wire::session_query(jids)?, None)
+            .await?;
+        Ok(tokio::task::spawn_blocking(move || {
+            crate::signal::wire::inject_session_bundles(&result, &repository)
+        })
+        .await
+        .map_err(|_| Error::Task)??)
     }
     pub async fn send_node(&self, node: BinaryNode) -> Result<(), Error> {
         let (reply, receiver) = oneshot::channel();

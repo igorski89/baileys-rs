@@ -1,0 +1,373 @@
+{
+  "queries": [
+    {
+      "config": {
+        "protocols": [
+          "devices",
+          "lid"
+        ],
+        "users": [
+          {
+            "id": "100@s.whatsapp.net"
+          },
+          {
+            "id": "200:7@lid"
+          }
+        ],
+        "context": "interactive",
+        "mode": "query"
+      },
+      "wire": "00f8081911fa000304291679f801f80c797de56a6dfc03736964fc03736964619b8f2df802f8026df802f8030f5445f80176f80271f802f8040e0cfaec330300f8040e0cf70107edf900",
+      "parsed": {
+        "list": [
+          {
+            "lid": "900@lid",
+            "devices": {
+              "deviceList": [
+                {
+                  "id": 0,
+                  "keyIndex": null,
+                  "isHosted": false
+                },
+                {
+                  "id": 7,
+                  "keyIndex": 4,
+                  "isHosted": false
+                },
+                {
+                  "id": 99,
+                  "keyIndex": 5,
+                  "isHosted": true
+                },
+                {
+                  "id": 8,
+                  "keyIndex": 6,
+                  "isHosted": false
+                }
+              ],
+              "keyIndex": {
+                "timestamp": 1700000000,
+                "signedKeyIndex": {
+                  "type": "Buffer",
+                  "data": "AQID"
+                },
+                "expectedTimestamp": 1700000002
+              }
+            },
+            "id": "100@s.whatsapp.net"
+          },
+          {
+            "id": "200@lid"
+          }
+        ],
+        "sideList": []
+      }
+    },
+    {
+      "config": {
+        "protocols": [
+          "contact"
+        ],
+        "users": [
+          {
+            "id": "100@s.whatsapp.net",
+            "phone": "+100"
+          },
+          {
+            "username": "sample",
+            "usernameKey": "1234",
+            "lid": "900@lid"
+          },
+          {
+            "type": "out"
+          },
+          {
+            "id": "300@s.whatsapp.net"
+          }
+        ],
+        "context": "interactive",
+        "mode": "query"
+      },
+      "wire": "00f8081911fa000304291679f801f80c797de56a6dfc03736964fc03736964619b8f2df802f8026df801f80125f80271f804f8020ef801f80225fc042b313030f8020ef801f80725fc08757365726e616d65fc0673616d706c65fc0370696eff02123476faed4c76f8020ef801f8032504c1f8040e0cfabe03f801f80125",
+      "parsed": {
+        "list": [
+          {
+            "contact": true,
+            "id": "100@s.whatsapp.net"
+          },
+          {
+            "contact": false,
+            "id": "200@lid"
+          }
+        ],
+        "sideList": []
+      }
+    },
+    {
+      "config": {
+        "protocols": [
+          "status",
+          "disappearing_mode",
+          "username"
+        ],
+        "users": [
+          {
+            "id": "100@s.whatsapp.net"
+          }
+        ],
+        "context": "background",
+        "mode": "full"
+      },
+      "wire": "00f8081911fa000304291679f801f80c797da06aed0afc03736964fc03736964619b8f2df802f8026df803f8010bf8010af801fc08757365726e616d65f80271f801f8040e0cfaec330300",
+      "parsed": {
+        "list": [
+          {
+            "status": {
+              "status": "available",
+              "setAt": 1700000000000
+            },
+            "disappearing_mode": {
+              "duration": 86400,
+              "setAt": 1700000001000
+            },
+            "id": "100@s.whatsapp.net"
+          },
+          {
+            "status": {
+              "status": "",
+              "setAt": 0
+            },
+            "id": "200@lid"
+          }
+        ],
+        "sideList": []
+      }
+    },
+    {
+      "config": {
+        "protocols": [
+          "bot",
+          "lid"
+        ],
+        "users": [
+          {
+            "id": "123@bot",
+            "personaId": "synthetic",
+            "lid": "900@lid"
+          }
+        ],
+        "context": "interactive",
+        "mode": "query"
+      },
+      "wire": "00f8081911fa000304291679f801f80c797de56a6dfc03736964fc03736964619b8f2df802f8026df802f802fc03626f74f801f803655155f80176f80271f801f8040e0cfaff82123ffc03626f74f802f802fc03626f74f801f80365fc0a706572736f6e615f6964fc0973796e746865746963f803760cfaed4c76",
+      "parsed": {
+        "list": [
+          {
+            "lid": "900@lid",
+            "id": "100@s.whatsapp.net"
+          },
+          {
+            "id": "200@lid"
+          }
+        ],
+        "sideList": []
+      }
+    },
+    {
+      "config": {
+        "protocols": [
+          "devices",
+          "contact",
+          "status",
+          "disappearing_mode",
+          "lid",
+          "username"
+        ],
+        "users": [],
+        "context": "interactive",
+        "mode": "query"
+      },
+      "wire": "00f8081911fa000304291679f801f80c797de56a6dfc03736964fc03736964619b8f2df802f8026df806f8030f5445f80125f8010bf8010af80176f801fc08757365726e616d65f8027100",
+      "parsed": {
+        "list": [
+          {
+            "contact": true,
+            "lid": "900@lid",
+            "status": {
+              "status": "available",
+              "setAt": 1700000000000
+            },
+            "disappearing_mode": {
+              "duration": 86400,
+              "setAt": 1700000001000
+            },
+            "devices": {
+              "deviceList": [
+                {
+                  "id": 0,
+                  "keyIndex": null,
+                  "isHosted": false
+                },
+                {
+                  "id": 7,
+                  "keyIndex": 4,
+                  "isHosted": false
+                },
+                {
+                  "id": 99,
+                  "keyIndex": 5,
+                  "isHosted": true
+                },
+                {
+                  "id": 8,
+                  "keyIndex": 6,
+                  "isHosted": false
+                }
+              ],
+              "keyIndex": {
+                "timestamp": 1700000000,
+                "signedKeyIndex": {
+                  "type": "Buffer",
+                  "data": "AQID"
+                },
+                "expectedTimestamp": 1700000002
+              }
+            },
+            "id": "100@s.whatsapp.net"
+          },
+          {
+            "contact": false,
+            "status": {
+              "status": "",
+              "setAt": 0
+            },
+            "id": "200@lid"
+          }
+        ],
+        "sideList": []
+      }
+    }
+  ],
+  "response": "00f804190414f801f80279f801f80271f803f8040e0cfaec3303f806f8032504acf80376edbffaed4c76f8040b1aff051700000000fc09617661696c61626c65f8050a17ff8386400f1aff051700000001f802fc08757365726e616d65fc0673616d706c65f8020ff802f80236f805f8033b082df8053b08e350ec22f8073b08ff019950ec79fc0969735f686f737465649bf8053b08ecdf50eca1f803fc0769676e6f72656408ec33f8062473ff051700000000e1ff051700000002fc03010203f8040e0cfaedf976f803f8032504c1f8030b708df8015ef8020e00",
+  "bot": "00f804fc03626f740cfaff82123ffc03626f74f801f802fc03626f74f801f80465fc0a706572736f6e615f6964fc0973796e746865746963f807f80289fc09417373697374616e74f802fc0a61747472696275746573fc0768656c7066756cf802b7fc0d53796e74686574696320626f74f80281fc0474657374f801ecdaf802fc08636f6d6d616e6473f802f802b7fc08436f6d6d616e6473f802fc07636f6d6d616e64f802f80289fc0568656c6c6ff802b7fc095361792068656c6c6ff802fc0770726f6d707473f801f802fc0670726f6d7074f802f802fc05656d6f6a69fc012af80238fc085472792074686973",
+  "botParsed": {
+    "isDefault": true,
+    "jid": "123@bot",
+    "name": "Assistant",
+    "attributes": "helpful",
+    "description": "Synthetic bot",
+    "category": "test",
+    "personaId": "synthetic",
+    "commandsDescription": "Commands",
+    "commands": [
+      {
+        "name": "hello",
+        "description": "Say hello"
+      }
+    ],
+    "prompts": [
+      "* Try this"
+    ]
+  },
+  "devices": [
+    {
+      "exclude": false,
+      "result": [
+        {
+          "user": "100",
+          "device": 0,
+          "domainType": 0,
+          "server": "s.whatsapp.net"
+        },
+        {
+          "user": "100",
+          "device": 99,
+          "domainType": 128,
+          "server": "hosted"
+        },
+        {
+          "user": "100",
+          "device": 8,
+          "domainType": 128,
+          "server": "hosted"
+        }
+      ]
+    },
+    {
+      "exclude": true,
+      "result": [
+        {
+          "user": "100",
+          "device": 99,
+          "domainType": 128,
+          "server": "hosted"
+        },
+        {
+          "user": "100",
+          "device": 8,
+          "domainType": 128,
+          "server": "hosted"
+        }
+      ]
+    }
+  ],
+  "signal": {
+    "bundles": "00f804190414f801f80271f801f8040e0cf70001edf9f804f802adfc040000000bf8029cfc2073b2d8b76aa9b53660032bc8f5d8bee3a3ae4e3b3a7fd49ade81f7347a34aa68f802ec2df803f80208fc03000005f8026cfc2097c3b10b4d6c133a78ea5dcc1cf6421d3f81ae37b1f628ce14ca6fce7730f333f802d4fc40119f23210e3644a0b75e1b71bca7428efe06c24edd71573ea100c69fda9ad36aecc3ae25aca9011ddba3c75d73c3d2104f9e6ff543f420a1faeb3c70dcbe770ff8029ef802f80208fc03000007f8026cfc20b307ae8660efaed4d6a65f6640896892ea4a1f0075555c489d1312a2e1677c28",
+    "receipt": "00f80207f802f802adfc040000000bf802ef1ef804f80204fc0105f8029cfc2073b2d8b76aa9b53660032bc8f5d8bee3a3ae4e3b3a7fd49ade81f7347a34aa68f802ec2df803f80208fc03000005f8026cfc2097c3b10b4d6c133a78ea5dcc1cf6421d3f81ae37b1f628ce14ca6fce7730f333f802d4fc40119f23210e3644a0b75e1b71bca7428efe06c24edd71573ea100c69fda9ad36aecc3ae25aca9011ddba3c75d73c3d2104f9e6ff543f420a1faeb3c70dcbe770ff8029ef802f80208fc03000007f8026cfc20b307ae8660efaed4d6a65f6640896892ea4a1f0075555c489d1312a2e1677c28",
+    "injected": [
+      {
+        "jid": "200:1@s.whatsapp.net",
+        "session": {
+          "registrationId": 11,
+          "identityKey": {
+            "type": "Buffer",
+            "data": "BXOy2LdqqbU2YAMryPXYvuOjrk47On/Umt6B9zR6NKpo"
+          },
+          "signedPreKey": {
+            "keyId": 5,
+            "publicKey": {
+              "type": "Buffer",
+              "data": "BZfDsQtNbBM6eOpdzBz2Qh0/ga43sfYozhTKb853MPMz"
+            },
+            "signature": {
+              "type": "Buffer",
+              "data": "EZ8jIQ42RKC3XhtxvKdCjv4Gwk7dcVc+oQDGn9qa02rsw64lrKkBHdujx11zw9IQT55v9UP0IKH66zxw3L53Dw=="
+            }
+          },
+          "preKey": {
+            "keyId": 7,
+            "publicKey": {
+              "type": "Buffer",
+              "data": "BbMHroZg767U1qZfZkCJaJLqSh8AdVVcSJ0TEqLhZ3wo"
+            }
+          }
+        }
+      }
+    ],
+    "retry": {
+      "registrationId": 11,
+      "identityKey": {
+        "type": "Buffer",
+        "data": "BXOy2LdqqbU2YAMryPXYvuOjrk47On/Umt6B9zR6NKpo"
+      },
+      "signedPreKey": {
+        "keyId": 5,
+        "publicKey": {
+          "type": "Buffer",
+          "data": "BZfDsQtNbBM6eOpdzBz2Qh0/ga43sfYozhTKb853MPMz"
+        },
+        "signature": {
+          "type": "Buffer",
+          "data": "EZ8jIQ42RKC3XhtxvKdCjv4Gwk7dcVc+oQDGn9qa02rsw64lrKkBHdujx11zw9IQT55v9UP0IKH66zxw3L53Dw=="
+        }
+      },
+      "preKey": {
+        "keyId": 7,
+        "publicKey": {
+          "type": "Buffer",
+          "data": "BbMHroZg767U1qZfZkCJaJLqSh8AdVVcSJ0TEqLhZ3wo"
+        }
+      }
+    }
+  }
+}

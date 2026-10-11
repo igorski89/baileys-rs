@@ -2,12 +2,15 @@
 pub mod direct;
 pub mod group;
 pub mod mapping;
+pub mod wire;
 use crate::{auth, crypto, jid::Jid};
 
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
     #[error(transparent)]
     Auth(#[from] auth::Error),
+    #[error(transparent)]
+    Binary(#[from] crate::binary::Error),
     #[error(transparent)]
     Crypto(#[from] crypto::Error),
     #[error(transparent)]
@@ -40,6 +43,18 @@ pub enum Error {
     Future,
     #[error("Signal counter exhausted")]
     Counter,
+}
+impl Error {
+    pub fn status_code(&self) -> Option<u16> {
+        match self {
+            Self::Auth(error) => error.status_code(),
+            Self::Binary(crate::binary::Error::Stanza { code, .. }) => {
+                code.and_then(|n| n.try_into().ok())
+            }
+            Self::Shared(error) => error.status_code(),
+            _ => None,
+        }
+    }
 }
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct Address {

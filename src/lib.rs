@@ -10,6 +10,7 @@ pub mod noise;
 pub mod serialization;
 pub mod signal;
 pub mod socket;
+pub mod usync;
 
 /// Bindings generated from the complete upstream WAProto schema.
 pub mod proto {

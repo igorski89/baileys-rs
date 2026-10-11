@@ -628,3 +628,92 @@ fn callback_names_match_upstream_router() {
         ]
     );
 }
+
+#[tokio::test]
+async fn usync_contact_lid_and_session_establishment_use_encrypted_queries() {
+    timeout(Duration::from_secs(8), async {
+        let temp = tempfile::tempdir().unwrap();
+        let store = store(&temp, true);
+        let (listener, config) = listener().await;
+        let fixture: serde_json::Value =
+            serde_json::from_str(include_str!("fixtures/usync.json")).unwrap();
+        let response = binary::decode(&hex(fixture["response"].as_str().unwrap())).unwrap();
+        let bundles = binary::decode(&hex(fixture["signal"]["bundles"].as_str().unwrap())).unwrap();
+        let server = tokio::spawn(async move {
+            let mut peer = Peer::accept(listener.accept().await.unwrap().0).await;
+            peer.send(BinaryNode::new("success")).await;
+            assert!(peer.read().await.child("unified_session").is_some());
+            let contact = peer.read().await;
+            let usync = contact.child("usync").unwrap();
+            assert_eq!(contact.attrs["xmlns"], "usync");
+            assert_ne!(contact.attrs["id"], usync.attrs["sid"]);
+            assert!(usync.child("query").unwrap().child("contact").is_some());
+            let mut result = response.clone();
+            result
+                .attrs
+                .insert("id".into(), contact.attrs["id"].clone());
+            peer.send(result).await;
+            let lid = peer.read().await;
+            assert_eq!(lid.child("usync").unwrap().attrs["context"], "background");
+            assert_eq!(
+                lid.child("usync")
+                    .unwrap()
+                    .child("list")
+                    .unwrap()
+                    .all_children()
+                    .len(),
+                1
+            );
+            let mut result = response;
+            result.attrs.insert("id".into(), lid.attrs["id"].clone());
+            peer.send(result).await;
+            let query = peer.read().await;
+            assert_eq!(query.attrs["xmlns"], "encrypt");
+            assert_eq!(
+                query.child("key").unwrap().all_children()[0].attrs["jid"],
+                "200:1@s.whatsapp.net"
+            );
+            let mut result = bundles;
+            result.attrs.insert("id".into(), query.attrs["id"].clone());
+            peer.send(result).await;
+            peer.closed().await;
+        });
+        let (socket, _) = Socket::connect(config, store.clone()).await.unwrap();
+        socket.wait_for_open(Duration::from_secs(2)).await.unwrap();
+        assert_eq!(
+            socket
+                .on_whatsapp(&["+100".into(), "900@lid".into()])
+                .await
+                .unwrap(),
+            [("100@s.whatsapp.net".into(), true)]
+        );
+        let mappings = socket
+            .fetch_lid_mappings(&["100@s.whatsapp.net".into(), "900@lid".into()])
+            .await
+            .unwrap();
+        assert_eq!(mappings.len(), 1);
+        assert_eq!(mappings[0].lid, "900@lid");
+        let repository = baileys_rs::signal::direct::Repository::new(store);
+        assert_eq!(
+            socket
+                .establish_sessions(&["200:1@s.whatsapp.net".into()], repository.clone())
+                .await
+                .unwrap(),
+            1
+        );
+        assert!(repository.validate_session("200:1@s.whatsapp.net").unwrap());
+        assert_eq!(
+            repository
+                .session_info("200:1@s.whatsapp.net")
+                .unwrap()
+                .unwrap()
+                .1,
+            11
+        );
+        assert_eq!(socket.establish_sessions(&[], repository).await.unwrap(), 0);
+        socket.close().await.unwrap();
+        server.await.unwrap();
+    })
+    .await
+    .unwrap();
+}
