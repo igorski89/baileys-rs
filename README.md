@@ -35,7 +35,7 @@ node scripts/generate-binary-fixtures.mjs ../Baileys
 Crypto and Noise fixtures run upstream code using its pinned runtime dependencies. Install those into the ignored fixture-tool directory, then regenerate:
 
 ```sh
-npm install --prefix .cache/fixture-tools --ignore-scripts --no-audit --no-fund libsignal@6.0.0 protobufjs@7.5.6 whatsapp-rust-bridge@0.5.4 async-mutex@0.5.0 lru-cache@11.2.1
+npm install --prefix .cache/fixture-tools --ignore-scripts --no-audit --no-fund libsignal@6.0.0 protobufjs@7.5.6 whatsapp-rust-bridge@0.5.4 async-mutex@0.5.0 lru-cache@11.2.1 @hapi/boom@9.1.4
 node scripts/generate-crypto-fixtures.mjs ../Baileys
 node scripts/generate-noise-fixtures.mjs ../Baileys
 node scripts/generate-auth-fixtures.mjs ../Baileys
@@ -51,6 +51,7 @@ node scripts/generate-relay-fixtures.mjs ../Baileys
 node scripts/generate-retry-fixtures.mjs ../Baileys
 node scripts/generate-receipt-fixtures.mjs ../Baileys
 node scripts/generate-retry-request-fixtures.mjs ../Baileys
+node scripts/generate-media-fixtures.mjs ../Baileys
 cargo test --test auth upstream_adapter_resumes_and_updates_rust_export -- --ignored
 ```
 
@@ -155,3 +156,9 @@ Rust selects fields in protobuf schema order; JavaScript can additionally select
 `Config::generation_hooks` supplies cloneable enrichment hooks; `SendOptions::hooks` overrides them per call. Hooks execute before relay, outside auth transactions, and can await socket queries. Default message IDs use the saved user; an explicitly empty ID follows the upstream generator's fallback without a user. Local events are queued only after successful relay; generation/transport failures and group-setting requests do not produce message upserts.
 
 `emit_own_events` defaults to true. An ordered worker emits `MessagesUpserted` with `UpsertKind::Append`, then supported `MessageMutations`, `MessageReactions` and `ChatsUpdated` effects. Mutation variants represent the source's revoke/null/stub/key update and edited-message/timestamp update; receipt status updates remain `MessagesUpdated`. Chat effects include the last message/time, configured unarchive/read-only reset and direct disappearing settings. Explicit zero edit timestamps are retained; absent edit timestamps use the envelope time. Own-event processing runs asynchronously after transport and does not affect the send result. Its queue holds messages and uses a weak socket reference between jobs. Incoming upserts, event buffering and history/app-state/encrypted-response processing remain pending; `PreparedMedia` containing those advanced protocol payloads currently emits only the supported local effects.
+
+`media` derives keys for all 19 upstream media categories and encrypts a `Read` into a `Write` with bounded memory, CBC padding, the ten-byte HMAC and plaintext/upload SHA-256 hashes. `EncryptedFile` supplies buffered private temporary files, an optional original copy and cleanup on failure/drop. These synchronous file/crypto operations should run on a blocking executor when called from asynchronous applications.
+
+`DownloadPlan` constructs upstream HTTP range headers; `decrypt_download` consumes the returned body and preserves the upstream CBC/range behavior, including discarded trailing partial blocks, absent MAC verification, empty output for start-only ranges, and possible padding bytes when an end range exceeds the plaintext. It buffers fragmented initial IV blocks. `decrypt_verified` provides separate authenticated full-file decryption and buffers its output. URL helpers preserve direct-path/host precedence and upload token escaping. Media retry helpers build encrypted receipt stanzas and decode/decrypt notifications. Upload/download HTTP orchestration, retry socket dispatch, message preparation and metadata/thumbnail providers remain pending.
+
+Six media tests compare all key mappings, 133 original-upstream encrypted files, 31 download ranges, permissive base64 keys, URL/token selection, encrypted retry receipts and notifications, and real upstream error statuses. They also cover fragmented input, partial writes, large payloads, every-byte tampering, truncation, wrong keys, I/O failures and temporary-file ownership. All media data is synthetic.
