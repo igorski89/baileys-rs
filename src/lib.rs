@@ -13,6 +13,7 @@ pub mod noise;
 pub mod privacy;
 pub mod relay;
 pub mod reporting;
+pub mod retry;
 pub mod serialization;
 pub mod signal;
 pub mod socket;

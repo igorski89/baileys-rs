@@ -59,6 +59,7 @@ pub(super) async fn run(
     mut cancel: mpsc::UnboundedReceiver<u64>,
     events: broadcast::Sender<Event>,
     state: watch::Sender<ConnectionState>,
+    retry_manager: Option<crate::retry::Manager>,
 ) {
     let mut actor = Actor {
         ws,
@@ -139,6 +140,11 @@ pub(super) async fn run(
         .err()
         .map(Error::disconnect_code)
         .unwrap_or(428);
+    if let Some(manager) = retry_manager
+        && let Err(error) = manager.clear()
+    {
+        tracing::debug!(?error, "retry state cleanup failed");
+    }
     actor.state.send_replace(ConnectionState::Closed { code });
     actor.emit(Event::Connection(ConnectionState::Closed { code }));
     for (_, pending) in actor.pending.drain() {

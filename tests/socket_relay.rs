@@ -387,6 +387,15 @@ async fn relay_discovers_devices_encrypts_direct_group_status_retry_and_peer_and
                 .unwrap(),
             "DIRECT"
         );
+        let retry_manager = socket.message_retry_manager().unwrap();
+        assert_eq!(
+            retry_manager
+                .get_recent_message("800@lid", "DIRECT")
+                .unwrap()
+                .unwrap()
+                .message,
+            content
+        );
         let privacy = baileys_rs::privacy::Repository::new(store.clone());
         timeout(Duration::from_secs(2), async {
             loop {
@@ -442,7 +451,50 @@ async fn relay_discovers_devices_encrypts_direct_group_status_retry_and_peer_and
             )
             .await
             .unwrap();
+        assert!(
+            retry_manager
+                .get_recent_message("group@g.us", "RETRY")
+                .unwrap()
+                .is_none()
+        );
+        assert_eq!(
+            retry_manager
+                .get_recent_message("group@g.us", "GROUP1")
+                .unwrap()
+                .unwrap()
+                .message
+                .conversation
+                .as_deref(),
+            Some("Network relay")
+        );
+        assert!(
+            retry_manager
+                .get_recent_message("987654@lid", "PEER")
+                .unwrap()
+                .unwrap()
+                .message
+                .protocol_message
+                .is_some()
+        );
+        let (tx, rx) = tokio::sync::oneshot::channel::<()>();
+        retry_manager
+            .schedule_phone_request(
+                "shutdown",
+                move || {
+                    let _ = tx.send(());
+                },
+                Some(Duration::from_secs(60)),
+            )
+            .unwrap();
         socket.close().await.unwrap();
+        assert!(timeout(Duration::from_secs(2), rx).await.unwrap().is_err());
+        assert!(
+            retry_manager
+                .get_recent_message("800@lid", "DIRECT")
+                .unwrap()
+                .is_none()
+        );
+        assert_eq!(retry_manager.statistics().unwrap(), Default::default());
         server.await.unwrap();
         let calls = patch_calls.lock().unwrap();
         assert_eq!(calls[0], Some(vec!["800@lid".into()]));
@@ -527,6 +579,14 @@ async fn relay_rolls_back_preparation_but_retains_counters_after_transport_failu
             baileys_rs::socket::Error::Relay(relay::Error::Identity)
         ));
         assert_eq!(snapshot(), before);
+        assert!(
+            socket
+                .message_retry_manager()
+                .unwrap()
+                .get_recent_message("group@g.us", "FAILED")
+                .unwrap()
+                .is_none()
+        );
         socket
             .query(
                 BinaryNode::new("iq")
@@ -829,6 +889,29 @@ async fn relay_patch_hooks_cover_group_distribution_retry_newsletter_and_rollbac
             )
             .await
             .unwrap();
+        let manager = socket.message_retry_manager().unwrap();
+        assert_eq!(
+            manager
+                .get_recent_message("group@g.us", "PATCHGROUP")
+                .unwrap()
+                .unwrap()
+                .message
+                .conversation
+                .as_deref(),
+            Some("Original")
+        );
+        assert!(
+            manager
+                .get_recent_message("group@g.us", "PATCHRETRY")
+                .unwrap()
+                .is_none()
+        );
+        assert!(
+            manager
+                .get_recent_message("42@newsletter", "PATCHNEWS")
+                .unwrap()
+                .is_none()
+        );
         socket.close().await.unwrap();
         server.await.unwrap();
         let calls = calls.lock().unwrap();

@@ -1,0 +1,784 @@
+{
+  "start": 1000,
+  "max": 3,
+  "cases": [
+    {
+      "step": {
+        "op": "parse",
+        "values": [
+          null,
+          "",
+          " ",
+          "wat",
+          "0",
+          "4",
+          "7foo",
+          " +13tail",
+          "14",
+          "-1",
+          "-0",
+          "0x7",
+          "1.9",
+          "﻿7",
+          "999999999999999999999999999",
+          "7"
+        ]
+      },
+      "result": [
+        {
+          "reason": null,
+          "mac": false
+        },
+        {
+          "reason": null,
+          "mac": false
+        },
+        {
+          "reason": null,
+          "mac": false
+        },
+        {
+          "reason": null,
+          "mac": false
+        },
+        {
+          "reason": 0,
+          "mac": false
+        },
+        {
+          "reason": 4,
+          "mac": true
+        },
+        {
+          "reason": 7,
+          "mac": true
+        },
+        {
+          "reason": 13,
+          "mac": false
+        },
+        {
+          "reason": 0,
+          "mac": false
+        },
+        {
+          "reason": 0,
+          "mac": false
+        },
+        {
+          "reason": 0,
+          "mac": false
+        },
+        {
+          "reason": 0,
+          "mac": false
+        },
+        {
+          "reason": 1,
+          "mac": false
+        },
+        {
+          "reason": 7,
+          "mac": true
+        },
+        {
+          "reason": 0,
+          "mac": false
+        },
+        {
+          "reason": null,
+          "mac": false
+        }
+      ]
+    },
+    {
+      "step": {
+        "op": "recreate",
+        "jid": "x",
+        "session": false
+      },
+      "result": {
+        "reason": "we don't have a Signal session with them",
+        "recreate": true
+      }
+    },
+    {
+      "step": {
+        "op": "recreate",
+        "jid": "x",
+        "session": true
+      },
+      "result": {
+        "reason": "",
+        "recreate": false
+      }
+    },
+    {
+      "step": {
+        "op": "recreate",
+        "jid": "x",
+        "session": true,
+        "error": 4
+      },
+      "result": {
+        "reason": "MAC error (code 4: SignalErrorInvalidMessage), immediate session recreation",
+        "recreate": true
+      }
+    },
+    {
+      "step": {
+        "op": "recreate",
+        "jid": "x",
+        "session": true,
+        "error": 7
+      },
+      "result": {
+        "reason": "MAC error (code 7: SignalErrorBadMac), immediate session recreation",
+        "recreate": true
+      }
+    },
+    {
+      "step": {
+        "op": "advance",
+        "ms": 3600000
+      },
+      "result": null
+    },
+    {
+      "step": {
+        "op": "recreate",
+        "jid": "x",
+        "session": true
+      },
+      "result": {
+        "reason": "",
+        "recreate": false
+      }
+    },
+    {
+      "step": {
+        "op": "advance",
+        "ms": 1
+      },
+      "result": null
+    },
+    {
+      "step": {
+        "op": "recreate",
+        "jid": "x",
+        "session": true
+      },
+      "result": {
+        "reason": "retry count > 1 and over an hour since last recreation",
+        "recreate": true
+      }
+    },
+    {
+      "step": {
+        "op": "stats"
+      },
+      "result": {
+        "totalRetries": 0,
+        "successfulRetries": 0,
+        "failedRetries": 0,
+        "mediaRetries": 0,
+        "sessionRecreations": 4,
+        "phoneRequests": 0
+      }
+    },
+    {
+      "step": {
+        "op": "clear"
+      },
+      "result": null
+    },
+    {
+      "step": {
+        "op": "add",
+        "to": "A",
+        "id": "dup",
+        "text": "A"
+      },
+      "result": null
+    },
+    {
+      "step": {
+        "op": "add",
+        "to": "B",
+        "id": "dup",
+        "text": "B"
+      },
+      "result": null
+    },
+    {
+      "step": {
+        "op": "fillRecent",
+        "count": 511
+      },
+      "result": null
+    },
+    {
+      "step": {
+        "op": "success",
+        "id": "dup"
+      },
+      "result": null
+    },
+    {
+      "step": {
+        "op": "get",
+        "to": "B",
+        "id": "dup"
+      },
+      "result": {
+        "message": {
+          "conversation": "B"
+        },
+        "timestamp": 3601001
+      }
+    },
+    {
+      "step": {
+        "op": "get",
+        "to": "A",
+        "id": "dup"
+      },
+      "result": null
+    },
+    {
+      "step": {
+        "op": "clear"
+      },
+      "result": null
+    },
+    {
+      "step": {
+        "op": "add",
+        "to": "A",
+        "id": "a",
+        "text": "old"
+      },
+      "result": null
+    },
+    {
+      "step": {
+        "op": "add",
+        "to": "A",
+        "id": "a",
+        "text": "new"
+      },
+      "result": null
+    },
+    {
+      "step": {
+        "op": "get",
+        "to": "A",
+        "id": "a"
+      },
+      "result": {
+        "message": {
+          "conversation": "new"
+        },
+        "timestamp": 3601001
+      }
+    },
+    {
+      "step": {
+        "op": "failed",
+        "id": "a"
+      },
+      "result": null
+    },
+    {
+      "step": {
+        "op": "get",
+        "to": "A",
+        "id": "a"
+      },
+      "result": null
+    },
+    {
+      "step": {
+        "op": "add",
+        "to": "A",
+        "id": "ttl",
+        "text": "ttl"
+      },
+      "result": null
+    },
+    {
+      "step": {
+        "op": "advance",
+        "ms": 300000
+      },
+      "result": null
+    },
+    {
+      "step": {
+        "op": "get",
+        "to": "A",
+        "id": "ttl"
+      },
+      "result": {
+        "message": {
+          "conversation": "ttl"
+        },
+        "timestamp": 3601001
+      }
+    },
+    {
+      "step": {
+        "op": "advance",
+        "ms": 1
+      },
+      "result": null
+    },
+    {
+      "step": {
+        "op": "get",
+        "to": "A",
+        "id": "ttl"
+      },
+      "result": null
+    },
+    {
+      "step": {
+        "op": "increment",
+        "id": "counter"
+      },
+      "result": 1
+    },
+    {
+      "step": {
+        "op": "increment",
+        "id": "counter"
+      },
+      "result": 2
+    },
+    {
+      "step": {
+        "op": "exceeded",
+        "id": "counter"
+      },
+      "result": false
+    },
+    {
+      "step": {
+        "op": "increment",
+        "id": "counter"
+      },
+      "result": 3
+    },
+    {
+      "step": {
+        "op": "exceeded",
+        "id": "counter"
+      },
+      "result": true
+    },
+    {
+      "step": {
+        "op": "advance",
+        "ms": 800000
+      },
+      "result": null
+    },
+    {
+      "step": {
+        "op": "count",
+        "id": "counter"
+      },
+      "result": 3
+    },
+    {
+      "step": {
+        "op": "advance",
+        "ms": 800000
+      },
+      "result": null
+    },
+    {
+      "step": {
+        "op": "count",
+        "id": "counter"
+      },
+      "result": 3
+    },
+    {
+      "step": {
+        "op": "advance",
+        "ms": 900001
+      },
+      "result": null
+    },
+    {
+      "step": {
+        "op": "count",
+        "id": "counter"
+      },
+      "result": 0
+    },
+    {
+      "step": {
+        "op": "base",
+        "address": "a:b",
+        "id": "c",
+        "key": [
+          1,
+          2
+        ]
+      },
+      "result": null
+    },
+    {
+      "step": {
+        "op": "sameBase",
+        "address": "a",
+        "id": "b:c",
+        "key": [
+          1,
+          2
+        ]
+      },
+      "result": true
+    },
+    {
+      "step": {
+        "op": "sameBase",
+        "address": "a:b",
+        "id": "c",
+        "key": [
+          1
+        ]
+      },
+      "result": false
+    },
+    {
+      "step": {
+        "op": "sameBase",
+        "address": "a:b",
+        "id": "c",
+        "key": [
+          1,
+          3
+        ]
+      },
+      "result": false
+    },
+    {
+      "step": {
+        "op": "fillBase",
+        "count": 1024
+      },
+      "result": null
+    },
+    {
+      "step": {
+        "op": "sameBase",
+        "address": "a:b",
+        "id": "c",
+        "key": [
+          1,
+          2
+        ]
+      },
+      "result": false
+    },
+    {
+      "step": {
+        "op": "base",
+        "address": "x",
+        "id": "ttl",
+        "key": []
+      },
+      "result": null
+    },
+    {
+      "step": {
+        "op": "advance",
+        "ms": 900001
+      },
+      "result": null
+    },
+    {
+      "step": {
+        "op": "sameBase",
+        "address": "x",
+        "id": "ttl",
+        "key": []
+      },
+      "result": false
+    },
+    {
+      "step": {
+        "op": "base",
+        "address": "x",
+        "id": "del",
+        "key": [
+          4
+        ]
+      },
+      "result": null
+    },
+    {
+      "step": {
+        "op": "deleteBase",
+        "address": "x",
+        "id": "del"
+      },
+      "result": null
+    },
+    {
+      "step": {
+        "op": "sameBase",
+        "address": "x",
+        "id": "del",
+        "key": [
+          4
+        ]
+      },
+      "result": false
+    },
+    {
+      "step": {
+        "op": "stats"
+      },
+      "result": {
+        "totalRetries": 3,
+        "successfulRetries": 0,
+        "failedRetries": 1,
+        "mediaRetries": 0,
+        "sessionRecreations": 0,
+        "phoneRequests": 0
+      }
+    },
+    {
+      "step": {
+        "op": "clear"
+      },
+      "result": null
+    },
+    {
+      "step": {
+        "op": "stats"
+      },
+      "result": {
+        "totalRetries": 0,
+        "successfulRetries": 0,
+        "failedRetries": 0,
+        "mediaRetries": 0,
+        "sessionRecreations": 0,
+        "phoneRequests": 0
+      }
+    },
+    {
+      "step": {
+        "op": "recreate",
+        "jid": "new",
+        "session": true
+      },
+      "result": {
+        "reason": "retry count > 1 and over an hour since last recreation",
+        "recreate": true
+      }
+    },
+    {
+      "step": {
+        "op": "advance",
+        "ms": 7200001
+      },
+      "result": null
+    },
+    {
+      "step": {
+        "op": "recreate",
+        "jid": "new",
+        "session": true
+      },
+      "result": {
+        "reason": "retry count > 1 and over an hour since last recreation",
+        "recreate": true
+      }
+    },
+    {
+      "step": {
+        "op": "clear"
+      },
+      "result": null
+    },
+    {
+      "step": {
+        "op": "clock",
+        "ms": 0
+      },
+      "result": null
+    },
+    {
+      "step": {
+        "op": "recreate",
+        "jid": "zero",
+        "session": true
+      },
+      "result": {
+        "reason": "retry count > 1 and over an hour since last recreation",
+        "recreate": true
+      }
+    },
+    {
+      "step": {
+        "op": "recreate",
+        "jid": "zero",
+        "session": true
+      },
+      "result": {
+        "reason": "retry count > 1 and over an hour since last recreation",
+        "recreate": true
+      }
+    },
+    {
+      "step": {
+        "op": "add",
+        "to": "A\u0000B",
+        "id": "C",
+        "text": "first"
+      },
+      "result": null
+    },
+    {
+      "step": {
+        "op": "add",
+        "to": "A",
+        "id": "B\u0000C",
+        "text": "second"
+      },
+      "result": null
+    },
+    {
+      "step": {
+        "op": "get",
+        "to": "A\u0000B",
+        "id": "C"
+      },
+      "result": {
+        "message": {
+          "conversation": "second"
+        },
+        "timestamp": 0
+      }
+    },
+    {
+      "step": {
+        "op": "success",
+        "id": "C"
+      },
+      "result": null
+    },
+    {
+      "step": {
+        "op": "get",
+        "to": "A",
+        "id": "B\u0000C"
+      },
+      "result": {
+        "message": {
+          "conversation": "second"
+        },
+        "timestamp": 0
+      }
+    },
+    {
+      "step": {
+        "op": "base",
+        "address": "boundary",
+        "id": "key",
+        "key": [
+          8
+        ]
+      },
+      "result": null
+    },
+    {
+      "step": {
+        "op": "advance",
+        "ms": 800000
+      },
+      "result": null
+    },
+    {
+      "step": {
+        "op": "sameBase",
+        "address": "boundary",
+        "id": "key",
+        "key": [
+          8
+        ]
+      },
+      "result": true
+    },
+    {
+      "step": {
+        "op": "advance",
+        "ms": 100001
+      },
+      "result": null
+    },
+    {
+      "step": {
+        "op": "sameBase",
+        "address": "boundary",
+        "id": "key",
+        "key": [
+          8
+        ]
+      },
+      "result": true
+    },
+    {
+      "step": {
+        "op": "base",
+        "address": "normalBoundary",
+        "id": "key",
+        "key": [
+          8
+        ]
+      },
+      "result": null
+    },
+    {
+      "step": {
+        "op": "advance",
+        "ms": 800000
+      },
+      "result": null
+    },
+    {
+      "step": {
+        "op": "sameBase",
+        "address": "normalBoundary",
+        "id": "key",
+        "key": [
+          8
+        ]
+      },
+      "result": true
+    },
+    {
+      "step": {
+        "op": "advance",
+        "ms": 100001
+      },
+      "result": null
+    },
+    {
+      "step": {
+        "op": "sameBase",
+        "address": "normalBoundary",
+        "id": "key",
+        "key": [
+          8
+        ]
+      },
+      "result": false
+    }
+  ]
+}

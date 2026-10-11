@@ -43,6 +43,8 @@ pub enum Error {
     #[error(transparent)]
     Relay(#[from] crate::relay::Error),
     #[error(transparent)]
+    Retry(#[from] crate::retry::Error),
+    #[error(transparent)]
     USync(#[from] crate::usync::Error),
     #[error(transparent)]
     Group(#[from] crate::groups::Error),
@@ -107,6 +109,8 @@ pub struct Config {
     pub initialize_session: bool,
     pub devices: crate::devices::Config,
     pub patch_message_before_sending: crate::relay::MessagePatch,
+    pub enable_recent_message_cache: bool,
+    pub max_msg_retry_count: u64,
 }
 impl Default for Config {
     fn default() -> Self {
@@ -125,6 +129,8 @@ impl Default for Config {
             initialize_session: true,
             devices: Default::default(),
             patch_message_before_sending: Default::default(),
+            enable_recent_message_cache: true,
+            max_msg_retry_count: 5,
         }
     }
 }
@@ -160,6 +166,7 @@ impl std::fmt::Debug for Event {
     }
 }
 struct Inner {
+    retry_manager: Option<crate::retry::Manager>,
     patch_message_before_sending: crate::relay::MessagePatch,
     relay_lock: tokio::sync::Mutex<()>,
     relay_state: std::sync::Mutex<relay::RelayState>,
@@ -317,7 +324,12 @@ impl Socket {
             u16::from_be_bytes([random[0], random[1]]),
             u16::from_be_bytes([random[2], random[3]])
         );
+        let retry_manager = config
+            .enable_recent_message_cache
+            .then(|| crate::retry::Manager::new(config.max_msg_retry_count));
+        let actor_retry_manager = retry_manager.clone();
         let inner = Arc::new(Inner {
+            retry_manager,
             patch_message_before_sending: config.patch_message_before_sending.clone(),
             relay_lock: tokio::sync::Mutex::new(()),
             relay_state: std::sync::Mutex::new(Default::default()),
@@ -344,10 +356,14 @@ impl Socket {
                 cancel_rx,
                 events,
                 state,
+                actor_retry_manager,
             )
             .await;
         });
         Ok((Self { inner }, receiver))
+    }
+    pub fn message_retry_manager(&self) -> Option<crate::retry::Manager> {
+        self.inner.retry_manager.clone()
     }
     pub fn subscribe(&self) -> broadcast::Receiver<Event> {
         self.inner.events.subscribe()

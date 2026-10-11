@@ -326,6 +326,11 @@ impl Socket {
         let destination_owned = destination.to_owned();
         let id_owned = id.clone();
         let storage_owned = storage.clone();
+        let recent_message = if !retry && self.inner.retry_manager.is_some() {
+            Some(message.clone())
+        } else {
+            None
+        };
         let protocol =
             relay::normalize(Some(&message)).is_some_and(|m| m.protocol_message.is_some());
         let (node, sender_timestamp) = tokio::task::spawn_blocking(move || {
@@ -499,6 +504,9 @@ impl Socket {
                     }
                 });
             }
+        }
+        if let (Some(manager), Some(message)) = (&self.inner.retry_manager, recent_message) {
+            manager.add_recent_message(destination, &id, message)?;
         }
         Ok(id)
     }
