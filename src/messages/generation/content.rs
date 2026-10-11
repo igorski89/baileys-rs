@@ -38,6 +38,28 @@ pub trait ContentHooks: Send + Sync {
 pub struct DefaultContentHooks;
 impl ContentHooks for DefaultContentHooks {}
 
+/// Cloneable socket configuration for asynchronous content enrichment.
+#[derive(Clone)]
+pub struct GenerationHooks(std::sync::Arc<dyn ContentHooks>);
+impl GenerationHooks {
+    pub fn new(hooks: impl ContentHooks + 'static) -> Self {
+        Self(std::sync::Arc::new(hooks))
+    }
+    pub fn get(&self) -> &dyn ContentHooks {
+        self.0.as_ref()
+    }
+}
+impl Default for GenerationHooks {
+    fn default() -> Self {
+        Self::new(DefaultContentHooks)
+    }
+}
+impl std::fmt::Debug for GenerationHooks {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("GenerationHooks").finish_non_exhaustive()
+    }
+}
+
 #[derive(Debug, Default, Clone)]
 pub struct LinkPreview {
     pub matched_text: Option<String>,

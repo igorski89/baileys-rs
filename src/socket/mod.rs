@@ -5,6 +5,7 @@ mod incoming_receipts;
 mod receipts;
 mod relay;
 mod retries;
+mod send;
 use crate::{
     auth::{self, Credentials, SqliteAuthStore},
     binary::{self, BinaryNode},
@@ -17,6 +18,7 @@ use base64::{Engine, engine::general_purpose::URL_SAFE_NO_PAD};
 use futures_util::{SinkExt, StreamExt};
 use prost::Message;
 pub use relay::{RelayOptions, ServerProps};
+pub use send::{SendOptions, send_metadata};
 use std::{
     collections::BTreeMap,
     sync::{
@@ -43,6 +45,8 @@ pub enum Error {
     Signal(#[from] crate::signal::Error),
     #[error(transparent)]
     Message(#[from] crate::messages::Error),
+    #[error(transparent)]
+    Generation(#[from] crate::messages::generation::Error),
     #[error(transparent)]
     Relay(#[from] crate::relay::Error),
     #[error(transparent)]
@@ -87,6 +91,7 @@ impl Error {
             Self::Auth(e) => e.status_code(),
             Self::Signal(e) => e.status_code(),
             Self::Relay(e) => e.status_code(),
+            Self::Generation(e) => e.status_code(),
             Self::USync(e) => e.status_code(),
             Self::Group(e) => Some(e.status_code()),
             Self::Binary(binary::Error::Stanza { code, .. }) => {
@@ -120,6 +125,8 @@ pub struct Config {
     pub enable_auto_session_recreation: bool,
     pub process_receipts: bool,
     pub get_message: crate::relay::MessageLookup,
+    pub generation_hooks: crate::messages::generation::GenerationHooks,
+    pub emit_own_events: bool,
 }
 impl Default for Config {
     fn default() -> Self {
@@ -143,6 +150,8 @@ impl Default for Config {
             enable_auto_session_recreation: true,
             process_receipts: true,
             get_message: Default::default(),
+            generation_hooks: Default::default(),
+            emit_own_events: true,
         }
     }
 }
@@ -163,6 +172,10 @@ pub enum Event {
     GroupsUpdated(Vec<crate::groups::Metadata>),
     MessagesUpdated(Vec<crate::receipts::MessageUpdate>),
     MessageReceiptsUpdated(Vec<crate::receipts::UserUpdate>),
+    MessagesUpserted(crate::messages::own::Upsert),
+    MessageMutations(Vec<crate::messages::own::Mutation>),
+    MessageReactions(Vec<crate::messages::own::ReactionUpdate>),
+    ChatsUpdated(Vec<crate::messages::own::ChatUpdate>),
 }
 impl std::fmt::Debug for Event {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -173,6 +186,21 @@ impl std::fmt::Debug for Event {
             Self::PairingComplete => f.write_str("PairingComplete"),
             Self::CredentialsUpdated => f.write_str("CredentialsUpdated"),
             Self::PendingNotifications => f.write_str("PendingNotifications"),
+            Self::MessagesUpserted(upsert) => f
+                .debug_tuple("MessagesUpserted")
+                .field(&upsert.messages.len())
+                .finish(),
+            Self::MessageMutations(updates) => f
+                .debug_tuple("MessageMutations")
+                .field(&updates.len())
+                .finish(),
+            Self::MessageReactions(updates) => f
+                .debug_tuple("MessageReactions")
+                .field(&updates.len())
+                .finish(),
+            Self::ChatsUpdated(updates) => {
+                f.debug_tuple("ChatsUpdated").field(&updates.len()).finish()
+            }
             Self::MessagesUpdated(updates) => f
                 .debug_tuple("MessagesUpdated")
                 .field(&updates.len())
@@ -188,6 +216,8 @@ impl std::fmt::Debug for Event {
     }
 }
 struct Inner {
+    own_messages: Option<mpsc::UnboundedSender<proto::WebMessageInfo>>,
+    generation_hooks: crate::messages::generation::GenerationHooks,
     receipt_lock: tokio::sync::Mutex<()>,
     get_message: crate::relay::MessageLookup,
     retry_requests: Arc<retries::RetryRequests>,
@@ -366,7 +396,10 @@ impl Socket {
         let actor_retry_requests = retry_requests.clone();
         let (receipt_sender, mut receipt_receiver) = mpsc::unbounded_channel::<BinaryNode>();
         let receipt_sender = config.process_receipts.then_some(receipt_sender);
+        let (own_sender, own_receiver) = mpsc::unbounded_channel();
         let inner = Arc::new(Inner {
+            own_messages: config.emit_own_events.then_some(own_sender),
+            generation_hooks: config.generation_hooks.clone(),
             receipt_lock: tokio::sync::Mutex::new(()),
             get_message: config.get_message.clone(),
             retry_requests,
@@ -388,6 +421,7 @@ impl Socket {
             prefix: prefix.clone(),
             query_timeout: config.query_timeout,
         });
+        send::spawn_own_worker(&inner, own_receiver);
         let receipt_inner = Arc::downgrade(&inner);
         tokio::spawn(async move {
             while let Some(node) = receipt_receiver.recv().await {

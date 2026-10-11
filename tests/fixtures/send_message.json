@@ -1,0 +1,3184 @@
+{
+  "cases": [
+    {
+      "kind": "text",
+      "input": {
+        "text": "hello"
+      },
+      "recipient": "group@g.us",
+      "emit": false,
+      "unarchive": false,
+      "payload": "32070a0568656c6c6f",
+      "full": "0a190a0a67726f757040672e757310011a0947454e455241544544120932070a0568656c6c6f1880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "32070a0568656c6c6f",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "text",
+      "input": {
+        "text": "hello"
+      },
+      "recipient": "group@g.us",
+      "emit": false,
+      "unarchive": true,
+      "payload": "32070a0568656c6c6f",
+      "full": "0a190a0a67726f757040672e757310011a0947454e455241544544120932070a0568656c6c6f1880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "32070a0568656c6c6f",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "text",
+      "input": {
+        "text": "hello"
+      },
+      "recipient": "group@g.us",
+      "emit": true,
+      "unarchive": false,
+      "payload": "32070a0568656c6c6f",
+      "full": "0a190a0a67726f757040672e757310011a0947454e455241544544120932070a0568656c6c6f1880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a190a0a67726f757040672e757310011a0947454e455241544544120932070a0568656c6c6f1880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+          ],
+          "type": "append"
+        },
+        {
+          "name": "chats.update",
+          "updates": [
+            {
+              "id": "group@g.us",
+              "messages": [
+                "0a190a0a67726f757040672e757310011a0947454e455241544544120932070a0568656c6c6f1880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+              ],
+              "conversationTimestamp": 1700000000
+            }
+          ]
+        }
+      ],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "32070a0568656c6c6f",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "text",
+      "input": {
+        "text": "hello"
+      },
+      "recipient": "group@g.us",
+      "emit": true,
+      "unarchive": true,
+      "payload": "32070a0568656c6c6f",
+      "full": "0a190a0a67726f757040672e757310011a0947454e455241544544120932070a0568656c6c6f1880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a190a0a67726f757040672e757310011a0947454e455241544544120932070a0568656c6c6f1880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+          ],
+          "type": "append"
+        },
+        {
+          "name": "chats.update",
+          "updates": [
+            {
+              "id": "group@g.us",
+              "messages": [
+                "0a190a0a67726f757040672e757310011a0947454e455241544544120932070a0568656c6c6f1880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+              ],
+              "conversationTimestamp": 1700000000,
+              "archived": false,
+              "readOnly": false
+            }
+          ]
+        }
+      ],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "32070a0568656c6c6f",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "reaction",
+      "input": {
+        "react": {
+          "key": {
+            "remoteJid": "200@s.whatsapp.net",
+            "id": "TARGET",
+            "fromMe": true
+          },
+          "text": "💚"
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": false,
+      "unarchive": false,
+      "payload": "f2022d0a1e0a1232303040732e77686174736170702e6e657410011a065441524745541204f09f929a20fbd095ffbc31",
+      "full": "0a190a0a67726f757040672e757310011a0947454e4552415445441230f2022d0a1e0a1232303040732e77686174736170702e6e657410011a065441524745541204f09f929a20fbd095ffbc311880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "f2022d0a1e0a1232303040732e77686174736170702e6e657410011a065441524745541204f09f929a20fbd095ffbc31",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "reaction",
+      "input": {
+        "react": {
+          "key": {
+            "remoteJid": "200@s.whatsapp.net",
+            "id": "TARGET",
+            "fromMe": true
+          },
+          "text": "💚"
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": false,
+      "unarchive": true,
+      "payload": "f2022d0a1e0a1232303040732e77686174736170702e6e657410011a065441524745541204f09f929a20fbd095ffbc31",
+      "full": "0a190a0a67726f757040672e757310011a0947454e4552415445441230f2022d0a1e0a1232303040732e77686174736170702e6e657410011a065441524745541204f09f929a20fbd095ffbc311880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "f2022d0a1e0a1232303040732e77686174736170702e6e657410011a065441524745541204f09f929a20fbd095ffbc31",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "reaction",
+      "input": {
+        "react": {
+          "key": {
+            "remoteJid": "200@s.whatsapp.net",
+            "id": "TARGET",
+            "fromMe": true
+          },
+          "text": "💚"
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": true,
+      "unarchive": false,
+      "payload": "f2022d0a1e0a1232303040732e77686174736170702e6e657410011a065441524745541204f09f929a20fbd095ffbc31",
+      "full": "0a190a0a67726f757040672e757310011a0947454e4552415445441230f2022d0a1e0a1232303040732e77686174736170702e6e657410011a065441524745541204f09f929a20fbd095ffbc311880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a190a0a67726f757040672e757310011a0947454e4552415445441230f2022d0a1e0a1232303040732e77686174736170702e6e657410011a065441524745541204f09f929a20fbd095ffbc311880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+          ],
+          "type": "append"
+        },
+        {
+          "name": "messages.reaction",
+          "updates": [
+            {
+              "key": "0a1232303040732e77686174736170702e6e657410011a06544152474554",
+              "reaction": "0a190a0a67726f757040672e757310011a0947454e4552415445441204f09f929a20fbd095ffbc31"
+            }
+          ]
+        }
+      ],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "f2022d0a1e0a1232303040732e77686174736170702e6e657410011a065441524745541204f09f929a20fbd095ffbc31",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "reaction",
+      "input": {
+        "react": {
+          "key": {
+            "remoteJid": "200@s.whatsapp.net",
+            "id": "TARGET",
+            "fromMe": true
+          },
+          "text": "💚"
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": true,
+      "unarchive": true,
+      "payload": "f2022d0a1e0a1232303040732e77686174736170702e6e657410011a065441524745541204f09f929a20fbd095ffbc31",
+      "full": "0a190a0a67726f757040672e757310011a0947454e4552415445441230f2022d0a1e0a1232303040732e77686174736170702e6e657410011a065441524745541204f09f929a20fbd095ffbc311880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a190a0a67726f757040672e757310011a0947454e4552415445441230f2022d0a1e0a1232303040732e77686174736170702e6e657410011a065441524745541204f09f929a20fbd095ffbc311880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+          ],
+          "type": "append"
+        },
+        {
+          "name": "messages.reaction",
+          "updates": [
+            {
+              "key": "0a1232303040732e77686174736170702e6e657410011a06544152474554",
+              "reaction": "0a190a0a67726f757040672e757310011a0947454e4552415445441204f09f929a20fbd095ffbc31"
+            }
+          ]
+        },
+        {
+          "name": "chats.update",
+          "updates": [
+            {
+              "id": "group@g.us",
+              "archived": false,
+              "readOnly": false
+            }
+          ]
+        }
+      ],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "f2022d0a1e0a1232303040732e77686174736170702e6e657410011a065441524745541204f09f929a20fbd095ffbc31",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "reaction",
+      "input": {
+        "react": {
+          "key": {
+            "remoteJid": "200@s.whatsapp.net",
+            "id": "TARGET",
+            "fromMe": false
+          },
+          "text": "💚"
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": false,
+      "unarchive": false,
+      "payload": "f2022d0a1e0a1232303040732e77686174736170702e6e657410001a065441524745541204f09f929a20fbd095ffbc31",
+      "full": "0a190a0a67726f757040672e757310011a0947454e4552415445441230f2022d0a1e0a1232303040732e77686174736170702e6e657410001a065441524745541204f09f929a20fbd095ffbc311880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "f2022d0a1e0a1232303040732e77686174736170702e6e657410001a065441524745541204f09f929a20fbd095ffbc31",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "reaction",
+      "input": {
+        "react": {
+          "key": {
+            "remoteJid": "200@s.whatsapp.net",
+            "id": "TARGET",
+            "fromMe": false
+          },
+          "text": "💚"
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": false,
+      "unarchive": true,
+      "payload": "f2022d0a1e0a1232303040732e77686174736170702e6e657410001a065441524745541204f09f929a20fbd095ffbc31",
+      "full": "0a190a0a67726f757040672e757310011a0947454e4552415445441230f2022d0a1e0a1232303040732e77686174736170702e6e657410001a065441524745541204f09f929a20fbd095ffbc311880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "f2022d0a1e0a1232303040732e77686174736170702e6e657410001a065441524745541204f09f929a20fbd095ffbc31",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "reaction",
+      "input": {
+        "react": {
+          "key": {
+            "remoteJid": "200@s.whatsapp.net",
+            "id": "TARGET",
+            "fromMe": false
+          },
+          "text": "💚"
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": true,
+      "unarchive": false,
+      "payload": "f2022d0a1e0a1232303040732e77686174736170702e6e657410001a065441524745541204f09f929a20fbd095ffbc31",
+      "full": "0a190a0a67726f757040672e757310011a0947454e4552415445441230f2022d0a1e0a1232303040732e77686174736170702e6e657410001a065441524745541204f09f929a20fbd095ffbc311880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a190a0a67726f757040672e757310011a0947454e4552415445441230f2022d0a1e0a1232303040732e77686174736170702e6e657410001a065441524745541204f09f929a20fbd095ffbc311880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+          ],
+          "type": "append"
+        },
+        {
+          "name": "messages.reaction",
+          "updates": [
+            {
+              "key": "0a1232303040732e77686174736170702e6e657410001a06544152474554",
+              "reaction": "0a190a0a67726f757040672e757310011a0947454e4552415445441204f09f929a20fbd095ffbc31"
+            }
+          ]
+        }
+      ],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "f2022d0a1e0a1232303040732e77686174736170702e6e657410001a065441524745541204f09f929a20fbd095ffbc31",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "reaction",
+      "input": {
+        "react": {
+          "key": {
+            "remoteJid": "200@s.whatsapp.net",
+            "id": "TARGET",
+            "fromMe": false
+          },
+          "text": "💚"
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": true,
+      "unarchive": true,
+      "payload": "f2022d0a1e0a1232303040732e77686174736170702e6e657410001a065441524745541204f09f929a20fbd095ffbc31",
+      "full": "0a190a0a67726f757040672e757310011a0947454e4552415445441230f2022d0a1e0a1232303040732e77686174736170702e6e657410001a065441524745541204f09f929a20fbd095ffbc311880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a190a0a67726f757040672e757310011a0947454e4552415445441230f2022d0a1e0a1232303040732e77686174736170702e6e657410001a065441524745541204f09f929a20fbd095ffbc311880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+          ],
+          "type": "append"
+        },
+        {
+          "name": "messages.reaction",
+          "updates": [
+            {
+              "key": "0a1232303040732e77686174736170702e6e657410001a06544152474554",
+              "reaction": "0a190a0a67726f757040672e757310011a0947454e4552415445441204f09f929a20fbd095ffbc31"
+            }
+          ]
+        }
+      ],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "f2022d0a1e0a1232303040732e77686174736170702e6e657410001a065441524745541204f09f929a20fbd095ffbc31",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "delete",
+      "input": {
+        "delete": {
+          "remoteJid": "200@s.whatsapp.net",
+          "id": "TARGET",
+          "fromMe": true
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": false,
+      "unarchive": false,
+      "payload": "62220a1e0a1232303040732e77686174736170702e6e657410011a065441524745541000",
+      "full": "0a190a0a67726f757040672e757310011a0947454e455241544544122462220a1e0a1232303040732e77686174736170702e6e657410011a0654415247455410001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "62220a1e0a1232303040732e77686174736170702e6e657410011a065441524745541000",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {
+            "edit": "7"
+          },
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "delete",
+      "input": {
+        "delete": {
+          "remoteJid": "200@s.whatsapp.net",
+          "id": "TARGET",
+          "fromMe": true
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": false,
+      "unarchive": true,
+      "payload": "62220a1e0a1232303040732e77686174736170702e6e657410011a065441524745541000",
+      "full": "0a190a0a67726f757040672e757310011a0947454e455241544544122462220a1e0a1232303040732e77686174736170702e6e657410011a0654415247455410001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "62220a1e0a1232303040732e77686174736170702e6e657410011a065441524745541000",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {
+            "edit": "7"
+          },
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "delete",
+      "input": {
+        "delete": {
+          "remoteJid": "200@s.whatsapp.net",
+          "id": "TARGET",
+          "fromMe": true
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": true,
+      "unarchive": false,
+      "payload": "62220a1e0a1232303040732e77686174736170702e6e657410011a065441524745541000",
+      "full": "0a190a0a67726f757040672e757310011a0947454e455241544544122462220a1e0a1232303040732e77686174736170702e6e657410011a0654415247455410001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a190a0a67726f757040672e757310011a0947454e455241544544122462220a1e0a1232303040732e77686174736170702e6e657410011a0654415247455410001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+          ],
+          "type": "append"
+        },
+        {
+          "name": "messages.update",
+          "updates": [
+            {
+              "key": "0a0a67726f757040672e757310011a06544152474554",
+              "revoke": true,
+              "stub": 1,
+              "originalKey": "0a0a67726f757040672e757310011a0947454e455241544544"
+            }
+          ]
+        }
+      ],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "62220a1e0a1232303040732e77686174736170702e6e657410011a065441524745541000",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {
+            "edit": "7"
+          },
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "delete",
+      "input": {
+        "delete": {
+          "remoteJid": "200@s.whatsapp.net",
+          "id": "TARGET",
+          "fromMe": true
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": true,
+      "unarchive": true,
+      "payload": "62220a1e0a1232303040732e77686174736170702e6e657410011a065441524745541000",
+      "full": "0a190a0a67726f757040672e757310011a0947454e455241544544122462220a1e0a1232303040732e77686174736170702e6e657410011a0654415247455410001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a190a0a67726f757040672e757310011a0947454e455241544544122462220a1e0a1232303040732e77686174736170702e6e657410011a0654415247455410001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+          ],
+          "type": "append"
+        },
+        {
+          "name": "messages.update",
+          "updates": [
+            {
+              "key": "0a0a67726f757040672e757310011a06544152474554",
+              "revoke": true,
+              "stub": 1,
+              "originalKey": "0a0a67726f757040672e757310011a0947454e455241544544"
+            }
+          ]
+        }
+      ],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "62220a1e0a1232303040732e77686174736170702e6e657410011a065441524745541000",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {
+            "edit": "7"
+          },
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "delete",
+      "input": {
+        "delete": {
+          "remoteJid": "group@g.us",
+          "id": "TARGET",
+          "fromMe": false
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": false,
+      "unarchive": false,
+      "payload": "621a0a160a0a67726f757040672e757310001a065441524745541000",
+      "full": "0a190a0a67726f757040672e757310011a0947454e455241544544121c621a0a160a0a67726f757040672e757310001a0654415247455410001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "621a0a160a0a67726f757040672e757310001a065441524745541000",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {
+            "edit": "8"
+          },
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "delete",
+      "input": {
+        "delete": {
+          "remoteJid": "group@g.us",
+          "id": "TARGET",
+          "fromMe": false
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": false,
+      "unarchive": true,
+      "payload": "621a0a160a0a67726f757040672e757310001a065441524745541000",
+      "full": "0a190a0a67726f757040672e757310011a0947454e455241544544121c621a0a160a0a67726f757040672e757310001a0654415247455410001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "621a0a160a0a67726f757040672e757310001a065441524745541000",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {
+            "edit": "8"
+          },
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "delete",
+      "input": {
+        "delete": {
+          "remoteJid": "group@g.us",
+          "id": "TARGET",
+          "fromMe": false
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": true,
+      "unarchive": false,
+      "payload": "621a0a160a0a67726f757040672e757310001a065441524745541000",
+      "full": "0a190a0a67726f757040672e757310011a0947454e455241544544121c621a0a160a0a67726f757040672e757310001a0654415247455410001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a190a0a67726f757040672e757310011a0947454e455241544544121c621a0a160a0a67726f757040672e757310001a0654415247455410001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+          ],
+          "type": "append"
+        },
+        {
+          "name": "messages.update",
+          "updates": [
+            {
+              "key": "0a0a67726f757040672e757310011a06544152474554",
+              "revoke": true,
+              "stub": 1,
+              "originalKey": "0a0a67726f757040672e757310011a0947454e455241544544"
+            }
+          ]
+        }
+      ],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "621a0a160a0a67726f757040672e757310001a065441524745541000",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {
+            "edit": "8"
+          },
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "delete",
+      "input": {
+        "delete": {
+          "remoteJid": "group@g.us",
+          "id": "TARGET",
+          "fromMe": false
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": true,
+      "unarchive": true,
+      "payload": "621a0a160a0a67726f757040672e757310001a065441524745541000",
+      "full": "0a190a0a67726f757040672e757310011a0947454e455241544544121c621a0a160a0a67726f757040672e757310001a0654415247455410001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a190a0a67726f757040672e757310011a0947454e455241544544121c621a0a160a0a67726f757040672e757310001a0654415247455410001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+          ],
+          "type": "append"
+        },
+        {
+          "name": "messages.update",
+          "updates": [
+            {
+              "key": "0a0a67726f757040672e757310011a06544152474554",
+              "revoke": true,
+              "stub": 1,
+              "originalKey": "0a0a67726f757040672e757310011a0947454e455241544544"
+            }
+          ]
+        }
+      ],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "621a0a160a0a67726f757040672e757310001a065441524745541000",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {
+            "edit": "8"
+          },
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "delete",
+      "input": {
+        "delete": {
+          "remoteJid": "group@g.us",
+          "id": "TARGET",
+          "fromMe": true
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": false,
+      "unarchive": false,
+      "payload": "621a0a160a0a67726f757040672e757310011a065441524745541000",
+      "full": "0a190a0a67726f757040672e757310011a0947454e455241544544121c621a0a160a0a67726f757040672e757310011a0654415247455410001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "621a0a160a0a67726f757040672e757310011a065441524745541000",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {
+            "edit": "7"
+          },
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "delete",
+      "input": {
+        "delete": {
+          "remoteJid": "group@g.us",
+          "id": "TARGET",
+          "fromMe": true
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": false,
+      "unarchive": true,
+      "payload": "621a0a160a0a67726f757040672e757310011a065441524745541000",
+      "full": "0a190a0a67726f757040672e757310011a0947454e455241544544121c621a0a160a0a67726f757040672e757310011a0654415247455410001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "621a0a160a0a67726f757040672e757310011a065441524745541000",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {
+            "edit": "7"
+          },
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "delete",
+      "input": {
+        "delete": {
+          "remoteJid": "group@g.us",
+          "id": "TARGET",
+          "fromMe": true
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": true,
+      "unarchive": false,
+      "payload": "621a0a160a0a67726f757040672e757310011a065441524745541000",
+      "full": "0a190a0a67726f757040672e757310011a0947454e455241544544121c621a0a160a0a67726f757040672e757310011a0654415247455410001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a190a0a67726f757040672e757310011a0947454e455241544544121c621a0a160a0a67726f757040672e757310011a0654415247455410001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+          ],
+          "type": "append"
+        },
+        {
+          "name": "messages.update",
+          "updates": [
+            {
+              "key": "0a0a67726f757040672e757310011a06544152474554",
+              "revoke": true,
+              "stub": 1,
+              "originalKey": "0a0a67726f757040672e757310011a0947454e455241544544"
+            }
+          ]
+        }
+      ],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "621a0a160a0a67726f757040672e757310011a065441524745541000",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {
+            "edit": "7"
+          },
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "delete",
+      "input": {
+        "delete": {
+          "remoteJid": "group@g.us",
+          "id": "TARGET",
+          "fromMe": true
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": true,
+      "unarchive": true,
+      "payload": "621a0a160a0a67726f757040672e757310011a065441524745541000",
+      "full": "0a190a0a67726f757040672e757310011a0947454e455241544544121c621a0a160a0a67726f757040672e757310011a0654415247455410001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a190a0a67726f757040672e757310011a0947454e455241544544121c621a0a160a0a67726f757040672e757310011a0654415247455410001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+          ],
+          "type": "append"
+        },
+        {
+          "name": "messages.update",
+          "updates": [
+            {
+              "key": "0a0a67726f757040672e757310011a06544152474554",
+              "revoke": true,
+              "stub": 1,
+              "originalKey": "0a0a67726f757040672e757310011a0947454e455241544544"
+            }
+          ]
+        }
+      ],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "621a0a160a0a67726f757040672e757310011a065441524745541000",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {
+            "edit": "7"
+          },
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "edit",
+      "input": {
+        "text": "edited",
+        "edit": {
+          "remoteJid": "200@s.whatsapp.net",
+          "id": "TARGET",
+          "fromMe": true
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": false,
+      "unarchive": false,
+      "payload": "62350a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e720a32080a0665646974656478fbd095ffbc31",
+      "full": "0a190a0a67726f757040672e757310011a0947454e455241544544123762350a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e720a32080a0665646974656478fbd095ffbc311880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "62350a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e720a32080a0665646974656478fbd095ffbc31",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {
+            "edit": "1"
+          },
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "edit",
+      "input": {
+        "text": "edited",
+        "edit": {
+          "remoteJid": "200@s.whatsapp.net",
+          "id": "TARGET",
+          "fromMe": true
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": false,
+      "unarchive": true,
+      "payload": "62350a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e720a32080a0665646974656478fbd095ffbc31",
+      "full": "0a190a0a67726f757040672e757310011a0947454e455241544544123762350a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e720a32080a0665646974656478fbd095ffbc311880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "62350a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e720a32080a0665646974656478fbd095ffbc31",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {
+            "edit": "1"
+          },
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "edit",
+      "input": {
+        "text": "edited",
+        "edit": {
+          "remoteJid": "200@s.whatsapp.net",
+          "id": "TARGET",
+          "fromMe": true
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": true,
+      "unarchive": false,
+      "payload": "62350a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e720a32080a0665646974656478fbd095ffbc31",
+      "full": "0a190a0a67726f757040672e757310011a0947454e455241544544123762350a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e720a32080a0665646974656478fbd095ffbc311880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a190a0a67726f757040672e757310011a0947454e455241544544123762350a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e720a32080a0665646974656478fbd095ffbc311880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+          ],
+          "type": "append"
+        },
+        {
+          "name": "messages.update",
+          "updates": [
+            {
+              "key": "0a0a67726f757040672e757310011a06544152474554",
+              "message": "d2030c0a0a32080a06656469746564",
+              "timestamp": 1700000000
+            }
+          ]
+        }
+      ],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "62350a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e720a32080a0665646974656478fbd095ffbc31",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {
+            "edit": "1"
+          },
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "edit",
+      "input": {
+        "text": "edited",
+        "edit": {
+          "remoteJid": "200@s.whatsapp.net",
+          "id": "TARGET",
+          "fromMe": true
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": true,
+      "unarchive": true,
+      "payload": "62350a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e720a32080a0665646974656478fbd095ffbc31",
+      "full": "0a190a0a67726f757040672e757310011a0947454e455241544544123762350a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e720a32080a0665646974656478fbd095ffbc311880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a190a0a67726f757040672e757310011a0947454e455241544544123762350a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e720a32080a0665646974656478fbd095ffbc311880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+          ],
+          "type": "append"
+        },
+        {
+          "name": "messages.update",
+          "updates": [
+            {
+              "key": "0a0a67726f757040672e757310011a06544152474554",
+              "message": "d2030c0a0a32080a06656469746564",
+              "timestamp": 1700000000
+            }
+          ]
+        }
+      ],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "62350a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e720a32080a0665646974656478fbd095ffbc31",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {
+            "edit": "1"
+          },
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "deleteEdit",
+      "input": {
+        "delete": {
+          "remoteJid": "200@s.whatsapp.net",
+          "id": "TARGET",
+          "fromMe": true
+        },
+        "edit": {
+          "remoteJid": "200@s.whatsapp.net",
+          "id": "TARGET",
+          "fromMe": true
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": false,
+      "unarchive": false,
+      "payload": "62530a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e722462220a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100078edf3ffffffffffffff01",
+      "full": "0a190a0a67726f757040672e757310011a0947454e455241544544125562530a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e722462220a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100078edf3ffffffffffffff011880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "62530a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e722462220a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100078edf3ffffffffffffff01",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {
+            "edit": "7"
+          },
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "deleteEdit",
+      "input": {
+        "delete": {
+          "remoteJid": "200@s.whatsapp.net",
+          "id": "TARGET",
+          "fromMe": true
+        },
+        "edit": {
+          "remoteJid": "200@s.whatsapp.net",
+          "id": "TARGET",
+          "fromMe": true
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": false,
+      "unarchive": true,
+      "payload": "62530a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e722462220a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100078edf3ffffffffffffff01",
+      "full": "0a190a0a67726f757040672e757310011a0947454e455241544544125562530a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e722462220a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100078edf3ffffffffffffff011880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "62530a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e722462220a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100078edf3ffffffffffffff01",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {
+            "edit": "7"
+          },
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "deleteEdit",
+      "input": {
+        "delete": {
+          "remoteJid": "200@s.whatsapp.net",
+          "id": "TARGET",
+          "fromMe": true
+        },
+        "edit": {
+          "remoteJid": "200@s.whatsapp.net",
+          "id": "TARGET",
+          "fromMe": true
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": true,
+      "unarchive": false,
+      "payload": "62530a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e722462220a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100078edf3ffffffffffffff01",
+      "full": "0a190a0a67726f757040672e757310011a0947454e455241544544125562530a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e722462220a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100078edf3ffffffffffffff011880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a190a0a67726f757040672e757310011a0947454e455241544544125562530a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e722462220a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100078edf3ffffffffffffff011880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+          ],
+          "type": "append"
+        },
+        {
+          "name": "messages.update",
+          "updates": [
+            {
+              "key": "0a0a67726f757040672e757310011a06544152474554",
+              "message": "d203260a2462220a1e0a1232303040732e77686174736170702e6e657410011a065441524745541000",
+              "timestamp": -2
+            }
+          ]
+        }
+      ],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "62530a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e722462220a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100078edf3ffffffffffffff01",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {
+            "edit": "7"
+          },
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "deleteEdit",
+      "input": {
+        "delete": {
+          "remoteJid": "200@s.whatsapp.net",
+          "id": "TARGET",
+          "fromMe": true
+        },
+        "edit": {
+          "remoteJid": "200@s.whatsapp.net",
+          "id": "TARGET",
+          "fromMe": true
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": true,
+      "unarchive": true,
+      "payload": "62530a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e722462220a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100078edf3ffffffffffffff01",
+      "full": "0a190a0a67726f757040672e757310011a0947454e455241544544125562530a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e722462220a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100078edf3ffffffffffffff011880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a190a0a67726f757040672e757310011a0947454e455241544544125562530a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e722462220a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100078edf3ffffffffffffff011880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+          ],
+          "type": "append"
+        },
+        {
+          "name": "messages.update",
+          "updates": [
+            {
+              "key": "0a0a67726f757040672e757310011a06544152474554",
+              "message": "d203260a2462220a1e0a1232303040732e77686174736170702e6e657410011a065441524745541000",
+              "timestamp": -2
+            }
+          ]
+        }
+      ],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "62530a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e722462220a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100078edf3ffffffffffffff01",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {
+            "edit": "7"
+          },
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "pin",
+      "input": {
+        "pin": {
+          "remoteJid": "200@s.whatsapp.net",
+          "id": "TARGET",
+          "fromMe": true
+        },
+        "type": 1
+      },
+      "recipient": "group@g.us",
+      "emit": false,
+      "unarchive": false,
+      "payload": "fa03290a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100118fbd095ffbc31",
+      "full": "0a190a0a67726f757040672e757310011a0947454e455241544544122cfa03290a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100118fbd095ffbc311880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "fa03290a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100118fbd095ffbc31",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {
+            "edit": "2"
+          },
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "pin",
+      "input": {
+        "pin": {
+          "remoteJid": "200@s.whatsapp.net",
+          "id": "TARGET",
+          "fromMe": true
+        },
+        "type": 1
+      },
+      "recipient": "group@g.us",
+      "emit": false,
+      "unarchive": true,
+      "payload": "fa03290a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100118fbd095ffbc31",
+      "full": "0a190a0a67726f757040672e757310011a0947454e455241544544122cfa03290a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100118fbd095ffbc311880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "fa03290a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100118fbd095ffbc31",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {
+            "edit": "2"
+          },
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "pin",
+      "input": {
+        "pin": {
+          "remoteJid": "200@s.whatsapp.net",
+          "id": "TARGET",
+          "fromMe": true
+        },
+        "type": 1
+      },
+      "recipient": "group@g.us",
+      "emit": true,
+      "unarchive": false,
+      "payload": "fa03290a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100118fbd095ffbc31",
+      "full": "0a190a0a67726f757040672e757310011a0947454e455241544544122cfa03290a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100118fbd095ffbc311880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a190a0a67726f757040672e757310011a0947454e455241544544122cfa03290a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100118fbd095ffbc311880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+          ],
+          "type": "append"
+        },
+        {
+          "name": "chats.update",
+          "updates": [
+            {
+              "id": "group@g.us",
+              "messages": [
+                "0a190a0a67726f757040672e757310011a0947454e455241544544122cfa03290a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100118fbd095ffbc311880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+              ],
+              "conversationTimestamp": 1700000000
+            }
+          ]
+        }
+      ],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "fa03290a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100118fbd095ffbc31",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {
+            "edit": "2"
+          },
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "pin",
+      "input": {
+        "pin": {
+          "remoteJid": "200@s.whatsapp.net",
+          "id": "TARGET",
+          "fromMe": true
+        },
+        "type": 1
+      },
+      "recipient": "group@g.us",
+      "emit": true,
+      "unarchive": true,
+      "payload": "fa03290a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100118fbd095ffbc31",
+      "full": "0a190a0a67726f757040672e757310011a0947454e455241544544122cfa03290a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100118fbd095ffbc311880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a190a0a67726f757040672e757310011a0947454e455241544544122cfa03290a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100118fbd095ffbc311880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+          ],
+          "type": "append"
+        },
+        {
+          "name": "chats.update",
+          "updates": [
+            {
+              "id": "group@g.us",
+              "messages": [
+                "0a190a0a67726f757040672e757310011a0947454e455241544544122cfa03290a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100118fbd095ffbc311880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+              ],
+              "conversationTimestamp": 1700000000,
+              "archived": false,
+              "readOnly": false
+            }
+          ]
+        }
+      ],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "fa03290a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100118fbd095ffbc31",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {
+            "edit": "2"
+          },
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "poll",
+      "input": {
+        "poll": {
+          "name": "Poll",
+          "values": [
+            "A"
+          ]
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": false,
+      "unarchive": false,
+      "payload": "8a030d1204506f6c6c1a030a01412000",
+      "full": "0a190a0a67726f757040672e757310011a0947454e45524154454412108a030d1204506f6c6c1a030a014120001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "8a030d1204506f6c6c1a030a01412000",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": [
+            {
+              "tag": "meta",
+              "attrs": {
+                "polltype": "creation"
+              }
+            }
+          ]
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "poll",
+      "input": {
+        "poll": {
+          "name": "Poll",
+          "values": [
+            "A"
+          ]
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": false,
+      "unarchive": true,
+      "payload": "8a030d1204506f6c6c1a030a01412000",
+      "full": "0a190a0a67726f757040672e757310011a0947454e45524154454412108a030d1204506f6c6c1a030a014120001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "8a030d1204506f6c6c1a030a01412000",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": [
+            {
+              "tag": "meta",
+              "attrs": {
+                "polltype": "creation"
+              }
+            }
+          ]
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "poll",
+      "input": {
+        "poll": {
+          "name": "Poll",
+          "values": [
+            "A"
+          ]
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": true,
+      "unarchive": false,
+      "payload": "8a030d1204506f6c6c1a030a01412000",
+      "full": "0a190a0a67726f757040672e757310011a0947454e45524154454412108a030d1204506f6c6c1a030a014120001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a190a0a67726f757040672e757310011a0947454e45524154454412108a030d1204506f6c6c1a030a014120001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+          ],
+          "type": "append"
+        },
+        {
+          "name": "chats.update",
+          "updates": [
+            {
+              "id": "group@g.us",
+              "messages": [
+                "0a190a0a67726f757040672e757310011a0947454e45524154454412108a030d1204506f6c6c1a030a014120001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+              ],
+              "conversationTimestamp": 1700000000
+            }
+          ]
+        }
+      ],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "8a030d1204506f6c6c1a030a01412000",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": [
+            {
+              "tag": "meta",
+              "attrs": {
+                "polltype": "creation"
+              }
+            }
+          ]
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "poll",
+      "input": {
+        "poll": {
+          "name": "Poll",
+          "values": [
+            "A"
+          ]
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": true,
+      "unarchive": true,
+      "payload": "8a030d1204506f6c6c1a030a01412000",
+      "full": "0a190a0a67726f757040672e757310011a0947454e45524154454412108a030d1204506f6c6c1a030a014120001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a190a0a67726f757040672e757310011a0947454e45524154454412108a030d1204506f6c6c1a030a014120001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+          ],
+          "type": "append"
+        },
+        {
+          "name": "chats.update",
+          "updates": [
+            {
+              "id": "group@g.us",
+              "messages": [
+                "0a190a0a67726f757040672e757310011a0947454e45524154454412108a030d1204506f6c6c1a030a014120001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+              ],
+              "conversationTimestamp": 1700000000,
+              "archived": false,
+              "readOnly": false
+            }
+          ]
+        }
+      ],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "8a030d1204506f6c6c1a030a01412000",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": [
+            {
+              "tag": "meta",
+              "attrs": {
+                "polltype": "creation"
+              }
+            }
+          ]
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "pollEdit",
+      "input": {
+        "poll": {
+          "name": "Poll",
+          "values": [
+            "A"
+          ]
+        },
+        "edit": {
+          "remoteJid": "200@s.whatsapp.net",
+          "id": "TARGET",
+          "fromMe": true
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": false,
+      "unarchive": false,
+      "payload": "622f0a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e72098a03061204506f6c6c7800",
+      "full": "0a190a0a67726f757040672e757310011a0947454e4552415445441231622f0a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e72098a03061204506f6c6c78001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "622f0a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e72098a03061204506f6c6c7800",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {
+            "edit": "1"
+          },
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "pollEdit",
+      "input": {
+        "poll": {
+          "name": "Poll",
+          "values": [
+            "A"
+          ]
+        },
+        "edit": {
+          "remoteJid": "200@s.whatsapp.net",
+          "id": "TARGET",
+          "fromMe": true
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": false,
+      "unarchive": true,
+      "payload": "622f0a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e72098a03061204506f6c6c7800",
+      "full": "0a190a0a67726f757040672e757310011a0947454e4552415445441231622f0a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e72098a03061204506f6c6c78001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "622f0a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e72098a03061204506f6c6c7800",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {
+            "edit": "1"
+          },
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "pollEdit",
+      "input": {
+        "poll": {
+          "name": "Poll",
+          "values": [
+            "A"
+          ]
+        },
+        "edit": {
+          "remoteJid": "200@s.whatsapp.net",
+          "id": "TARGET",
+          "fromMe": true
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": true,
+      "unarchive": false,
+      "payload": "622f0a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e72098a03061204506f6c6c7800",
+      "full": "0a190a0a67726f757040672e757310011a0947454e4552415445441231622f0a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e72098a03061204506f6c6c78001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a190a0a67726f757040672e757310011a0947454e4552415445441231622f0a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e72098a03061204506f6c6c78001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+          ],
+          "type": "append"
+        },
+        {
+          "name": "messages.update",
+          "updates": [
+            {
+              "key": "0a0a67726f757040672e757310011a06544152474554",
+              "message": "d2030b0a098a03061204506f6c6c",
+              "timestamp": 0
+            }
+          ]
+        }
+      ],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "622f0a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e72098a03061204506f6c6c7800",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {
+            "edit": "1"
+          },
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "pollEdit",
+      "input": {
+        "poll": {
+          "name": "Poll",
+          "values": [
+            "A"
+          ]
+        },
+        "edit": {
+          "remoteJid": "200@s.whatsapp.net",
+          "id": "TARGET",
+          "fromMe": true
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": true,
+      "unarchive": true,
+      "payload": "622f0a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e72098a03061204506f6c6c7800",
+      "full": "0a190a0a67726f757040672e757310011a0947454e4552415445441231622f0a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e72098a03061204506f6c6c78001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a190a0a67726f757040672e757310011a0947454e4552415445441231622f0a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e72098a03061204506f6c6c78001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+          ],
+          "type": "append"
+        },
+        {
+          "name": "messages.update",
+          "updates": [
+            {
+              "key": "0a0a67726f757040672e757310011a06544152474554",
+              "message": "d2030b0a098a03061204506f6c6c",
+              "timestamp": 0
+            }
+          ]
+        }
+      ],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "622f0a1e0a1232303040732e77686174736170702e6e657410011a06544152474554100e72098a03061204506f6c6c7800",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {
+            "edit": "1"
+          },
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "event",
+      "input": {
+        "event": {
+          "name": "Event"
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": false,
+      "unarchive": false,
+      "payload": "da04071a054576656e74",
+      "full": "0a190a0a67726f757040672e757310011a0947454e455241544544120ada04071a054576656e741880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "da04071a054576656e74",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": [
+            {
+              "tag": "meta",
+              "attrs": {
+                "event_type": "creation"
+              }
+            }
+          ]
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "event",
+      "input": {
+        "event": {
+          "name": "Event"
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": false,
+      "unarchive": true,
+      "payload": "da04071a054576656e74",
+      "full": "0a190a0a67726f757040672e757310011a0947454e455241544544120ada04071a054576656e741880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "da04071a054576656e74",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": [
+            {
+              "tag": "meta",
+              "attrs": {
+                "event_type": "creation"
+              }
+            }
+          ]
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "event",
+      "input": {
+        "event": {
+          "name": "Event"
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": true,
+      "unarchive": false,
+      "payload": "da04071a054576656e74",
+      "full": "0a190a0a67726f757040672e757310011a0947454e455241544544120ada04071a054576656e741880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a190a0a67726f757040672e757310011a0947454e455241544544120ada04071a054576656e741880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+          ],
+          "type": "append"
+        },
+        {
+          "name": "chats.update",
+          "updates": [
+            {
+              "id": "group@g.us",
+              "messages": [
+                "0a190a0a67726f757040672e757310011a0947454e455241544544120ada04071a054576656e741880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+              ],
+              "conversationTimestamp": 1700000000
+            }
+          ]
+        }
+      ],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "da04071a054576656e74",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": [
+            {
+              "tag": "meta",
+              "attrs": {
+                "event_type": "creation"
+              }
+            }
+          ]
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "event",
+      "input": {
+        "event": {
+          "name": "Event"
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": true,
+      "unarchive": true,
+      "payload": "da04071a054576656e74",
+      "full": "0a190a0a67726f757040672e757310011a0947454e455241544544120ada04071a054576656e741880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a190a0a67726f757040672e757310011a0947454e455241544544120ada04071a054576656e741880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+          ],
+          "type": "append"
+        },
+        {
+          "name": "chats.update",
+          "updates": [
+            {
+              "id": "group@g.us",
+              "messages": [
+                "0a190a0a67726f757040672e757310011a0947454e455241544544120ada04071a054576656e741880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+              ],
+              "conversationTimestamp": 1700000000,
+              "archived": false,
+              "readOnly": false
+            }
+          ]
+        }
+      ],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "da04071a054576656e74",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": [
+            {
+              "tag": "meta",
+              "attrs": {
+                "event_type": "creation"
+              }
+            }
+          ]
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "disappearing",
+      "input": {
+        "disappearingMessagesInChat": true
+      },
+      "recipient": "200@s.whatsapp.net",
+      "emit": false,
+      "unarchive": false,
+      "payload": "c2020a0a08620610032080f524",
+      "full": "0a210a1232303040732e77686174736170702e6e657410011a0947454e455241544544120dc2020a0a08620610032080f5241880e2cfaa062001",
+      "events": [],
+      "relays": [
+        {
+          "jid": "200@s.whatsapp.net",
+          "message": "c2020a0a08620610032080f524",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "disappearing",
+      "input": {
+        "disappearingMessagesInChat": true
+      },
+      "recipient": "200@s.whatsapp.net",
+      "emit": false,
+      "unarchive": true,
+      "payload": "c2020a0a08620610032080f524",
+      "full": "0a210a1232303040732e77686174736170702e6e657410011a0947454e455241544544120dc2020a0a08620610032080f5241880e2cfaa062001",
+      "events": [],
+      "relays": [
+        {
+          "jid": "200@s.whatsapp.net",
+          "message": "c2020a0a08620610032080f524",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "disappearing",
+      "input": {
+        "disappearingMessagesInChat": true
+      },
+      "recipient": "200@s.whatsapp.net",
+      "emit": true,
+      "unarchive": false,
+      "payload": "c2020a0a08620610032080f524",
+      "full": "0a210a1232303040732e77686174736170702e6e657410011a0947454e455241544544120dc2020a0a08620610032080f5241880e2cfaa062001",
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a210a1232303040732e77686174736170702e6e657410011a0947454e455241544544120dc2020a0a08620610032080f5241880e2cfaa062001"
+          ],
+          "type": "append"
+        },
+        {
+          "name": "chats.update",
+          "updates": [
+            {
+              "id": "200@s.whatsapp.net",
+              "ephemeralSettingTimestamp": 1700000000,
+              "ephemeralExpiration": 604800
+            }
+          ]
+        }
+      ],
+      "relays": [
+        {
+          "jid": "200@s.whatsapp.net",
+          "message": "c2020a0a08620610032080f524",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "disappearing",
+      "input": {
+        "disappearingMessagesInChat": true
+      },
+      "recipient": "200@s.whatsapp.net",
+      "emit": true,
+      "unarchive": true,
+      "payload": "c2020a0a08620610032080f524",
+      "full": "0a210a1232303040732e77686174736170702e6e657410011a0947454e455241544544120dc2020a0a08620610032080f5241880e2cfaa062001",
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a210a1232303040732e77686174736170702e6e657410011a0947454e455241544544120dc2020a0a08620610032080f5241880e2cfaa062001"
+          ],
+          "type": "append"
+        },
+        {
+          "name": "chats.update",
+          "updates": [
+            {
+              "id": "200@s.whatsapp.net",
+              "ephemeralSettingTimestamp": 1700000000,
+              "ephemeralExpiration": 604800
+            }
+          ]
+        }
+      ],
+      "relays": [
+        {
+          "jid": "200@s.whatsapp.net",
+          "message": "c2020a0a08620610032080f524",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "disappearing",
+      "input": {
+        "disappearingMessagesInChat": false
+      },
+      "recipient": "200@s.whatsapp.net",
+      "emit": false,
+      "unarchive": false,
+      "payload": "c202080a06620410032000",
+      "full": "0a210a1232303040732e77686174736170702e6e657410011a0947454e455241544544120bc202080a066204100320001880e2cfaa062001",
+      "events": [],
+      "relays": [
+        {
+          "jid": "200@s.whatsapp.net",
+          "message": "c202080a06620410032000",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "disappearing",
+      "input": {
+        "disappearingMessagesInChat": false
+      },
+      "recipient": "200@s.whatsapp.net",
+      "emit": false,
+      "unarchive": true,
+      "payload": "c202080a06620410032000",
+      "full": "0a210a1232303040732e77686174736170702e6e657410011a0947454e455241544544120bc202080a066204100320001880e2cfaa062001",
+      "events": [],
+      "relays": [
+        {
+          "jid": "200@s.whatsapp.net",
+          "message": "c202080a06620410032000",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "disappearing",
+      "input": {
+        "disappearingMessagesInChat": false
+      },
+      "recipient": "200@s.whatsapp.net",
+      "emit": true,
+      "unarchive": false,
+      "payload": "c202080a06620410032000",
+      "full": "0a210a1232303040732e77686174736170702e6e657410011a0947454e455241544544120bc202080a066204100320001880e2cfaa062001",
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a210a1232303040732e77686174736170702e6e657410011a0947454e455241544544120bc202080a066204100320001880e2cfaa062001"
+          ],
+          "type": "append"
+        },
+        {
+          "name": "chats.update",
+          "updates": [
+            {
+              "id": "200@s.whatsapp.net",
+              "ephemeralSettingTimestamp": 1700000000,
+              "ephemeralExpiration": null
+            }
+          ]
+        }
+      ],
+      "relays": [
+        {
+          "jid": "200@s.whatsapp.net",
+          "message": "c202080a06620410032000",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "disappearing",
+      "input": {
+        "disappearingMessagesInChat": false
+      },
+      "recipient": "200@s.whatsapp.net",
+      "emit": true,
+      "unarchive": true,
+      "payload": "c202080a06620410032000",
+      "full": "0a210a1232303040732e77686174736170702e6e657410011a0947454e455241544544120bc202080a066204100320001880e2cfaa062001",
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a210a1232303040732e77686174736170702e6e657410011a0947454e455241544544120bc202080a066204100320001880e2cfaa062001"
+          ],
+          "type": "append"
+        },
+        {
+          "name": "chats.update",
+          "updates": [
+            {
+              "id": "200@s.whatsapp.net",
+              "ephemeralSettingTimestamp": 1700000000,
+              "ephemeralExpiration": null
+            }
+          ]
+        }
+      ],
+      "relays": [
+        {
+          "jid": "200@s.whatsapp.net",
+          "message": "c202080a06620410032000",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "disappearing",
+      "input": {
+        "disappearingMessagesInChat": 60
+      },
+      "recipient": "200@s.whatsapp.net",
+      "emit": false,
+      "unarchive": false,
+      "payload": "c202080a0662041003203c",
+      "full": "0a210a1232303040732e77686174736170702e6e657410011a0947454e455241544544120bc202080a0662041003203c1880e2cfaa062001",
+      "events": [],
+      "relays": [
+        {
+          "jid": "200@s.whatsapp.net",
+          "message": "c202080a0662041003203c",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "disappearing",
+      "input": {
+        "disappearingMessagesInChat": 60
+      },
+      "recipient": "200@s.whatsapp.net",
+      "emit": false,
+      "unarchive": true,
+      "payload": "c202080a0662041003203c",
+      "full": "0a210a1232303040732e77686174736170702e6e657410011a0947454e455241544544120bc202080a0662041003203c1880e2cfaa062001",
+      "events": [],
+      "relays": [
+        {
+          "jid": "200@s.whatsapp.net",
+          "message": "c202080a0662041003203c",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "disappearing",
+      "input": {
+        "disappearingMessagesInChat": 60
+      },
+      "recipient": "200@s.whatsapp.net",
+      "emit": true,
+      "unarchive": false,
+      "payload": "c202080a0662041003203c",
+      "full": "0a210a1232303040732e77686174736170702e6e657410011a0947454e455241544544120bc202080a0662041003203c1880e2cfaa062001",
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a210a1232303040732e77686174736170702e6e657410011a0947454e455241544544120bc202080a0662041003203c1880e2cfaa062001"
+          ],
+          "type": "append"
+        },
+        {
+          "name": "chats.update",
+          "updates": [
+            {
+              "id": "200@s.whatsapp.net",
+              "ephemeralSettingTimestamp": 1700000000,
+              "ephemeralExpiration": 60
+            }
+          ]
+        }
+      ],
+      "relays": [
+        {
+          "jid": "200@s.whatsapp.net",
+          "message": "c202080a0662041003203c",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "disappearing",
+      "input": {
+        "disappearingMessagesInChat": 60
+      },
+      "recipient": "200@s.whatsapp.net",
+      "emit": true,
+      "unarchive": true,
+      "payload": "c202080a0662041003203c",
+      "full": "0a210a1232303040732e77686174736170702e6e657410011a0947454e455241544544120bc202080a0662041003203c1880e2cfaa062001",
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a210a1232303040732e77686174736170702e6e657410011a0947454e455241544544120bc202080a0662041003203c1880e2cfaa062001"
+          ],
+          "type": "append"
+        },
+        {
+          "name": "chats.update",
+          "updates": [
+            {
+              "id": "200@s.whatsapp.net",
+              "ephemeralSettingTimestamp": 1700000000,
+              "ephemeralExpiration": 60
+            }
+          ]
+        }
+      ],
+      "relays": [
+        {
+          "jid": "200@s.whatsapp.net",
+          "message": "c202080a0662041003203c",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "request",
+      "input": {
+        "requestPhoneNumber": false
+      },
+      "recipient": "group@g.us",
+      "emit": false,
+      "unarchive": false,
+      "payload": "b20300",
+      "full": "0a190a0a67726f757040672e757310011a0947454e4552415445441203b203001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "b20300",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "request",
+      "input": {
+        "requestPhoneNumber": false
+      },
+      "recipient": "group@g.us",
+      "emit": false,
+      "unarchive": true,
+      "payload": "b20300",
+      "full": "0a190a0a67726f757040672e757310011a0947454e4552415445441203b203001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "b20300",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "request",
+      "input": {
+        "requestPhoneNumber": false
+      },
+      "recipient": "group@g.us",
+      "emit": true,
+      "unarchive": false,
+      "payload": "b20300",
+      "full": "0a190a0a67726f757040672e757310011a0947454e4552415445441203b203001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a190a0a67726f757040672e757310011a0947454e4552415445441203b203001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+          ],
+          "type": "append"
+        },
+        {
+          "name": "chats.update",
+          "updates": [
+            {
+              "id": "group@g.us",
+              "messages": [
+                "0a190a0a67726f757040672e757310011a0947454e4552415445441203b203001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+              ],
+              "conversationTimestamp": 1700000000
+            }
+          ]
+        }
+      ],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "b20300",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "request",
+      "input": {
+        "requestPhoneNumber": false
+      },
+      "recipient": "group@g.us",
+      "emit": true,
+      "unarchive": true,
+      "payload": "b20300",
+      "full": "0a190a0a67726f757040672e757310011a0947454e4552415445441203b203001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a190a0a67726f757040672e757310011a0947454e4552415445441203b203001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+          ],
+          "type": "append"
+        },
+        {
+          "name": "chats.update",
+          "updates": [
+            {
+              "id": "group@g.us",
+              "messages": [
+                "0a190a0a67726f757040672e757310011a0947454e4552415445441203b203001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+              ],
+              "conversationTimestamp": 1700000000,
+              "archived": false,
+              "readOnly": false
+            }
+          ]
+        }
+      ],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "b20300",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "encReaction",
+      "input": {
+        "prepared": true
+      },
+      "recipient": "group@g.us",
+      "emit": false,
+      "unarchive": false,
+      "payload": "c20300",
+      "full": "0a190a0a67726f757040672e757310011a0947454e4552415445441203c203001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "c20300",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "encReaction",
+      "input": {
+        "prepared": true
+      },
+      "recipient": "group@g.us",
+      "emit": false,
+      "unarchive": true,
+      "payload": "c20300",
+      "full": "0a190a0a67726f757040672e757310011a0947454e4552415445441203c203001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "c20300",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "encReaction",
+      "input": {
+        "prepared": true
+      },
+      "recipient": "group@g.us",
+      "emit": true,
+      "unarchive": false,
+      "payload": "c20300",
+      "full": "0a190a0a67726f757040672e757310011a0947454e4552415445441203c203001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a190a0a67726f757040672e757310011a0947454e4552415445441203c203001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+          ],
+          "type": "append"
+        },
+        {
+          "name": "chats.update",
+          "updates": [
+            {
+              "id": "group@g.us",
+              "messages": [
+                "0a190a0a67726f757040672e757310011a0947454e4552415445441203c203001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+              ],
+              "conversationTimestamp": 1700000000
+            }
+          ]
+        }
+      ],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "c20300",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "encReaction",
+      "input": {
+        "prepared": true
+      },
+      "recipient": "group@g.us",
+      "emit": true,
+      "unarchive": true,
+      "payload": "c20300",
+      "full": "0a190a0a67726f757040672e757310011a0947454e4552415445441203c203001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a190a0a67726f757040672e757310011a0947454e4552415445441203c203001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+          ],
+          "type": "append"
+        },
+        {
+          "name": "chats.update",
+          "updates": [
+            {
+              "id": "group@g.us",
+              "messages": [
+                "0a190a0a67726f757040672e757310011a0947454e4552415445441203c203001880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+              ],
+              "conversationTimestamp": 1700000000,
+              "archived": false,
+              "readOnly": false
+            }
+          ]
+        }
+      ],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "c20300",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "wrappedReaction",
+      "input": {
+        "react": {
+          "key": {
+            "remoteJid": "200@s.whatsapp.net",
+            "id": "TARGET",
+            "fromMe": true
+          }
+        },
+        "viewOnce": true
+      },
+      "recipient": "group@g.us",
+      "emit": false,
+      "unarchive": false,
+      "payload": "aa022b0a29f202260a1e0a1232303040732e77686174736170702e6e657410011a065441524745541204f09f918d",
+      "full": "0a190a0a67726f757040672e757310011a0947454e455241544544122eaa022b0a29f202260a1e0a1232303040732e77686174736170702e6e657410011a065441524745541204f09f918d1880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "aa022b0a29f202260a1e0a1232303040732e77686174736170702e6e657410011a065441524745541204f09f918d",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "wrappedReaction",
+      "input": {
+        "react": {
+          "key": {
+            "remoteJid": "200@s.whatsapp.net",
+            "id": "TARGET",
+            "fromMe": true
+          }
+        },
+        "viewOnce": true
+      },
+      "recipient": "group@g.us",
+      "emit": false,
+      "unarchive": true,
+      "payload": "aa022b0a29f202260a1e0a1232303040732e77686174736170702e6e657410011a065441524745541204f09f918d",
+      "full": "0a190a0a67726f757040672e757310011a0947454e455241544544122eaa022b0a29f202260a1e0a1232303040732e77686174736170702e6e657410011a065441524745541204f09f918d1880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "aa022b0a29f202260a1e0a1232303040732e77686174736170702e6e657410011a065441524745541204f09f918d",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "wrappedReaction",
+      "input": {
+        "react": {
+          "key": {
+            "remoteJid": "200@s.whatsapp.net",
+            "id": "TARGET",
+            "fromMe": true
+          }
+        },
+        "viewOnce": true
+      },
+      "recipient": "group@g.us",
+      "emit": true,
+      "unarchive": false,
+      "payload": "aa022b0a29f202260a1e0a1232303040732e77686174736170702e6e657410011a065441524745541204f09f918d",
+      "full": "0a190a0a67726f757040672e757310011a0947454e455241544544122eaa022b0a29f202260a1e0a1232303040732e77686174736170702e6e657410011a065441524745541204f09f918d1880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a190a0a67726f757040672e757310011a0947454e455241544544122eaa022b0a29f202260a1e0a1232303040732e77686174736170702e6e657410011a065441524745541204f09f918d1880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+          ],
+          "type": "append"
+        },
+        {
+          "name": "messages.reaction",
+          "updates": [
+            {
+              "key": "0a1232303040732e77686174736170702e6e657410011a06544152474554",
+              "reaction": "0a190a0a67726f757040672e757310011a0947454e4552415445441204f09f918d"
+            }
+          ]
+        }
+      ],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "aa022b0a29f202260a1e0a1232303040732e77686174736170702e6e657410011a065441524745541204f09f918d",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "wrappedReaction",
+      "input": {
+        "react": {
+          "key": {
+            "remoteJid": "200@s.whatsapp.net",
+            "id": "TARGET",
+            "fromMe": true
+          }
+        },
+        "viewOnce": true
+      },
+      "recipient": "group@g.us",
+      "emit": true,
+      "unarchive": true,
+      "payload": "aa022b0a29f202260a1e0a1232303040732e77686174736170702e6e657410011a065441524745541204f09f918d",
+      "full": "0a190a0a67726f757040672e757310011a0947454e455241544544122eaa022b0a29f202260a1e0a1232303040732e77686174736170702e6e657410011a065441524745541204f09f918d1880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a190a0a67726f757040672e757310011a0947454e455241544544122eaa022b0a29f202260a1e0a1232303040732e77686174736170702e6e657410011a065441524745541204f09f918d1880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+          ],
+          "type": "append"
+        },
+        {
+          "name": "messages.reaction",
+          "updates": [
+            {
+              "key": "0a1232303040732e77686174736170702e6e657410011a06544152474554",
+              "reaction": "0a190a0a67726f757040672e757310011a0947454e4552415445441204f09f918d"
+            }
+          ]
+        },
+        {
+          "name": "chats.update",
+          "updates": [
+            {
+              "id": "group@g.us",
+              "archived": false,
+              "readOnly": false
+            }
+          ]
+        }
+      ],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "aa022b0a29f202260a1e0a1232303040732e77686174736170702e6e657410011a065441524745541204f09f918d",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {},
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "editMissingFields",
+      "input": {
+        "text": "edited",
+        "edit": {
+          "remoteJid": "200@s.whatsapp.net",
+          "id": "TARGET",
+          "fromMe": true
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": false,
+      "unarchive": false,
+      "payload": "6202100e",
+      "full": "0a190a0a67726f757040672e757310011a0947454e45524154454412046202100e1880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "6202100e",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {
+            "edit": "1"
+          },
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "editMissingFields",
+      "input": {
+        "text": "edited",
+        "edit": {
+          "remoteJid": "200@s.whatsapp.net",
+          "id": "TARGET",
+          "fromMe": true
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": false,
+      "unarchive": true,
+      "payload": "6202100e",
+      "full": "0a190a0a67726f757040672e757310011a0947454e45524154454412046202100e1880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "6202100e",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {
+            "edit": "1"
+          },
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "editMissingFields",
+      "input": {
+        "text": "edited",
+        "edit": {
+          "remoteJid": "200@s.whatsapp.net",
+          "id": "TARGET",
+          "fromMe": true
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": true,
+      "unarchive": false,
+      "payload": "6202100e",
+      "full": "0a190a0a67726f757040672e757310011a0947454e45524154454412046202100e1880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a190a0a67726f757040672e757310011a0947454e45524154454412046202100e1880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+          ],
+          "type": "append"
+        },
+        {
+          "name": "messages.update",
+          "updates": [
+            {
+              "key": "0a0a67726f757040672e75731001",
+              "message": "d20300",
+              "timestamp": 1700000000
+            }
+          ]
+        }
+      ],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "6202100e",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {
+            "edit": "1"
+          },
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "editMissingFields",
+      "input": {
+        "text": "edited",
+        "edit": {
+          "remoteJid": "200@s.whatsapp.net",
+          "id": "TARGET",
+          "fromMe": true
+        }
+      },
+      "recipient": "group@g.us",
+      "emit": true,
+      "unarchive": true,
+      "payload": "6202100e",
+      "full": "0a190a0a67726f757040672e757310011a0947454e45524154454412046202100e1880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574",
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a190a0a67726f757040672e757310011a0947454e45524154454412046202100e1880e2cfaa0620012a143130303a3740732e77686174736170702e6e6574"
+          ],
+          "type": "append"
+        },
+        {
+          "name": "messages.update",
+          "updates": [
+            {
+              "key": "0a0a67726f757040672e75731001",
+              "message": "d20300",
+              "timestamp": 1700000000
+            }
+          ]
+        }
+      ],
+      "relays": [
+        {
+          "jid": "group@g.us",
+          "message": "6202100e",
+          "messageId": "GENERATED",
+          "useCachedGroupMetadata": false,
+          "statusJidList": [
+            "300@lid"
+          ],
+          "attributes": {
+            "edit": "1"
+          },
+          "nodes": []
+        }
+      ],
+      "toggles": []
+    },
+    {
+      "kind": "groupDisappearing",
+      "input": {
+        "disappearingMessagesInChat": true
+      },
+      "recipient": "group@g.us",
+      "emit": true,
+      "unarchive": true,
+      "events": [],
+      "toggles": [
+        {
+          "jid": "group@g.us",
+          "value": 604800
+        }
+      ]
+    },
+    {
+      "kind": "groupDisappearing",
+      "input": {
+        "disappearingMessagesInChat": false
+      },
+      "recipient": "group@g.us",
+      "emit": true,
+      "unarchive": true,
+      "events": [],
+      "toggles": [
+        {
+          "jid": "group@g.us",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "kind": "groupDisappearing",
+      "input": {
+        "disappearingMessagesInChat": 60
+      },
+      "recipient": "group@g.us",
+      "emit": true,
+      "unarchive": true,
+      "events": [],
+      "toggles": [
+        {
+          "jid": "group@g.us",
+          "value": 60
+        }
+      ]
+    }
+  ]
+}
