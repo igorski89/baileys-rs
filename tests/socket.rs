@@ -1210,6 +1210,68 @@ async fn group_operations_match_original_requests_over_encrypted_transport() {
 }
 
 #[tokio::test]
+async fn newsletter_relay_sends_unpadded_plaintext_and_honors_early_return() {
+    use prost::Message as _;
+    timeout(Duration::from_secs(8), async {
+        let temp = tempfile::tempdir().unwrap();
+        let store = store(&temp, true);
+        let (listener, config) = listener().await;
+        let fixture: serde_json::Value =
+            serde_json::from_str(include_str!("fixtures/relay-stanza.json")).unwrap();
+        let cases = fixture["newsletters"].as_array().unwrap().clone();
+        let inputs = cases.clone();
+        let server = tokio::spawn(async move {
+            let mut peer = Peer::accept(listener.accept().await.unwrap().0).await;
+            peer.send(BinaryNode::new("success")).await;
+            assert!(peer.read().await.child("unified_session").is_some());
+            for (index, case) in cases.iter().enumerate() {
+                let mut request = peer.read().await;
+                if index == 1 {
+                    assert!(request.attrs["id"].starts_with("3EB0"));
+                    request.attrs.insert("id".into(), "STANZA-ID".into());
+                }
+                assert_eq!(
+                    binary::encode(&request).unwrap(),
+                    hex(case["wire"].as_str().unwrap())
+                );
+            }
+            peer.closed().await;
+        });
+        let (socket, _) = Socket::connect(config, store).await.unwrap();
+        socket.wait_for_open(Duration::from_secs(2)).await.unwrap();
+        for (index, case) in inputs.iter().enumerate() {
+            let message = baileys_rs::proto::Message::decode(
+                hex(case["message"].as_str().unwrap()).as_slice(),
+            )
+            .unwrap();
+            let options = baileys_rs::relay::StanzaOptions {
+                additional_attributes: serde_json::from_value(case["attrs"].clone()).unwrap(),
+                additional_nodes: vec![BinaryNode::new("ignored-extra")],
+                ..Default::default()
+            };
+            let id = socket
+                .relay_newsletter(
+                    "123@newsletter",
+                    &message,
+                    (index == 0).then_some("STANZA-ID"),
+                    &options,
+                )
+                .await
+                .unwrap();
+            if index == 0 {
+                assert_eq!(id, "STANZA-ID");
+            } else {
+                assert!(id.starts_with("3EB0"));
+            }
+        }
+        socket.close().await.unwrap();
+        server.await.unwrap();
+    })
+    .await
+    .unwrap();
+}
+
+#[tokio::test]
 async fn usync_contact_lid_and_session_establishment_use_encrypted_queries() {
     timeout(Duration::from_secs(8), async {
         let temp = tempfile::tempdir().unwrap();

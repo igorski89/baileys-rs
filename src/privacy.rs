@@ -236,6 +236,25 @@ impl Repository {
         let values = self.store.get(KeyCategory::Tctoken, &[INDEX_KEY.into()])?;
         Ok(read_index(values.get(INDEX_KEY)))
     }
+    /// Relay attaches no timestamp attribute and only clears nonempty expired tokens.
+    /// Cleanup failure suppresses the expired token while retaining the persisted record.
+    pub fn relay_token(&self, jid: &str, now: u64) -> Result<Option<Vec<u8>>, Error> {
+        let storage = self.storage_jid(jid)?;
+        self.store.transaction_with_error(|tx| {
+            let Some(entry) = load(tx, &storage)? else {
+                return Ok(None);
+            };
+            if entry.token.is_empty() {
+                return Ok(None);
+            }
+            if is_expired(entry.timestamp.as_ref(), now) {
+                let _ = tx.set(&[clear_entry(&storage, &entry)]);
+                Ok(None)
+            } else {
+                Ok(Some(entry.token))
+            }
+        })
+    }
     pub fn merged_index_write(&self, added: &[String]) -> Result<KeyMutation, Error> {
         index_write(self.read_index()?.into_iter().chain(added.iter().cloned()))
     }

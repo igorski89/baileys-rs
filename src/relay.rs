@@ -1,4 +1,5 @@
 //! Recipient fanout and wire metadata used by the message relay orchestrator.
+mod stanza;
 use crate::{
     binary::{BinaryNode, NodeContent},
     crypto,
@@ -9,6 +10,7 @@ use crate::{
 use base64::{Engine, engine::general_purpose::STANDARD};
 use indexmap::IndexMap;
 use prost::Message as _;
+pub use stanza::*;
 
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
@@ -20,6 +22,8 @@ pub enum Error {
     Crypto(#[from] crypto::Error),
     #[error("invalid recipient JID")]
     Recipient,
+    #[error("missing signed device identity")]
+    Identity,
     #[error("message patch failed: {0}")]
     Patch(String),
     #[error("All encryptions failed")]

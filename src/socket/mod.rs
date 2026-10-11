@@ -758,6 +758,23 @@ impl Socket {
         .await
         .map_err(|_| Error::Task)?
     }
+    pub async fn relay_newsletter(
+        &self,
+        destination: &str,
+        message: &proto::Message,
+        message_id: Option<&str>,
+        options: &crate::relay::StanzaOptions,
+    ) -> Result<String, Error> {
+        let credentials = load_credentials(self.inner.store.clone()).await?;
+        let me = credentials.me_id()?;
+        let id = match message_id.filter(|id| !id.is_empty()) {
+            Some(id) => id.to_owned(),
+            None => crate::messages::generate_id_v2(Some(me))?,
+        };
+        let node = crate::relay::newsletter_stanza(destination, &id, message, message, options)?;
+        self.send_node(node).await?;
+        Ok(id)
+    }
     pub async fn send_node(&self, node: BinaryNode) -> Result<(), Error> {
         let (reply, receiver) = oneshot::channel();
         self.inner

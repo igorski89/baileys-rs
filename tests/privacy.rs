@@ -167,3 +167,36 @@ fn failed_index_write_rolls_back_sender_timestamp() {
     repo.mark_issued("100@lid", 1700000000).unwrap();
     assert_eq!(repo.read_index().unwrap(), ["100@lid"]);
 }
+
+#[test]
+fn relay_suppresses_expired_token_when_cleanup_write_fails() {
+    let dir = tempfile::tempdir().unwrap();
+    let store = SqliteAuthStore::open(dir.path()).unwrap();
+    store
+        .set(&[KeyMutation::put(
+            "100@lid",
+            KeyValue::Tctoken(TcToken {
+                token: vec![1],
+                timestamp: Some(0u64.into()),
+                sender_timestamp: Some(1700000000),
+                extra: Default::default(),
+            }),
+        )])
+        .unwrap();
+    let connection = rusqlite::Connection::open(store.path().unwrap()).unwrap();
+    connection.execute_batch("CREATE TRIGGER reject_cleanup BEFORE INSERT ON signal_keys WHEN NEW.category='tctoken' AND NEW.id='100@lid' BEGIN SELECT RAISE(ABORT,'synthetic failure'); END;").unwrap();
+    let repo = Repository::new(store.clone());
+    assert!(repo.relay_token("100@lid", 1700000000).unwrap().is_none());
+    assert_eq!(
+        entries(&store, &["100@lid".into()])["100@lid"]["token"]["data"],
+        "AQ=="
+    );
+    connection
+        .execute_batch("DROP TRIGGER reject_cleanup")
+        .unwrap();
+    assert!(repo.relay_token("100@lid", 1700000000).unwrap().is_none());
+    assert_eq!(
+        entries(&store, &["100@lid".into()])["100@lid"],
+        json!({"token":{"type":"Buffer","data":""},"senderTimestamp":1700000000})
+    );
+}
