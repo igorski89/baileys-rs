@@ -2,7 +2,7 @@
 
 A Rust port in progress of [WhiskeySockets/Baileys](https://github.com/WhiskeySockets/Baileys), based on upstream commit `0af2386292907f7d9742d8d41f830d8c48208fa1` (7.0.0-rc14).
 
-Currently provides the full generated WhatsApp protobuf model, JID helpers, binary stanza encoding/decoding, crypto primitives, the Noise handshake and encrypted framing, persistent authentication/key storage, connection/pairing protocol helpers, and an async WebSocket connection. This is not yet a usable WhatsApp messaging client: Signal sessions, synchronization, messaging, and the high-level socket APIs remain to be ported. See [PORT_STATUS.md](PORT_STATUS.md) for scope and validation.
+Currently provides the full generated WhatsApp protobuf model, JID helpers, binary stanza encoding/decoding, crypto primitives, the Noise handshake and encrypted framing, persistent authentication/key storage, connection/pairing protocol helpers, an async WebSocket connection, and persistent Signal group sender keys. This is not yet a usable WhatsApp messaging client: direct-message Signal sessions, synchronization, messaging, and the high-level socket APIs remain to be ported. See [PORT_STATUS.md](PORT_STATUS.md) for scope and validation.
 
 ```rust
 use baileys_rs::binary::{BinaryNode, encode, decode};
@@ -40,6 +40,7 @@ node scripts/generate-crypto-fixtures.mjs ../Baileys
 node scripts/generate-noise-fixtures.mjs ../Baileys
 node scripts/generate-auth-fixtures.mjs ../Baileys
 node scripts/generate-connection-fixtures.mjs ../Baileys
+node scripts/generate-group-fixtures.mjs ../Baileys
 cargo test --test auth upstream_adapter_resumes_and_updates_rust_export -- --ignored
 ```
 
@@ -56,6 +57,10 @@ The Rust verifier checks the underlying libsignal verification result rather tha
 `socket::Socket::connect(config, store)` returns a handle and event receiver after the WebSocket/Noise handshake. Account login follows asynchronously; `wait_for_open` waits for initialization, while QR and phone pairing use `Event::Qr` and `request_pairing_code`. A single Tokio task owns the WebSocket and Noise state, routes IQ replies, handles keepalives, and persists credential changes through `spawn_blocking`. `query` generates IDs, reports stanza errors/timeouts, and removes pending queries when its future is dropped. Pending requests and event history are bounded; broadcast subscribers must handle lag. Dropping the last socket handle closes its task, and `close`/`logout` explicitly close the connection. Reconnect by calling `connect` again with the same store; automatic reconnection is left to the caller, as in upstream.
 
 Login checks server prekey counts, uploads and acknowledges persisted batches, activates the connection, and requests the key digest. Upload failures retry with exponential backoff; a missing digest triggers another upload. Pair-success, routing information, and phone-pairing ADV-secret updates persist before subsequent protocol steps. The local mock peer exercises registration/login, both pairing methods, reconnect routing, queries, cancellation, prekey retries, QR rotation, and shutdown. This integration has no live-account validation. Signed-prekey rotation, server-driven low-prekey notifications, PN/LID migration, and full initial synchronization still require implementation.
+
+`signal::Address` maps PN/LID/hosted JIDs to upstream Signal addresses. `SenderKeyName` supplies the group storage name and UTF-16 hash. `signal::group::Repository` creates/processes sender-key distributions and encrypts/decrypts group payloads in SQLite transactions. Encryption returns the distribution captured before the ciphertext, matching upstream. Records use the actual JSON/BufferJSON format stored by Baileys, retain five states and up to 2,000 skipped message keys, and resume across process/database reopen. Private state is redacted in debug output and zeroized on drop. `SqliteAuthStore::transaction_with_error` permits protocol errors to roll back writes without losing their type. These operations are synchronous; async callers should use a blocking executor.
+
+Group interoperability fixtures run the upstream TypeScript implementation against synthetic keys. Rust matches distribution bytes, signed AES-CBC ciphertext, chain/key-cache state, shuffled delivery, and the 2,000-message skip boundary. The pinned upstream cipher sends counters 0, 2, 4, ...; the Rust cipher preserves this behavior. Duplicate distribution IDs are appended and resolved using the oldest matching state, as upstream does. Rust rejects unsupported major versions, malformed records, and counter wraparound, and leaves state unchanged on authentication/decryption failure. Direct-message sessions, PN/LID mapping, and socket integration of group messages remain unfinished.
 
 `auth::Credentials::generate` creates noise/pairing/identity keys, a signed prekey, the ADV secret, and upstream credential defaults. The current source's registration generator samples the first random byte; the port preserves that behavior while accepting valid imported 14-bit IDs. `me_id` returns a structured 401 error before authentication. Credential debug output omits keys and account data.
 

@@ -244,14 +244,26 @@ impl SqliteAuthStore {
         &self,
         work: impl FnOnce(&mut AuthTransaction<'_>) -> Result<T, Error>,
     ) -> Result<T, Error> {
-        let mut connection = self.connection.lock().map_err(|_| Error::Poisoned)?;
-        let sql = connection.transaction_with_behavior(TransactionBehavior::Immediate)?;
+        self.transaction_with_error(work)
+    }
+    /// Run application work atomically while preserving its own typed errors.
+    pub fn transaction_with_error<T, E: From<Error>>(
+        &self,
+        work: impl FnOnce(&mut AuthTransaction<'_>) -> Result<T, E>,
+    ) -> Result<T, E> {
+        let mut connection = self
+            .connection
+            .lock()
+            .map_err(|_| E::from(Error::Poisoned))?;
+        let sql = connection
+            .transaction_with_behavior(TransactionBehavior::Immediate)
+            .map_err(Error::from)?;
         let mut tx = AuthTransaction {
             sql,
             cache: BTreeMap::new(),
         };
         let result = work(&mut tx)?;
-        tx.sql.commit()?;
+        tx.sql.commit().map_err(Error::from)?;
         Ok(result)
     }
     /// Import a snapshot from the TypeScript multi-file adapter. IDs containing
