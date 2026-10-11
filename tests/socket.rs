@@ -154,6 +154,11 @@ async fn encrypted_login_queries_errors_and_shutdown() {
                 .as_deref(),
             Some("987654:7@lid")
         );
+        let mappings = baileys_rs::signal::mapping::Store::new(store.clone());
+        assert_eq!(mappings.get_lid_for_pn("123456789:7@s.whatsapp.net").unwrap().as_deref(), Some("987654:7@lid"));
+        use baileys_rs::auth::{KeyStore,KeyCategory,KeyValue};
+        let keys = store.get(KeyCategory::DeviceList, &["123456789".into()]).unwrap();
+        assert!(matches!(keys.get("123456789"), Some(KeyValue::DeviceList(devices)) if devices == &["7"]));
         server.await.unwrap();
     })
     .await

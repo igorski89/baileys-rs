@@ -1,0 +1,537 @@
+{
+  "steps": [
+    {
+      "method": "storeLIDPNMappings",
+      "input": [
+        {
+          "pn": "100@s.whatsapp.net",
+          "lid": "900@lid"
+        },
+        {
+          "pn": "200:7@s.whatsapp.net",
+          "lid": "800:7@lid"
+        }
+      ],
+      "result": null,
+      "storage": {
+        "100": "900",
+        "200": "800",
+        "900_reverse": "100",
+        "800_reverse": "200"
+      },
+      "calls": []
+    },
+    {
+      "method": "getLIDsForPNs",
+      "input": [
+        "200:7@s.whatsapp.net",
+        "100:0@s.whatsapp.net",
+        "200:7@s.whatsapp.net",
+        "100:99@hosted",
+        "bad@lid"
+      ],
+      "result": [
+        {
+          "lid": "800:7@lid",
+          "pn": "200:7@s.whatsapp.net"
+        },
+        {
+          "lid": "900@lid",
+          "pn": "100:0@s.whatsapp.net"
+        },
+        {
+          "lid": "900:99@hosted.lid",
+          "pn": "100:99@hosted"
+        }
+      ],
+      "storage": {
+        "100": "900",
+        "200": "800",
+        "900_reverse": "100",
+        "800_reverse": "200"
+      },
+      "calls": []
+    },
+    {
+      "method": "getPNsForLIDs",
+      "input": [
+        "900@lid",
+        "800:7@lid",
+        "900:99@hosted.lid",
+        "bad@s.whatsapp.net"
+      ],
+      "result": [
+        {
+          "lid": "900@lid",
+          "pn": "100:0@s.whatsapp.net"
+        },
+        {
+          "lid": "800:7@lid",
+          "pn": "200:7@s.whatsapp.net"
+        }
+      ],
+      "storage": {
+        "100": "900",
+        "200": "800",
+        "900_reverse": "100",
+        "800_reverse": "200"
+      },
+      "calls": []
+    },
+    {
+      "method": "storeLIDPNMappings",
+      "input": [
+        {
+          "pn": "100@s.whatsapp.net",
+          "lid": "901@lid"
+        }
+      ],
+      "result": null,
+      "storage": {
+        "100": "901",
+        "200": "800",
+        "900_reverse": "100",
+        "800_reverse": "200",
+        "901_reverse": "100"
+      },
+      "calls": []
+    },
+    {
+      "method": "getPNsForLIDs",
+      "input": [
+        "900:7@lid",
+        "901@lid"
+      ],
+      "result": [
+        {
+          "lid": "900:7@lid",
+          "pn": "100:7@s.whatsapp.net"
+        },
+        {
+          "lid": "901@lid",
+          "pn": "100:0@s.whatsapp.net"
+        }
+      ],
+      "storage": {
+        "100": "901",
+        "200": "800",
+        "900_reverse": "100",
+        "800_reverse": "200",
+        "901_reverse": "100"
+      },
+      "calls": []
+    },
+    {
+      "method": "storeLIDPNMappings",
+      "input": [
+        {
+          "pn": "100@s.whatsapp.net",
+          "lid": "902@lid"
+        },
+        {
+          "pn": "100@s.whatsapp.net",
+          "lid": "901@lid"
+        }
+      ],
+      "result": null,
+      "storage": {
+        "100": "902",
+        "200": "800",
+        "900_reverse": "100",
+        "800_reverse": "200",
+        "901_reverse": "100",
+        "902_reverse": "100"
+      },
+      "calls": []
+    },
+    {
+      "method": "getLIDForPN",
+      "input": "100:7@s.whatsapp.net",
+      "result": "902:7@lid",
+      "storage": {
+        "100": "902",
+        "200": "800",
+        "900_reverse": "100",
+        "800_reverse": "200",
+        "901_reverse": "100",
+        "902_reverse": "100"
+      },
+      "calls": []
+    },
+    {
+      "method": "storeLIDPNMappings",
+      "input": [
+        {
+          "pn": "999@lid",
+          "lid": "111@s.whatsapp.net"
+        },
+        {
+          "pn": "222:99@hosted",
+          "lid": "333:99@hosted.lid"
+        },
+        {
+          "pn": "invalid",
+          "lid": "bad"
+        }
+      ],
+      "result": null,
+      "storage": {
+        "100": "902",
+        "200": "800",
+        "999": "111",
+        "900_reverse": "100",
+        "800_reverse": "200",
+        "901_reverse": "100",
+        "902_reverse": "100",
+        "111_reverse": "999"
+      },
+      "calls": []
+    },
+    {
+      "method": "getLIDsForPNs",
+      "input": [
+        "999@s.whatsapp.net",
+        "222:99@hosted"
+      ],
+      "result": [
+        {
+          "lid": "111@lid",
+          "pn": "999@s.whatsapp.net"
+        }
+      ],
+      "storage": {
+        "100": "902",
+        "200": "800",
+        "999": "111",
+        "900_reverse": "100",
+        "800_reverse": "200",
+        "901_reverse": "100",
+        "902_reverse": "100",
+        "111_reverse": "999"
+      },
+      "calls": [
+        [
+          "222@s.whatsapp.net"
+        ]
+      ]
+    },
+    {
+      "method": "getLIDsForPNs",
+      "input": [
+        "300:7@s.whatsapp.net",
+        "400:99@hosted",
+        "300:0@s.whatsapp.net",
+        "300:7@s.whatsapp.net"
+      ],
+      "result": [
+        {
+          "lid": "700:7@lid",
+          "pn": "300:7@s.whatsapp.net"
+        },
+        {
+          "lid": "700@lid",
+          "pn": "300@s.whatsapp.net"
+        },
+        {
+          "lid": "600:99@hosted.lid",
+          "pn": "400:99@hosted"
+        }
+      ],
+      "storage": {
+        "100": "902",
+        "200": "800",
+        "300": "700",
+        "400": "600",
+        "999": "111",
+        "900_reverse": "100",
+        "800_reverse": "200",
+        "901_reverse": "100",
+        "902_reverse": "100",
+        "111_reverse": "999",
+        "700_reverse": "300",
+        "600_reverse": "400"
+      },
+      "calls": [
+        [
+          "222@s.whatsapp.net"
+        ],
+        [
+          "300@s.whatsapp.net",
+          "400@s.whatsapp.net"
+        ]
+      ]
+    },
+    {
+      "method": "getLIDsForPNs",
+      "input": [
+        "300:0@s.whatsapp.net",
+        "400:99@hosted"
+      ],
+      "result": [
+        {
+          "lid": "700@lid",
+          "pn": "300:0@s.whatsapp.net"
+        },
+        {
+          "lid": "600:99@hosted.lid",
+          "pn": "400:99@hosted"
+        }
+      ],
+      "storage": {
+        "100": "902",
+        "200": "800",
+        "300": "700",
+        "400": "600",
+        "999": "111",
+        "900_reverse": "100",
+        "800_reverse": "200",
+        "901_reverse": "100",
+        "902_reverse": "100",
+        "111_reverse": "999",
+        "700_reverse": "300",
+        "600_reverse": "400"
+      },
+      "calls": [
+        [
+          "222@s.whatsapp.net"
+        ],
+        [
+          "300@s.whatsapp.net",
+          "400@s.whatsapp.net"
+        ]
+      ]
+    },
+    {
+      "method": "getPNForLID",
+      "input": "700@lid",
+      "result": "300:0@s.whatsapp.net",
+      "storage": {
+        "100": "902",
+        "200": "800",
+        "300": "700",
+        "400": "600",
+        "999": "111",
+        "900_reverse": "100",
+        "800_reverse": "200",
+        "901_reverse": "100",
+        "902_reverse": "100",
+        "111_reverse": "999",
+        "700_reverse": "300",
+        "600_reverse": "400"
+      },
+      "calls": [
+        [
+          "222@s.whatsapp.net"
+        ],
+        [
+          "300@s.whatsapp.net",
+          "400@s.whatsapp.net"
+        ]
+      ]
+    },
+    {
+      "method": "getLIDsForPNs",
+      "input": [],
+      "result": null,
+      "storage": {
+        "100": "902",
+        "200": "800",
+        "300": "700",
+        "400": "600",
+        "999": "111",
+        "900_reverse": "100",
+        "800_reverse": "200",
+        "901_reverse": "100",
+        "902_reverse": "100",
+        "111_reverse": "999",
+        "700_reverse": "300",
+        "600_reverse": "400"
+      },
+      "calls": [
+        [
+          "222@s.whatsapp.net"
+        ],
+        [
+          "300@s.whatsapp.net",
+          "400@s.whatsapp.net"
+        ]
+      ]
+    },
+    {
+      "method": "getPNsForLIDs",
+      "input": [],
+      "result": null,
+      "storage": {
+        "100": "902",
+        "200": "800",
+        "300": "700",
+        "400": "600",
+        "999": "111",
+        "900_reverse": "100",
+        "800_reverse": "200",
+        "901_reverse": "100",
+        "902_reverse": "100",
+        "111_reverse": "999",
+        "700_reverse": "300",
+        "600_reverse": "400"
+      },
+      "calls": [
+        [
+          "222@s.whatsapp.net"
+        ],
+        [
+          "300@s.whatsapp.net",
+          "400@s.whatsapp.net"
+        ]
+      ]
+    },
+    {
+      "method": "getLIDForPN",
+      "input": "unknown@s.whatsapp.net",
+      "result": null,
+      "storage": {
+        "100": "902",
+        "200": "800",
+        "300": "700",
+        "400": "600",
+        "999": "111",
+        "900_reverse": "100",
+        "800_reverse": "200",
+        "901_reverse": "100",
+        "902_reverse": "100",
+        "111_reverse": "999",
+        "700_reverse": "300",
+        "600_reverse": "400"
+      },
+      "calls": [
+        [
+          "222@s.whatsapp.net"
+        ],
+        [
+          "300@s.whatsapp.net",
+          "400@s.whatsapp.net"
+        ],
+        [
+          "unknown@s.whatsapp.net"
+        ]
+      ]
+    },
+    {
+      "method": "close",
+      "input": null,
+      "result": null,
+      "storage": {
+        "100": "902",
+        "200": "800",
+        "300": "700",
+        "400": "600",
+        "999": "111",
+        "900_reverse": "100",
+        "800_reverse": "200",
+        "901_reverse": "100",
+        "902_reverse": "100",
+        "111_reverse": "999",
+        "700_reverse": "300",
+        "600_reverse": "400"
+      },
+      "calls": [
+        [
+          "222@s.whatsapp.net"
+        ],
+        [
+          "300@s.whatsapp.net",
+          "400@s.whatsapp.net"
+        ],
+        [
+          "unknown@s.whatsapp.net"
+        ]
+      ]
+    },
+    {
+      "method": "getLIDsForPNs",
+      "input": [
+        "100:7@s.whatsapp.net",
+        "300@s.whatsapp.net"
+      ],
+      "result": [
+        {
+          "lid": "902:7@lid",
+          "pn": "100:7@s.whatsapp.net"
+        },
+        {
+          "lid": "700@lid",
+          "pn": "300@s.whatsapp.net"
+        }
+      ],
+      "storage": {
+        "100": "902",
+        "200": "800",
+        "300": "700",
+        "400": "600",
+        "999": "111",
+        "900_reverse": "100",
+        "800_reverse": "200",
+        "901_reverse": "100",
+        "902_reverse": "100",
+        "111_reverse": "999",
+        "700_reverse": "300",
+        "600_reverse": "400"
+      },
+      "calls": [
+        [
+          "222@s.whatsapp.net"
+        ],
+        [
+          "300@s.whatsapp.net",
+          "400@s.whatsapp.net"
+        ],
+        [
+          "unknown@s.whatsapp.net"
+        ]
+      ]
+    },
+    {
+      "method": "getPNsForLIDs",
+      "input": [
+        "700:7@lid",
+        "900@lid"
+      ],
+      "result": [
+        {
+          "lid": "700:7@lid",
+          "pn": "300:7@s.whatsapp.net"
+        },
+        {
+          "lid": "900@lid",
+          "pn": "100:0@s.whatsapp.net"
+        }
+      ],
+      "storage": {
+        "100": "902",
+        "200": "800",
+        "300": "700",
+        "400": "600",
+        "999": "111",
+        "900_reverse": "100",
+        "800_reverse": "200",
+        "901_reverse": "100",
+        "902_reverse": "100",
+        "111_reverse": "999",
+        "700_reverse": "300",
+        "600_reverse": "400"
+      },
+      "calls": [
+        [
+          "222@s.whatsapp.net"
+        ],
+        [
+          "300@s.whatsapp.net",
+          "400@s.whatsapp.net"
+        ],
+        [
+          "unknown@s.whatsapp.net"
+        ]
+      ]
+    }
+  ]
+}

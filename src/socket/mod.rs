@@ -34,6 +34,8 @@ pub enum Error {
     #[error(transparent)]
     Auth(#[from] auth::Error),
     #[error(transparent)]
+    Signal(#[from] crate::signal::Error),
+    #[error(transparent)]
     Connection(#[from] connection::Error),
     #[error(transparent)]
     Noise(#[from] noise::Error),

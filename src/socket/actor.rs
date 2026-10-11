@@ -1,6 +1,6 @@
 use super::*;
 use crate::{
-    auth::{KeyCategory, KeyStore, KeyValue},
+    auth::{KeyCategory, KeyMutation, KeyStore, KeyValue},
     binary::NodeContent,
 };
 use std::collections::{HashMap, VecDeque};
@@ -336,6 +336,27 @@ impl Actor<'_> {
                 let me = self.credentials.me.as_mut().ok_or(Error::Closed(500))?;
                 me.lid = node.attrs.get("lid").cloned();
                 self.persist().await?;
+                if let Some(me) = &self.credentials.me
+                    && let Some(lid) = &me.lid
+                {
+                    let mapping = crate::signal::mapping::Mapping {
+                        pn: me.id.clone(),
+                        lid: lid.clone(),
+                    };
+                    let decoded = crate::jid::Jid::parse(&me.id).ok_or(Error::Config)?;
+                    let store = self.store.clone();
+                    tokio::task::spawn_blocking(move || {
+                        crate::signal::mapping::Store::new(store.clone())
+                            .store_mappings(&[mapping])?;
+                        store.set(&[KeyMutation::put(
+                            decoded.user,
+                            KeyValue::DeviceList(vec![decoded.device.unwrap_or(0).to_string()]),
+                        )])?;
+                        Ok::<_, crate::signal::Error>(())
+                    })
+                    .await
+                    .map_err(|_| Error::Task)??;
+                }
                 if self.config.initialize_session {
                     self.internal_query(
                         BinaryNode::new("iq")

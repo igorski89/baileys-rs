@@ -1,5 +1,6 @@
 //! Signal addressing and transactional WhatsApp group sender keys.
 pub mod group;
+pub mod mapping;
 use crate::{auth, crypto, jid::Jid};
 
 #[derive(Debug, thiserror::Error)]
@@ -14,6 +15,10 @@ pub enum Error {
     Protobuf(#[from] prost::DecodeError),
     #[error("invalid Signal address")]
     Address,
+    #[error(transparent)]
+    Shared(std::sync::Arc<Error>),
+    #[error("mapping resolver aborted")]
+    ResolverAborted,
     #[error("invalid sender-key message or record")]
     Invalid,
     #[error("unsupported sender-key version")]
