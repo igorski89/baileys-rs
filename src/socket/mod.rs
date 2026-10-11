@@ -96,6 +96,7 @@ pub struct Config {
     pub max_pending_queries: usize,
     pub event_capacity: usize,
     pub initialize_session: bool,
+    pub devices: crate::devices::Config,
 }
 impl Default for Config {
     fn default() -> Self {
@@ -112,6 +113,7 @@ impl Default for Config {
             max_pending_queries: 128,
             event_capacity: 256,
             initialize_session: true,
+            devices: Default::default(),
         }
     }
 }
@@ -145,6 +147,7 @@ impl std::fmt::Debug for Event {
 struct Inner {
     store: SqliteAuthStore,
     decryptor: Arc<crate::messages::SignalDecryptor>,
+    devices: crate::devices::Cache,
     commands: mpsc::Sender<Command>,
     cancel: mpsc::UnboundedSender<u64>,
     events: broadcast::Sender<Event>,
@@ -299,6 +302,7 @@ impl Socket {
         let inner = Arc::new(Inner {
             store: store.clone(),
             decryptor: Arc::new(crate::messages::SignalDecryptor::new(store.clone())),
+            devices: crate::devices::Cache::new(config.devices.clone()),
             commands,
             cancel,
             events: events.clone(),
@@ -448,6 +452,207 @@ impl Socket {
                     .collect()
             })
             .unwrap_or_default())
+    }
+    /// Resolve stored PN aliases, fetching missing users through background LID USync.
+    pub async fn resolve_lid_mappings(
+        &self,
+        pns: &[String],
+    ) -> Result<Vec<crate::signal::mapping::Mapping>, Error> {
+        let mapping = self.inner.decryptor.direct.lid_mapping().clone();
+        let inputs = pns.to_vec();
+        let stored = tokio::task::spawn_blocking(move || mapping.get_lids_for_pns(&inputs))
+            .await
+            .map_err(|_| Error::Task)??;
+        let known: std::collections::HashSet<_> = stored
+            .iter()
+            .filter_map(|p| crate::jid::Jid::parse(&p.pn).map(|j| j.user))
+            .collect();
+        let missing: indexmap::IndexSet<_> = pns
+            .iter()
+            .filter_map(|pn| crate::jid::Jid::parse(pn))
+            .filter(|j| j.is_pn_user() || j.is_hosted_pn_user())
+            .filter(|j| !known.contains(&j.user))
+            .map(|j| crate::jid::encode(&j.user, "s.whatsapp.net", None, None))
+            .collect();
+        if missing.is_empty() {
+            return Ok(stored);
+        }
+        let fetched = self
+            .fetch_lid_mappings(&missing.into_iter().collect::<Vec<_>>())
+            .await?;
+        let mapping = self.inner.decryptor.direct.lid_mapping().clone();
+        let inputs = pns.to_vec();
+        Ok(tokio::task::spawn_blocking(move || {
+            mapping.store_mappings(&fetched)?;
+            mapping.get_lids_for_pns(&inputs)
+        })
+        .await
+        .map_err(|_| Error::Task)??)
+    }
+    /// Check unique sessions, resolve PN aliases and fetch missing/forced bundles.
+    /// As upstream does, unmapped PNs are omitted from the encrypt IQ.
+    pub async fn assert_sessions(&self, jids: &[String], force: bool) -> Result<bool, Error> {
+        let unique = jids.iter().cloned().collect::<indexmap::IndexSet<_>>();
+        let mut required = vec![];
+        for jid in unique {
+            if !force {
+                let resolved = if crate::jid::Jid::parse(&jid)
+                    .is_some_and(|j| j.is_pn_user() || j.is_hosted_pn_user())
+                {
+                    self.resolve_lid_mappings(std::slice::from_ref(&jid))
+                        .await
+                        .is_ok()
+                } else {
+                    true
+                };
+                let repository = self.inner.decryptor.direct.clone();
+                let check = jid.clone();
+                if resolved
+                    && tokio::task::spawn_blocking(move || {
+                        repository.validate_session(&check).unwrap_or(false)
+                    })
+                    .await
+                    .map_err(|_| Error::Task)?
+                {
+                    continue;
+                }
+            }
+            required.push(jid);
+        }
+        if required.is_empty() {
+            return Ok(false);
+        }
+        let mut wire = required
+            .iter()
+            .filter(|jid| {
+                crate::jid::Jid::parse(jid)
+                    .is_some_and(|j| j.is_lid_user() || j.is_hosted_lid_user())
+            })
+            .cloned()
+            .collect::<Vec<_>>();
+        let pns = required
+            .into_iter()
+            .filter(|jid| {
+                crate::jid::Jid::parse(jid).is_some_and(|j| j.is_pn_user() || j.is_hosted_pn_user())
+            })
+            .collect::<Vec<_>>();
+        wire.extend(
+            self.resolve_lid_mappings(&pns)
+                .await?
+                .into_iter()
+                .map(|p| p.lid),
+        );
+        let result = self
+            .query(
+                crate::signal::wire::session_query_with_reason(&wire, force)?,
+                None,
+            )
+            .await?;
+        let repository = self.inner.decryptor.direct.clone();
+        tokio::task::spawn_blocking(move || {
+            crate::signal::wire::inject_session_bundles(&result, &repository)
+        })
+        .await
+        .map_err(|_| Error::Task)??;
+        Ok(true)
+    }
+    /// Discover relay devices, refresh returned LID sessions, and persist device lists.
+    pub async fn get_usync_devices(
+        &self,
+        jids: &[String],
+        use_cache: bool,
+        ignore_zero: bool,
+    ) -> Result<Vec<crate::devices::Device>, Error> {
+        let mut plan = self.inner.devices.plan(jids, use_cache)?;
+        if plan.to_fetch.is_empty() {
+            return Ok(plan.devices);
+        }
+        let mut query = crate::usync::Query::default()
+            .with_protocol(crate::usync::Protocol::Devices)
+            .with_protocol(crate::usync::Protocol::Lid);
+        query.context = "message".into();
+        query.users = plan
+            .to_fetch
+            .iter()
+            .map(crate::usync::User::with_id)
+            .collect();
+        let Some(result) = self.execute_usync(&query).await? else {
+            return Ok(plan.devices);
+        };
+        let pairs = result
+            .list
+            .iter()
+            .filter_map(|u| match u.protocols.get("lid") {
+                Some(crate::usync::Value::Text(lid)) if !lid.is_empty() => {
+                    Some(crate::signal::mapping::Mapping {
+                        pn: u.id.clone(),
+                        lid: lid.clone(),
+                    })
+                }
+                _ => None,
+            })
+            .collect::<Vec<_>>();
+        if !pairs.is_empty() {
+            let mapping = self.inner.decryptor.direct.lid_mapping().clone();
+            let updates = pairs.clone();
+            tokio::task::spawn_blocking(move || mapping.store_mappings(&updates))
+                .await
+                .map_err(|_| Error::Task)??;
+            if let Err(error) = self
+                .assert_sessions(&pairs.into_iter().map(|p| p.lid).collect::<Vec<_>>(), true)
+                .await
+            {
+                tracing::warn!(?error, "failed to refresh sessions for discovered LIDs");
+            }
+        }
+        let credentials = load_credentials(self.inner.store.clone()).await?;
+        let extracted = crate::usync::extract_device_jids(
+            &result.list,
+            credentials.me_id()?,
+            credentials
+                .me
+                .as_ref()
+                .and_then(|me| me.lid.as_deref())
+                .unwrap_or_default(),
+            ignore_zero,
+        )?;
+        let groups = self.inner.devices.update(extracted)?;
+        let updates = groups
+            .iter()
+            .map(|(user, devices)| {
+                crate::auth::KeyMutation::put(
+                    user,
+                    crate::auth::KeyValue::DeviceList(
+                        devices.iter().map(|d| d.device.to_string()).collect(),
+                    ),
+                )
+            })
+            .collect::<Vec<_>>();
+        plan.devices.extend(groups.into_values().flatten());
+        if !updates.is_empty() {
+            let store = self.inner.store.clone();
+            let outcome = tokio::task::spawn_blocking(move || {
+                use crate::auth::KeyStore;
+                store.set(&updates)
+            })
+            .await
+            .map_err(|_| Error::Task)?;
+            if let Err(error) = outcome {
+                tracing::warn!(?error, "failed to persist discovered device lists");
+            }
+        }
+        Ok(plan.devices)
+    }
+    pub fn invalidate_user_devices(&self, jids: &[String]) -> Result<(), Error> {
+        let users = jids
+            .iter()
+            .map(|j| {
+                crate::jid::Jid::parse(j)
+                    .map(|j| j.user)
+                    .ok_or(crate::signal::Error::Address)
+            })
+            .collect::<Result<Vec<_>, _>>()?;
+        Ok(self.inner.devices.invalidate_users(&users)?)
     }
     /// Fetch bundles and establish sessions on a blocking executor.
     pub async fn establish_sessions(

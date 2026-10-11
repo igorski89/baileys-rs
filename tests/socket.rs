@@ -247,6 +247,130 @@ async fn own_session_migration_failure_keeps_logged_in_socket_open() {
 }
 
 #[tokio::test]
+async fn device_discovery_cache_and_session_assertions_use_lid_addresses() {
+    use baileys_rs::auth::{KeyCategory, KeyStore, KeyValue};
+    fn device_response(request: &BinaryNode, user: &str, lid: Option<&str>) -> BinaryNode {
+        let mut protocols = vec![
+            BinaryNode::new("devices").with_content(NodeContent::Children(vec![
+                BinaryNode::new("device-list").with_content(NodeContent::Children(vec![
+                    BinaryNode::new("device").attr("id", "0"),
+                    BinaryNode::new("device")
+                        .attr("id", "1")
+                        .attr("key-index", "9"),
+                ])),
+            ])),
+        ];
+        if let Some(lid) = lid {
+            protocols.push(BinaryNode::new("lid").attr("val", lid));
+        }
+        BinaryNode::new("iq")
+            .attr("id", &request.attrs["id"])
+            .attr("type", "result")
+            .with_content(NodeContent::Children(vec![
+                BinaryNode::new("usync").with_content(NodeContent::Children(vec![
+                    BinaryNode::new("list").with_content(NodeContent::Children(vec![
+                        BinaryNode::new("user")
+                            .attr("jid", user)
+                            .with_content(NodeContent::Children(protocols)),
+                    ])),
+                ])),
+            ]))
+    }
+    fn bundle_response(request: &BinaryNode, template: &BinaryNode, jid: &str) -> BinaryNode {
+        let mut reply = template.clone();
+        reply.attrs.insert("id".into(), request.attrs["id"].clone());
+        let Some(NodeContent::Children(list)) = &mut reply.content else {
+            unreachable!()
+        };
+        let Some(NodeContent::Children(users)) = &mut list[0].content else {
+            unreachable!()
+        };
+        users[0].attrs.insert("jid".into(), jid.into());
+        reply
+    }
+    fn assert_key(request: &BinaryNode, jid: &str, force: bool) {
+        let users = request.child("key").unwrap().all_children();
+        assert_eq!(users.len(), 1);
+        assert_eq!(users[0].attrs["jid"], jid);
+        assert_eq!(
+            users[0].attrs.get("reason").map(String::as_str),
+            force.then_some("identity")
+        );
+    }
+    timeout(Duration::from_secs(12), async {
+        let temp = tempfile::tempdir().unwrap();
+        let store = store(&temp, true);
+        let fixture: serde_json::Value = serde_json::from_str(include_str!("fixtures/usync.json")).unwrap();
+        let template = binary::decode(&hex(fixture["signal"]["bundles"].as_str().unwrap())).unwrap();
+        let (listener, config) = listener().await;
+        let server = tokio::spawn(async move {
+            let mut peer = Peer::accept(listener.accept().await.unwrap().0).await;
+            peer.send(BinaryNode::new("success").attr("lid", "987654:7@lid")).await;
+            assert!(peer.read().await.child("unified_session").is_some());
+            let request = peer.read().await;
+            assert_eq!(request.child("usync").unwrap().attrs["context"], "message");
+            assert_eq!(request.child("usync").unwrap().child("list").unwrap().all_children()[0].attrs["jid"], "200@s.whatsapp.net");
+            peer.send(device_response(&request, "200@s.whatsapp.net", Some("800@lid"))).await;
+            let request = peer.read().await;
+            assert_key(&request, "800@lid", true);
+            peer.send(bundle_response(&request, &template, "800@lid")).await;
+            let request = peer.read().await;
+            assert_key(&request, "800:1@lid", false);
+            peer.send(bundle_response(&request, &template, "800:1@lid")).await;
+            let request = peer.read().await;
+            assert_key(&request, "800:1@lid", true);
+            peer.send(bundle_response(&request, &template, "800:1@lid")).await;
+            let request = peer.read().await;
+            assert_eq!(request.child("usync").unwrap().attrs["context"], "message");
+            peer.send(device_response(&request, "200@s.whatsapp.net", Some("800@lid"))).await;
+            let request = peer.read().await;
+            assert_key(&request, "800@lid", true);
+            peer.send(BinaryNode::new("iq").attr("type", "error").attr("id", &request.attrs["id"]).with_content(NodeContent::Children(vec![BinaryNode::new("error").attr("code", "403")]))).await;
+            let request = peer.read().await;
+            assert_eq!(request.child("usync").unwrap().attrs["context"], "background");
+            peer.send(device_response(&request, "300@s.whatsapp.net", Some("700@lid"))).await;
+            let request = peer.read().await;
+            assert_key(&request, "700:1@lid", true);
+            peer.send(bundle_response(&request, &template, "700:1@lid")).await;
+            let request = peer.read().await;
+            let users = request.child("key").unwrap().all_children();
+            assert_eq!(users.iter().map(|u| u.attrs["jid"].as_str()).collect::<Vec<_>>(), ["700:1@lid", "800@lid"]);
+            assert!(users.iter().all(|u| u.attrs.get("reason").is_some_and(|s| s == "identity")));
+            peer.send(bundle_response(&request, &template, "700:1@lid")).await;
+            let request = peer.read().await;
+            assert_eq!(request.child("usync").unwrap().attrs["context"], "background");
+            peer.send(device_response(&request, "400@s.whatsapp.net", None)).await;
+            let request = peer.read().await;
+            assert!(request.child("key").unwrap().all_children().is_empty());
+            peer.result(&request).await;
+            peer.closed().await;
+        });
+        let (socket, _) = Socket::connect(config, store.clone()).await.unwrap();
+        socket.wait_for_open(Duration::from_secs(2)).await.unwrap();
+        let devices = socket.get_usync_devices(&["100:7@s.whatsapp.net".into(), "200@s.whatsapp.net".into()], true, false).await.unwrap();
+        assert_eq!(devices.iter().map(|d| d.jid.as_str()).collect::<Vec<_>>(), ["100:7@s.whatsapp.net", "200@s.whatsapp.net", "200:1@s.whatsapp.net"]);
+        let cached = socket.get_usync_devices(&["200@s.whatsapp.net".into()], true, true).await.unwrap();
+        assert_eq!(cached[0].device, 0); // Cached source filtering does not change with ignoreZero.
+        assert!(!socket.assert_sessions(&["200@s.whatsapp.net".into(), "200@s.whatsapp.net".into()], false).await.unwrap());
+        assert!(socket.assert_sessions(&["200:1@s.whatsapp.net".into()], false).await.unwrap());
+        assert!(!socket.assert_sessions(&["200:1@s.whatsapp.net".into()], false).await.unwrap());
+        assert!(socket.assert_sessions(&["800:1@lid".into(), "800:1@lid".into()], true).await.unwrap());
+        socket.invalidate_user_devices(&["200@s.whatsapp.net".into()]).unwrap();
+        let refreshed = socket.get_usync_devices(&["200@s.whatsapp.net".into()], true, true).await.unwrap();
+        assert_eq!(refreshed.iter().map(|d| d.device).collect::<Vec<_>>(), [1]);
+        assert!(matches!(store.get(KeyCategory::DeviceList, &["200".into()]).unwrap().get("200"), Some(KeyValue::DeviceList(devices)) if devices == &["1"]));
+        assert!(socket.assert_sessions(&["300:1@s.whatsapp.net".into()], true).await.unwrap());
+        assert!(!socket.assert_sessions(&["300:1@s.whatsapp.net".into()], false).await.unwrap());
+        assert!(socket.assert_sessions(&["200@s.whatsapp.net".into(), "700:1@lid".into(), "200@s.whatsapp.net".into()], true).await.unwrap());
+        assert!(socket.assert_sessions(&["400@s.whatsapp.net".into()], true).await.unwrap());
+        assert!(!socket.assert_sessions(&[], false).await.unwrap());
+        assert!(socket.get_usync_devices(&["bad".into()], true, false).await.is_err());
+        socket.close().await.unwrap();
+        server.await.unwrap();
+    }).await.unwrap();
+}
+
+#[tokio::test]
 async fn encrypted_login_queries_errors_and_shutdown() {
     timeout(Duration::from_secs(8), async {
         let temp = tempfile::tempdir().unwrap();

@@ -1,0 +1,902 @@
+{
+  "response": {
+    "list": [
+      {
+        "id": "100@s.whatsapp.net",
+        "devices": {
+          "deviceList": [
+            {
+              "id": 0,
+              "isHosted": false
+            },
+            {
+              "id": 7,
+              "keyIndex": 1,
+              "isHosted": false
+            },
+            {
+              "id": 8,
+              "keyIndex": 2,
+              "isHosted": false
+            }
+          ]
+        }
+      },
+      {
+        "id": "200@s.whatsapp.net",
+        "lid": "800@lid",
+        "devices": {
+          "deviceList": [
+            {
+              "id": 0,
+              "isHosted": false
+            },
+            {
+              "id": 1,
+              "keyIndex": 3,
+              "isHosted": false
+            },
+            {
+              "id": 99,
+              "keyIndex": 4,
+              "isHosted": true
+            },
+            {
+              "id": 2,
+              "keyIndex": 5,
+              "isHosted": false
+            },
+            {
+              "id": 3,
+              "isHosted": false
+            }
+          ]
+        }
+      },
+      {
+        "id": "300@lid",
+        "devices": {
+          "deviceList": []
+        }
+      }
+    ],
+    "sideList": []
+  },
+  "me": "100:7@s.whatsapp.net",
+  "lid": "900:7@lid",
+  "steps": [
+    {
+      "operation": {
+        "jids": [
+          "100:7@s.whatsapp.net",
+          "200:0@s.whatsapp.net",
+          "100@s.whatsapp.net",
+          "200@s.whatsapp.net"
+        ],
+        "useCache": true,
+        "ignoreZero": true
+      },
+      "result": [
+        {
+          "user": "100",
+          "device": 7,
+          "jid": "100:7@s.whatsapp.net"
+        },
+        {
+          "user": "200",
+          "device": 0,
+          "jid": "200:0@s.whatsapp.net"
+        },
+        {
+          "user": "100",
+          "device": 8,
+          "domainType": 0,
+          "server": "s.whatsapp.net",
+          "jid": "100:8@s.whatsapp.net"
+        },
+        {
+          "user": "200",
+          "device": 1,
+          "domainType": 0,
+          "server": "s.whatsapp.net",
+          "jid": "200:1@s.whatsapp.net"
+        },
+        {
+          "user": "200",
+          "device": 99,
+          "domainType": 128,
+          "server": "hosted",
+          "jid": "200:99@hosted"
+        },
+        {
+          "user": "200",
+          "device": 2,
+          "domainType": 128,
+          "server": "hosted",
+          "jid": "200:2@hosted"
+        }
+      ],
+      "toFetch": [
+        "100@s.whatsapp.net",
+        "200@s.whatsapp.net"
+      ],
+      "storage": {
+        "100": [
+          "8"
+        ],
+        "200": [
+          "1",
+          "99",
+          "2"
+        ]
+      },
+      "refreshes": [
+        {
+          "lids": [
+            "800@lid"
+          ],
+          "force": true
+        }
+      ],
+      "mappings": [
+        {
+          "lid": "800@lid",
+          "pn": "200@s.whatsapp.net"
+        }
+      ]
+    },
+    {
+      "operation": {
+        "jids": [
+          "200@s.whatsapp.net",
+          "100@s.whatsapp.net"
+        ],
+        "useCache": true,
+        "ignoreZero": false
+      },
+      "result": [
+        {
+          "user": "200",
+          "device": 1,
+          "domainType": 0,
+          "server": "s.whatsapp.net",
+          "jid": "200:1@s.whatsapp.net"
+        },
+        {
+          "user": "200",
+          "device": 99,
+          "domainType": 128,
+          "server": "hosted",
+          "jid": "200:99@hosted"
+        },
+        {
+          "user": "200",
+          "device": 2,
+          "domainType": 128,
+          "server": "hosted",
+          "jid": "200:2@hosted"
+        },
+        {
+          "user": "100",
+          "device": 8,
+          "domainType": 0,
+          "server": "s.whatsapp.net",
+          "jid": "100:8@s.whatsapp.net"
+        }
+      ],
+      "toFetch": [],
+      "storage": {
+        "100": [
+          "8"
+        ],
+        "200": [
+          "1",
+          "99",
+          "2"
+        ]
+      },
+      "refreshes": [
+        {
+          "lids": [
+            "800@lid"
+          ],
+          "force": true
+        }
+      ],
+      "mappings": [
+        {
+          "lid": "800@lid",
+          "pn": "200@s.whatsapp.net"
+        }
+      ]
+    },
+    {
+      "operation": {
+        "jids": [
+          "200@lid"
+        ],
+        "useCache": true,
+        "ignoreZero": true
+      },
+      "result": [
+        {
+          "user": "200",
+          "device": 1,
+          "domainType": 0,
+          "server": "s.whatsapp.net",
+          "jid": "200:1@s.whatsapp.net"
+        },
+        {
+          "user": "200",
+          "device": 99,
+          "domainType": 128,
+          "server": "hosted",
+          "jid": "200:99@hosted"
+        },
+        {
+          "user": "200",
+          "device": 2,
+          "domainType": 128,
+          "server": "hosted",
+          "jid": "200:2@hosted"
+        }
+      ],
+      "toFetch": [],
+      "storage": {
+        "100": [
+          "8"
+        ],
+        "200": [
+          "1",
+          "99",
+          "2"
+        ]
+      },
+      "refreshes": [
+        {
+          "lids": [
+            "800@lid"
+          ],
+          "force": true
+        }
+      ],
+      "mappings": [
+        {
+          "lid": "800@lid",
+          "pn": "200@s.whatsapp.net"
+        }
+      ]
+    },
+    {
+      "operation": {
+        "jids": [
+          "200@c.us",
+          "200@s.whatsapp.net"
+        ],
+        "useCache": false,
+        "ignoreZero": false
+      },
+      "result": [
+        {
+          "user": "100",
+          "device": 0,
+          "domainType": 0,
+          "server": "s.whatsapp.net",
+          "jid": "100@s.whatsapp.net"
+        },
+        {
+          "user": "100",
+          "device": 8,
+          "domainType": 0,
+          "server": "s.whatsapp.net",
+          "jid": "100:8@s.whatsapp.net"
+        },
+        {
+          "user": "200",
+          "device": 0,
+          "domainType": 0,
+          "server": "s.whatsapp.net",
+          "jid": "200@s.whatsapp.net"
+        },
+        {
+          "user": "200",
+          "device": 1,
+          "domainType": 0,
+          "server": "s.whatsapp.net",
+          "jid": "200:1@s.whatsapp.net"
+        },
+        {
+          "user": "200",
+          "device": 99,
+          "domainType": 128,
+          "server": "hosted",
+          "jid": "200:99@hosted"
+        },
+        {
+          "user": "200",
+          "device": 2,
+          "domainType": 128,
+          "server": "hosted",
+          "jid": "200:2@hosted"
+        }
+      ],
+      "toFetch": [
+        "200@s.whatsapp.net",
+        "200@s.whatsapp.net"
+      ],
+      "storage": {
+        "100": [
+          "0",
+          "8"
+        ],
+        "200": [
+          "0",
+          "1",
+          "99",
+          "2"
+        ]
+      },
+      "refreshes": [
+        {
+          "lids": [
+            "800@lid"
+          ],
+          "force": true
+        },
+        {
+          "lids": [
+            "800@lid"
+          ],
+          "force": true
+        }
+      ],
+      "mappings": [
+        {
+          "lid": "800@lid",
+          "pn": "200@s.whatsapp.net"
+        },
+        {
+          "lid": "800@lid",
+          "pn": "200@s.whatsapp.net"
+        }
+      ]
+    },
+    {
+      "operation": {
+        "jids": [
+          "300@lid"
+        ],
+        "useCache": true,
+        "ignoreZero": false
+      },
+      "result": [
+        {
+          "user": "100",
+          "device": 0,
+          "domainType": 0,
+          "server": "s.whatsapp.net",
+          "jid": "100@s.whatsapp.net"
+        },
+        {
+          "user": "100",
+          "device": 8,
+          "domainType": 0,
+          "server": "s.whatsapp.net",
+          "jid": "100:8@s.whatsapp.net"
+        },
+        {
+          "user": "200",
+          "device": 0,
+          "domainType": 0,
+          "server": "s.whatsapp.net",
+          "jid": "200@s.whatsapp.net"
+        },
+        {
+          "user": "200",
+          "device": 1,
+          "domainType": 0,
+          "server": "s.whatsapp.net",
+          "jid": "200:1@s.whatsapp.net"
+        },
+        {
+          "user": "200",
+          "device": 99,
+          "domainType": 128,
+          "server": "hosted",
+          "jid": "200:99@hosted"
+        },
+        {
+          "user": "200",
+          "device": 2,
+          "domainType": 128,
+          "server": "hosted",
+          "jid": "200:2@hosted"
+        }
+      ],
+      "toFetch": [
+        "300@lid"
+      ],
+      "storage": {
+        "100": [
+          "0",
+          "8"
+        ],
+        "200": [
+          "0",
+          "1",
+          "99",
+          "2"
+        ]
+      },
+      "refreshes": [
+        {
+          "lids": [
+            "800@lid"
+          ],
+          "force": true
+        },
+        {
+          "lids": [
+            "800@lid"
+          ],
+          "force": true
+        },
+        {
+          "lids": [
+            "800@lid"
+          ],
+          "force": true
+        }
+      ],
+      "mappings": [
+        {
+          "lid": "800@lid",
+          "pn": "200@s.whatsapp.net"
+        },
+        {
+          "lid": "800@lid",
+          "pn": "200@s.whatsapp.net"
+        },
+        {
+          "lid": "800@lid",
+          "pn": "200@s.whatsapp.net"
+        }
+      ]
+    },
+    {
+      "operation": {
+        "jids": [
+          "300@lid"
+        ],
+        "useCache": true,
+        "ignoreZero": false
+      },
+      "result": [
+        {
+          "user": "100",
+          "device": 0,
+          "domainType": 0,
+          "server": "s.whatsapp.net",
+          "jid": "100@s.whatsapp.net"
+        },
+        {
+          "user": "100",
+          "device": 8,
+          "domainType": 0,
+          "server": "s.whatsapp.net",
+          "jid": "100:8@s.whatsapp.net"
+        },
+        {
+          "user": "200",
+          "device": 0,
+          "domainType": 0,
+          "server": "s.whatsapp.net",
+          "jid": "200@s.whatsapp.net"
+        },
+        {
+          "user": "200",
+          "device": 1,
+          "domainType": 0,
+          "server": "s.whatsapp.net",
+          "jid": "200:1@s.whatsapp.net"
+        },
+        {
+          "user": "200",
+          "device": 99,
+          "domainType": 128,
+          "server": "hosted",
+          "jid": "200:99@hosted"
+        },
+        {
+          "user": "200",
+          "device": 2,
+          "domainType": 128,
+          "server": "hosted",
+          "jid": "200:2@hosted"
+        }
+      ],
+      "toFetch": [
+        "300@lid"
+      ],
+      "storage": {
+        "100": [
+          "0",
+          "8"
+        ],
+        "200": [
+          "0",
+          "1",
+          "99",
+          "2"
+        ]
+      },
+      "refreshes": [
+        {
+          "lids": [
+            "800@lid"
+          ],
+          "force": true
+        },
+        {
+          "lids": [
+            "800@lid"
+          ],
+          "force": true
+        },
+        {
+          "lids": [
+            "800@lid"
+          ],
+          "force": true
+        },
+        {
+          "lids": [
+            "800@lid"
+          ],
+          "force": true
+        }
+      ],
+      "mappings": [
+        {
+          "lid": "800@lid",
+          "pn": "200@s.whatsapp.net"
+        },
+        {
+          "lid": "800@lid",
+          "pn": "200@s.whatsapp.net"
+        },
+        {
+          "lid": "800@lid",
+          "pn": "200@s.whatsapp.net"
+        },
+        {
+          "lid": "800@lid",
+          "pn": "200@s.whatsapp.net"
+        }
+      ]
+    },
+    {
+      "operation": {
+        "jids": [
+          "200:0@lid",
+          "100:7@s.whatsapp.net"
+        ],
+        "useCache": true,
+        "ignoreZero": true
+      },
+      "result": [
+        {
+          "user": "200",
+          "device": 0,
+          "jid": "200:0@lid"
+        },
+        {
+          "user": "100",
+          "device": 7,
+          "jid": "100:7@s.whatsapp.net"
+        }
+      ],
+      "toFetch": [],
+      "storage": {
+        "100": [
+          "0",
+          "8"
+        ],
+        "200": [
+          "0",
+          "1",
+          "99",
+          "2"
+        ]
+      },
+      "refreshes": [
+        {
+          "lids": [
+            "800@lid"
+          ],
+          "force": true
+        },
+        {
+          "lids": [
+            "800@lid"
+          ],
+          "force": true
+        },
+        {
+          "lids": [
+            "800@lid"
+          ],
+          "force": true
+        },
+        {
+          "lids": [
+            "800@lid"
+          ],
+          "force": true
+        }
+      ],
+      "mappings": [
+        {
+          "lid": "800@lid",
+          "pn": "200@s.whatsapp.net"
+        },
+        {
+          "lid": "800@lid",
+          "pn": "200@s.whatsapp.net"
+        },
+        {
+          "lid": "800@lid",
+          "pn": "200@s.whatsapp.net"
+        },
+        {
+          "lid": "800@lid",
+          "pn": "200@s.whatsapp.net"
+        }
+      ]
+    },
+    {
+      "operation": {
+        "jids": [],
+        "useCache": true,
+        "ignoreZero": false
+      },
+      "result": [],
+      "toFetch": [],
+      "storage": {
+        "100": [
+          "0",
+          "8"
+        ],
+        "200": [
+          "0",
+          "1",
+          "99",
+          "2"
+        ]
+      },
+      "refreshes": [
+        {
+          "lids": [
+            "800@lid"
+          ],
+          "force": true
+        },
+        {
+          "lids": [
+            "800@lid"
+          ],
+          "force": true
+        },
+        {
+          "lids": [
+            "800@lid"
+          ],
+          "force": true
+        },
+        {
+          "lids": [
+            "800@lid"
+          ],
+          "force": true
+        }
+      ],
+      "mappings": [
+        {
+          "lid": "800@lid",
+          "pn": "200@s.whatsapp.net"
+        },
+        {
+          "lid": "800@lid",
+          "pn": "200@s.whatsapp.net"
+        },
+        {
+          "lid": "800@lid",
+          "pn": "200@s.whatsapp.net"
+        },
+        {
+          "lid": "800@lid",
+          "pn": "200@s.whatsapp.net"
+        }
+      ]
+    }
+  ],
+  "assertions": [
+    {
+      "config": {
+        "jids": [],
+        "force": false,
+        "valid": [],
+        "maps": {}
+      },
+      "fetched": false,
+      "queries": [],
+      "validated": [],
+      "mapped": []
+    },
+    {
+      "config": {
+        "jids": [
+          "100@s.whatsapp.net",
+          "100@s.whatsapp.net"
+        ],
+        "force": false,
+        "valid": [
+          "100@s.whatsapp.net"
+        ],
+        "maps": {}
+      },
+      "fetched": false,
+      "queries": [],
+      "validated": [
+        "100@s.whatsapp.net"
+      ],
+      "mapped": []
+    },
+    {
+      "config": {
+        "jids": [
+          "200:1@s.whatsapp.net",
+          "800@lid",
+          "200:1@s.whatsapp.net",
+          "400@s.whatsapp.net"
+        ],
+        "force": false,
+        "valid": [],
+        "maps": {
+          "200:1@s.whatsapp.net": "900:1@lid"
+        }
+      },
+      "fetched": true,
+      "queries": [
+        {
+          "tag": "iq",
+          "attrs": {
+            "xmlns": "encrypt",
+            "type": "get",
+            "to": "@s.whatsapp.net"
+          },
+          "content": [
+            {
+              "tag": "key",
+              "attrs": {},
+              "content": [
+                {
+                  "tag": "user",
+                  "attrs": {
+                    "jid": "800@lid"
+                  }
+                },
+                {
+                  "tag": "user",
+                  "attrs": {
+                    "jid": "900:1@lid"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "validated": [
+        "200:1@s.whatsapp.net",
+        "800@lid",
+        "400@s.whatsapp.net"
+      ],
+      "mapped": [
+        [
+          "200:1@s.whatsapp.net",
+          "400@s.whatsapp.net"
+        ]
+      ]
+    },
+    {
+      "config": {
+        "jids": [
+          "200@s.whatsapp.net",
+          "800:7@lid",
+          "800:7@lid"
+        ],
+        "force": true,
+        "valid": [
+          "200@s.whatsapp.net"
+        ],
+        "maps": {
+          "200@s.whatsapp.net": "900@lid"
+        }
+      },
+      "fetched": true,
+      "queries": [
+        {
+          "tag": "iq",
+          "attrs": {
+            "xmlns": "encrypt",
+            "type": "get",
+            "to": "@s.whatsapp.net"
+          },
+          "content": [
+            {
+              "tag": "key",
+              "attrs": {},
+              "content": [
+                {
+                  "tag": "user",
+                  "attrs": {
+                    "jid": "800:7@lid",
+                    "reason": "identity"
+                  }
+                },
+                {
+                  "tag": "user",
+                  "attrs": {
+                    "jid": "900@lid",
+                    "reason": "identity"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "validated": [],
+      "mapped": [
+        [
+          "200@s.whatsapp.net"
+        ]
+      ]
+    },
+    {
+      "config": {
+        "jids": [
+          "400@s.whatsapp.net"
+        ],
+        "force": true,
+        "valid": [],
+        "maps": {}
+      },
+      "fetched": true,
+      "queries": [
+        {
+          "tag": "iq",
+          "attrs": {
+            "xmlns": "encrypt",
+            "type": "get",
+            "to": "@s.whatsapp.net"
+          },
+          "content": [
+            {
+              "tag": "key",
+              "attrs": {},
+              "content": []
+            }
+          ]
+        }
+      ],
+      "validated": [],
+      "mapped": [
+        [
+          "400@s.whatsapp.net"
+        ]
+      ]
+    }
+  ]
+}

@@ -80,13 +80,20 @@ pub fn inject_session_bundles(node: &BinaryNode, repository: &Repository) -> Res
     Ok(count)
 }
 pub fn session_query(jids: &[String]) -> Result<BinaryNode, Error> {
+    session_query_with_reason(jids, false)
+}
+pub fn session_query_with_reason(jids: &[String], force: bool) -> Result<BinaryNode, Error> {
     let users = jids
         .iter()
         .map(|jid| {
             Jid::parse(jid)
                 .filter(|j| !j.user.is_empty())
                 .ok_or(Error::Address)?;
-            Ok(BinaryNode::new("user").attr("jid", jid))
+            let mut user = BinaryNode::new("user").attr("jid", jid);
+            if force {
+                user = user.attr("reason", "identity");
+            }
+            Ok(user)
         })
         .collect::<Result<Vec<_>, Error>>()?;
     Ok(BinaryNode::new("iq")
