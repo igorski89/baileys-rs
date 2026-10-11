@@ -1,4 +1,6 @@
-use super::{EncryptedFile, Error, HttpClient, MediaType, UploadOptions, UploadResponse};
+use super::{
+    EncryptedFile, Error, HttpClient, MediaField, MediaType, UploadOptions, UploadResponse,
+};
 use crate::{
     messages::generation::{Color, color_argb},
     proto,
@@ -150,6 +152,9 @@ pub struct PrepareOptions {
     pub media_type_override: Option<MediaType>,
     pub upload: UploadOptions,
     pub cache: bool,
+    /// Explicit null/empty-list fields, overriding template values.
+    /// Invalid fields fail before input, upload or cache hooks run.
+    pub clear_fields: Vec<MediaField>,
     pub background_color: Option<Color>,
 }
 pub trait MediaUploader: Send + Sync {
@@ -320,7 +325,10 @@ async fn enrich(
     hooks: &dyn PrepareHooks,
 ) -> Result<(), Error> {
     match payload {
-        Payload::Image(p) if p.jpeg_thumbnail.is_none() => {
+        Payload::Image(p)
+            if p.jpeg_thumbnail.is_none()
+                && !options.clear_fields.contains(&MediaField::JpegThumbnail) =>
+        {
             let t = hooks
                 .thumbnail(
                     path.ok_or(Error::Input("missing original"))?,
@@ -335,7 +343,10 @@ async fn enrich(
                 p.height = Some(h);
             }
         }
-        Payload::Video(p) if p.jpeg_thumbnail.is_none() => {
+        Payload::Video(p)
+            if p.jpeg_thumbnail.is_none()
+                && !options.clear_fields.contains(&MediaField::JpegThumbnail) =>
+        {
             let t = hooks
                 .thumbnail(
                     path.ok_or(Error::Input("missing original"))?,
@@ -351,12 +362,15 @@ async fn enrich(
             }
         }
         Payload::Audio(p) => {
-            if p.seconds.is_none() {
+            if p.seconds.is_none() && !options.clear_fields.contains(&MediaField::Seconds) {
                 p.seconds = hooks
                     .duration(path.clone().ok_or(Error::Input("missing original"))?)
                     .await?;
             }
-            if p.ptt == Some(true) && p.waveform.is_none() {
+            if p.ptt == Some(true)
+                && p.waveform.is_none()
+                && !options.clear_fields.contains(&MediaField::Waveform)
+            {
                 p.waveform = hooks.waveform(path).await?;
             }
             if p.ptt == Some(true)
@@ -381,6 +395,7 @@ pub async fn prepare(
     hooks: &dyn PrepareHooks,
 ) -> Result<proto::Message, Error> {
     let mut payload = request.payload.clone();
+    super::fields::clear(&mut payload, &options.clear_fields)?;
     payload.defaults();
     let kind = payload.kind();
     let cache_key = if options.cache {
@@ -395,7 +410,7 @@ pub async fn prepare(
         && let Some(bytes) = hooks.cache_get(key.clone()).await?
     {
         let mut message = proto::Message::decode(bytes.as_slice())?;
-        super::overlay::apply(&mut message, &payload)?;
+        super::overlay::apply(&mut message, &payload, &options.clear_fields)?;
         return Ok(message);
     }
     let raw = options
@@ -403,9 +418,15 @@ pub async fn prepare(
         .as_deref()
         .is_some_and(|jid| jid.ends_with("@newsletter"));
     let save_original = match &payload {
-        Payload::Image(p) => p.jpeg_thumbnail.is_none(),
-        Payload::Video(p) => p.jpeg_thumbnail.is_none(),
-        Payload::Audio(p) => p.seconds.is_none(),
+        Payload::Image(p) => {
+            p.jpeg_thumbnail.is_none() && !options.clear_fields.contains(&MediaField::JpegThumbnail)
+        }
+        Payload::Video(p) => {
+            p.jpeg_thumbnail.is_none() && !options.clear_fields.contains(&MediaField::JpegThumbnail)
+        }
+        Payload::Audio(p) => {
+            p.seconds.is_none() && !options.clear_fields.contains(&MediaField::Seconds)
+        }
         _ => false,
     };
     let input = request.input.open(http, options).await?;
@@ -446,26 +467,32 @@ pub async fn prepare(
         None
     };
     each_payload!(&mut payload, p, {
-        if p.url.is_none() {
+        if p.url.is_none() && !options.clear_fields.contains(&MediaField::Url) {
             p.url = response.url.clone();
         }
-        if p.direct_path.is_none() {
+        if p.direct_path.is_none() && !options.clear_fields.contains(&MediaField::DirectPath) {
             p.direct_path = response.direct_path.clone();
         }
-        if p.file_sha256.is_none() {
+        if p.file_sha256.is_none() && !options.clear_fields.contains(&MediaField::FileSha256) {
             p.file_sha256 = Some(file.plain_hash().to_vec());
         }
-        if p.file_length.is_none() {
+        if p.file_length.is_none() && !options.clear_fields.contains(&MediaField::FileLength) {
             p.file_length = Some(file.length());
         }
         if let File::Encrypted(f) = &file {
-            if p.media_key.is_none() {
+            if p.media_key.is_none() && !options.clear_fields.contains(&MediaField::MediaKey) {
                 p.media_key = Some(f.media_key.to_vec());
             }
-            if p.file_enc_sha256.is_none() {
+            if p.file_enc_sha256.is_none()
+                && !options.clear_fields.contains(&MediaField::FileEncSha256)
+            {
                 p.file_enc_sha256 = Some(f.metadata.file_enc_sha256.to_vec());
             }
-            if p.media_key_timestamp.is_none() {
+            if p.media_key_timestamp.is_none()
+                && !options
+                    .clear_fields
+                    .contains(&MediaField::MediaKeyTimestamp)
+            {
                 p.media_key_timestamp = timestamp;
             }
         }

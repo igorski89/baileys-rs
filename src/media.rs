@@ -1,4 +1,5 @@
 //! Media encryption, streaming CBC downloads and media-retry wire helpers.
+mod fields;
 mod http;
 mod message;
 mod overlay;
@@ -6,6 +7,7 @@ mod prepare;
 mod retry;
 mod stream;
 use crate::crypto;
+pub use fields::MediaField;
 pub use http::*;
 pub use message::*;
 pub use prepare::*;

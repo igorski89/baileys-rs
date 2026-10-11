@@ -78,6 +78,32 @@ try {
     prep.setup('ok');let cached;const requests=[{[type]:{url:'https://input.example/file'}},{[type]:{url:'https://input.example/file'},caption:'second',mimetype:'custom/type',seconds:0,ptv:true,contextInfo:{expiration:7}}];const cache={get:async()=>cached,set:async(key,value)=>{cached=value}};const outputs=[];for(const request of requests)outputs.push(hex(proto.Message.encode(await prep.prepareWAMessageMedia(request,{upload:prep.upload,mediaCache:cache})).finish()));preparedCases.push({type,cache:true,outputs,...prep.trace()})
   }
   await writeFile('tests/fixtures/media_preparation.json',JSON.stringify(preparedCases,null,2)+'\n');
+  // Enumerate the upstream schema independently of the native clear-field enum.
+  const schema=await readFile(join(upstream,'WAProto/WAProto.proto'),'utf8'),clearingCases=[];
+  for(const type of ['image','video','audio','document','sticker']) {
+    const name=type[0].toUpperCase()+type.slice(1)+'Message';
+    const body=schema.split('    message '+name+' {')[1].split('\n    }')[0];
+    const specs=[...body.matchAll(/^        (optional|repeated) ([\w.]+) (\w+) =/gm)];
+    const value=t=>t==='string'?'seed':t==='bytes'?[7,8]:t==='bool'?true:/^(u?int|fixed|sfixed|sint)/.test(t)?7: t[0]===t[0].toLowerCase()?7:{};
+    const seed=Object.fromEntries(specs.map(([,label,t,n])=>[n,label==='repeated'?[value(t)]:value(t)]));
+    // Enum values and nested payloads both accept an empty object via fromObject;
+    // use a defined enum member to seed enum fields on the wire.
+    for(const n of ['imageSourceType','videoSourceType','gifAttribution','mediaKeyDomain'])if(n in seed)seed[n]=1;
+    for(const [,label,,field] of specs) {
+      const fields={...(type==='audio'?{ptt:true}:{}),[field]:label==='repeated'?[]:null};
+      for(const newsletter of [false,true])for(const mode of ['ok','fail']) {
+        prep.setup(mode);
+        const output=await prep.prepareWAMessageMedia({[type]:Buffer.from(Array.from({length:17},(_,i)=>i)),...fields},{jid:newsletter?'channel@newsletter':'200@s.whatsapp.net',upload:prep.upload,backgroundColor:'#123456',mediaUploadTimeoutMs:500});
+        clearingCases.push({type,newsletter,mode,fields,clearFields:[field],template:hex(proto.Message.encode(proto.Message.fromObject({[type+'Message']:fields})).finish()),output:hex(proto.Message.encode(output).finish()),...prep.trace()});
+      }
+      prep.setup('ok');let cached;
+      const cache={get:async()=>cached,set:async(key,value)=>{cached=value}},outputs=[];
+      for(const fields of [seed,{[field]:label==='repeated'?[]:null}])outputs.push(hex(proto.Message.encode(await prep.prepareWAMessageMedia({[type]:{url:'https://input.example/file'},...fields},{upload:prep.upload,mediaCache:cache})).finish()));
+      clearingCases.push({type,cache:true,clearFields:[field],template:hex(proto.Message.encode(proto.Message.fromObject({[type+'Message']:{}})).finish()),outputs,...prep.trace()});
+    }
+  }
+  await writeFile('tests/fixtures/media_field_clearing.json',JSON.stringify(clearingCases,null,2)+'\n');
+
   const mediaContent=[];
   for(const kind of ['ptv','product'])for(const newsletter of [false,true])for(const modifier of [{},{mentions:['300@lid'],mentionAll:true},{viewOnce:true,mentions:['300@lid']},{edit:{id:'EDIT',remoteJid:'200@s.whatsapp.net',fromMe:true}}]){
     prep.setup('ok');const bytes=Buffer.from(Array.from({length:17},(_,i)=>i));const input=kind==='ptv'?{ptv:true,video:bytes,caption:'ignored',seconds:7}:{product:{productId:'P',title:'Title',priceAmount1000:99,productImage:bytes},businessOwnerJid:'200@lid',body:'body',contextInfo:{expiration:7}};
@@ -131,5 +157,5 @@ try {
   const connectionResults=[];for(const force of [false,false,true,false]){const out=await factory.refresh(force);connectionResults.push({force,auth:out.auth,ttl:out.ttl,hosts:out.hosts,host:factory.host()})}
   await writeFile('tests/fixtures/media_connection.json',JSON.stringify({queries:connectionQueries,results:connectionResults},null,2)+'\n');
   function convert(value){if(Buffer.isBuffer(value))return {hex:hex(value)};if(Array.isArray(value))return value.map(convert);if(value&&typeof value==='object')return Object.fromEntries(Object.entries(value).map(([k,v])=>[k,convert(v)]));return value}
-  await writeFile('tests/fixtures/media.json',JSON.stringify(convert({keys,encrypted,encodedKeys,ranges,urls,tokens,retryRequests,retryEvents,notifications}),null,2)+'\n');console.log(`Generated ${keys.length} media types, ${encrypted.length} encryptions and ${ranges.length} downloads`)
+  await writeFile('tests/fixtures/media.json',JSON.stringify(convert({keys,encrypted,encodedKeys,ranges,urls,tokens,retryRequests,retryEvents,notifications}),null,2)+'\n');console.log(`Generated ${keys.length} media types, ${encrypted.length} encryptions and ${ranges.length} downloads; ${clearingCases.length} media field-clearing cases`)
 }finally{await rm(temp,{recursive:true,force:true})}

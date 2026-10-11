@@ -487,3 +487,114 @@ async fn cache_population_corrupt_entries_and_video_note_type_mismatch_are_handl
             .is_err()
     );
 }
+
+#[tokio::test]
+async fn explicit_nulls_and_empty_lists_match_every_upstream_media_field() {
+    let cases: Value =
+        serde_json::from_str(include_str!("fixtures/media_field_clearing.json")).unwrap();
+    let http = HttpClient::new().unwrap();
+    for case in cases.as_array().unwrap() {
+        let cached = case["cache"] == true;
+        let hooks = Hooks::new(case["mode"].as_str().unwrap_or("ok"));
+        let uploader = Uploader::default();
+        let kind = case["type"].as_str().unwrap();
+        if cached {
+            hooks.cache.lock().unwrap().insert(
+                format!("{kind}:https://input.example/file"),
+                hex(&case["outputs"][0]),
+            );
+        }
+        let request = Request {
+            input: if cached {
+                Input::Url("https://input.example/file".into())
+            } else {
+                Input::bytes((0..17u8).collect::<Vec<_>>())
+            },
+            payload: payload(
+                kind,
+                proto::Message::decode(hex(&case["template"]).as_slice()).unwrap(),
+            ),
+            video_note: false,
+        };
+        let options = PrepareOptions {
+            cache: cached,
+            clear_fields: serde_json::from_value(case["clearFields"].clone()).unwrap(),
+            destination: Some(
+                if case["newsletter"] == true {
+                    "channel@newsletter"
+                } else {
+                    "200@s.whatsapp.net"
+                }
+                .into(),
+            ),
+            background_color: Some(generation::Color::Hex("#123456".into())),
+            upload: UploadOptions {
+                timeout: Some(std::time::Duration::from_millis(500)),
+                ..Default::default()
+            },
+            ..Default::default()
+        };
+        let actual = prepare(&request, &options, &http, &uploader, &hooks)
+            .await
+            .unwrap();
+        let expected = if cached {
+            &case["outputs"][1]
+        } else {
+            &case["output"]
+        };
+        assert_eq!(actual.encode_to_vec(), hex(expected), "{case}");
+        if cached {
+            assert!(hooks.calls.lock().unwrap().is_empty());
+            assert!(uploader.calls.lock().unwrap().is_empty());
+        } else {
+            assert_eq!(
+                *hooks.calls.lock().unwrap(),
+                case["calls"].as_array().unwrap().clone(),
+                "{case}"
+            );
+            assert_eq!(
+                *uploader.calls.lock().unwrap(),
+                case["uploads"].as_array().unwrap().clone(),
+                "{case}"
+            );
+        }
+        for path in uploader.paths.lock().unwrap().iter() {
+            assert!(!path.exists());
+        }
+    }
+}
+
+#[tokio::test]
+async fn invalid_clear_fields_fail_before_external_work_and_clears_override_templates() {
+    let hooks = Hooks::new("ok");
+    let uploader = Uploader::default();
+    let http = HttpClient::new().unwrap();
+    let request = Request {
+        input: Input::Reader(MediaReader::new(std::io::Cursor::new(vec![1, 2, 3]))),
+        payload: Payload::Document(Box::new(proto::message::DocumentMessage {
+            url: Some("overridden".into()),
+            file_name: Some("overridden".into()),
+            ..Default::default()
+        })),
+        video_note: false,
+    };
+    let mut options = PrepareOptions {
+        clear_fields: vec![MediaField::Seconds],
+        ..Default::default()
+    };
+    assert!(matches!(
+        prepare(&request, &options, &http, &uploader, &hooks).await,
+        Err(Error::Input("clear field does not belong to media type"))
+    ));
+    assert!(hooks.calls.lock().unwrap().is_empty());
+    assert!(uploader.calls.lock().unwrap().is_empty());
+    // The reader was not consumed by validation failure.
+    options.clear_fields = vec![MediaField::Url, MediaField::FileName];
+    let output = prepare(&request, &options, &http, &uploader, &hooks)
+        .await
+        .unwrap()
+        .document_message
+        .unwrap();
+    assert_eq!(output.url, None);
+    assert_eq!(output.file_name.as_deref(), Some("file"));
+}
