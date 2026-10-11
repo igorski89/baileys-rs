@@ -6,6 +6,36 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut config = prost_build::Config::new();
     config.boxed(".proto.EmbeddedContent.content.embeddedMessage");
     config.boxed(".proto.EmbeddedContent.content.embeddedMusic");
+    for message in [
+        ".proto.ADVSignedDeviceIdentity",
+        ".proto.MessageKey",
+        ".proto.Message.AppStateSyncKeyData",
+        ".proto.Message.AppStateSyncKeyFingerprint",
+    ] {
+        config.type_attribute(
+            message,
+            "#[derive(serde::Serialize, serde::Deserialize)] #[serde(rename_all = \"camelCase\", default)]",
+        );
+    }
+    for field in [
+        "details",
+        "accountSignatureKey",
+        "accountSignature",
+        "deviceSignature",
+    ] {
+        config.field_attribute(
+            format!(".proto.ADVSignedDeviceIdentity.{field}"),
+            "#[serde(default, with = \"crate::serialization::optional_bytes\")]",
+        );
+    }
+    config.field_attribute(
+        ".proto.Message.AppStateSyncKeyData.keyData",
+        "#[serde(default, with = \"crate::serialization::optional_bytes\")]",
+    );
+    config.field_attribute(
+        ".proto.Message.AppStateSyncKeyData.timestamp",
+        "#[serde(default, with = \"crate::serialization::optional_i64\")]",
+    );
     config.protoc_executable(protoc_bin_vendored::protoc_bin_path()?);
     // protobufjs accepts nonzero-first enums; protoc requires a zero value in proto3.
     // Keep the vendored source unchanged and add only synthetic zero variants for codegen.

@@ -33,7 +33,9 @@ pub enum Error {
 
 #[derive(Clone, Zeroize, ZeroizeOnDrop, serde::Serialize, serde::Deserialize)]
 pub struct KeyPair {
+    #[serde(with = "crate::serialization::bytes32")]
     pub public: [u8; 32],
+    #[serde(with = "crate::serialization::bytes32")]
     pub private: [u8; 32],
 }
 impl std::fmt::Debug for KeyPair {
@@ -133,10 +135,13 @@ pub fn verify_signature(public: &[u8], message: &[u8], signature: &[u8]) -> bool
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct SignedKeyPair {
     pub key_pair: KeyPair,
+    #[serde(with = "crate::serialization::bytes")]
     pub signature: Vec<u8>,
     pub key_id: u32,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub timestamp_s: Option<u64>,
 }
 pub fn signed_key_pair(identity: &KeyPair, key_id: u32) -> Result<SignedKeyPair, Error> {

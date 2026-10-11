@@ -1,2 +1,7 @@
 /target
 /.cache
+auth.sqlite3
+auth.sqlite3-journal
+auth.sqlite3-wal
+auth.sqlite3-shm
+baileys_auth_info/
