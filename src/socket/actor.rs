@@ -28,6 +28,7 @@ struct Pending {
     deadline: Instant,
 }
 struct Actor<'a> {
+    receipts: Option<mpsc::UnboundedSender<BinaryNode>>,
     ws: &'a mut WebSocket,
     noise: &'a mut NoiseHandler,
     config: Config,
@@ -61,8 +62,10 @@ pub(super) async fn run(
     state: watch::Sender<ConnectionState>,
     retry_manager: Option<crate::retry::Manager>,
     retry_requests: Arc<super::retries::RetryRequests>,
+    receipts: Option<mpsc::UnboundedSender<BinaryNode>>,
 ) {
     let mut actor = Actor {
+        receipts,
         ws,
         noise,
         config,
@@ -369,6 +372,11 @@ impl Actor<'_> {
             && let Some(pending) = self.pending.remove(id)
         {
             self.response(pending.kind, node.clone()).await?;
+        }
+        if node.tag == "receipt"
+            && let Some(sender) = &self.receipts
+        {
+            let _ = sender.send(node.clone());
         }
         match node.tag.as_str() {
             "stream:error" => {

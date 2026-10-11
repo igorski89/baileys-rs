@@ -8,6 +8,8 @@ use indexmap::IndexMap;
 pub enum Error {
     #[error("missing ids in receipt")]
     MissingIds,
+    #[error("missing receipt sender")]
+    MissingFrom,
 }
 impl Error {
     pub fn status_code(&self) -> u16 {
@@ -146,4 +148,137 @@ pub fn reject_call(me: &str, id: &str, from: &str) -> BinaryNode {
                 .attr("call-creator", from)
                 .attr("count", "0"),
         ]))
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct MessageUpdate {
+    pub key: proto::MessageKey,
+    pub status: proto::web_message_info::Status,
+    pub message_timestamp: f64,
+}
+#[derive(Debug, Clone, PartialEq)]
+pub struct UserUpdate {
+    pub key: proto::MessageKey,
+    pub user_jid: String,
+    pub receipt_timestamp: Option<f64>,
+    pub read_timestamp: Option<f64>,
+}
+#[derive(Debug, Clone, PartialEq)]
+pub struct Incoming {
+    pub key: proto::MessageKey,
+    pub ids: Vec<Option<String>>,
+    pub messages: Vec<MessageUpdate>,
+    pub users: Vec<UserUpdate>,
+    pub retry: bool,
+}
+pub fn status(kind: Option<&str>) -> Option<proto::web_message_info::Status> {
+    use proto::web_message_info::Status;
+    match kind {
+        None => Some(Status::DeliveryAck),
+        Some("sender") => Some(Status::ServerAck),
+        Some("played") => Some(Status::Played),
+        Some("read" | "read-self") => Some(Status::Read),
+        _ => None,
+    }
+}
+/// Incoming events preserve JavaScript number coercion, including non-finite group times.
+pub fn incoming(node: &BinaryNode, me: &str, me_lid: Option<&str>) -> Result<Incoming, Error> {
+    let from = node.attrs.get("from").ok_or(Error::MissingFrom)?;
+    let participant = node.attrs.get("participant").cloned();
+    let recipient = node.attrs.get("recipient").cloned();
+    let kind = node.attrs.get("type").map(String::as_str);
+    let identity = if from.contains("lid") {
+        me_lid.unwrap_or("")
+    } else {
+        me
+    };
+    let mine = crate::jid::are_same_user(
+        participant
+            .as_deref()
+            .filter(|s| !s.is_empty())
+            .unwrap_or(from),
+        identity,
+    );
+    let remote = if !mine || from.ends_with("@g.us") {
+        Some(from.clone())
+    } else {
+        recipient.clone()
+    };
+    let from_me = recipient.as_ref().is_none_or(|s| s.is_empty())
+        || (matches!(kind, Some("retry" | "sender")) && mine);
+    let key = proto::MessageKey {
+        remote_jid: remote.clone(),
+        id: Some(String::new()),
+        from_me: Some(from_me),
+        participant,
+    };
+    let mut ids = vec![node.attrs.get("id").cloned()];
+    if let Some(first) = node.all_children().first() {
+        ids.extend(
+            first
+                .all_children()
+                .iter()
+                .filter(|n| n.tag == "item")
+                .map(|n| n.attrs.get("id").cloned()),
+        );
+    }
+    let mut result = Incoming {
+        key,
+        ids,
+        messages: vec![],
+        users: vec![],
+        retry: kind == Some("retry"),
+    };
+    if let Some(status) = status(kind)
+        && (status as i32 >= proto::web_message_info::Status::ServerAck as i32 || !mine)
+    {
+        let group = remote
+            .as_deref()
+            .is_some_and(|jid| jid.ends_with("@g.us") || jid == crate::jid::STORIES_JID);
+        if group {
+            if let Some(participant) = result.key.participant.as_deref().filter(|s| !s.is_empty()) {
+                let user = crate::jid::Jid::parse(participant)
+                    .map(|j| j.normalized())
+                    .unwrap_or_default();
+                let timestamp = node
+                    .attrs
+                    .get("t")
+                    .map(|t| crate::privacy::number(t))
+                    .unwrap_or(f64::NAN);
+                for id in &result.ids {
+                    let mut key = result.key.clone();
+                    key.id = id.clone();
+                    result.users.push(UserUpdate {
+                        key,
+                        user_jid: user.clone(),
+                        receipt_timestamp: (status == proto::web_message_info::Status::DeliveryAck)
+                            .then_some(timestamp),
+                        read_timestamp: (status != proto::web_message_info::Status::DeliveryAck)
+                            .then_some(timestamp),
+                    });
+                }
+            }
+        } else {
+            let timestamp = node
+                .attrs
+                .get("t")
+                .map(|t| crate::privacy::number(t))
+                .unwrap_or(0.0);
+            let timestamp = if timestamp.is_nan() || timestamp == 0.0 {
+                0.0
+            } else {
+                timestamp
+            };
+            for id in &result.ids {
+                let mut key = result.key.clone();
+                key.id = id.clone();
+                result.messages.push(MessageUpdate {
+                    key,
+                    status,
+                    message_timestamp: timestamp,
+                });
+            }
+        }
+    }
+    Ok(result)
 }

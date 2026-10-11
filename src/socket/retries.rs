@@ -28,6 +28,30 @@ impl RetryRequests {
             c.placeholders.clear();
         }
     }
+    pub(super) fn count(&self, key: &str) -> Result<u64, Error> {
+        let mut cache = self.cache.lock().map_err(|_| Error::Task)?;
+        cache
+            .counts
+            .retain(|_, (_, expires)| *expires > Instant::now());
+        Ok(cache.counts.get(key).map(|(c, _)| *c).unwrap_or(0))
+    }
+    pub(super) fn increment(&self, key: &str) -> Result<(), Error> {
+        let mut cache = self.cache.lock().map_err(|_| Error::Task)?;
+        cache
+            .counts
+            .retain(|_, (_, expires)| *expires > Instant::now());
+        let count = cache
+            .counts
+            .get(key)
+            .map(|(c, _)| *c)
+            .unwrap_or(0)
+            .saturating_add(1);
+        cache.counts.insert(
+            key.into(),
+            (count, Instant::now() + Duration::from_secs(3600)),
+        );
+        Ok(())
+    }
 }
 impl Socket {
     pub async fn send_peer_data_operation_message(

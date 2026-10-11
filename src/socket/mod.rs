@@ -1,6 +1,7 @@
 //! Async WhatsApp WebSocket connection with exclusive Noise ownership and IQ routing.
 mod actor;
 mod groups;
+mod incoming_receipts;
 mod receipts;
 mod relay;
 mod retries;
@@ -117,6 +118,8 @@ pub struct Config {
     pub enable_recent_message_cache: bool,
     pub max_msg_retry_count: u64,
     pub enable_auto_session_recreation: bool,
+    pub process_receipts: bool,
+    pub get_message: crate::relay::MessageLookup,
 }
 impl Default for Config {
     fn default() -> Self {
@@ -138,6 +141,8 @@ impl Default for Config {
             enable_recent_message_cache: true,
             max_msg_retry_count: 5,
             enable_auto_session_recreation: true,
+            process_receipts: true,
+            get_message: Default::default(),
         }
     }
 }
@@ -156,6 +161,8 @@ pub enum Event {
     CredentialsUpdated,
     PendingNotifications,
     GroupsUpdated(Vec<crate::groups::Metadata>),
+    MessagesUpdated(Vec<crate::receipts::MessageUpdate>),
+    MessageReceiptsUpdated(Vec<crate::receipts::UserUpdate>),
 }
 impl std::fmt::Debug for Event {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -166,6 +173,14 @@ impl std::fmt::Debug for Event {
             Self::PairingComplete => f.write_str("PairingComplete"),
             Self::CredentialsUpdated => f.write_str("CredentialsUpdated"),
             Self::PendingNotifications => f.write_str("PendingNotifications"),
+            Self::MessagesUpdated(updates) => f
+                .debug_tuple("MessagesUpdated")
+                .field(&updates.len())
+                .finish(),
+            Self::MessageReceiptsUpdated(updates) => f
+                .debug_tuple("MessageReceiptsUpdated")
+                .field(&updates.len())
+                .finish(),
             Self::GroupsUpdated(groups) => {
                 f.debug_tuple("GroupsUpdated").field(&groups.len()).finish()
             }
@@ -173,6 +188,8 @@ impl std::fmt::Debug for Event {
     }
 }
 struct Inner {
+    receipt_lock: tokio::sync::Mutex<()>,
+    get_message: crate::relay::MessageLookup,
     retry_requests: Arc<retries::RetryRequests>,
     max_msg_retry_count: u64,
     enable_auto_session_recreation: bool,
@@ -347,7 +364,11 @@ impl Socket {
         let actor_retry_manager = retry_manager.clone();
         let retry_requests = Arc::new(retries::RetryRequests::default());
         let actor_retry_requests = retry_requests.clone();
+        let (receipt_sender, mut receipt_receiver) = mpsc::unbounded_channel::<BinaryNode>();
+        let receipt_sender = config.process_receipts.then_some(receipt_sender);
         let inner = Arc::new(Inner {
+            receipt_lock: tokio::sync::Mutex::new(()),
+            get_message: config.get_message.clone(),
             retry_requests,
             max_msg_retry_count: config.max_msg_retry_count,
             enable_auto_session_recreation: config.enable_auto_session_recreation,
@@ -367,6 +388,17 @@ impl Socket {
             prefix: prefix.clone(),
             query_timeout: config.query_timeout,
         });
+        let receipt_inner = Arc::downgrade(&inner);
+        tokio::spawn(async move {
+            while let Some(node) = receipt_receiver.recv().await {
+                let Some(inner) = receipt_inner.upgrade() else {
+                    break;
+                };
+                if let Err(error) = (Socket { inner }).handle_receipt(&node).await {
+                    tracing::debug!(?error, "receipt handling failed");
+                }
+            }
+        });
         tokio::spawn(async move {
             actor::run(
                 &mut ws,
@@ -381,6 +413,7 @@ impl Socket {
                 state,
                 actor_retry_manager,
                 actor_retry_requests,
+                receipt_sender,
             )
             .await;
         });

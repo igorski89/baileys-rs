@@ -347,3 +347,33 @@ pub fn create_participant_nodes_with(
     }
     Ok(result)
 }
+
+type LookupFuture = std::pin::Pin<
+    Box<dyn std::future::Future<Output = Result<Option<proto::Message>, Error>> + Send>,
+>;
+type LookupCallback = dyn Fn(proto::MessageKey) -> LookupFuture + Send + Sync;
+/// Async fallback for retry messages absent from the recent-message cache.
+#[derive(Clone)]
+pub struct MessageLookup(std::sync::Arc<LookupCallback>);
+impl MessageLookup {
+    pub fn new<F, Fut>(callback: F) -> Self
+    where
+        F: Fn(proto::MessageKey) -> Fut + Send + Sync + 'static,
+        Fut: std::future::Future<Output = Result<Option<proto::Message>, Error>> + Send + 'static,
+    {
+        Self(std::sync::Arc::new(move |key| Box::pin(callback(key))))
+    }
+    pub async fn get(&self, key: proto::MessageKey) -> Result<Option<proto::Message>, Error> {
+        (self.0)(key).await
+    }
+}
+impl Default for MessageLookup {
+    fn default() -> Self {
+        Self::new(|_| async { Ok(None) })
+    }
+}
+impl std::fmt::Debug for MessageLookup {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("MessageLookup").finish_non_exhaustive()
+    }
+}

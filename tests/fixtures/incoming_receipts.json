@@ -1,0 +1,2987 @@
+{
+  "me": "100:7@s.whatsapp.net",
+  "lid": "900:7@lid",
+  "cases": [
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "200:1@s.whatsapp.net",
+          "t": "1700000000"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "events": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "200:1@s.whatsapp.net",
+                "id": "A",
+                "fromMe": true
+              },
+              "update": {
+                "status": 3,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "200:1@s.whatsapp.net",
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 3,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "200:1@s.whatsapp.net",
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 3,
+                "messageTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "200:1@s.whatsapp.net",
+          "t": "1700000000",
+          "type": "sender"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "events": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "200:1@s.whatsapp.net",
+                "id": "A",
+                "fromMe": true
+              },
+              "update": {
+                "status": 2,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "200:1@s.whatsapp.net",
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 2,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "200:1@s.whatsapp.net",
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 2,
+                "messageTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "200:1@s.whatsapp.net",
+          "t": "1700000000",
+          "type": "read"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "events": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "200:1@s.whatsapp.net",
+                "id": "A",
+                "fromMe": true
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "200:1@s.whatsapp.net",
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "200:1@s.whatsapp.net",
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "200:1@s.whatsapp.net",
+          "t": "1700000000",
+          "type": "read-self"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "events": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "200:1@s.whatsapp.net",
+                "id": "A",
+                "fromMe": true
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "200:1@s.whatsapp.net",
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "200:1@s.whatsapp.net",
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "200:1@s.whatsapp.net",
+          "t": "1700000000",
+          "type": "played"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "events": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "200:1@s.whatsapp.net",
+                "id": "A",
+                "fromMe": true
+              },
+              "update": {
+                "status": 5,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "200:1@s.whatsapp.net",
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 5,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "200:1@s.whatsapp.net",
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 5,
+                "messageTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "200:1@s.whatsapp.net",
+          "t": "1700000000",
+          "type": "inactive"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "events": [],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "200:1@s.whatsapp.net",
+          "t": "1700000000",
+          "type": "retry"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          },
+          {
+            "tag": "retry",
+            "attrs": {
+              "count": "2"
+            }
+          }
+        ]
+      },
+      "events": [],
+      "resends": [
+        {
+          "key": {
+            "remoteJid": "200:1@s.whatsapp.net",
+            "id": "",
+            "fromMe": true,
+            "participant": "200:1@s.whatsapp.net"
+          },
+          "ids": [
+            "A",
+            "B",
+            "B"
+          ],
+          "count": "2"
+        }
+      ],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "100:2@s.whatsapp.net",
+          "t": "1700000000"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "events": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "id": "A",
+                "fromMe": true
+              },
+              "update": {
+                "status": 3,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 3,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 3,
+                "messageTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "100:2@s.whatsapp.net",
+          "t": "1700000000",
+          "type": "sender"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "events": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "id": "A",
+                "fromMe": true
+              },
+              "update": {
+                "status": 2,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 2,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 2,
+                "messageTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "100:2@s.whatsapp.net",
+          "t": "1700000000",
+          "type": "read"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "events": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "id": "A",
+                "fromMe": true
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "100:2@s.whatsapp.net",
+          "t": "1700000000",
+          "type": "read-self"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "events": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "id": "A",
+                "fromMe": true
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "100:2@s.whatsapp.net",
+          "t": "1700000000",
+          "type": "played"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "events": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "id": "A",
+                "fromMe": true
+              },
+              "update": {
+                "status": 5,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 5,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 5,
+                "messageTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "100:2@s.whatsapp.net",
+          "t": "1700000000",
+          "type": "inactive"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "events": [],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "100:2@s.whatsapp.net",
+          "t": "1700000000",
+          "type": "retry"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          },
+          {
+            "tag": "retry",
+            "attrs": {
+              "count": "2"
+            }
+          }
+        ]
+      },
+      "events": [],
+      "resends": [
+        {
+          "key": {
+            "id": "",
+            "fromMe": true,
+            "participant": "100:2@s.whatsapp.net"
+          },
+          "ids": [
+            "A",
+            "B",
+            "B"
+          ],
+          "count": "2"
+        }
+      ],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "800:1@lid",
+          "t": "1700000000"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "events": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "800:1@lid",
+                "id": "A",
+                "fromMe": true
+              },
+              "update": {
+                "status": 3,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "800:1@lid",
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 3,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "800:1@lid",
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 3,
+                "messageTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "800:1@lid",
+          "t": "1700000000",
+          "type": "sender"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "events": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "800:1@lid",
+                "id": "A",
+                "fromMe": true
+              },
+              "update": {
+                "status": 2,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "800:1@lid",
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 2,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "800:1@lid",
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 2,
+                "messageTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "800:1@lid",
+          "t": "1700000000",
+          "type": "read"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "events": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "800:1@lid",
+                "id": "A",
+                "fromMe": true
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "800:1@lid",
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "800:1@lid",
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "800:1@lid",
+          "t": "1700000000",
+          "type": "read-self"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "events": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "800:1@lid",
+                "id": "A",
+                "fromMe": true
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "800:1@lid",
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "800:1@lid",
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "800:1@lid",
+          "t": "1700000000",
+          "type": "played"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "events": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "800:1@lid",
+                "id": "A",
+                "fromMe": true
+              },
+              "update": {
+                "status": 5,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "800:1@lid",
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 5,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "800:1@lid",
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 5,
+                "messageTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "800:1@lid",
+          "t": "1700000000",
+          "type": "inactive"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "events": [],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "800:1@lid",
+          "t": "1700000000",
+          "type": "retry"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          },
+          {
+            "tag": "retry",
+            "attrs": {
+              "count": "2"
+            }
+          }
+        ]
+      },
+      "events": [],
+      "resends": [
+        {
+          "key": {
+            "remoteJid": "800:1@lid",
+            "id": "",
+            "fromMe": true,
+            "participant": "800:1@lid"
+          },
+          "ids": [
+            "A",
+            "B",
+            "B"
+          ],
+          "count": "2"
+        }
+      ],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "900:2@lid",
+          "t": "1700000000"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "events": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "id": "A",
+                "fromMe": true
+              },
+              "update": {
+                "status": 3,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 3,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 3,
+                "messageTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "900:2@lid",
+          "t": "1700000000",
+          "type": "sender"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "events": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "id": "A",
+                "fromMe": true
+              },
+              "update": {
+                "status": 2,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 2,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 2,
+                "messageTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "900:2@lid",
+          "t": "1700000000",
+          "type": "read"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "events": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "id": "A",
+                "fromMe": true
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "900:2@lid",
+          "t": "1700000000",
+          "type": "read-self"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "events": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "id": "A",
+                "fromMe": true
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "900:2@lid",
+          "t": "1700000000",
+          "type": "played"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "events": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "id": "A",
+                "fromMe": true
+              },
+              "update": {
+                "status": 5,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 5,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 5,
+                "messageTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "900:2@lid",
+          "t": "1700000000",
+          "type": "inactive"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "events": [],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "900:2@lid",
+          "t": "1700000000",
+          "type": "retry"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          },
+          {
+            "tag": "retry",
+            "attrs": {
+              "count": "2"
+            }
+          }
+        ]
+      },
+      "events": [],
+      "resends": [
+        {
+          "key": {
+            "id": "",
+            "fromMe": true,
+            "participant": "900:2@lid"
+          },
+          "ids": [
+            "A",
+            "B",
+            "B"
+          ],
+          "count": "2"
+        }
+      ],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "group@g.us",
+          "t": "1700000000",
+          "participant": "800:1@lid"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "events": [
+        {
+          "name": "message-receipt.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "group@g.us",
+                "id": "A",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "receiptTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "group@g.us",
+                "id": "B",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "receiptTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "group@g.us",
+                "id": "B",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "receiptTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "group@g.us",
+          "t": "1700000000",
+          "type": "sender",
+          "participant": "800:1@lid"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "events": [
+        {
+          "name": "message-receipt.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "group@g.us",
+                "id": "A",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "group@g.us",
+                "id": "B",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "group@g.us",
+                "id": "B",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "group@g.us",
+          "t": "1700000000",
+          "type": "read",
+          "participant": "800:1@lid"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "events": [
+        {
+          "name": "message-receipt.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "group@g.us",
+                "id": "A",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "group@g.us",
+                "id": "B",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "group@g.us",
+                "id": "B",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "group@g.us",
+          "t": "1700000000",
+          "type": "read-self",
+          "participant": "800:1@lid"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "events": [
+        {
+          "name": "message-receipt.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "group@g.us",
+                "id": "A",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "group@g.us",
+                "id": "B",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "group@g.us",
+                "id": "B",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "group@g.us",
+          "t": "1700000000",
+          "type": "played",
+          "participant": "800:1@lid"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "events": [
+        {
+          "name": "message-receipt.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "group@g.us",
+                "id": "A",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "group@g.us",
+                "id": "B",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "group@g.us",
+                "id": "B",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "group@g.us",
+          "t": "1700000000",
+          "type": "inactive",
+          "participant": "800:1@lid"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "events": [],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "group@g.us",
+          "t": "1700000000",
+          "type": "retry",
+          "participant": "800:1@lid"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          },
+          {
+            "tag": "retry",
+            "attrs": {
+              "count": "2"
+            }
+          }
+        ]
+      },
+      "events": [],
+      "resends": [
+        {
+          "key": {
+            "remoteJid": "group@g.us",
+            "id": "",
+            "fromMe": true,
+            "participant": "800:1@lid"
+          },
+          "ids": [
+            "A",
+            "B",
+            "B"
+          ],
+          "count": "2"
+        }
+      ],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "status@broadcast",
+          "t": "1700000000",
+          "participant": "800:1@lid"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "events": [
+        {
+          "name": "message-receipt.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "status@broadcast",
+                "id": "A",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "receiptTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "status@broadcast",
+                "id": "B",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "receiptTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "status@broadcast",
+                "id": "B",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "receiptTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "status@broadcast",
+          "t": "1700000000",
+          "type": "sender",
+          "participant": "800:1@lid"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "events": [
+        {
+          "name": "message-receipt.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "status@broadcast",
+                "id": "A",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "status@broadcast",
+                "id": "B",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "status@broadcast",
+                "id": "B",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "status@broadcast",
+          "t": "1700000000",
+          "type": "read",
+          "participant": "800:1@lid"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "events": [
+        {
+          "name": "message-receipt.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "status@broadcast",
+                "id": "A",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "status@broadcast",
+                "id": "B",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "status@broadcast",
+                "id": "B",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "status@broadcast",
+          "t": "1700000000",
+          "type": "read-self",
+          "participant": "800:1@lid"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "events": [
+        {
+          "name": "message-receipt.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "status@broadcast",
+                "id": "A",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "status@broadcast",
+                "id": "B",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "status@broadcast",
+                "id": "B",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "status@broadcast",
+          "t": "1700000000",
+          "type": "played",
+          "participant": "800:1@lid"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "events": [
+        {
+          "name": "message-receipt.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "status@broadcast",
+                "id": "A",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "status@broadcast",
+                "id": "B",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "status@broadcast",
+                "id": "B",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "status@broadcast",
+          "t": "1700000000",
+          "type": "inactive",
+          "participant": "800:1@lid"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "events": [],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "status@broadcast",
+          "t": "1700000000",
+          "type": "retry",
+          "participant": "800:1@lid"
+        },
+        "content": [
+          {
+            "tag": "list",
+            "attrs": {},
+            "content": [
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              },
+              {
+                "tag": "item",
+                "attrs": {
+                  "id": "B"
+                }
+              }
+            ]
+          },
+          {
+            "tag": "retry",
+            "attrs": {
+              "count": "2"
+            }
+          }
+        ]
+      },
+      "events": [],
+      "resends": [
+        {
+          "key": {
+            "remoteJid": "status@broadcast",
+            "id": "",
+            "fromMe": true,
+            "participant": "800:1@lid"
+          },
+          "ids": [
+            "A",
+            "B",
+            "B"
+          ],
+          "count": "2"
+        }
+      ],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "100:2@s.whatsapp.net",
+          "recipient": "200@s.whatsapp.net",
+          "type": "read",
+          "t": "bad"
+        }
+      },
+      "events": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "200@s.whatsapp.net",
+                "id": "A",
+                "fromMe": false
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 0
+              }
+            }
+          ]
+        }
+      ],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "group@g.us",
+          "type": "read"
+        }
+      },
+      "events": [],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "type": "played",
+          "t": "-5.25"
+        }
+      },
+      "events": [
+        {
+          "name": "message-receipt.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "group@g.us",
+                "id": "A",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": -5.25
+              }
+            }
+          ]
+        }
+      ],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "status@broadcast",
+          "participant": "900@lid",
+          "type": "sender",
+          "t": "Infinity"
+        }
+      },
+      "events": [
+        {
+          "name": "message-receipt.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "status@broadcast",
+                "id": "A",
+                "fromMe": true,
+                "participant": "900@lid"
+              },
+              "receipt": {
+                "userJid": "900@lid",
+                "readTimestamp": null
+              }
+            }
+          ]
+        }
+      ],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "200@lid",
+          "t": ""
+        }
+      },
+      "events": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "200@lid",
+                "id": "A",
+                "fromMe": true
+              },
+              "update": {
+                "status": 3,
+                "messageTimestamp": 0
+              }
+            }
+          ]
+        }
+      ],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "A",
+          "from": "200@lid",
+          "type": "unknown",
+          "t": "0x10"
+        }
+      },
+      "events": [],
+      "resends": [],
+      "acks": [
+        "A"
+      ]
+    }
+  ]
+}
