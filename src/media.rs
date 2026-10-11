@@ -1,7 +1,9 @@
 //! Media encryption, streaming CBC downloads and media-retry wire helpers.
+mod http;
 mod retry;
 mod stream;
 use crate::crypto;
+pub use http::*;
 pub use retry::*;
 pub use stream::*;
 use zeroize::Zeroizing;
@@ -16,6 +18,23 @@ pub enum Error {
     Protobuf(#[from] prost::DecodeError),
     #[error("invalid media range or byte count overflow")]
     Range,
+    #[error(transparent)]
+    Http(#[from] reqwest::Error),
+    #[error("media HTTP status {0}")]
+    HttpStatus(u16),
+    #[error("media upload failed on all hosts")]
+    UploadFailed,
+    #[error("too many media upload redirects")]
+    Redirects,
+    #[error("invalid media upload redirect")]
+    Redirect,
+    #[error("media worker failed")]
+    Task,
+    #[error("media connection refresh failed: {message}")]
+    Refresh {
+        message: String,
+        status: Option<u16>,
+    },
     #[error("invalid media retry node: {0}")]
     Node(&'static str),
     #[error("No valid media URL or directPath present in message")]
@@ -25,6 +44,9 @@ impl Error {
     pub fn status_code(&self) -> Option<u16> {
         match self {
             Self::Url => Some(400),
+            Self::HttpStatus(code) => Some(*code),
+            Self::UploadFailed => Some(500),
+            Self::Refresh { status, .. } => *status,
             _ => None,
         }
     }

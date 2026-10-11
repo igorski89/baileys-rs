@@ -1,0 +1,72 @@
+{
+  "queries": [
+    {
+      "tag": "iq",
+      "attrs": {
+        "type": "set",
+        "xmlns": "w:m",
+        "to": "@s.whatsapp.net"
+      },
+      "content": [
+        {
+          "tag": "media_conn",
+          "attrs": {}
+        }
+      ]
+    },
+    {
+      "tag": "iq",
+      "attrs": {
+        "type": "set",
+        "xmlns": "w:m",
+        "to": "@s.whatsapp.net"
+      },
+      "content": [
+        {
+          "tag": "media_conn",
+          "attrs": {}
+        }
+      ]
+    }
+  ],
+  "results": [
+    {
+      "force": false,
+      "auth": "auth1",
+      "ttl": 60,
+      "hosts": [
+        {
+          "hostname": "media1.example",
+          "maxContentLengthBytes": 1048576
+        }
+      ],
+      "host": "media1.example"
+    },
+    {
+      "force": false,
+      "auth": "auth1",
+      "ttl": 60,
+      "hosts": [
+        {
+          "hostname": "media1.example",
+          "maxContentLengthBytes": 1048576
+        }
+      ],
+      "host": "media1.example"
+    },
+    {
+      "force": true,
+      "auth": "auth2",
+      "ttl": 60,
+      "hosts": [],
+      "host": "media1.example"
+    },
+    {
+      "force": false,
+      "auth": "auth2",
+      "ttl": 60,
+      "hosts": [],
+      "host": "media1.example"
+    }
+  ]
+}

@@ -2,6 +2,7 @@
 mod actor;
 mod groups;
 mod incoming_receipts;
+mod media;
 mod receipts;
 mod relay;
 mod retries;
@@ -39,6 +40,10 @@ use tokio_tungstenite::{
 
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
+    #[error(transparent)]
+    Media(#[from] crate::media::Error),
+    #[error("media connection query failed: {0}")]
+    MediaConnection(Arc<Error>),
     #[error(transparent)]
     Auth(#[from] auth::Error),
     #[error(transparent)]
@@ -86,6 +91,8 @@ impl Error {
     pub fn status_code(&self) -> Option<u16> {
         match self {
             Self::Timeout => Some(408),
+            Self::Media(error) => error.status_code(),
+            Self::MediaConnection(error) => error.status_code(),
             Self::Receipt(error) => Some(error.status_code()),
             Self::Closed(code) => Some(*code),
             Self::Auth(e) => e.status_code(),
@@ -127,6 +134,7 @@ pub struct Config {
     pub get_message: crate::relay::MessageLookup,
     pub generation_hooks: crate::messages::generation::GenerationHooks,
     pub emit_own_events: bool,
+    pub media_http: Option<crate::media::HttpClient>,
 }
 impl Default for Config {
     fn default() -> Self {
@@ -152,6 +160,7 @@ impl Default for Config {
             get_message: Default::default(),
             generation_hooks: Default::default(),
             emit_own_events: true,
+            media_http: None,
         }
     }
 }
@@ -216,6 +225,8 @@ impl std::fmt::Debug for Event {
     }
 }
 struct Inner {
+    media_cache: tokio::sync::Mutex<media::MediaCache>,
+    media_http: tokio::sync::OnceCell<crate::media::HttpClient>,
     own_messages: Option<mpsc::UnboundedSender<proto::WebMessageInfo>>,
     generation_hooks: crate::messages::generation::GenerationHooks,
     receipt_lock: tokio::sync::Mutex<()>,
@@ -398,6 +409,8 @@ impl Socket {
         let receipt_sender = config.process_receipts.then_some(receipt_sender);
         let (own_sender, own_receiver) = mpsc::unbounded_channel();
         let inner = Arc::new(Inner {
+            media_cache: tokio::sync::Mutex::new(Default::default()),
+            media_http: tokio::sync::OnceCell::new_with(config.media_http.clone()),
             own_messages: config.emit_own_events.then_some(own_sender),
             generation_hooks: config.generation_hooks.clone(),
             receipt_lock: tokio::sync::Mutex::new(()),

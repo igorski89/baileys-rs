@@ -1,0 +1,479 @@
+[
+  {
+    "name": "first success",
+    "actions": [
+      {
+        "result": {
+          "url": "https://media/file",
+          "direct_path": "/file",
+          "ts": 123,
+          "fbid": 456,
+          "meta_hmac": "META"
+        }
+      }
+    ],
+    "initial": {
+      "hosts": [
+        {
+          "hostname": "first.example",
+          "maxContentLengthBytes": 100
+        },
+        {
+          "hostname": "second.example",
+          "maxContentLengthBytes": 200
+        }
+      ],
+      "auth": "old +/",
+      "ttl": 60
+    },
+    "updated": {
+      "hosts": [
+        {
+          "hostname": "changed.example",
+          "maxContentLengthBytes": 300
+        }
+      ],
+      "auth": "new +/",
+      "ttl": 60
+    },
+    "result": {
+      "mediaUrl": "https://media/file",
+      "directPath": "/file",
+      "meta_hmac": "META",
+      "fbid": 456,
+      "ts": 123
+    },
+    "refreshes": [
+      false
+    ],
+    "requests": [
+      {
+        "url": "https://first.example/mms/image/-_?auth=old%20%2B%2F&token=-_",
+        "filePath": "/synthetic/file",
+        "headers": {
+          "Origin": "https://web.whatsapp.com",
+          "Content-Type": "application/octet-stream",
+          "Custom": "value"
+        },
+        "timeoutMs": 500
+      }
+    ]
+  },
+  {
+    "name": "invalid response refreshes auth retains hosts",
+    "actions": [
+      {},
+      {
+        "result": {
+          "direct_path": "/new"
+        }
+      }
+    ],
+    "initial": {
+      "hosts": [
+        {
+          "hostname": "first.example",
+          "maxContentLengthBytes": 100
+        },
+        {
+          "hostname": "second.example",
+          "maxContentLengthBytes": 200
+        }
+      ],
+      "auth": "old +/",
+      "ttl": 60
+    },
+    "updated": {
+      "hosts": [
+        {
+          "hostname": "changed.example",
+          "maxContentLengthBytes": 300
+        }
+      ],
+      "auth": "new +/",
+      "ttl": 60
+    },
+    "result": {
+      "directPath": "/new"
+    },
+    "refreshes": [
+      false,
+      true
+    ],
+    "requests": [
+      {
+        "url": "https://first.example/mms/image/-_?auth=old%20%2B%2F&token=-_",
+        "filePath": "/synthetic/file",
+        "headers": {
+          "Origin": "https://web.whatsapp.com",
+          "Content-Type": "application/octet-stream",
+          "Custom": "value"
+        },
+        "timeoutMs": 500
+      },
+      {
+        "url": "https://second.example/mms/image/-_?auth=new%20%2B%2F&token=-_",
+        "filePath": "/synthetic/file",
+        "headers": {
+          "Origin": "https://web.whatsapp.com",
+          "Content-Type": "application/octet-stream",
+          "Custom": "value"
+        },
+        "timeoutMs": 500
+      }
+    ]
+  },
+  {
+    "name": "transport failure advances without refresh",
+    "actions": [
+      {
+        "error": "offline"
+      },
+      {
+        "result": {
+          "url": "https://media/file"
+        }
+      }
+    ],
+    "initial": {
+      "hosts": [
+        {
+          "hostname": "first.example",
+          "maxContentLengthBytes": 100
+        },
+        {
+          "hostname": "second.example",
+          "maxContentLengthBytes": 200
+        }
+      ],
+      "auth": "old +/",
+      "ttl": 60
+    },
+    "updated": {
+      "hosts": [
+        {
+          "hostname": "changed.example",
+          "maxContentLengthBytes": 300
+        }
+      ],
+      "auth": "new +/",
+      "ttl": 60
+    },
+    "result": {
+      "mediaUrl": "https://media/file"
+    },
+    "refreshes": [
+      false
+    ],
+    "requests": [
+      {
+        "url": "https://first.example/mms/image/-_?auth=old%20%2B%2F&token=-_",
+        "filePath": "/synthetic/file",
+        "headers": {
+          "Origin": "https://web.whatsapp.com",
+          "Content-Type": "application/octet-stream",
+          "Custom": "value"
+        },
+        "timeoutMs": 500
+      },
+      {
+        "url": "https://second.example/mms/image/-_?auth=old%20%2B%2F&token=-_",
+        "filePath": "/synthetic/file",
+        "headers": {
+          "Origin": "https://web.whatsapp.com",
+          "Content-Type": "application/octet-stream",
+          "Custom": "value"
+        },
+        "timeoutMs": 500
+      }
+    ]
+  },
+  {
+    "name": "custom hosts precede server hosts",
+    "custom": [
+      {
+        "hostname": "custom.example",
+        "maxContentLengthBytes": 5
+      }
+    ],
+    "actions": [
+      {
+        "error": "offline"
+      },
+      {
+        "result": {
+          "url": "https://media/file"
+        }
+      }
+    ],
+    "initial": {
+      "hosts": [
+        {
+          "hostname": "first.example",
+          "maxContentLengthBytes": 100
+        },
+        {
+          "hostname": "second.example",
+          "maxContentLengthBytes": 200
+        }
+      ],
+      "auth": "old +/",
+      "ttl": 60
+    },
+    "updated": {
+      "hosts": [
+        {
+          "hostname": "changed.example",
+          "maxContentLengthBytes": 300
+        }
+      ],
+      "auth": "new +/",
+      "ttl": 60
+    },
+    "result": {
+      "mediaUrl": "https://media/file"
+    },
+    "refreshes": [
+      false
+    ],
+    "requests": [
+      {
+        "url": "https://custom.example/mms/image/-_?auth=old%20%2B%2F&token=-_",
+        "filePath": "/synthetic/file",
+        "headers": {
+          "Origin": "https://web.whatsapp.com",
+          "Content-Type": "application/octet-stream",
+          "Custom": "value"
+        },
+        "timeoutMs": 500
+      },
+      {
+        "url": "https://first.example/mms/image/-_?auth=old%20%2B%2F&token=-_",
+        "filePath": "/synthetic/file",
+        "headers": {
+          "Origin": "https://web.whatsapp.com",
+          "Content-Type": "application/octet-stream",
+          "Custom": "value"
+        },
+        "timeoutMs": 500
+      }
+    ]
+  },
+  {
+    "name": "refresh failure continues",
+    "refreshError": true,
+    "actions": [
+      {},
+      {}
+    ],
+    "initial": {
+      "hosts": [
+        {
+          "hostname": "first.example",
+          "maxContentLengthBytes": 100
+        },
+        {
+          "hostname": "second.example",
+          "maxContentLengthBytes": 200
+        }
+      ],
+      "auth": "old +/",
+      "ttl": 60
+    },
+    "updated": {
+      "hosts": [
+        {
+          "hostname": "changed.example",
+          "maxContentLengthBytes": 300
+        }
+      ],
+      "auth": "new +/",
+      "ttl": 60
+    },
+    "error": "Media upload failed on all hosts",
+    "status": 500,
+    "refreshes": [
+      false,
+      true,
+      true
+    ],
+    "requests": [
+      {
+        "url": "https://first.example/mms/image/-_?auth=old%20%2B%2F&token=-_",
+        "filePath": "/synthetic/file",
+        "headers": {
+          "Origin": "https://web.whatsapp.com",
+          "Content-Type": "application/octet-stream",
+          "Custom": "value"
+        },
+        "timeoutMs": 500
+      },
+      {
+        "url": "https://second.example/mms/image/-_?auth=old%20%2B%2F&token=-_",
+        "filePath": "/synthetic/file",
+        "headers": {
+          "Origin": "https://web.whatsapp.com",
+          "Content-Type": "application/octet-stream",
+          "Custom": "value"
+        },
+        "timeoutMs": 500
+      }
+    ]
+  },
+  {
+    "name": "empty URLs trigger refresh",
+    "actions": [
+      {
+        "result": {
+          "url": "",
+          "direct_path": ""
+        }
+      },
+      {
+        "result": {
+          "url": "https://media/file"
+        }
+      }
+    ],
+    "initial": {
+      "hosts": [
+        {
+          "hostname": "first.example",
+          "maxContentLengthBytes": 100
+        },
+        {
+          "hostname": "second.example",
+          "maxContentLengthBytes": 200
+        }
+      ],
+      "auth": "old +/",
+      "ttl": 60
+    },
+    "updated": {
+      "hosts": [
+        {
+          "hostname": "changed.example",
+          "maxContentLengthBytes": 300
+        }
+      ],
+      "auth": "new +/",
+      "ttl": 60
+    },
+    "result": {
+      "mediaUrl": "https://media/file"
+    },
+    "refreshes": [
+      false,
+      true
+    ],
+    "requests": [
+      {
+        "url": "https://first.example/mms/image/-_?auth=old%20%2B%2F&token=-_",
+        "filePath": "/synthetic/file",
+        "headers": {
+          "Origin": "https://web.whatsapp.com",
+          "Content-Type": "application/octet-stream",
+          "Custom": "value"
+        },
+        "timeoutMs": 500
+      },
+      {
+        "url": "https://second.example/mms/image/-_?auth=new%20%2B%2F&token=-_",
+        "filePath": "/synthetic/file",
+        "headers": {
+          "Origin": "https://web.whatsapp.com",
+          "Content-Type": "application/octet-stream",
+          "Custom": "value"
+        },
+        "timeoutMs": 500
+      }
+    ]
+  },
+  {
+    "name": "no hosts",
+    "initial": {
+      "hosts": [],
+      "auth": "old +/",
+      "ttl": 60
+    },
+    "actions": [],
+    "updated": {
+      "hosts": [
+        {
+          "hostname": "changed.example",
+          "maxContentLengthBytes": 300
+        }
+      ],
+      "auth": "new +/",
+      "ttl": 60
+    },
+    "error": "Media upload failed on all hosts",
+    "status": 500,
+    "refreshes": [
+      false
+    ],
+    "requests": []
+  },
+  {
+    "name": "all hosts failed",
+    "actions": [
+      {
+        "error": "one"
+      },
+      {
+        "error": "two"
+      }
+    ],
+    "initial": {
+      "hosts": [
+        {
+          "hostname": "first.example",
+          "maxContentLengthBytes": 100
+        },
+        {
+          "hostname": "second.example",
+          "maxContentLengthBytes": 200
+        }
+      ],
+      "auth": "old +/",
+      "ttl": 60
+    },
+    "updated": {
+      "hosts": [
+        {
+          "hostname": "changed.example",
+          "maxContentLengthBytes": 300
+        }
+      ],
+      "auth": "new +/",
+      "ttl": 60
+    },
+    "error": "Media upload failed on all hosts",
+    "status": 500,
+    "refreshes": [
+      false
+    ],
+    "requests": [
+      {
+        "url": "https://first.example/mms/image/-_?auth=old%20%2B%2F&token=-_",
+        "filePath": "/synthetic/file",
+        "headers": {
+          "Origin": "https://web.whatsapp.com",
+          "Content-Type": "application/octet-stream",
+          "Custom": "value"
+        },
+        "timeoutMs": 500
+      },
+      {
+        "url": "https://second.example/mms/image/-_?auth=old%20%2B%2F&token=-_",
+        "filePath": "/synthetic/file",
+        "headers": {
+          "Origin": "https://web.whatsapp.com",
+          "Content-Type": "application/octet-stream",
+          "Custom": "value"
+        },
+        "timeoutMs": 500
+      }
+    ]
+  }
+]

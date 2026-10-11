@@ -15,11 +15,15 @@ try {
     text = text.replace(/export enum WAJIDDomains \{([^}]+)\}/, (_, body) => 'export const WAJIDDomains = {' + body.replaceAll('=', ':') + '}')
     await writeFile(join(temp, `${name}.mjs`), stripTypeScriptTypes(text).replaceAll("'./constants'", "'./constants.mjs'"))
   }
+  const sendSource=await readFile(join(upstream,'src/Socket/messages-send.ts'),'utf8')
+  const refreshSource=sendSource.slice(sendSource.indexOf('const refreshMediaConn ='),sendSource.indexOf('/**',sendSource.indexOf('const refreshMediaConn =')))
+  const refreshFactory="export function mediaConnFactory(query){let mediaConn;let mediaHost=DEF_MEDIA_HOST;const S_WHATSAPP_NET='@s.whatsapp.net',logger={debug(){}};"+refreshSource+"return {refresh:refreshMediaConn,host:()=>mediaHost}}"
   const media=await readFile(join(upstream,'src/Utils/messages-media.ts'),'utf8'),defaults=await readFile(join(upstream,'src/Defaults/index.ts'),'utf8')
   const mapping=defaults.slice(defaults.indexOf('export const MEDIA_PATH_MAP'),defaults.indexOf('export type MediaType'))
   const getKeys=media.slice(media.indexOf('export async function getMediaKeys'),media.indexOf('/** Extracts video thumb'))
   const stream=media.slice(media.indexOf('export const encryptedStream'),media.indexOf('export const DEF_MEDIA_HOST'))
   const download=media.slice(media.indexOf('export const DEF_MEDIA_HOST'),media.indexOf('export function extensionForMediaMessage'))
+  const uploadFlow=media.slice(media.indexOf('export const getWAUploadToServer'),media.indexOf('const getMediaRetryKey'))
   const retry=media.slice(media.indexOf('const getMediaRetryKey'))
   const upload=media.slice(media.indexOf('export const encodeBase64EncodedStringForUpload'),media.indexOf('export const generateProfilePicture'))
   const info=media.slice(media.indexOf('export const hkdfInfoKey'),media.indexOf('export const getRawMediaUploadData'))
@@ -27,8 +31,9 @@ try {
   const children=binary.slice(binary.indexOf('const indexCache'),binary.indexOf('export const getBinaryNodeChildUInt'))
   const prefix=`import {Boom} from ${JSON.stringify(pathToFileURL(require.resolve('@hapi/boom')).href)};import CryptoOriginal from 'node:crypto';import {Readable,Transform} from 'node:stream';import {once} from 'node:events';import {createWriteStream,promises as fs} from 'node:fs';import {join} from 'node:path';import {proto} from './proto.mjs';import {jidNormalizedUser} from './jid-utils.mjs';const Crypto={...CryptoOriginal,randomBytes:n=>Buffer.from(Array.from({length:n},(_,i)=>i))},DEFAULT_ORIGIN='https://web.whatsapp.com';let sequence=0;const generateMessageIDV2=()=> 'FIXTURE'+sequence++;const getTmpFilesDirectory=()=> ${JSON.stringify(temp)};const hkdf=(key,length,opts)=>Buffer.from(CryptoOriginal.hkdfSync('sha256',key,Buffer.alloc(0),opts.info,length));const aesEncryptGCM=(p,k,iv,aad)=>{const c=CryptoOriginal.createCipheriv('aes-256-gcm',k,iv);c.setAAD(aad);return Buffer.concat([c.update(p),c.final(),c.getAuthTag()])};const aesDecryptGCM=(p,k,iv,aad)=>{const c=CryptoOriginal.createDecipheriv('aes-256-gcm',k,iv);c.setAAD(aad);c.setAuthTag(p.subarray(-16));return Buffer.concat([c.update(p.subarray(0,-16)),c.final()])};const getStream=async bytes=>({stream:Readable.from([bytes.subarray(0,7),bytes.subarray(7)]),type:'buffer'});let body,request;export function setBody(value){body=value;request=undefined};export function getRequest(){return request};const getHttpStream=async(url,opts)=>{request={url,headers:opts.headers};const range=opts.headers.Range?.match(/^bytes=(\d+)-(\d*)$/);const data=range?body.subarray(+range[1],range[2]?+range[2]+1:undefined):body;return Readable.from([data])};`
   // String.raw is needed so the helper's HTTP range parser keeps its backslashes.
-  const fixedPrefix=prefix.replace('/^bytes=(d+)-(d*)$/','/^bytes=(\\d+)-(\\d*)$/')
-  await writeFile(join(temp,'media.mjs'),fixedPrefix+stripTypeScriptTypes([mapping,children,info,getKeys,upload,stream,download,retry].join('\n')))
+  const uploadSeam=`let uploadActions,uploadCalls;export function setUploads(actions){uploadActions=[...actions];uploadCalls=[]};export function uploadCallsSnapshot(){return uploadCalls};const uploadMedia=async request=>{uploadCalls.push(request);const action=uploadActions.shift();if(action?.error)throw new Error(action.error);return action?.result??undefined};`
+  const fixedPrefix=(prefix+uploadSeam).replace('/^bytes=(d+)-(d*)$/','/^bytes=(\\d+)-(\\d*)$/')
+  await writeFile(join(temp,'media.mjs'),fixedPrefix+stripTypeScriptTypes([mapping,children,info,getKeys,upload,stream,download,retry,uploadFlow,refreshFactory].join('\n')))
   const h=await import(pathToFileURL(join(temp,'media.mjs'))),{proto}=await import(pathToFileURL(join(temp,'proto.mjs')))
   const hex=b=>Buffer.from(b).toString('hex'),key=Buffer.from(Array.from({length:32},(_,i)=>i))
   const types=Object.keys(h.MEDIA_HKDF_KEY_MAPPING),keys=[],encrypted=[]
@@ -50,6 +55,25 @@ try {
   }
   for(const code of [0,1,2,3,4,99,'bad',undefined]){const node={tag:'notification',attrs:{id:'ID'},content:[{tag:'rmr',attrs:{jid:'group@g.us',from_me:'true',participant:'300@lid'}},{tag:'error',attrs:{...(code===undefined?{}:{code:String(code)}),text:'failed'}}]};try{const e=h.decodeMediaRetryNode(node);retryEvents.push({node,key:e.key,status:e.error.output.statusCode,code:e.error.message})}catch(e){retryEvents.push({node,error:e.message})}}
   for(const content of [[],[{tag:'encrypt',attrs:{},content:[{tag:'enc_p',attrs:{},content:Buffer.alloc(0)},{tag:'enc_iv',attrs:{},content:Buffer.alloc(0)}]}]]){const node={tag:'notification',attrs:{id:'ID'},content:[{tag:'rmr',attrs:{jid:'200@lid',from_me:'false'}},...content]},e=h.decodeMediaRetryNode(node);retryEvents.push({node,key:e.key,status:e.error?.output.statusCode??null,media:e.media?{ciphertext:hex(e.media.ciphertext),iv:hex(e.media.iv)}:null})}
+  const initial={hosts:[{hostname:'first.example',maxContentLengthBytes:100},{hostname:'second.example',maxContentLengthBytes:200}],auth:'old +/',ttl:60};
+  const updated={...initial,hosts:[{hostname:'changed.example',maxContentLengthBytes:300}],auth:'new +/'};
+  const uploadCases=[];
+  const scenarios=[
+    {name:'first success',actions:[{result:{url:'https://media/file',direct_path:'/file',ts:123,fbid:456,meta_hmac:'META'}}]},
+    {name:'invalid response refreshes auth retains hosts',actions:[{}, {result:{direct_path:'/new'}}]},
+    {name:'transport failure advances without refresh',actions:[{error:'offline'}, {result:{url:'https://media/file'}}]},
+    {name:'custom hosts precede server hosts',custom:[{hostname:'custom.example',maxContentLengthBytes:5}],actions:[{error:'offline'},{result:{url:'https://media/file'}}]},
+    {name:'refresh failure continues',refreshError:true,actions:[{},{}]},
+    {name:'empty URLs trigger refresh',actions:[{result:{url:'',direct_path:''}}, {result:{url:'https://media/file'}}]},
+    {name:'no hosts',initial:{...initial,hosts:[]},actions:[]},
+    {name:'all hosts failed',actions:[{error:'one'},{error:'two'}]},
+  ];
+  for(const scenario of scenarios){h.setUploads(scenario.actions);const refreshes=[];const refresh=async force=>{refreshes.push(force);if(force&&scenario.refreshError)throw new Error('refresh failed');return force?updated:scenario.initial??initial};const config={customUploadHosts:scenario.custom??[],logger:{debug(){},warn(){}},options:{headers:{Origin:'override','Content-Type':'wrong',Custom:'value'}}};let result,error,status;try{result=await h.getWAUploadToServer(config,refresh)('/synthetic/file',{mediaType:'image',fileEncSha256B64:'+/==',timeoutMs:500})}catch(e){error=e.message;status=e.output?.statusCode}uploadCases.push({...scenario,initial:scenario.initial??initial,updated,result,error,status,refreshes,requests:h.uploadCallsSnapshot()})}
+  await writeFile('tests/fixtures/media_upload.json',JSON.stringify(uploadCases,null,2)+'\n');
+  const connectionQueries=[];let connectionNumber=0;
+  const factory=h.mediaConnFactory(async node=>{connectionQueries.push(node);connectionNumber++;return {tag:'iq',attrs:{},content:[{tag:'media_conn',attrs:{auth:'auth'+connectionNumber,ttl:'60'},content:connectionNumber===2?[]:[{tag:'host',attrs:{hostname:'media'+connectionNumber+'.example',maxContentLengthBytes:'1048576'}}]}]}});
+  const connectionResults=[];for(const force of [false,false,true,false]){const out=await factory.refresh(force);connectionResults.push({force,auth:out.auth,ttl:out.ttl,hosts:out.hosts,host:factory.host()})}
+  await writeFile('tests/fixtures/media_connection.json',JSON.stringify({queries:connectionQueries,results:connectionResults},null,2)+'\n');
   function convert(value){if(Buffer.isBuffer(value))return {hex:hex(value)};if(Array.isArray(value))return value.map(convert);if(value&&typeof value==='object')return Object.fromEntries(Object.entries(value).map(([k,v])=>[k,convert(v)]));return value}
   await writeFile('tests/fixtures/media.json',JSON.stringify(convert({keys,encrypted,encodedKeys,ranges,urls,tokens,retryRequests,retryEvents,notifications}),null,2)+'\n');console.log(`Generated ${keys.length} media types, ${encrypted.length} encryptions and ${ranges.length} downloads`)
 }finally{await rm(temp,{recursive:true,force:true})}
