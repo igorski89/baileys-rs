@@ -6,6 +6,7 @@ pub mod connection;
 pub mod crypto;
 pub mod defaults;
 pub mod jid;
+pub mod messages;
 pub mod noise;
 pub mod serialization;
 pub mod signal;

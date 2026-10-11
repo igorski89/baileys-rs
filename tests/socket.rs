@@ -76,6 +76,91 @@ fn query(id: &str) -> BinaryNode {
 }
 
 #[tokio::test]
+async fn encrypted_incoming_message_decrypts_on_blocking_executor() {
+    use baileys_rs::{messages, proto, signal::direct};
+    timeout(Duration::from_secs(8), async {
+        let temp = tempfile::tempdir().unwrap();
+        let recipient = store(&temp, true);
+        let creds = recipient.load_credentials().unwrap();
+        let sender_store = SqliteAuthStore::in_memory().unwrap();
+        sender_store
+            .save_credentials(&Credentials::generate().unwrap())
+            .unwrap();
+        let sender = direct::Repository::new(sender_store);
+        sender
+            .inject_session(
+                creds.me_id().unwrap(),
+                &direct::Bundle {
+                    registration_id: creds.registration_id.into(),
+                    identity: baileys_rs::crypto::signal_public_key(
+                        &creds.signed_identity_key.public,
+                    )
+                    .unwrap()
+                    .to_vec(),
+                    signed: direct::PublicPreKey {
+                        id: creds.signed_pre_key.key_id,
+                        public: baileys_rs::crypto::signal_public_key(
+                            &creds.signed_pre_key.key_pair.public,
+                        )
+                        .unwrap()
+                        .to_vec(),
+                    },
+                    signature: creds.signed_pre_key.signature.clone(),
+                    pre_key: None,
+                },
+            )
+            .unwrap();
+        let content = proto::Message {
+            conversation: Some("native message over Noise".into()),
+            ..Default::default()
+        };
+        let encrypted = sender
+            .encrypt(creds.me_id().unwrap(), &messages::encode(&content).unwrap())
+            .unwrap();
+        let stanza = BinaryNode::new("message")
+            .attr("id", "MSG1")
+            .attr("from", "200:1@s.whatsapp.net")
+            .attr("t", "1700000000")
+            .with_content(NodeContent::Children(vec![
+                BinaryNode::new("enc")
+                    .attr("type", "pkmsg")
+                    .with_content(NodeContent::Bytes(encrypted.ciphertext)),
+            ]));
+        let (listener, config) = listener().await;
+        let server = tokio::spawn(async move {
+            let mut peer = Peer::accept(listener.accept().await.unwrap().0).await;
+            peer.send(BinaryNode::new("success").attr("lid", "987654:7@lid"))
+                .await;
+            assert!(peer.read().await.child("unified_session").is_some());
+            peer.send(stanza).await;
+            peer.closed().await;
+        });
+        let (socket, mut events) = Socket::connect(config, recipient.clone()).await.unwrap();
+        socket.wait_for_open(Duration::from_secs(2)).await.unwrap();
+        let Event::Node(node) = event(
+            &mut events,
+            |e| matches!(e, Event::Node(n) if n.tag == "message"),
+        )
+        .await
+        else {
+            unreachable!()
+        };
+        let decrypted = socket.decrypt_message(node).await.unwrap();
+        assert!(decrypted.envelope.message.message_stub_type.is_none());
+        assert_eq!(decrypted.envelope.message.message, Some(content));
+        assert!(
+            direct::Repository::new(recipient)
+                .validate_session("200:1@s.whatsapp.net")
+                .unwrap()
+        );
+        socket.close().await.unwrap();
+        server.await.unwrap();
+    })
+    .await
+    .unwrap();
+}
+
+#[tokio::test]
 async fn encrypted_login_queries_errors_and_shutdown() {
     timeout(Duration::from_secs(8), async {
         let temp = tempfile::tempdir().unwrap();

@@ -1,0 +1,584 @@
+{
+  "me": "100:1@s.whatsapp.net",
+  "lid": "900:1@lid",
+  "envelopes": [
+    {
+      "wire": "00f8071308fb82abcf06f70007edf91aff051700000000",
+      "message": "0a1d0a143230303a3740732e77686174736170702e6e657410001a034142431880e2cfaa06900100",
+      "metadata": {
+        "remoteJidAlt": null,
+        "remoteJidUsername": null,
+        "participantAlt": null,
+        "participantUsername": null,
+        "addressingMode": "pn",
+        "isViewOnce": false,
+        "serverId": null
+      },
+      "author": "200:7@s.whatsapp.net",
+      "sender": "200:7@s.whatsapp.net"
+    },
+    {
+      "wire": "00f8071308fb82abcf06f70002ec331aff051700000000",
+      "message": "0a1d0a143130303a3240732e77686174736170702e6e657410011a034142431880e2cfaa062002900100",
+      "metadata": {
+        "remoteJidAlt": null,
+        "remoteJidUsername": null,
+        "participantAlt": null,
+        "participantUsername": null,
+        "addressingMode": "pn",
+        "isViewOnce": false,
+        "serverId": null
+      },
+      "author": "100:2@s.whatsapp.net",
+      "sender": "100:2@s.whatsapp.net"
+    },
+    {
+      "wire": "00f80b1308fb82abcf06f70103ed4c1aff05170000000094faedf903fc0c726563697069656e745f706efaedf903",
+      "message": "0a1b0a1232303040732e77686174736170702e6e657410011a034142431880e2cfaa062002900100",
+      "metadata": {
+        "remoteJidAlt": null,
+        "remoteJidUsername": null,
+        "participantAlt": null,
+        "participantUsername": null,
+        "addressingMode": "lid",
+        "isViewOnce": false,
+        "serverId": null
+      },
+      "author": "900:3@lid",
+      "sender": "900:3@lid"
+    },
+    {
+      "wire": "00f80d1308fb82abcf06f70002ec331aff05170000000094faedf903fc0a73656e6465725f6c6964faed4c76fc17706565725f726563697069656e745f757365726e616d65fc0673616d706c65",
+      "message": "0a1b0a1232303040732e77686174736170702e6e657410011a034142431880e2cfaa062002900100",
+      "metadata": {
+        "remoteJidAlt": "900@lid",
+        "remoteJidUsername": "sample",
+        "participantAlt": null,
+        "participantUsername": null,
+        "addressingMode": "pn",
+        "isViewOnce": false,
+        "serverId": null
+      },
+      "author": "100:2@s.whatsapp.net",
+      "sender": "100:2@s.whatsapp.net"
+    },
+    {
+      "wire": "00f80d1308fb82abcf06faff82123f1c1aff05170000000005f70103ed4cfc0e7061727469636970616e745f706efaec3303fc147061727469636970616e745f757365726e616d65fc05616c696365",
+      "message": "0a1c0a0831323340672e757310011a0341424322093930303a33406c69641880e2cfaa062002900100",
+      "metadata": {
+        "remoteJidAlt": null,
+        "remoteJidUsername": null,
+        "participantAlt": "100@s.whatsapp.net",
+        "participantUsername": "alice",
+        "addressingMode": "lid",
+        "isViewOnce": false,
+        "serverId": null
+      },
+      "author": "900:3@lid",
+      "sender": "123@g.us"
+    },
+    {
+      "wire": "00f80d1308fb82abcf06faff82123f1c1aff05170000000005f70007edf9fc0f7061727469636970616e745f6c6964faff82800f76fc0f61646472657373696e675f6d6f6465ec51",
+      "message": "0a270a0831323340672e757310001a0341424322143230303a3740732e77686174736170702e6e65741880e2cfaa06900100",
+      "metadata": {
+        "remoteJidAlt": null,
+        "remoteJidUsername": null,
+        "participantAlt": "800@lid",
+        "participantUsername": null,
+        "addressingMode": "pn",
+        "isViewOnce": false,
+        "serverId": null
+      },
+      "author": "200:7@s.whatsapp.net",
+      "sender": "123@g.us"
+    },
+    {
+      "wire": "00f8091308fb82abcf06fa0b0d1aff05170000000005f70002ec33",
+      "message": "0a2f0a107374617475734062726f61646361737410011a0341424322143130303a3240732e77686174736170702e6e65741880e2cfaa062002900101",
+      "metadata": {
+        "remoteJidAlt": null,
+        "remoteJidUsername": null,
+        "participantAlt": null,
+        "participantUsername": null,
+        "addressingMode": "pn",
+        "isViewOnce": false,
+        "serverId": null
+      },
+      "author": "100:2@s.whatsapp.net",
+      "sender": "status@broadcast"
+    },
+    {
+      "wire": "00f8091308fb82abcf06fa0b0d1aff05170000000005f70102ed4c",
+      "message": "0a240a107374617475734062726f61646361737410001a0341424322093930303a32406c69641880e2cfaa06900101",
+      "metadata": {
+        "remoteJidAlt": null,
+        "remoteJidUsername": null,
+        "participantAlt": null,
+        "participantUsername": null,
+        "addressingMode": "lid",
+        "isViewOnce": false,
+        "serverId": null
+      },
+      "author": "900:2@lid",
+      "sender": "status@broadcast"
+    },
+    {
+      "wire": "00f8091308fb82abcf06faff82123f0d1aff05170000000005faedf903",
+      "message": "0a2a0a0d3132334062726f61646361737410001a03414243221232303040732e77686174736170702e6e65741880e2cfaa06900101",
+      "metadata": {
+        "remoteJidAlt": null,
+        "remoteJidUsername": null,
+        "participantAlt": null,
+        "participantUsername": null,
+        "addressingMode": "pn",
+        "isViewOnce": false,
+        "serverId": null
+      },
+      "author": "200@s.whatsapp.net",
+      "sender": "123@broadcast"
+    },
+    {
+      "wire": "00f80b1308fb82abcf06faff82123ffc0a6e6577736c65747465721aff051700000000fc097365727665725f6964efba18fc044e657773",
+      "message": "0a170a0e313233406e6577736c657474657210001a034142431880e2cfaa069001009a01044e657773",
+      "metadata": {
+        "remoteJidAlt": null,
+        "remoteJidUsername": null,
+        "participantAlt": null,
+        "participantUsername": null,
+        "addressingMode": "pn",
+        "isViewOnce": false,
+        "serverId": "567"
+      },
+      "author": "123@newsletter",
+      "sender": "123@newsletter"
+    },
+    {
+      "wire": "00f8071308fb82abcf06f78063edf91aff051700000000",
+      "message": "0a160a0d3230303a393940686f7374656410001a034142431880e2cfaa06900100",
+      "metadata": {
+        "remoteJidAlt": null,
+        "remoteJidUsername": null,
+        "participantAlt": null,
+        "participantUsername": null,
+        "addressingMode": "pn",
+        "isViewOnce": false,
+        "serverId": null
+      },
+      "author": "200:99@hosted",
+      "sender": "200:99@hosted"
+    },
+    {
+      "wire": "00f8091308fb82abcf06f78163ff82800f1aff051700000000fc0973656e6465725f706efaedf903",
+      "message": "0a1a0a113830303a393940686f737465642e6c696410001a034142431880e2cfaa06900100",
+      "metadata": {
+        "remoteJidAlt": "200@s.whatsapp.net",
+        "remoteJidUsername": null,
+        "participantAlt": null,
+        "participantUsername": null,
+        "addressingMode": "lid",
+        "isViewOnce": false,
+        "serverId": null
+      },
+      "author": "800:99@hosted.lid",
+      "sender": "800:99@hosted.lid"
+    },
+    {
+      "wire": "00f8091308fb82abcf06f70007edf91aff05170000000094faff82123ffc03626f74",
+      "message": "0a1d0a143230303a3740732e77686174736170702e6e657410001a034142431880e2cfaa06900100",
+      "metadata": {
+        "remoteJidAlt": null,
+        "remoteJidUsername": null,
+        "participantAlt": null,
+        "participantUsername": null,
+        "addressingMode": "pn",
+        "isViewOnce": false,
+        "serverId": null
+      },
+      "author": "200:7@s.whatsapp.net",
+      "sender": "200:7@s.whatsapp.net"
+    },
+    {
+      "wire": "00f8091308fb82abcf06faedf9031aff05170000000094fabe03",
+      "error": "receipient present, but msg not from me"
+    },
+    {
+      "wire": "00f8071308fc0006f70007edf91aff051700000000",
+      "error": "Invalid message stanza: missing id attribute"
+    },
+    {
+      "wire": "00f8071308fb82abcf06fc001aff051700000000",
+      "error": "Invalid message stanza: missing from attribute"
+    },
+    {
+      "wire": "00f8071308fb82abcf06faff82123f1c1aff051700000000",
+      "error": "No participant in group message"
+    },
+    {
+      "wire": "00f8071308fb82abcf06faff82123f5e1aff051700000000",
+      "error": "Unknown message type"
+    }
+  ],
+  "decryptions": [
+    {
+      "wire": "00f8081308fb82abcf06f70007edf91aff051700000000f801f802fc09706c61696e74657874fc070a0568656c6c6f",
+      "message": "0a1d0a143230303a3740732e77686174736170702e6e657410001a0341424312070a0568656c6c6f1880e2cfaa06900100",
+      "metadata": {
+        "remoteJidAlt": null,
+        "remoteJidUsername": null,
+        "participantAlt": null,
+        "participantUsername": null,
+        "addressingMode": "pn",
+        "isViewOnce": false,
+        "serverId": null
+      },
+      "retryCount": null,
+      "calls": []
+    },
+    {
+      "wire": "00f8081308fb82abcf06f70007edf91aff051700000000f801f8041d04fc09706c61696e74657874fc0f0a0d656e6320706c61696e74657874",
+      "message": "0a1d0a143230303a3740732e77686174736170702e6e657410001a03414243120f0a0d656e6320706c61696e746578741880e2cfaa06900100",
+      "metadata": {
+        "remoteJidAlt": null,
+        "remoteJidUsername": null,
+        "participantAlt": null,
+        "participantUsername": null,
+        "addressingMode": "pn",
+        "isViewOnce": false,
+        "serverId": null
+      },
+      "retryCount": null,
+      "calls": []
+    },
+    {
+      "wire": "00f8081308fb82abcf06f70007edf91aff051700000000f801f802fc09706c61696e74657874fc22fa011f0a1233303040732e77686174736170702e6e657412090a0777726170706564",
+      "message": "0a1d0a143230303a3740732e77686174736170702e6e657410001a0341424312090a07777261707065641880e2cfaa06900100",
+      "metadata": {
+        "remoteJidAlt": null,
+        "remoteJidUsername": null,
+        "participantAlt": null,
+        "participantUsername": null,
+        "addressingMode": "pn",
+        "isViewOnce": false,
+        "serverId": null
+      },
+      "retryCount": null,
+      "calls": []
+    },
+    {
+      "wire": "00f8081308fb82abcf06f70007edf91aff051700000000f802f802fc09706c61696e74657874fc190a05666972737432100a036f6c64320972656d6f7665206d65f802fc09706c61696e74657874fc090a0032050a036e6577",
+      "message": "0a1d0a143230303a3740732e77686174736170702e6e657410001a0341424312090a0032050a036e65771880e2cfaa06900100",
+      "metadata": {
+        "remoteJidAlt": null,
+        "remoteJidUsername": null,
+        "participantAlt": null,
+        "participantUsername": null,
+        "addressingMode": "pn",
+        "isViewOnce": false,
+        "serverId": null
+      },
+      "retryCount": null,
+      "calls": []
+    },
+    {
+      "wire": "00f8081308fb82abcf06f70007edf91aff051700000000f802f8061d04534145fc12120f0a0831323340672e7573120301020301f8061d04324145fc080a0567726f757001",
+      "message": "0a1d0a143230303a3740732e77686174736170702e6e657410001a0341424312180a0567726f7570120f0a0831323340672e757312030102031880e2cfaa06900100",
+      "metadata": {
+        "remoteJidAlt": null,
+        "remoteJidUsername": null,
+        "participantAlt": null,
+        "participantUsername": null,
+        "addressingMode": "pn",
+        "isViewOnce": false,
+        "serverId": null
+      },
+      "retryCount": 2,
+      "calls": [
+        {
+          "kind": "pkmsg",
+          "author": "200:7@s.whatsapp.net"
+        },
+        {
+          "kind": "distribution",
+          "author": "200:7@s.whatsapp.net",
+          "group": "123@g.us"
+        },
+        {
+          "kind": "skmsg",
+          "group": "200:7@s.whatsapp.net",
+          "author": "200:7@s.whatsapp.net"
+        }
+      ]
+    },
+    {
+      "wire": "00f8081308fb82abcf06f70007edf91aff051700000000f802f8061d044d4145fc0a0a077261746368657401f80222fc160a14221253796e74686574696320627573696e657373",
+      "message": "0a1d0a143230303a3740732e77686174736170702e6e657410001a0341424312090a07726174636865741880e2cfaa06900100aa021253796e74686574696320627573696e657373",
+      "metadata": {
+        "remoteJidAlt": null,
+        "remoteJidUsername": null,
+        "participantAlt": null,
+        "participantUsername": null,
+        "addressingMode": "pn",
+        "isViewOnce": false,
+        "serverId": null
+      },
+      "retryCount": 2,
+      "calls": [
+        {
+          "kind": "msg",
+          "author": "200:7@s.whatsapp.net"
+        }
+      ]
+    },
+    {
+      "wire": "00f8081308fb82abcf06f70007edf91aff05170000000000",
+      "message": "0a1d0a143230303a3740732e77686174736170702e6e657410001a034142431880e2cfaa06900100c00102d201184d65737361676520616273656e742066726f6d206e6f6465",
+      "metadata": {
+        "remoteJidAlt": null,
+        "remoteJidUsername": null,
+        "participantAlt": null,
+        "participantUsername": null,
+        "addressingMode": "pn",
+        "isViewOnce": false,
+        "serverId": null
+      },
+      "retryCount": null,
+      "calls": []
+    },
+    {
+      "wire": "00f8081308fb82abcf06f70007edf91aff051700000000f801f8033004fc09766965775f6f6e6365",
+      "message": "0a1d0a143230303a3740732e77686174736170702e6e657410001a034142431880e2cfaa06900100",
+      "metadata": {
+        "remoteJidAlt": null,
+        "remoteJidUsername": null,
+        "participantAlt": null,
+        "participantUsername": null,
+        "addressingMode": "pn",
+        "isViewOnce": true,
+        "serverId": null
+      },
+      "retryCount": null,
+      "calls": []
+    },
+    {
+      "wire": "00f8081308fb82abcf06f70007edf91aff051700000000f801f8041d045efc0101",
+      "message": "0a1d0a143230303a3740732e77686174736170702e6e657410001a034142431880e2cfaa06900100c00102d20119556e6b6e6f776e2065326520747970653a20756e6b6e6f776e",
+      "metadata": {
+        "remoteJidAlt": null,
+        "remoteJidUsername": null,
+        "participantAlt": null,
+        "participantUsername": null,
+        "addressingMode": "pn",
+        "isViewOnce": false,
+        "serverId": null
+      },
+      "retryCount": null,
+      "calls": []
+    },
+    {
+      "wire": "00f8081308fb82abcf06f70007edf91aff051700000000f801f802fc09706c61696e74657874fc01ff",
+      "message": "0a1d0a143230303a3740732e77686174736170702e6e657410001a034142431880e2cfaa06900100c00102d2011e696e646578206f7574206f662072616e67653a2031202b203130203e2031",
+      "metadata": {
+        "remoteJidAlt": null,
+        "remoteJidUsername": null,
+        "participantAlt": null,
+        "participantUsername": null,
+        "addressingMode": "pn",
+        "isViewOnce": false,
+        "serverId": null
+      },
+      "retryCount": null,
+      "calls": []
+    },
+    {
+      "wire": "00f8081308fb82abcf06f70007edf91aff051700000000f802f802fc09706c61696e74657874fc230a21707265736572766564206465737069746520666f6c6c6f77696e67206572726f72f8041d045efc0101",
+      "message": "0a1d0a143230303a3740732e77686174736170702e6e657410001a0341424312230a21707265736572766564206465737069746520666f6c6c6f77696e67206572726f721880e2cfaa06900100c00102d20119556e6b6e6f776e2065326520747970653a20756e6b6e6f776e",
+      "metadata": {
+        "remoteJidAlt": null,
+        "remoteJidUsername": null,
+        "participantAlt": null,
+        "participantUsername": null,
+        "addressingMode": "pn",
+        "isViewOnce": false,
+        "serverId": null
+      },
+      "retryCount": null,
+      "calls": []
+    },
+    {
+      "wire": "00f8081308fb82abcf06f70007edf91aff051700000000f801f8041d044dfc096e6f74206279746573",
+      "message": "0a1d0a143230303a3740732e77686174736170702e6e657410001a034142431880e2cfaa06900100c00102d20123756e70616420676976656e20392062797465732c206275742070616420697320313135",
+      "metadata": {
+        "remoteJidAlt": null,
+        "remoteJidUsername": null,
+        "participantAlt": null,
+        "participantUsername": null,
+        "addressingMode": "pn",
+        "isViewOnce": false,
+        "serverId": null
+      },
+      "retryCount": null,
+      "calls": [
+        {
+          "kind": "msg",
+          "author": "200:7@s.whatsapp.net"
+        }
+      ]
+    }
+  ],
+  "ids": [
+    {
+      "user": null,
+      "id": "3EB0AF1CB96FD17BE687FA"
+    },
+    {
+      "user": "100@s.whatsapp.net",
+      "id": "3EB0B55D8A40EFAC1741D6"
+    },
+    {
+      "user": "100:7@lid",
+      "id": "3EB0B55D8A40EFAC1741D6"
+    },
+    {
+      "user": "123456789012345678901234567890@s.whatsapp.net",
+      "id": "3EB03DC9770B4123C4B0F9"
+    },
+    {
+      "user": "💚@s.whatsapp.net",
+      "id": "3EB00C9A7ADF98B5489AA2"
+    },
+    {
+      "user": "invalid",
+      "id": "3EB0AF1CB96FD17BE687FA"
+    }
+  ],
+  "pads": [
+    {
+      "byte": 0,
+      "wire": "01020301"
+    },
+    {
+      "byte": 1,
+      "wire": "0102030202"
+    },
+    {
+      "byte": 2,
+      "wire": "010203030303"
+    },
+    {
+      "byte": 3,
+      "wire": "01020304040404"
+    },
+    {
+      "byte": 4,
+      "wire": "0102030505050505"
+    },
+    {
+      "byte": 5,
+      "wire": "010203060606060606"
+    },
+    {
+      "byte": 6,
+      "wire": "01020307070707070707"
+    },
+    {
+      "byte": 7,
+      "wire": "0102030808080808080808"
+    },
+    {
+      "byte": 8,
+      "wire": "010203090909090909090909"
+    },
+    {
+      "byte": 9,
+      "wire": "0102030a0a0a0a0a0a0a0a0a0a"
+    },
+    {
+      "byte": 10,
+      "wire": "0102030b0b0b0b0b0b0b0b0b0b0b"
+    },
+    {
+      "byte": 11,
+      "wire": "0102030c0c0c0c0c0c0c0c0c0c0c0c"
+    },
+    {
+      "byte": 12,
+      "wire": "0102030d0d0d0d0d0d0d0d0d0d0d0d0d"
+    },
+    {
+      "byte": 13,
+      "wire": "0102030e0e0e0e0e0e0e0e0e0e0e0e0e0e"
+    },
+    {
+      "byte": 14,
+      "wire": "0102030f0f0f0f0f0f0f0f0f0f0f0f0f0f0f"
+    },
+    {
+      "byte": 15,
+      "wire": "01020310101010101010101010101010101010"
+    },
+    {
+      "byte": 16,
+      "wire": "01020301"
+    },
+    {
+      "byte": 17,
+      "wire": "0102030202"
+    },
+    {
+      "byte": 18,
+      "wire": "010203030303"
+    },
+    {
+      "byte": 19,
+      "wire": "01020304040404"
+    },
+    {
+      "byte": 20,
+      "wire": "0102030505050505"
+    },
+    {
+      "byte": 21,
+      "wire": "010203060606060606"
+    },
+    {
+      "byte": 22,
+      "wire": "01020307070707070707"
+    },
+    {
+      "byte": 23,
+      "wire": "0102030808080808080808"
+    },
+    {
+      "byte": 24,
+      "wire": "010203090909090909090909"
+    },
+    {
+      "byte": 25,
+      "wire": "0102030a0a0a0a0a0a0a0a0a0a"
+    },
+    {
+      "byte": 26,
+      "wire": "0102030b0b0b0b0b0b0b0b0b0b0b"
+    },
+    {
+      "byte": 27,
+      "wire": "0102030c0c0c0c0c0c0c0c0c0c0c0c"
+    },
+    {
+      "byte": 28,
+      "wire": "0102030d0d0d0d0d0d0d0d0d0d0d0d0d"
+    },
+    {
+      "byte": 29,
+      "wire": "0102030e0e0e0e0e0e0e0e0e0e0e0e0e0e"
+    },
+    {
+      "byte": 30,
+      "wire": "0102030f0f0f0f0f0f0f0f0f0f0f0f0f0f0f"
+    },
+    {
+      "byte": 31,
+      "wire": "01020310101010101010101010101010101010"
+    }
+  ]
+}

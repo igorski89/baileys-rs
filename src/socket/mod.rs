@@ -36,6 +36,8 @@ pub enum Error {
     #[error(transparent)]
     Signal(#[from] crate::signal::Error),
     #[error(transparent)]
+    Message(#[from] crate::messages::Error),
+    #[error(transparent)]
     USync(#[from] crate::usync::Error),
     #[error(transparent)]
     Connection(#[from] connection::Error),
@@ -141,6 +143,7 @@ impl std::fmt::Debug for Event {
     }
 }
 struct Inner {
+    store: SqliteAuthStore,
     commands: mpsc::Sender<Command>,
     cancel: mpsc::UnboundedSender<u64>,
     events: broadcast::Sender<Event>,
@@ -293,6 +296,7 @@ impl Socket {
             u16::from_be_bytes([random[2], random[3]])
         );
         let inner = Arc::new(Inner {
+            store: store.clone(),
             commands,
             cancel,
             events: events.clone(),
@@ -460,6 +464,32 @@ impl Socket {
         })
         .await
         .map_err(|_| Error::Task)??)
+    }
+    /// Decode/decrypt a received Node event using this socket's persistent keys.
+    /// Consumes Signal counters; callers must process each stanza once, in arrival order.
+    /// Receipt/acknowledgement and retry orchestration are separate operations.
+    pub async fn decrypt_message(
+        &self,
+        node: BinaryNode,
+    ) -> Result<crate::messages::Decrypted, Error> {
+        let store = self.inner.store.clone();
+        tokio::task::spawn_blocking(move || {
+            let credentials = store.load_credentials()?;
+            let me = credentials.me_id()?;
+            let lid = credentials
+                .me
+                .as_ref()
+                .and_then(|me| me.lid.as_deref())
+                .unwrap_or_default();
+            Ok(crate::messages::decrypt_node(
+                &node,
+                me,
+                lid,
+                &crate::messages::SignalDecryptor::new(store),
+            )?)
+        })
+        .await
+        .map_err(|_| Error::Task)?
     }
     pub async fn send_node(&self, node: BinaryNode) -> Result<(), Error> {
         let (reply, receiver) = oneshot::channel();

@@ -2,7 +2,7 @@
 
 A Rust port in progress of [WhiskeySockets/Baileys](https://github.com/WhiskeySockets/Baileys), based on upstream commit `0af2386292907f7d9742d8d41f830d8c48208fa1` (7.0.0-rc14).
 
-Currently provides the full generated WhatsApp protobuf model, JID helpers, binary stanza encoding/decoding, crypto primitives, the Noise handshake and encrypted framing, persistent authentication/key storage, connection/pairing protocol helpers, an async WebSocket connection, persistent Signal direct/group sessions, and USync query protocols. This is not yet a usable WhatsApp messaging client: synchronization, messaging, and the high-level socket APIs remain to be ported. See [PORT_STATUS.md](PORT_STATUS.md) for scope and validation.
+Currently provides the full generated WhatsApp protobuf model, JID helpers, binary stanza encoding/decoding, crypto primitives, the Noise handshake and encrypted framing, persistent authentication/key storage, connection/pairing protocol helpers, an async WebSocket connection, persistent Signal direct/group sessions, USync query protocols, and message envelope/payload decoding. This is not yet a usable WhatsApp messaging client: synchronization, message relay/processing, and the high-level socket APIs remain to be ported. See [PORT_STATUS.md](PORT_STATUS.md) for scope and validation.
 
 ```rust
 use baileys_rs::binary::{BinaryNode, encode, decode};
@@ -44,10 +44,13 @@ node scripts/generate-direct-fixtures.mjs
 node scripts/generate-group-fixtures.mjs ../Baileys
 node scripts/generate-mapping-fixtures.mjs ../Baileys
 node scripts/generate-usync-fixtures.mjs ../Baileys
+node scripts/generate-message-fixtures.mjs ../Baileys
 cargo test --test auth upstream_adapter_resumes_and_updates_rust_export -- --ignored
 ```
 
 These fixtures use fixed synthetic keys and a synthetic certificate authority. They verify compatibility with upstream code, not a live WhatsApp server. The Rust runtime has no JavaScript or WASM bridge dependency.
+
+`messages` provides padded protobuf encoding, message IDs, addressing/envelope decoding, and direct/group payload decryption through persistent Signal repositories. `Socket::decrypt_message` accepts a received `Event::Node` and runs storage/crypto on a blocking executor. Process each message stanza once and in arrival order: decryption consumes Signal counters. The result separates runtime key metadata from `proto::WebMessageInfo`, unwraps device-sent messages, combines multiple payloads with upstream's top-level replacement behavior, and retains ciphertext stubs and distribution failures. Automatic message events, receipts/retries, and learning envelope PN/LID mappings with session migration remain pending. Rust rejects missing/invalid unsigned timestamps and retry counts; protobuf/crypto error diagnostics differ from JavaScript.
 
 `crypto` exposes AES-256 GCM (12-byte nonces, appended authentication tags), CTR, PKCS#7 CBC, IV-prefixed CBC, SHA-256, MD5, HMAC-SHA-256/512, HKDF-SHA-256, and pairing-code PBKDF2. `KeyPair` supports X25519 agreement and the deterministic Curve25519 signature format used by upstream's pinned libsignal backend. Private keys have redacted debug output and are zeroized when dropped. The MIT notice for the signature algorithm source is included in `licenses/curve25519-js.txt`.
 
