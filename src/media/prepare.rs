@@ -40,7 +40,7 @@ impl Input {
     pub fn bytes(bytes: impl Into<Arc<[u8]>>) -> Self {
         Self::Bytes(bytes.into())
     }
-    async fn open(
+    pub(super) async fn open(
         &self,
         http: &HttpClient,
         options: &PrepareOptions,
@@ -187,24 +187,18 @@ pub struct Thumbnail {
     pub dimensions: Option<(u32, u32)>,
 }
 pub trait PrepareHooks: Send + Sync {
-    fn thumbnail(
-        &self,
-        _path: PathBuf,
-        kind: MediaType,
-    ) -> BoxFuture<'_, Result<Thumbnail, Error>> {
+    fn thumbnail(&self, path: PathBuf, kind: MediaType) -> BoxFuture<'_, Result<Thumbnail, Error>> {
         Box::pin(async move {
-            if kind == MediaType::Video {
-                Ok(Thumbnail::default())
-            } else {
-                Err(Error::Input("thumbnail provider unavailable"))
-            }
+            super::MediaProcessors::default()
+                .thumbnail(path, kind)
+                .await
         })
     }
-    fn duration(&self, _path: PathBuf) -> BoxFuture<'_, Result<Option<u32>, Error>> {
-        Box::pin(async { Err(Error::Input("audio duration provider unavailable")) })
+    fn duration(&self, path: PathBuf) -> BoxFuture<'_, Result<Option<u32>, Error>> {
+        Box::pin(async move { super::MediaProcessors::default().duration(path).await })
     }
-    fn waveform(&self, _path: Option<PathBuf>) -> BoxFuture<'_, Result<Option<Vec<u8>>, Error>> {
-        Box::pin(async { Err(Error::Input("audio waveform provider unavailable")) })
+    fn waveform(&self, path: Option<PathBuf>) -> BoxFuture<'_, Result<Option<Vec<u8>>, Error>> {
+        Box::pin(async move { super::MediaProcessors::default().waveform(path).await })
     }
     fn cache_get(&self, _key: String) -> BoxFuture<'_, Result<Option<Vec<u8>>, Error>> {
         Box::pin(async { Ok(None) })

@@ -38,6 +38,8 @@ prost = "0.14"
 serde = { version = "1", features = ["derive"] }
 thiserror = "2"
 tempfile = "3"
+image = { version = "0.25", default-features = false, features = ["jpeg", "png", "gif", "webp", "bmp", "tiff"] }
+symphonia = { version = "0.5.5", features = ["all"] }
 
 [build-dependencies]
 prost-build = "0.14"

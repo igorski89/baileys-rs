@@ -4,6 +4,7 @@ mod http;
 mod message;
 mod overlay;
 mod prepare;
+mod process;
 mod retry;
 mod stream;
 use crate::crypto;
@@ -11,6 +12,7 @@ pub use fields::MediaField;
 pub use http::*;
 pub use message::*;
 pub use prepare::*;
+pub use process::*;
 pub use retry::*;
 pub use stream::*;
 use zeroize::Zeroizing;
@@ -23,6 +25,10 @@ pub enum Error {
     Io(#[from] std::io::Error),
     #[error(transparent)]
     Protobuf(#[from] prost::DecodeError),
+    #[error(transparent)]
+    Image(#[from] image::ImageError),
+    #[error(transparent)]
+    Audio(#[from] symphonia::core::errors::Error),
     #[error("invalid media range or byte count overflow")]
     Range,
     #[error("given message is not a media message")]
