@@ -2,6 +2,7 @@
 //! See PORT_STATUS.md for implemented and remaining components.
 pub mod auth;
 pub mod binary;
+pub mod connection;
 pub mod crypto;
 pub mod defaults;
 pub mod jid;

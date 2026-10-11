@@ -2,7 +2,7 @@
 
 A Rust port in progress of [WhiskeySockets/Baileys](https://github.com/WhiskeySockets/Baileys), based on upstream commit `0af2386292907f7d9742d8d41f830d8c48208fa1` (7.0.0-rc14).
 
-Currently provides the full generated WhatsApp protobuf model, JID helpers, binary stanza encoding/decoding, crypto primitives, the Noise handshake and encrypted framing, and persistent authentication/key storage. This is not yet a usable WhatsApp client: websocket connection, pairing, Signal sessions, and the high-level socket APIs remain to be ported. See [PORT_STATUS.md](PORT_STATUS.md) for scope and validation.
+Currently provides the full generated WhatsApp protobuf model, JID helpers, binary stanza encoding/decoding, crypto primitives, the Noise handshake and encrypted framing, persistent authentication/key storage, and connection/pairing protocol helpers. This is not yet a usable WhatsApp client: websocket connection, pairing, Signal sessions, and the high-level socket APIs remain to be ported. See [PORT_STATUS.md](PORT_STATUS.md) for scope and validation.
 
 ```rust
 use baileys_rs::binary::{BinaryNode, encode, decode};
@@ -39,6 +39,7 @@ npm install --prefix .cache/fixture-tools --ignore-scripts --no-audit --no-fund 
 node scripts/generate-crypto-fixtures.mjs ../Baileys
 node scripts/generate-noise-fixtures.mjs ../Baileys
 node scripts/generate-auth-fixtures.mjs ../Baileys
+node scripts/generate-connection-fixtures.mjs ../Baileys
 cargo test --test auth upstream_adapter_resumes_and_updates_rust_export -- --ignored
 ```
 
@@ -49,6 +50,8 @@ These fixtures use fixed synthetic keys and a synthetic certificate authority. T
 `NoiseHandler` verifies the server certificate chain, produces the client static-key ciphertext, authenticates the handshake payload, and transitions to encrypted transport. The default certificate authority and protocol header match upstream. Synthetic peers can provide an explicit alternate authority through `noise::Config`. Feed websocket fragments with `push_bytes`, then pull one frame at a time with `next_frame`; this allows processing a server hello before a coalesced first encrypted stanza. All state mutation requires exclusive Rust access. Frame size and pending-buffer limits are bounded.
 
 The Rust verifier checks the underlying libsignal verification result rather than mirroring the TypeScript wrapper's assumption that an invalid signature always throws. It rejects noncanonical/weak signatures and non-contributory X25519 agreement. Noise authentication failures terminate the handler; counter exhaustion never wraps a nonce, and transport initialization requires a verified server handshake. Certificate verification follows upstream's chain signatures and issuer serial checks; certificate expiry and leaf-to-static-key binding are not additional checks in this port. These are material behavior choices to review when integrating the client.
+
+`connection` builds login/registration protobuf payloads, browser/companion identifiers, QR data, and pairing replies. `configure_successful_pairing` verifies the ADV HMAC and account signature for standard/hosted identities, signs the device identity, and returns the reply plus credential updates. Phone pairing helpers wrap the companion ephemeral key, process the primary response, encrypt the companion key bundle, and derive the ADV secret. Request/finish helpers expose deterministic-material variants for fixture verification; production wrappers generate fresh random material. Browser payloads and both pairing exchanges are checked against upstream bytes. These helpers still require a WebSocket/event lifecycle to form a usable client.
 
 `auth::Credentials::generate` creates noise/pairing/identity keys, a signed prekey, the ADV secret, and upstream credential defaults. The current source's registration generator samples the first random byte; the port preserves that behavior while accepting valid imported 14-bit IDs. `me_id` returns a structured 401 error before authentication. Credential debug output omits keys and account data.
 
