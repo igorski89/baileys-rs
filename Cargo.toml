@@ -7,6 +7,11 @@ description = "Rust port of Baileys' WhatsApp Web protocol client"
 build = "build.rs"
 
 [dependencies]
+futures-util = { version = "0.3", features = ["sink"] }
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "net", "time", "sync"] }
+tokio-tungstenite = { version = "0.28", features = ["rustls-tls-native-roots"] }
+url = "2"
+tracing = "0.1"
 base64 = "0.22"
 rusqlite = { version = "0.38", features = ["bundled"] }
 serde_json = { version = "1", features = ["preserve_order"] }

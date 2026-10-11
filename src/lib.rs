@@ -8,6 +8,7 @@ pub mod defaults;
 pub mod jid;
 pub mod noise;
 pub mod serialization;
+pub mod socket;
 
 /// Bindings generated from the complete upstream WAProto schema.
 pub mod proto {
