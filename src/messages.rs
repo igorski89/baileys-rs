@@ -1,4 +1,5 @@
 //! Message envelopes and protobuf payloads, independent of socket receipt processing.
+pub mod generation;
 use crate::{
     binary::{BinaryNode, NodeContent},
     crypto,
