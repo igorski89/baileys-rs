@@ -53,6 +53,27 @@ impl KeyCategory {
         }
     }
 }
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[serde(untagged)]
+pub enum TokenTimestamp {
+    Text(String),
+    Number(serde_json::Number),
+}
+impl From<String> for TokenTimestamp {
+    fn from(value: String) -> Self {
+        Self::Text(value)
+    }
+}
+impl From<&str> for TokenTimestamp {
+    fn from(value: &str) -> Self {
+        Self::Text(value.into())
+    }
+}
+impl From<u64> for TokenTimestamp {
+    fn from(value: u64) -> Self {
+        Self::Number(value.into())
+    }
+}
 #[derive(Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct LtHashState {
@@ -67,13 +88,17 @@ pub struct ValueMac {
     #[serde(with = "crate::serialization::bytes")]
     pub value_mac: Vec<u8>,
 }
-#[derive(Clone, Serialize, Deserialize)]
+#[derive(Clone, Default, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TcToken {
     #[serde(with = "crate::serialization::bytes")]
     pub token: Vec<u8>,
-    pub timestamp: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub timestamp: Option<TokenTimestamp>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub sender_timestamp: Option<u64>,
+    #[serde(flatten)]
+    pub extra: serde_json::Map<String, serde_json::Value>,
 }
 
 #[derive(Clone, Serialize, Deserialize)]

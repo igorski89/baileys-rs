@@ -384,6 +384,21 @@ impl Socket {
         };
         receiver.await.map_err(|_| self.closed_error())?
     }
+    pub async fn issue_privacy_tokens(
+        &self,
+        jids: &[String],
+        timestamp: Option<u64>,
+    ) -> Result<BinaryNode, Error> {
+        let timestamp = match timestamp {
+            Some(timestamp) => timestamp,
+            None => std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .map_err(|_| Error::Config)?
+                .as_secs(),
+        };
+        self.query(crate::privacy::issuance_query(jids, timestamp), None)
+            .await
+    }
     pub async fn execute_usync(
         &self,
         query: &crate::usync::Query,

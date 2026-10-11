@@ -1,0 +1,272 @@
+{
+  "now": 1700000000,
+  "expiry": [
+    {
+      "timestamp": null,
+      "expired": true
+    },
+    {
+      "timestamp": 0,
+      "expired": true
+    },
+    {
+      "timestamp": 1697673599,
+      "expired": true
+    },
+    {
+      "timestamp": 1697673600,
+      "expired": false
+    },
+    {
+      "timestamp": 1700000000,
+      "expired": false
+    },
+    {
+      "timestamp": "1700000000",
+      "expired": false
+    },
+    {
+      "timestamp": " 1700000000tail",
+      "expired": false
+    },
+    {
+      "timestamp": "0x6553f100",
+      "expired": false
+    },
+    {
+      "timestamp": "1e9",
+      "expired": true
+    },
+    {
+      "timestamp": "",
+      "expired": true
+    },
+    {
+      "timestamp": "invalid",
+      "expired": true
+    },
+    {
+      "timestamp": "﻿1700000000",
+      "expired": false
+    },
+    {
+      "timestamp": "+1700000000",
+      "expired": false
+    },
+    {
+      "timestamp": "-1",
+      "expired": true
+    }
+  ],
+  "issue": [
+    {
+      "sender": null,
+      "issue": true
+    },
+    {
+      "sender": 0,
+      "issue": true
+    },
+    {
+      "sender": 1699487999,
+      "issue": true
+    },
+    {
+      "sender": 1700000000,
+      "issue": false
+    },
+    {
+      "sender": 1700604800,
+      "issue": false
+    }
+  ],
+  "cases": [
+    {
+      "name": "new",
+      "initial": {},
+      "incoming": [
+        {
+          "jid": "100:2@s.whatsapp.net",
+          "t": "1700000000"
+        }
+      ],
+      "fallback": "",
+      "stored": [
+        "900@lid"
+      ],
+      "expected": {
+        "900@lid": {
+          "token": {
+            "type": "Buffer",
+            "data": "AQID"
+          },
+          "timestamp": "1700000000"
+        }
+      }
+    },
+    {
+      "name": "older",
+      "initial": {
+        "900@lid": {
+          "token": {
+            "type": "Buffer",
+            "data": "CQ=="
+          },
+          "timestamp": "1700000000",
+          "senderTimestamp": 1700000000,
+          "extra": "keep"
+        }
+      },
+      "incoming": [
+        {
+          "jid": "100@s.whatsapp.net",
+          "t": "1699999999"
+        }
+      ],
+      "fallback": "",
+      "stored": [],
+      "expected": {
+        "900@lid": {
+          "token": {
+            "type": "Buffer",
+            "data": "CQ=="
+          },
+          "timestamp": "1700000000",
+          "senderTimestamp": 1700000000,
+          "extra": "keep"
+        }
+      }
+    },
+    {
+      "name": "equal",
+      "initial": {
+        "900@lid": {
+          "token": {
+            "type": "Buffer",
+            "data": "CQ=="
+          },
+          "timestamp": 1700000000,
+          "senderTimestamp": 1700000000,
+          "extra": "keep"
+        }
+      },
+      "incoming": [
+        {
+          "jid": "100@s.whatsapp.net",
+          "t": "1700000000"
+        }
+      ],
+      "fallback": "",
+      "stored": [
+        "900@lid"
+      ],
+      "expected": {
+        "900@lid": {
+          "token": {
+            "type": "Buffer",
+            "data": "AQID"
+          },
+          "timestamp": "1700000000",
+          "senderTimestamp": 1700000000,
+          "extra": "keep"
+        }
+      }
+    },
+    {
+      "name": "fallback",
+      "initial": {},
+      "incoming": [
+        {
+          "jid": "200@s.whatsapp.net",
+          "t": "1700000000"
+        }
+      ],
+      "fallback": "100@s.whatsapp.net",
+      "stored": [
+        "900@lid"
+      ],
+      "expected": {
+        "900@lid": {
+          "token": {
+            "type": "Buffer",
+            "data": "AQID"
+          },
+          "timestamp": "1700000000"
+        }
+      }
+    },
+    {
+      "name": "filtered",
+      "initial": {},
+      "incoming": [
+        {
+          "jid": "0@s.whatsapp.net",
+          "t": "1700000000"
+        },
+        {
+          "jid": "13135551234@c.us",
+          "t": "1700000000"
+        },
+        {
+          "jid": "13165550012@s.whatsapp.net",
+          "t": "1700000000"
+        },
+        {
+          "jid": "123@bot",
+          "t": "1700000000"
+        },
+        {
+          "jid": "123@g.us",
+          "t": "1700000000"
+        }
+      ],
+      "fallback": "",
+      "stored": [],
+      "expected": {}
+    },
+    {
+      "name": "numbers",
+      "initial": {},
+      "incoming": [
+        {
+          "jid": "200@s.whatsapp.net",
+          "t": "0"
+        },
+        {
+          "jid": "200@s.whatsapp.net",
+          "t": "invalid"
+        },
+        {
+          "jid": "200@s.whatsapp.net",
+          "t": "1e9"
+        },
+        {
+          "jid": "200@s.whatsapp.net",
+          "t": "0x10"
+        },
+        {
+          "jid": "200@s.whatsapp.net",
+          "t": "-1"
+        },
+        {
+          "jid": "200@s.whatsapp.net",
+          "t": "1700000000"
+        }
+      ],
+      "fallback": "",
+      "stored": [
+        "200@s.whatsapp.net",
+        "200@s.whatsapp.net"
+      ],
+      "expected": {
+        "200@s.whatsapp.net": {
+          "token": {
+            "type": "Buffer",
+            "data": "AQID"
+          },
+          "timestamp": "1700000000"
+        }
+      }
+    }
+  ]
+}

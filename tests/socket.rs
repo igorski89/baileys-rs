@@ -1061,6 +1061,61 @@ fn callback_names_match_upstream_router() {
 }
 
 #[tokio::test]
+async fn privacy_token_issuance_uses_encrypted_query() {
+    timeout(Duration::from_secs(8), async {
+        let temp = tempfile::tempdir().unwrap();
+        let store = store(&temp, true);
+        let (listener, config) = listener().await;
+        let server = tokio::spawn(async move {
+            let mut peer = Peer::accept(listener.accept().await.unwrap().0).await;
+            peer.send(BinaryNode::new("success")).await;
+            assert!(peer.read().await.child("unified_session").is_some());
+            let request = peer.read().await;
+            assert_eq!(request.attrs["xmlns"], "privacy");
+            assert_eq!(request.attrs["to"], "@s.whatsapp.net");
+            assert_eq!(request.attrs["type"], "set");
+            let token = request.child("tokens").unwrap().child("token").unwrap();
+            assert_eq!(token.attrs["jid"], "100@s.whatsapp.net");
+            assert_eq!(token.attrs["t"], "1700000000");
+            assert_eq!(token.attrs["type"], "trusted_contact");
+            let mut result = BinaryNode::new("iq")
+                .attr("id", &request.attrs["id"])
+                .attr("type", "result");
+            result.content = Some(NodeContent::Children(vec![
+                BinaryNode::new("tokens").with_content(NodeContent::Children(vec![
+                    BinaryNode::new("token")
+                        .attr("jid", "100@s.whatsapp.net")
+                        .attr("t", "1700000000")
+                        .attr("type", "trusted_contact")
+                        .with_content(NodeContent::Bytes(vec![1, 2, 3])),
+                ])),
+            ]));
+            peer.send(result).await;
+            peer.closed().await;
+        });
+        let (socket, _) = Socket::connect(config, store.clone()).await.unwrap();
+        socket.wait_for_open(Duration::from_secs(2)).await.unwrap();
+        let result = socket
+            .issue_privacy_tokens(&["100:7@c.us".into()], Some(1700000000))
+            .await
+            .unwrap();
+        let repository = baileys_rs::privacy::Repository::new(store);
+        assert_eq!(
+            repository.store_from_iq(&result, "").unwrap(),
+            ["100@s.whatsapp.net"]
+        );
+        assert_eq!(
+            repository.build_content("100@s.whatsapp.net", vec![], 1700000000)[0].content,
+            Some(NodeContent::Bytes(vec![1, 2, 3]))
+        );
+        socket.close().await.unwrap();
+        server.await.unwrap();
+    })
+    .await
+    .unwrap();
+}
+
+#[tokio::test]
 async fn usync_contact_lid_and_session_establishment_use_encrypted_queries() {
     timeout(Duration::from_secs(8), async {
         let temp = tempfile::tempdir().unwrap();
