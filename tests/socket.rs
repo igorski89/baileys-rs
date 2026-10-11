@@ -1,3 +1,7 @@
+#[path = "support/group_operations.rs"]
+mod group_operations;
+#[path = "support/json_numbers.rs"]
+mod json_numbers;
 #[path = "support/socket_peer.rs"]
 mod socket_peer;
 use baileys_rs::{
@@ -1107,6 +1111,96 @@ async fn privacy_token_issuance_uses_encrypted_query() {
         assert_eq!(
             repository.build_content("100@s.whatsapp.net", vec![], 1700000000)[0].content,
             Some(NodeContent::Bytes(vec![1, 2, 3]))
+        );
+        socket.close().await.unwrap();
+        server.await.unwrap();
+    })
+    .await
+    .unwrap();
+}
+
+#[tokio::test]
+async fn group_operations_match_original_requests_over_encrypted_transport() {
+    timeout(Duration::from_secs(12), async {
+        let temp = tempfile::tempdir().unwrap();
+        let store = store(&temp, true);
+        let (listener, config) = listener().await;
+        let fixture: serde_json::Value =
+            serde_json::from_str(include_str!("fixtures/groups.json")).unwrap();
+        let operations = fixture["operations"].as_array().unwrap().clone();
+        let expected = operations.clone();
+        let server = tokio::spawn(async move {
+            let mut peer = Peer::accept(listener.accept().await.unwrap().0).await;
+            peer.send(BinaryNode::new("success")).await;
+            assert!(peer.read().await.child("unified_session").is_some());
+            for case in operations {
+                for (wire, response) in case["requests"]
+                    .as_array()
+                    .unwrap()
+                    .iter()
+                    .zip(case["responses"].as_array().unwrap())
+                {
+                    let request = peer.read().await;
+                    let id = request.attrs["id"].clone();
+                    group_operations::assert_request(request, wire.as_str().unwrap());
+                    let mut result =
+                        binary::decode(&group_operations::hex(response.as_str().unwrap())).unwrap();
+                    result.attrs.insert("id".into(), id);
+                    peer.send(result).await;
+                }
+            }
+            let missing = peer.read().await;
+            peer.result(&missing).await;
+            let denied = peer.read().await;
+            peer.send(
+                BinaryNode::new("iq")
+                    .attr("id", &denied.attrs["id"])
+                    .attr("type", "error")
+                    .with_content(NodeContent::Children(vec![
+                        BinaryNode::new("error")
+                            .attr("code", "403")
+                            .attr("text", "synthetic denial"),
+                    ])),
+            )
+            .await;
+            peer.closed().await;
+        });
+        let (socket, mut events) = Socket::connect(config, store).await.unwrap();
+        socket.wait_for_open(Duration::from_secs(2)).await.unwrap();
+        for case in expected {
+            assert_eq!(
+                json_numbers::canonical(&group_operations::execute(&socket, &case).await.unwrap()),
+                json_numbers::canonical(&case["expected"]),
+                "{}",
+                case["method"]
+            );
+            if case["method"] == "groupFetchAllParticipating" {
+                loop {
+                    if let Event::GroupsUpdated(groups) = events.recv().await.unwrap() {
+                        assert_eq!(
+                            json_numbers::canonical(&serde_json::to_value(groups).unwrap()),
+                            json_numbers::canonical(&case["events"][0]["data"])
+                        );
+                        break;
+                    }
+                }
+            }
+        }
+        assert_eq!(
+            socket
+                .group_metadata("missing@g.us")
+                .await
+                .unwrap_err()
+                .status_code(),
+            Some(500)
+        );
+        assert_eq!(
+            socket
+                .group_metadata("denied@g.us")
+                .await
+                .unwrap_err()
+                .status_code(),
+            Some(403)
         );
         socket.close().await.unwrap();
         server.await.unwrap();

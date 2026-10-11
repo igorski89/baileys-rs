@@ -1,5 +1,6 @@
 //! Async WhatsApp WebSocket connection with exclusive Noise ownership and IQ routing.
 mod actor;
+mod groups;
 use crate::{
     auth::{self, Credentials, SqliteAuthStore},
     binary::{self, BinaryNode},
@@ -42,6 +43,8 @@ pub enum Error {
     #[error(transparent)]
     USync(#[from] crate::usync::Error),
     #[error(transparent)]
+    Group(#[from] crate::groups::Error),
+    #[error(transparent)]
     Connection(#[from] connection::Error),
     #[error(transparent)]
     Noise(#[from] noise::Error),
@@ -75,6 +78,7 @@ impl Error {
             Self::Signal(e) => e.status_code(),
             Self::Relay(e) => e.status_code(),
             Self::USync(e) => e.status_code(),
+            Self::Group(e) => Some(e.status_code()),
             Self::Binary(binary::Error::Stanza { code, .. }) => {
                 code.and_then(|n| n.try_into().ok())
             }
@@ -134,6 +138,7 @@ pub enum Event {
     PairingComplete,
     CredentialsUpdated,
     PendingNotifications,
+    GroupsUpdated(Vec<crate::groups::Metadata>),
 }
 impl std::fmt::Debug for Event {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -144,6 +149,9 @@ impl std::fmt::Debug for Event {
             Self::PairingComplete => f.write_str("PairingComplete"),
             Self::CredentialsUpdated => f.write_str("CredentialsUpdated"),
             Self::PendingNotifications => f.write_str("PendingNotifications"),
+            Self::GroupsUpdated(groups) => {
+                f.debug_tuple("GroupsUpdated").field(&groups.len()).finish()
+            }
         }
     }
 }

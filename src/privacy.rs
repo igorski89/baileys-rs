@@ -42,7 +42,7 @@ fn prefix_int(s: &str) -> Option<f64> {
     }
     (digits > 0).then_some(sign * result)
 }
-fn number(s: &str) -> f64 {
+pub(crate) fn number(s: &str) -> f64 {
     let s = trim(s);
     if s.is_empty() {
         return 0.0;

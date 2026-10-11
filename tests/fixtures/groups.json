@@ -1,0 +1,1052 @@
+{
+  "metadata": [
+    {
+      "wire": "00f804190414f801f81eecaa08ff8312345fec7ffc1453796e7468657469632067726f757020f09f929a18fc0547726f7570fc0f61646472657373696e675f6d6f646576ed16f70103ed4cfc06735f6f5f706ef70003ec33fc0c735f6f5f757365726e616d65fc056f776e6572eceeff051700000001edc6e33cff051600000000eca6f70102ed4cfc0a63726561746f725f706ef70002ec33fc1063726561746f725f757365726e616d65eca6fc1463726561746f725f636f756e7472795f636f6465fc024348f80cf80b050cfaed4c76fc0c70686f6e655f6e756d626572faec3303fc147061727469636970616e745f757365726e616d65fc056669727374fc08757365726e616d65fc0769676e6f72656404ec94f809050cfaedf90376faff82800f76fc08757365726e616d65fc067365636f6e6404ec56f809050cfabe76fc0c70686f6e655f6e756d626572fafc0577726f6e677676fafc0577726f6e677604fc00f80cb708fc1470726576696f75732d6465736372697074696f6e05f70102ed4cfc0e7061727469636970616e745f706ef70002ec33fc147061727469636970616e745f757365726e616d65fc096465736372696265721aff051700000002f801f802ed75fc104465736372697074696f6e20f09f929af803edc8bbff8386400ff803fc0d6c696e6b65645f706172656e740cfafc06706172656e741cf801ed2bf801ed02f801fc06706172656e74f801fc1164656661756c745f7375625f67726f7570f801fc186d656d626572736869705f617070726f76616c5f6d6f6465f802ec3cfc0e616c6c5f6d656d6265725f616464",
+      "expected": {
+        "id": "12345@g.us",
+        "notify": "Group",
+        "addressingMode": "lid",
+        "subject": "Synthetic group 💚",
+        "subjectOwner": "900:3@lid",
+        "subjectOwnerPn": "100:3@s.whatsapp.net",
+        "subjectOwnerUsername": "owner",
+        "subjectTime": 1700000001,
+        "size": 7,
+        "creation": 1600000000,
+        "owner": "900@lid",
+        "ownerPn": "100@s.whatsapp.net",
+        "ownerUsername": "creator",
+        "owner_country_code": "CH",
+        "desc": "Description 💚",
+        "descId": "previous-description",
+        "descOwner": "900@lid",
+        "descOwnerPn": "100@s.whatsapp.net",
+        "descOwnerUsername": "describer",
+        "descTime": 1700000002,
+        "linkedParent": "parent@g.us",
+        "restrict": true,
+        "announce": true,
+        "isCommunity": true,
+        "isCommunityAnnounce": true,
+        "joinApprovalMode": true,
+        "memberAddMode": true,
+        "participants": [
+          {
+            "id": "900@lid",
+            "phoneNumber": "100@s.whatsapp.net",
+            "username": "first",
+            "admin": "superadmin"
+          },
+          {
+            "id": "200@s.whatsapp.net",
+            "lid": "800@lid",
+            "username": "second",
+            "admin": "admin"
+          },
+          {
+            "id": "300@lid",
+            "admin": null
+          }
+        ],
+        "ephemeralDuration": 86400
+      },
+      "error": null
+    },
+    {
+      "wire": "00f804190414f801f80aecaa08faff8367890f1cec7ffc08504e2067726f7570eceefc003cfc0430783130f802f805050cfaedf90376faff82800f76f802ec3cfc0961646d696e5f616464",
+      "expected": {
+        "id": "67890@g.us",
+        "addressingMode": "pn",
+        "subject": "PN group",
+        "subjectTime": 0,
+        "size": 1,
+        "creation": 16,
+        "restrict": false,
+        "announce": false,
+        "isCommunity": false,
+        "isCommunityAnnounce": false,
+        "joinApprovalMode": false,
+        "memberAddMode": false,
+        "participants": [
+          {
+            "id": "200@s.whatsapp.net",
+            "lid": "800@lid",
+            "admin": null
+          }
+        ]
+      },
+      "error": null
+    },
+    {
+      "wire": "00f804190414f801f80aecaa08fc0c6e756d6265722d6361736573eceeee7bedc6ee7b3cfc08496e66696e697479f803f80105f802b7f801f802ed75fc00f803edc8bbee7b",
+      "expected": {
+        "id": "number-cases@g.us",
+        "addressingMode": "pn",
+        "subjectTime": null,
+        "size": null,
+        "creation": null,
+        "desc": "",
+        "descTime": null,
+        "restrict": false,
+        "announce": false,
+        "isCommunity": false,
+        "isCommunityAnnounce": false,
+        "joinApprovalMode": false,
+        "memberAddMode": false,
+        "participants": [
+          {
+            "admin": null
+          }
+        ],
+        "ephemeralDuration": null
+      },
+      "error": null
+    },
+    {
+      "wire": "00f80419041400",
+      "expected": null,
+      "error": {
+        "message": "Invalid group metadata response: missing <group> node",
+        "status": 500
+      }
+    },
+    {
+      "wire": "00f804190414f801f803ecaaec7ffc056e6f206964",
+      "expected": null,
+      "error": {
+        "message": "Invalid group metadata response: missing group id",
+        "status": 500
+      }
+    },
+    {
+      "wire": "00f804190414f801f805a870ff82403f38fc0664656e696564",
+      "expected": null,
+      "error": {
+        "message": "denied",
+        "status": 403
+      }
+    },
+    {
+      "wire": "00f804190414f801f801a8",
+      "expected": null,
+      "error": {
+        "message": "group metadata query failed",
+        "status": 500
+      }
+    }
+  ],
+  "operations": [
+    {
+      "method": "groupMetadata",
+      "args": [
+        "12345@g.us"
+      ],
+      "requests": [
+        "00f80819042916ed3311faff8312345f1cf801f8036dedc7e5"
+      ],
+      "responses": [
+        "00f804190414f801f81eecaa08ff8312345fec7ffc1453796e7468657469632067726f757020f09f929a18fc0547726f7570fc0f61646472657373696e675f6d6f646576ed16f70103ed4cfc06735f6f5f706ef70003ec33fc0c735f6f5f757365726e616d65fc056f776e6572eceeff051700000001edc6e33cff051600000000eca6f70102ed4cfc0a63726561746f725f706ef70002ec33fc1063726561746f725f757365726e616d65eca6fc1463726561746f725f636f756e7472795f636f6465fc024348f80cf80b050cfaed4c76fc0c70686f6e655f6e756d626572faec3303fc147061727469636970616e745f757365726e616d65fc056669727374fc08757365726e616d65fc0769676e6f72656404ec94f809050cfaedf90376faff82800f76fc08757365726e616d65fc067365636f6e6404ec56f809050cfabe76fc0c70686f6e655f6e756d626572fafc0577726f6e677676fafc0577726f6e677604fc00f80cb708fc1470726576696f75732d6465736372697074696f6e05f70102ed4cfc0e7061727469636970616e745f706ef70002ec33fc147061727469636970616e745f757365726e616d65fc096465736372696265721aff051700000002f801f802ed75fc104465736372697074696f6e20f09f929af803edc8bbff8386400ff803fc0d6c696e6b65645f706172656e740cfafc06706172656e741cf801ed2bf801ed02f801fc06706172656e74f801fc1164656661756c745f7375625f67726f7570f801fc186d656d626572736869705f617070726f76616c5f6d6f6465f802ec3cfc0e616c6c5f6d656d6265725f616464"
+      ],
+      "expected": {
+        "id": "12345@g.us",
+        "notify": "Group",
+        "addressingMode": "lid",
+        "subject": "Synthetic group 💚",
+        "subjectOwner": "900:3@lid",
+        "subjectOwnerPn": "100:3@s.whatsapp.net",
+        "subjectOwnerUsername": "owner",
+        "subjectTime": 1700000001,
+        "size": 7,
+        "creation": 1600000000,
+        "owner": "900@lid",
+        "ownerPn": "100@s.whatsapp.net",
+        "ownerUsername": "creator",
+        "owner_country_code": "CH",
+        "desc": "Description 💚",
+        "descId": "previous-description",
+        "descOwner": "900@lid",
+        "descOwnerPn": "100@s.whatsapp.net",
+        "descOwnerUsername": "describer",
+        "descTime": 1700000002,
+        "linkedParent": "parent@g.us",
+        "restrict": true,
+        "announce": true,
+        "isCommunity": true,
+        "isCommunityAnnounce": true,
+        "joinApprovalMode": true,
+        "memberAddMode": true,
+        "participants": [
+          {
+            "id": "900@lid",
+            "phoneNumber": "100@s.whatsapp.net",
+            "username": "first",
+            "admin": "superadmin"
+          },
+          {
+            "id": "200@s.whatsapp.net",
+            "lid": "800@lid",
+            "username": "second",
+            "admin": "admin"
+          },
+          {
+            "id": "300@lid",
+            "admin": null
+          }
+        ],
+        "ephemeralDuration": 86400
+      },
+      "events": []
+    },
+    {
+      "method": "groupFetchAllParticipating",
+      "args": [],
+      "requests": [
+        "00f8081911fa001c16ed330429f801f802ed78f802f8016bf801b7"
+      ],
+      "responses": [
+        "00f804190414f801f802ecc0f802f81eecaa08ff8312345fec7ffc1453796e7468657469632067726f757020f09f929a18fc0547726f7570fc0f61646472657373696e675f6d6f646576ed16f70103ed4cfc06735f6f5f706ef70003ec33fc0c735f6f5f757365726e616d65fc056f776e6572eceeff051700000001edc6e33cff051600000000eca6f70102ed4cfc0a63726561746f725f706ef70002ec33fc1063726561746f725f757365726e616d65eca6fc1463726561746f725f636f756e7472795f636f6465fc024348f80cf80b050cfaed4c76fc0c70686f6e655f6e756d626572faec3303fc147061727469636970616e745f757365726e616d65fc056669727374fc08757365726e616d65fc0769676e6f72656404ec94f809050cfaedf90376faff82800f76fc08757365726e616d65fc067365636f6e6404ec56f809050cfabe76fc0c70686f6e655f6e756d626572fafc0577726f6e677676fafc0577726f6e677604fc00f80cb708fc1470726576696f75732d6465736372697074696f6e05f70102ed4cfc0e7061727469636970616e745f706ef70002ec33fc147061727469636970616e745f757365726e616d65fc096465736372696265721aff051700000002f801f802ed75fc104465736372697074696f6e20f09f929af803edc8bbff8386400ff803fc0d6c696e6b65645f706172656e740cfafc06706172656e741cf801ed2bf801ed02f801fc06706172656e74f801fc1164656661756c745f7375625f67726f7570f801fc186d656d626572736869705f617070726f76616c5f6d6f6465f802ec3cfc0e616c6c5f6d656d6265725f616464f80aecaa08faff8367890f1cec7ffc08504e2067726f7570eceefc003cfc0430783130f802f805050cfaedf90376faff82800f76f802ec3cfc0961646d696e5f616464"
+      ],
+      "expected": {
+        "12345@g.us": {
+          "id": "12345@g.us",
+          "notify": "Group",
+          "addressingMode": "lid",
+          "subject": "Synthetic group 💚",
+          "subjectOwner": "900:3@lid",
+          "subjectOwnerPn": "100:3@s.whatsapp.net",
+          "subjectOwnerUsername": "owner",
+          "subjectTime": 1700000001,
+          "size": 7,
+          "creation": 1600000000,
+          "owner": "900@lid",
+          "ownerPn": "100@s.whatsapp.net",
+          "ownerUsername": "creator",
+          "owner_country_code": "CH",
+          "desc": "Description 💚",
+          "descId": "previous-description",
+          "descOwner": "900@lid",
+          "descOwnerPn": "100@s.whatsapp.net",
+          "descOwnerUsername": "describer",
+          "descTime": 1700000002,
+          "linkedParent": "parent@g.us",
+          "restrict": true,
+          "announce": true,
+          "isCommunity": true,
+          "isCommunityAnnounce": true,
+          "joinApprovalMode": true,
+          "memberAddMode": true,
+          "participants": [
+            {
+              "id": "900@lid",
+              "phoneNumber": "100@s.whatsapp.net",
+              "username": "first",
+              "admin": "superadmin"
+            },
+            {
+              "id": "200@s.whatsapp.net",
+              "lid": "800@lid",
+              "username": "second",
+              "admin": "admin"
+            },
+            {
+              "id": "300@lid",
+              "admin": null
+            }
+          ],
+          "ephemeralDuration": 86400
+        },
+        "67890@g.us": {
+          "id": "67890@g.us",
+          "addressingMode": "pn",
+          "subject": "PN group",
+          "subjectTime": 0,
+          "size": 1,
+          "creation": 16,
+          "restrict": false,
+          "announce": false,
+          "isCommunity": false,
+          "isCommunityAnnounce": false,
+          "joinApprovalMode": false,
+          "memberAddMode": false,
+          "participants": [
+            {
+              "id": "200@s.whatsapp.net",
+              "lid": "800@lid",
+              "admin": null
+            }
+          ]
+        }
+      },
+      "events": [
+        {
+          "event": "groups.update",
+          "data": [
+            {
+              "id": "12345@g.us",
+              "notify": "Group",
+              "addressingMode": "lid",
+              "subject": "Synthetic group 💚",
+              "subjectOwner": "900:3@lid",
+              "subjectOwnerPn": "100:3@s.whatsapp.net",
+              "subjectOwnerUsername": "owner",
+              "subjectTime": 1700000001,
+              "size": 7,
+              "creation": 1600000000,
+              "owner": "900@lid",
+              "ownerPn": "100@s.whatsapp.net",
+              "ownerUsername": "creator",
+              "owner_country_code": "CH",
+              "desc": "Description 💚",
+              "descId": "previous-description",
+              "descOwner": "900@lid",
+              "descOwnerPn": "100@s.whatsapp.net",
+              "descOwnerUsername": "describer",
+              "descTime": 1700000002,
+              "linkedParent": "parent@g.us",
+              "restrict": true,
+              "announce": true,
+              "isCommunity": true,
+              "isCommunityAnnounce": true,
+              "joinApprovalMode": true,
+              "memberAddMode": true,
+              "participants": [
+                {
+                  "id": "900@lid",
+                  "phoneNumber": "100@s.whatsapp.net",
+                  "username": "first",
+                  "admin": "superadmin"
+                },
+                {
+                  "id": "200@s.whatsapp.net",
+                  "lid": "800@lid",
+                  "username": "second",
+                  "admin": "admin"
+                },
+                {
+                  "id": "300@lid",
+                  "admin": null
+                }
+              ],
+              "ephemeralDuration": 86400
+            },
+            {
+              "id": "67890@g.us",
+              "addressingMode": "pn",
+              "subject": "PN group",
+              "subjectTime": 0,
+              "size": 1,
+              "creation": 16,
+              "restrict": false,
+              "announce": false,
+              "isCommunity": false,
+              "isCommunityAnnounce": false,
+              "joinApprovalMode": false,
+              "memberAddMode": false,
+              "participants": [
+                {
+                  "id": "200@s.whatsapp.net",
+                  "lid": "800@lid",
+                  "admin": null
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "method": "groupCreate",
+      "args": [
+        "New group",
+        [
+          "100@s.whatsapp.net",
+          "900@lid"
+        ]
+      ],
+      "requests": [
+        "00f80819045a16ed3311fa001cf801f806ef4cec7ffc094e65772067726f75709efc0846495845442d4944f802f803050cfaec3303f803050cfaed4c76"
+      ],
+      "responses": [
+        "00f804190414f801f81eecaa08ff8312345fec7ffc1453796e7468657469632067726f757020f09f929a18fc0547726f7570fc0f61646472657373696e675f6d6f646576ed16f70103ed4cfc06735f6f5f706ef70003ec33fc0c735f6f5f757365726e616d65fc056f776e6572eceeff051700000001edc6e33cff051600000000eca6f70102ed4cfc0a63726561746f725f706ef70002ec33fc1063726561746f725f757365726e616d65eca6fc1463726561746f725f636f756e7472795f636f6465fc024348f80cf80b050cfaed4c76fc0c70686f6e655f6e756d626572faec3303fc147061727469636970616e745f757365726e616d65fc056669727374fc08757365726e616d65fc0769676e6f72656404ec94f809050cfaedf90376faff82800f76fc08757365726e616d65fc067365636f6e6404ec56f809050cfabe76fc0c70686f6e655f6e756d626572fafc0577726f6e677676fafc0577726f6e677604fc00f80cb708fc1470726576696f75732d6465736372697074696f6e05f70102ed4cfc0e7061727469636970616e745f706ef70002ec33fc147061727469636970616e745f757365726e616d65fc096465736372696265721aff051700000002f801f802ed75fc104465736372697074696f6e20f09f929af803edc8bbff8386400ff803fc0d6c696e6b65645f706172656e740cfafc06706172656e741cf801ed2bf801ed02f801fc06706172656e74f801fc1164656661756c745f7375625f67726f7570f801fc186d656d626572736869705f617070726f76616c5f6d6f6465f802ec3cfc0e616c6c5f6d656d6265725f616464"
+      ],
+      "expected": {
+        "id": "12345@g.us",
+        "notify": "Group",
+        "addressingMode": "lid",
+        "subject": "Synthetic group 💚",
+        "subjectOwner": "900:3@lid",
+        "subjectOwnerPn": "100:3@s.whatsapp.net",
+        "subjectOwnerUsername": "owner",
+        "subjectTime": 1700000001,
+        "size": 7,
+        "creation": 1600000000,
+        "owner": "900@lid",
+        "ownerPn": "100@s.whatsapp.net",
+        "ownerUsername": "creator",
+        "owner_country_code": "CH",
+        "desc": "Description 💚",
+        "descId": "previous-description",
+        "descOwner": "900@lid",
+        "descOwnerPn": "100@s.whatsapp.net",
+        "descOwnerUsername": "describer",
+        "descTime": 1700000002,
+        "linkedParent": "parent@g.us",
+        "restrict": true,
+        "announce": true,
+        "isCommunity": true,
+        "isCommunityAnnounce": true,
+        "joinApprovalMode": true,
+        "memberAddMode": true,
+        "participants": [
+          {
+            "id": "900@lid",
+            "phoneNumber": "100@s.whatsapp.net",
+            "username": "first",
+            "admin": "superadmin"
+          },
+          {
+            "id": "200@s.whatsapp.net",
+            "lid": "800@lid",
+            "username": "second",
+            "admin": "admin"
+          },
+          {
+            "id": "300@lid",
+            "admin": null
+          }
+        ],
+        "ephemeralDuration": 86400
+      },
+      "events": []
+    },
+    {
+      "method": "groupLeave",
+      "args": [
+        "12345@g.us"
+      ],
+      "requests": [
+        "00f80819045a16ed3311fa001cf801f802fc056c65617665f801f803ecaa08faff8312345f1c"
+      ],
+      "responses": [
+        "00f80419041400"
+      ],
+      "expected": null,
+      "events": []
+    },
+    {
+      "method": "groupUpdateSubject",
+      "args": [
+        "12345@g.us",
+        "New subject 💚"
+      ],
+      "requests": [
+        "00f80819045a16ed3311faff8312345f1cf801f802ec7ffc104e6577207375626a65637420f09f929a"
+      ],
+      "responses": [
+        "00f80419041400"
+      ],
+      "expected": null,
+      "events": []
+    },
+    {
+      "method": "groupRequestParticipantsList",
+      "args": [
+        "12345@g.us"
+      ],
+      "requests": [
+        "00f80819042916ed3311faff8312345f1cf801f801fc1c6d656d626572736869705f617070726f76616c5f7265717565737473"
+      ],
+      "responses": [
+        "00f804190414f801f802fc1c6d656d626572736869705f617070726f76616c5f7265717565737473f801f807fc1b6d656d626572736869705f617070726f76616c5f726571756573740cfaec3303fc0e726571756573745f6d6574686f64fc0b696e766974655f6c696e6b1aff051700000000"
+      ],
+      "expected": [
+        {
+          "jid": "100@s.whatsapp.net",
+          "request_method": "invite_link",
+          "t": "1700000000"
+        }
+      ],
+      "events": []
+    },
+    {
+      "method": "groupRequestParticipantsUpdate",
+      "args": [
+        "12345@g.us",
+        [
+          "100@s.whatsapp.net",
+          "200@s.whatsapp.net"
+        ],
+        "approve"
+      ],
+      "requests": [
+        "00f80819045a16ed3311faff8312345f1cf801f802fc1a6d656d626572736869705f72657175657374735f616374696f6ef801f802fc07617070726f7665f802f803050cfaec3303f803050cfaedf903"
+      ],
+      "responses": [
+        "00f804190414f801f802fc1a6d656d626572736869705f72657175657374735f616374696f6ef801f802fc07617070726f7665f802f803050cfaec3303f805050cfaedf903a8ff82409f"
+      ],
+      "expected": [
+        {
+          "status": "200",
+          "jid": "100@s.whatsapp.net"
+        },
+        {
+          "status": "409",
+          "jid": "200@s.whatsapp.net"
+        }
+      ],
+      "events": []
+    },
+    {
+      "method": "groupRequestParticipantsUpdate",
+      "args": [
+        "12345@g.us",
+        [
+          "100@s.whatsapp.net",
+          "200@s.whatsapp.net"
+        ],
+        "reject"
+      ],
+      "requests": [
+        "00f80819045a16ed3311faff8312345f1cf801f802fc1a6d656d626572736869705f72657175657374735f616374696f6ef801f802ed00f802f803050cfaec3303f803050cfaedf903"
+      ],
+      "responses": [
+        "00f804190414f801f802fc1a6d656d626572736869705f72657175657374735f616374696f6ef801f802ed00f802f803050cfaec3303f805050cfaedf903a8ff82409f"
+      ],
+      "expected": [
+        {
+          "status": "200",
+          "jid": "100@s.whatsapp.net"
+        },
+        {
+          "status": "409",
+          "jid": "200@s.whatsapp.net"
+        }
+      ],
+      "events": []
+    },
+    {
+      "method": "groupParticipantsUpdate",
+      "args": [
+        "12345@g.us",
+        [
+          "100@s.whatsapp.net",
+          "200@s.whatsapp.net"
+        ],
+        "add"
+      ],
+      "requests": [
+        "00f80819045a16ed3311faff8312345f1cf801f80297f802f803050cfaec3303f803050cfaedf903"
+      ],
+      "responses": [
+        "00f804190414f801f80297f802f803050cfaec3303f805050cfaedf903a8ff82403f"
+      ],
+      "expected": [
+        {
+          "status": "200",
+          "jid": "100@s.whatsapp.net",
+          "content": {
+            "tag": "participant",
+            "attrs": {
+              "jid": "100@s.whatsapp.net"
+            }
+          }
+        },
+        {
+          "status": "403",
+          "jid": "200@s.whatsapp.net",
+          "content": {
+            "tag": "participant",
+            "attrs": {
+              "jid": "200@s.whatsapp.net",
+              "error": "403"
+            }
+          }
+        }
+      ],
+      "events": []
+    },
+    {
+      "method": "groupParticipantsUpdate",
+      "args": [
+        "12345@g.us",
+        [
+          "100@s.whatsapp.net",
+          "200@s.whatsapp.net"
+        ],
+        "remove"
+      ],
+      "requests": [
+        "00f80819045a16ed3311faff8312345f1cf801f802aff802f803050cfaec3303f803050cfaedf903"
+      ],
+      "responses": [
+        "00f804190414f801f802aff802f803050cfaec3303f805050cfaedf903a8ff82403f"
+      ],
+      "expected": [
+        {
+          "status": "200",
+          "jid": "100@s.whatsapp.net",
+          "content": {
+            "tag": "participant",
+            "attrs": {
+              "jid": "100@s.whatsapp.net"
+            }
+          }
+        },
+        {
+          "status": "403",
+          "jid": "200@s.whatsapp.net",
+          "content": {
+            "tag": "participant",
+            "attrs": {
+              "jid": "200@s.whatsapp.net",
+              "error": "403"
+            }
+          }
+        }
+      ],
+      "events": []
+    },
+    {
+      "method": "groupParticipantsUpdate",
+      "args": [
+        "12345@g.us",
+        [
+          "100@s.whatsapp.net",
+          "200@s.whatsapp.net"
+        ],
+        "promote"
+      ],
+      "requests": [
+        "00f80819045a16ed3311faff8312345f1cf801f802fc0770726f6d6f7465f802f803050cfaec3303f803050cfaedf903"
+      ],
+      "responses": [
+        "00f804190414f801f802fc0770726f6d6f7465f802f803050cfaec3303f805050cfaedf903a8ff82403f"
+      ],
+      "expected": [
+        {
+          "status": "200",
+          "jid": "100@s.whatsapp.net",
+          "content": {
+            "tag": "participant",
+            "attrs": {
+              "jid": "100@s.whatsapp.net"
+            }
+          }
+        },
+        {
+          "status": "403",
+          "jid": "200@s.whatsapp.net",
+          "content": {
+            "tag": "participant",
+            "attrs": {
+              "jid": "200@s.whatsapp.net",
+              "error": "403"
+            }
+          }
+        }
+      ],
+      "events": []
+    },
+    {
+      "method": "groupParticipantsUpdate",
+      "args": [
+        "12345@g.us",
+        [
+          "100@s.whatsapp.net",
+          "200@s.whatsapp.net"
+        ],
+        "demote"
+      ],
+      "requests": [
+        "00f80819045a16ed3311faff8312345f1cf801f802fc0664656d6f7465f802f803050cfaec3303f803050cfaedf903"
+      ],
+      "responses": [
+        "00f804190414f801f802fc0664656d6f7465f802f803050cfaec3303f805050cfaedf903a8ff82403f"
+      ],
+      "expected": [
+        {
+          "status": "200",
+          "jid": "100@s.whatsapp.net",
+          "content": {
+            "tag": "participant",
+            "attrs": {
+              "jid": "100@s.whatsapp.net"
+            }
+          }
+        },
+        {
+          "status": "403",
+          "jid": "200@s.whatsapp.net",
+          "content": {
+            "tag": "participant",
+            "attrs": {
+              "jid": "200@s.whatsapp.net",
+              "error": "403"
+            }
+          }
+        }
+      ],
+      "events": []
+    },
+    {
+      "method": "groupParticipantsUpdate",
+      "args": [
+        "12345@g.us",
+        [
+          "100@s.whatsapp.net",
+          "200@s.whatsapp.net"
+        ],
+        "modify"
+      ],
+      "requests": [
+        "00f80819045a16ed3311faff8312345f1cf801f802efdbf802f803050cfaec3303f803050cfaedf903"
+      ],
+      "responses": [
+        "00f804190414f801f802efdbf802f803050cfaec3303f805050cfaedf903a8ff82403f"
+      ],
+      "expected": [
+        {
+          "status": "200",
+          "jid": "100@s.whatsapp.net",
+          "content": {
+            "tag": "participant",
+            "attrs": {
+              "jid": "100@s.whatsapp.net"
+            }
+          }
+        },
+        {
+          "status": "403",
+          "jid": "200@s.whatsapp.net",
+          "content": {
+            "tag": "participant",
+            "attrs": {
+              "jid": "200@s.whatsapp.net",
+              "error": "403"
+            }
+          }
+        }
+      ],
+      "events": []
+    },
+    {
+      "method": "groupUpdateDescription",
+      "args": [
+        "12345@g.us",
+        "Description changed 💚"
+      ],
+      "requests": [
+        "00f80819042916ed3311faff8312345f1cf801f8036dedc7e5",
+        "00f80819045a16ed3311faff8312345f1cf801f806b708fc0846495845442d4944fc0470726576fc1470726576696f75732d6465736372697074696f6ef801f802ed75fc184465736372697074696f6e206368616e67656420f09f929a"
+      ],
+      "responses": [
+        "00f804190414f801f81eecaa08ff8312345fec7ffc1453796e7468657469632067726f757020f09f929a18fc0547726f7570fc0f61646472657373696e675f6d6f646576ed16f70103ed4cfc06735f6f5f706ef70003ec33fc0c735f6f5f757365726e616d65fc056f776e6572eceeff051700000001edc6e33cff051600000000eca6f70102ed4cfc0a63726561746f725f706ef70002ec33fc1063726561746f725f757365726e616d65eca6fc1463726561746f725f636f756e7472795f636f6465fc024348f80cf80b050cfaed4c76fc0c70686f6e655f6e756d626572faec3303fc147061727469636970616e745f757365726e616d65fc056669727374fc08757365726e616d65fc0769676e6f72656404ec94f809050cfaedf90376faff82800f76fc08757365726e616d65fc067365636f6e6404ec56f809050cfabe76fc0c70686f6e655f6e756d626572fafc0577726f6e677676fafc0577726f6e677604fc00f80cb708fc1470726576696f75732d6465736372697074696f6e05f70102ed4cfc0e7061727469636970616e745f706ef70002ec33fc147061727469636970616e745f757365726e616d65fc096465736372696265721aff051700000002f801f802ed75fc104465736372697074696f6e20f09f929af803edc8bbff8386400ff803fc0d6c696e6b65645f706172656e740cfafc06706172656e741cf801ed2bf801ed02f801fc06706172656e74f801fc1164656661756c745f7375625f67726f7570f801fc186d656d626572736869705f617070726f76616c5f6d6f6465f802ec3cfc0e616c6c5f6d656d6265725f616464",
+        "00f80419041400"
+      ],
+      "expected": null,
+      "events": []
+    },
+    {
+      "method": "groupUpdateDescription",
+      "args": [
+        "12345@g.us",
+        ""
+      ],
+      "requests": [
+        "00f80819042916ed3311faff8312345f1cf801f8036dedc7e5",
+        "00f80819045a16ed3311faff8312345f1cf801f805b7ec529bfc0470726576fc1470726576696f75732d6465736372697074696f6e"
+      ],
+      "responses": [
+        "00f804190414f801f81eecaa08ff8312345fec7ffc1453796e7468657469632067726f757020f09f929a18fc0547726f7570fc0f61646472657373696e675f6d6f646576ed16f70103ed4cfc06735f6f5f706ef70003ec33fc0c735f6f5f757365726e616d65fc056f776e6572eceeff051700000001edc6e33cff051600000000eca6f70102ed4cfc0a63726561746f725f706ef70002ec33fc1063726561746f725f757365726e616d65eca6fc1463726561746f725f636f756e7472795f636f6465fc024348f80cf80b050cfaed4c76fc0c70686f6e655f6e756d626572faec3303fc147061727469636970616e745f757365726e616d65fc056669727374fc08757365726e616d65fc0769676e6f72656404ec94f809050cfaedf90376faff82800f76fc08757365726e616d65fc067365636f6e6404ec56f809050cfabe76fc0c70686f6e655f6e756d626572fafc0577726f6e677676fafc0577726f6e677604fc00f80cb708fc1470726576696f75732d6465736372697074696f6e05f70102ed4cfc0e7061727469636970616e745f706ef70002ec33fc147061727469636970616e745f757365726e616d65fc096465736372696265721aff051700000002f801f802ed75fc104465736372697074696f6e20f09f929af803edc8bbff8386400ff803fc0d6c696e6b65645f706172656e740cfafc06706172656e741cf801ed2bf801ed02f801fc06706172656e74f801fc1164656661756c745f7375625f67726f7570f801fc186d656d626572736869705f617070726f76616c5f6d6f6465f802ec3cfc0e616c6c5f6d656d6265725f616464",
+        "00f80419041400"
+      ],
+      "expected": null,
+      "events": []
+    },
+    {
+      "method": "groupUpdateDescription",
+      "args": [
+        "12345@g.us",
+        null
+      ],
+      "requests": [
+        "00f80819042916ed3311faff8312345f1cf801f8036dedc7e5",
+        "00f80819045a16ed3311faff8312345f1cf801f805b7ec529bfc0470726576fc1470726576696f75732d6465736372697074696f6e"
+      ],
+      "responses": [
+        "00f804190414f801f81eecaa08ff8312345fec7ffc1453796e7468657469632067726f757020f09f929a18fc0547726f7570fc0f61646472657373696e675f6d6f646576ed16f70103ed4cfc06735f6f5f706ef70003ec33fc0c735f6f5f757365726e616d65fc056f776e6572eceeff051700000001edc6e33cff051600000000eca6f70102ed4cfc0a63726561746f725f706ef70002ec33fc1063726561746f725f757365726e616d65eca6fc1463726561746f725f636f756e7472795f636f6465fc024348f80cf80b050cfaed4c76fc0c70686f6e655f6e756d626572faec3303fc147061727469636970616e745f757365726e616d65fc056669727374fc08757365726e616d65fc0769676e6f72656404ec94f809050cfaedf90376faff82800f76fc08757365726e616d65fc067365636f6e6404ec56f809050cfabe76fc0c70686f6e655f6e756d626572fafc0577726f6e677676fafc0577726f6e677604fc00f80cb708fc1470726576696f75732d6465736372697074696f6e05f70102ed4cfc0e7061727469636970616e745f706ef70002ec33fc147061727469636970616e745f757365726e616d65fc096465736372696265721aff051700000002f801f802ed75fc104465736372697074696f6e20f09f929af803edc8bbff8386400ff803fc0d6c696e6b65645f706172656e740cfafc06706172656e741cf801ed2bf801ed02f801fc06706172656e74f801fc1164656661756c745f7375625f67726f7570f801fc186d656d626572736869705f617070726f76616c5f6d6f6465f802ec3cfc0e616c6c5f6d656d6265725f616464",
+        "00f80419041400"
+      ],
+      "expected": null,
+      "events": []
+    },
+    {
+      "method": "groupInviteCode",
+      "args": [
+        "12345@g.us"
+      ],
+      "requests": [
+        "00f80819042916ed3311faff8312345f1cf801f801ec61"
+      ],
+      "responses": [
+        "00f804190414f801f803ec6170fc1073796e7468657469632d696e76697465"
+      ],
+      "expected": "synthetic-invite",
+      "events": []
+    },
+    {
+      "method": "groupRevokeInvite",
+      "args": [
+        "12345@g.us"
+      ],
+      "requests": [
+        "00f80819045a16ed3311faff8312345f1cf801f801ec61"
+      ],
+      "responses": [
+        "00f804190414f801f803ec6170fc1173796e7468657469632d7265766f6b6564"
+      ],
+      "expected": "synthetic-revoked",
+      "events": []
+    },
+    {
+      "method": "groupAcceptInvite",
+      "args": [
+        "synthetic-invite"
+      ],
+      "requests": [
+        "00f80819045a16ed3311fa001cf801f803ec6170fc1073796e7468657469632d696e76697465"
+      ],
+      "responses": [
+        "00f804190414f801f803ecaa0cfaff8312345f1c"
+      ],
+      "expected": "12345@g.us",
+      "events": []
+    },
+    {
+      "method": "groupRevokeInviteV4",
+      "args": [
+        "12345@g.us",
+        "100@s.whatsapp.net"
+      ],
+      "requests": [
+        "00f80819045a16ed3311faff8312345f1cf801f802fc067265766f6b65f801f803050cfaec3303"
+      ],
+      "responses": [
+        "00f80419041400"
+      ],
+      "expected": true,
+      "events": []
+    },
+    {
+      "method": "groupGetInviteInfo",
+      "args": [
+        "synthetic-invite"
+      ],
+      "requests": [
+        "00f80819042916ed3311fa001cf801f803ec6170fc1073796e7468657469632d696e76697465"
+      ],
+      "responses": [
+        "00f804190414f801f81eecaa08ff8312345fec7ffc1453796e7468657469632067726f757020f09f929a18fc0547726f7570fc0f61646472657373696e675f6d6f646576ed16f70103ed4cfc06735f6f5f706ef70003ec33fc0c735f6f5f757365726e616d65fc056f776e6572eceeff051700000001edc6e33cff051600000000eca6f70102ed4cfc0a63726561746f725f706ef70002ec33fc1063726561746f725f757365726e616d65eca6fc1463726561746f725f636f756e7472795f636f6465fc024348f80cf80b050cfaed4c76fc0c70686f6e655f6e756d626572faec3303fc147061727469636970616e745f757365726e616d65fc056669727374fc08757365726e616d65fc0769676e6f72656404ec94f809050cfaedf90376faff82800f76fc08757365726e616d65fc067365636f6e6404ec56f809050cfabe76fc0c70686f6e655f6e756d626572fafc0577726f6e677676fafc0577726f6e677604fc00f80cb708fc1470726576696f75732d6465736372697074696f6e05f70102ed4cfc0e7061727469636970616e745f706ef70002ec33fc147061727469636970616e745f757365726e616d65fc096465736372696265721aff051700000002f801f802ed75fc104465736372697074696f6e20f09f929af803edc8bbff8386400ff803fc0d6c696e6b65645f706172656e740cfafc06706172656e741cf801ed2bf801ed02f801fc06706172656e74f801fc1164656661756c745f7375625f67726f7570f801fc186d656d626572736869705f617070726f76616c5f6d6f6465f802ec3cfc0e616c6c5f6d656d6265725f616464"
+      ],
+      "expected": {
+        "id": "12345@g.us",
+        "notify": "Group",
+        "addressingMode": "lid",
+        "subject": "Synthetic group 💚",
+        "subjectOwner": "900:3@lid",
+        "subjectOwnerPn": "100:3@s.whatsapp.net",
+        "subjectOwnerUsername": "owner",
+        "subjectTime": 1700000001,
+        "size": 7,
+        "creation": 1600000000,
+        "owner": "900@lid",
+        "ownerPn": "100@s.whatsapp.net",
+        "ownerUsername": "creator",
+        "owner_country_code": "CH",
+        "desc": "Description 💚",
+        "descId": "previous-description",
+        "descOwner": "900@lid",
+        "descOwnerPn": "100@s.whatsapp.net",
+        "descOwnerUsername": "describer",
+        "descTime": 1700000002,
+        "linkedParent": "parent@g.us",
+        "restrict": true,
+        "announce": true,
+        "isCommunity": true,
+        "isCommunityAnnounce": true,
+        "joinApprovalMode": true,
+        "memberAddMode": true,
+        "participants": [
+          {
+            "id": "900@lid",
+            "phoneNumber": "100@s.whatsapp.net",
+            "username": "first",
+            "admin": "superadmin"
+          },
+          {
+            "id": "200@s.whatsapp.net",
+            "lid": "800@lid",
+            "username": "second",
+            "admin": "admin"
+          },
+          {
+            "id": "300@lid",
+            "admin": null
+          }
+        ],
+        "ephemeralDuration": 86400
+      },
+      "events": []
+    },
+    {
+      "method": "groupToggleEphemeral",
+      "args": [
+        "12345@g.us",
+        0
+      ],
+      "requests": [
+        "00f80819045a16ed3311faff8312345f1cf801f801fc0d6e6f745f657068656d6572616c"
+      ],
+      "responses": [
+        "00f80419041400"
+      ],
+      "expected": null,
+      "events": []
+    },
+    {
+      "method": "groupToggleEphemeral",
+      "args": [
+        "12345@g.us",
+        86400
+      ],
+      "requests": [
+        "00f80819045a16ed3311faff8312345f1cf801f803edc8bbff8386400f"
+      ],
+      "responses": [
+        "00f80419041400"
+      ],
+      "expected": null,
+      "events": []
+    },
+    {
+      "method": "groupSettingUpdate",
+      "args": [
+        "12345@g.us",
+        "announcement"
+      ],
+      "requests": [
+        "00f80819045a16ed3311faff8312345f1cf801f801ed02"
+      ],
+      "responses": [
+        "00f80419041400"
+      ],
+      "expected": null,
+      "events": []
+    },
+    {
+      "method": "groupSettingUpdate",
+      "args": [
+        "12345@g.us",
+        "not_announcement"
+      ],
+      "requests": [
+        "00f80819045a16ed3311faff8312345f1cf801f801fc106e6f745f616e6e6f756e63656d656e74"
+      ],
+      "responses": [
+        "00f80419041400"
+      ],
+      "expected": null,
+      "events": []
+    },
+    {
+      "method": "groupSettingUpdate",
+      "args": [
+        "12345@g.us",
+        "locked"
+      ],
+      "requests": [
+        "00f80819045a16ed3311faff8312345f1cf801f801ed2b"
+      ],
+      "responses": [
+        "00f80419041400"
+      ],
+      "expected": null,
+      "events": []
+    },
+    {
+      "method": "groupSettingUpdate",
+      "args": [
+        "12345@g.us",
+        "unlocked"
+      ],
+      "requests": [
+        "00f80819045a16ed3311faff8312345f1cf801f801fc08756e6c6f636b6564"
+      ],
+      "responses": [
+        "00f80419041400"
+      ],
+      "expected": null,
+      "events": []
+    },
+    {
+      "method": "groupMemberAddMode",
+      "args": [
+        "12345@g.us",
+        "admin_add"
+      ],
+      "requests": [
+        "00f80819045a16ed3311faff8312345f1cf801f802ec3cfc0961646d696e5f616464"
+      ],
+      "responses": [
+        "00f80419041400"
+      ],
+      "expected": null,
+      "events": []
+    },
+    {
+      "method": "groupMemberAddMode",
+      "args": [
+        "12345@g.us",
+        "all_member_add"
+      ],
+      "requests": [
+        "00f80819045a16ed3311faff8312345f1cf801f802ec3cfc0e616c6c5f6d656d6265725f616464"
+      ],
+      "responses": [
+        "00f80419041400"
+      ],
+      "expected": null,
+      "events": []
+    },
+    {
+      "method": "groupJoinApprovalMode",
+      "args": [
+        "12345@g.us",
+        "on"
+      ],
+      "requests": [
+        "00f80819045a16ed3311faff8312345f1cf801f802fc186d656d626572736869705f617070726f76616c5f6d6f6465f801f803fc0a67726f75705f6a6f696ed0fc026f6e"
+      ],
+      "responses": [
+        "00f80419041400"
+      ],
+      "expected": null,
+      "events": []
+    },
+    {
+      "method": "groupJoinApprovalMode",
+      "args": [
+        "12345@g.us",
+        "off"
+      ],
+      "requests": [
+        "00f80819045a16ed3311faff8312345f1cf801f802fc186d656d626572736869705f617070726f76616c5f6d6f6465f801f803fc0a67726f75705f6a6f696ed0fc036f6666"
+      ],
+      "responses": [
+        "00f80419041400"
+      ],
+      "expected": null,
+      "events": []
+    }
+  ]
+}
