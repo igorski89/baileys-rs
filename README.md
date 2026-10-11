@@ -47,12 +47,15 @@ node scripts/generate-usync-fixtures.mjs ../Baileys
 node scripts/generate-message-fixtures.mjs ../Baileys
 node scripts/generate-migration-fixtures.mjs ../Baileys
 node scripts/generate-device-fixtures.mjs ../Baileys
+node scripts/generate-relay-fixtures.mjs ../Baileys
 cargo test --test auth upstream_adapter_resumes_and_updates_rust_export -- --ignored
 ```
 
 These fixtures use fixed synthetic keys and a synthetic certificate authority. They verify compatibility with upstream code, not a live WhatsApp server. The Rust runtime has no JavaScript or WASM bridge dependency.
 
 `messages` provides padded protobuf encoding, message IDs, addressing/envelope decoding, and direct/group payload decryption through persistent Signal repositories. `Socket::decrypt_message` accepts a received `Event::Node` and runs storage/crypto on a blocking executor. Process each message stanza once and in arrival order: decryption consumes Signal counters. The result separates runtime key metadata from `proto::WebMessageInfo`, unwraps device-sent messages, combines multiple payloads with upstream's top-level replacement behavior, and retains ciphertext stubs and distribution failures. Encrypted PN envelopes learn LID mappings and migrate stored open sessions before decryption; mapping/migration diagnostics are returned separately. Automatic message events and receipts/retries remain pending. Rust rejects missing/invalid unsigned timestamps and retry counts; protobuf/crypto error diagnostics differ from JavaScript.
+
+`relay` provides five-layer future-proof normalization, wire message/media classification, UTF-16-sorted participant hashes, DSM construction, signed device-identity encoding and unpadded newsletter encoding. Recipient fanout supports shared/per-recipient patch results, fresh padding, own PN/LID device DSM overrides, extra encrypted-node attributes and partial-failure diagnostics. An all-failed fanout returns status 500; empty recipient lists skip patching and encryption. `Socket::create_participant_nodes` runs default fanout through persistent Signal sessions on a blocking executor. These successful encryptions consume counters; callers can assemble the participants/identity stanza and pass it to `send_node`. Complete relay orchestration, automatic retries, group/status routing and reporting/privacy-token attachment remain pending.
 
 `crypto` exposes AES-256 GCM (12-byte nonces, appended authentication tags), CTR, PKCS#7 CBC, IV-prefixed CBC, SHA-256, MD5, HMAC-SHA-256/512, HKDF-SHA-256, and pairing-code PBKDF2. `KeyPair` supports X25519 agreement and the deterministic Curve25519 signature format used by upstream's pinned libsignal backend. Private keys have redacted debug output and are zeroized when dropped. The MIT notice for the signature algorithm source is included in `licenses/curve25519-js.txt`.
 

@@ -9,6 +9,7 @@ pub mod devices;
 pub mod jid;
 pub mod messages;
 pub mod noise;
+pub mod relay;
 pub mod serialization;
 pub mod signal;
 pub mod socket;

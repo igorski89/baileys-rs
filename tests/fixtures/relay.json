@@ -1,0 +1,535 @@
+{
+  "fanouts": [
+    {
+      "config": {
+        "recipients": []
+      },
+      "message": "0a0770617463686564",
+      "dsm": "fa01230a1232303040732e77686174736170702e6e6574120d0a0b6f776e207061796c6f61649a02041a020102",
+      "nodes": [],
+      "shouldIncludeDeviceIdentity": false,
+      "calls": [],
+      "failures": [],
+      "patches": 0,
+      "error": null
+    },
+    {
+      "config": {
+        "recipients": [
+          "200:1@s.whatsapp.net",
+          "200:2@s.whatsapp.net"
+        ],
+        "extra": {
+          "mediatype": "image",
+          "type": "override"
+        }
+      },
+      "message": "0a0770617463686564",
+      "dsm": "fa01230a1232303040732e77686174736170702e6e6574120d0a0b6f776e207061796c6f61649a02041a020102",
+      "nodes": [
+        "00f804110cf70001edf9f801f8081d514504fc086f766572726964652643fc0e0a07706174636865640505050505",
+        "00f804110cf70002edf9f801f8081d514504fc086f766572726964652643fc0e0a07706174636865640505050505"
+      ],
+      "shouldIncludeDeviceIdentity": true,
+      "calls": [
+        {
+          "jid": "200:1@s.whatsapp.net",
+          "data": "0a07706174636865640505050505"
+        },
+        {
+          "jid": "200:2@s.whatsapp.net",
+          "data": "0a07706174636865640505050505"
+        }
+      ],
+      "failures": [],
+      "patches": 1,
+      "error": null
+    },
+    {
+      "config": {
+        "recipients": [
+          "100:7@s.whatsapp.net",
+          "100:2@s.whatsapp.net",
+          "900:7@lid",
+          "900:2@lid",
+          "200:1@s.whatsapp.net"
+        ],
+        "dsm": true
+      },
+      "message": "0a0770617463686564",
+      "dsm": "fa01230a1232303040732e77686174736170702e6e6574120d0a0b6f776e207061796c6f61649a02041a020102",
+      "nodes": [
+        "00f804110cf70007ec33f801f8061d5145044dfc0e0a07706174636865640505050505",
+        "00f804110cf70002ec33f801f8061d51450453fc32fa01230a1232303040732e77686174736170702e6e6574120d0a0b6f776e207061796c6f61649a02041a0201020505050505",
+        "00f804110cf70107ed4cf801f8061d5145044dfc0e0a07706174636865640505050505",
+        "00f804110cf70102ed4cf801f8061d51450453fc32fa01230a1232303040732e77686174736170702e6e6574120d0a0b6f776e207061796c6f61649a02041a0201020505050505",
+        "00f804110cf70001edf9f801f8061d5145044dfc0e0a07706174636865640505050505"
+      ],
+      "shouldIncludeDeviceIdentity": true,
+      "calls": [
+        {
+          "jid": "100:7@s.whatsapp.net",
+          "data": "0a07706174636865640505050505"
+        },
+        {
+          "jid": "100:2@s.whatsapp.net",
+          "data": "fa01230a1232303040732e77686174736170702e6e6574120d0a0b6f776e207061796c6f61649a02041a0201020505050505"
+        },
+        {
+          "jid": "900:7@lid",
+          "data": "0a07706174636865640505050505"
+        },
+        {
+          "jid": "900:2@lid",
+          "data": "fa01230a1232303040732e77686174736170702e6e6574120d0a0b6f776e207061796c6f61649a02041a0201020505050505"
+        },
+        {
+          "jid": "200:1@s.whatsapp.net",
+          "data": "0a07706174636865640505050505"
+        }
+      ],
+      "failures": [],
+      "patches": 1,
+      "error": null
+    },
+    {
+      "config": {
+        "recipients": [
+          "200@s.whatsapp.net"
+        ],
+        "dsm": true,
+        "perRecipient": [
+          {
+            "recipientJid": "200:1@s.whatsapp.net",
+            "wire": "0a0d70657220726563697069656e74"
+          },
+          {
+            "recipientJid": null,
+            "wire": "0a0770617463686564"
+          },
+          {
+            "recipientJid": "100:2@s.whatsapp.net",
+            "wire": "0a0770617463686564"
+          },
+          {
+            "recipientJid": "300@s.whatsapp.net",
+            "wire": "0a0770617463686564"
+          }
+        ],
+        "failures": [
+          "300@s.whatsapp.net"
+        ]
+      },
+      "message": "0a0770617463686564",
+      "dsm": "fa01230a1232303040732e77686174736170702e6e6574120d0a0b6f776e207061796c6f61649a02041a020102",
+      "nodes": [
+        "00f804110cf70001edf9f801f8061d5145044dfc140a0d70657220726563697069656e740505050505",
+        "00f804110cf70002ec33f801f8061d51450453fc32fa01230a1232303040732e77686174736170702e6e6574120d0a0b6f776e207061796c6f61649a02041a0201020505050505"
+      ],
+      "shouldIncludeDeviceIdentity": true,
+      "calls": [
+        {
+          "jid": "200:1@s.whatsapp.net",
+          "data": "0a0d70657220726563697069656e740505050505"
+        },
+        {
+          "jid": "100:2@s.whatsapp.net",
+          "data": "fa01230a1232303040732e77686174736170702e6e6574120d0a0b6f776e207061796c6f61649a02041a0201020505050505"
+        },
+        {
+          "jid": "300@s.whatsapp.net",
+          "data": "0a07706174636865640505050505"
+        }
+      ],
+      "failures": [
+        "300@s.whatsapp.net"
+      ],
+      "patches": 1,
+      "error": null
+    },
+    {
+      "config": {
+        "recipients": [
+          "300@s.whatsapp.net"
+        ],
+        "failures": [
+          "300@s.whatsapp.net"
+        ]
+      },
+      "message": "0a0770617463686564",
+      "dsm": "fa01230a1232303040732e77686174736170702e6e6574120d0a0b6f776e207061796c6f61649a02041a020102",
+      "nodes": null,
+      "shouldIncludeDeviceIdentity": null,
+      "calls": [
+        {
+          "jid": "300@s.whatsapp.net",
+          "data": "0a07706174636865640505050505"
+        }
+      ],
+      "failures": [
+        "300@s.whatsapp.net"
+      ],
+      "patches": 1,
+      "error": {
+        "message": "All encryptions failed",
+        "status": 500
+      }
+    },
+    {
+      "config": {
+        "recipients": [
+          "200@s.whatsapp.net"
+        ],
+        "perRecipient": []
+      },
+      "message": "0a0770617463686564",
+      "dsm": "fa01230a1232303040732e77686174736170702e6e6574120d0a0b6f776e207061796c6f61649a02041a020102",
+      "nodes": null,
+      "shouldIncludeDeviceIdentity": null,
+      "calls": [],
+      "failures": [],
+      "patches": 1,
+      "error": {
+        "message": "All encryptions failed",
+        "status": 500
+      }
+    },
+    {
+      "config": {
+        "recipients": [
+          "200@s.whatsapp.net"
+        ],
+        "patchError": true
+      },
+      "message": "0a0770617463686564",
+      "dsm": "fa01230a1232303040732e77686174736170702e6e6574120d0a0b6f776e207061796c6f61649a02041a020102",
+      "nodes": null,
+      "shouldIncludeDeviceIdentity": null,
+      "calls": [],
+      "failures": [],
+      "patches": 1,
+      "error": {
+        "message": "synthetic patch failure",
+        "status": null
+      }
+    },
+    {
+      "config": {
+        "recipients": [
+          ""
+        ]
+      },
+      "message": "0a0770617463686564",
+      "dsm": "fa01230a1232303040732e77686174736170702e6e6574120d0a0b6f776e207061796c6f61649a02041a020102",
+      "nodes": null,
+      "shouldIncludeDeviceIdentity": null,
+      "calls": [],
+      "failures": [],
+      "patches": 1,
+      "error": {
+        "message": "All encryptions failed",
+        "status": 500
+      }
+    }
+  ],
+  "classifications": [
+    {
+      "wire": null,
+      "messageType": "text",
+      "mediaType": "",
+      "normalized": null
+    },
+    {
+      "wire": "",
+      "messageType": "text",
+      "mediaType": "",
+      "normalized": ""
+    },
+    {
+      "wire": "1a00",
+      "messageType": "media",
+      "mediaType": "image",
+      "normalized": "1a00"
+    },
+    {
+      "wire": "4a00",
+      "messageType": "media",
+      "mediaType": "video",
+      "normalized": "4a00"
+    },
+    {
+      "wire": "4200",
+      "messageType": "media",
+      "mediaType": "audio",
+      "normalized": "4200"
+    },
+    {
+      "wire": "2200",
+      "messageType": "media",
+      "mediaType": "vcard",
+      "normalized": "2200"
+    },
+    {
+      "wire": "3a00",
+      "messageType": "media",
+      "mediaType": "document",
+      "normalized": "3a00"
+    },
+    {
+      "wire": "6a00",
+      "messageType": "media",
+      "mediaType": "contact_array",
+      "normalized": "6a00"
+    },
+    {
+      "wire": "920100",
+      "messageType": "media",
+      "mediaType": "livelocation",
+      "normalized": "920100"
+    },
+    {
+      "wire": "d20100",
+      "messageType": "media",
+      "mediaType": "sticker",
+      "normalized": "d20100"
+    },
+    {
+      "wire": "a20200",
+      "messageType": "media",
+      "mediaType": "list",
+      "normalized": "a20200"
+    },
+    {
+      "wire": "ba0200",
+      "messageType": "media",
+      "mediaType": "list_response",
+      "normalized": "ba0200"
+    },
+    {
+      "wire": "da0200",
+      "messageType": "media",
+      "mediaType": "buttons_response",
+      "normalized": "da0200"
+    },
+    {
+      "wire": "b20200",
+      "messageType": "media",
+      "mediaType": "order",
+      "normalized": "b20200"
+    },
+    {
+      "wire": "f20100",
+      "messageType": "media",
+      "mediaType": "product",
+      "normalized": "f20100"
+    },
+    {
+      "wire": "820300",
+      "messageType": "media",
+      "mediaType": "native_flow_response",
+      "normalized": "820300"
+    },
+    {
+      "wire": "e20100",
+      "messageType": "media",
+      "mediaType": "url",
+      "normalized": "e20100"
+    },
+    {
+      "wire": "f20200",
+      "messageType": "reaction",
+      "mediaType": "",
+      "normalized": "f20200"
+    },
+    {
+      "wire": "c20300",
+      "messageType": "reaction",
+      "mediaType": "",
+      "normalized": "c20300"
+    },
+    {
+      "wire": "8a0300",
+      "messageType": "poll",
+      "mediaType": "",
+      "normalized": "8a0300"
+    },
+    {
+      "wire": "e20300",
+      "messageType": "poll",
+      "mediaType": "",
+      "normalized": "e20300"
+    },
+    {
+      "wire": "820400",
+      "messageType": "poll",
+      "mediaType": "",
+      "normalized": "820400"
+    },
+    {
+      "wire": "920300",
+      "messageType": "poll",
+      "mediaType": "",
+      "normalized": "920300"
+    },
+    {
+      "wire": "da0400",
+      "messageType": "event",
+      "mediaType": "",
+      "normalized": "da0400"
+    },
+    {
+      "wire": "2a00",
+      "messageType": "text",
+      "mediaType": "",
+      "normalized": "2a00"
+    },
+    {
+      "wire": "fa0600",
+      "messageType": "text",
+      "mediaType": "",
+      "normalized": "fa0600"
+    },
+    {
+      "wire": "4a024001",
+      "messageType": "media",
+      "mediaType": "gif",
+      "normalized": "4a024001"
+    },
+    {
+      "wire": "42023001",
+      "messageType": "media",
+      "mediaType": "ptt",
+      "normalized": "42023001"
+    },
+    {
+      "wire": "1a00f20200",
+      "messageType": "reaction",
+      "mediaType": "image",
+      "normalized": "1a00f20200"
+    },
+    {
+      "wire": "c202040a021a00",
+      "messageType": "media",
+      "mediaType": "",
+      "normalized": "1a00"
+    },
+    {
+      "wire": "aa02040a021a00",
+      "messageType": "media",
+      "mediaType": "",
+      "normalized": "1a00"
+    },
+    {
+      "wire": "aa03040a021a00",
+      "messageType": "media",
+      "mediaType": "",
+      "normalized": "1a00"
+    },
+    {
+      "wire": "ba03040a021a00",
+      "messageType": "media",
+      "mediaType": "",
+      "normalized": "1a00"
+    },
+    {
+      "wire": "da03040a021a00",
+      "messageType": "media",
+      "mediaType": "",
+      "normalized": "1a00"
+    },
+    {
+      "wire": "d203040a021a00",
+      "messageType": "media",
+      "mediaType": "",
+      "normalized": "1a00"
+    },
+    {
+      "wire": "da05040a021a00",
+      "messageType": "media",
+      "mediaType": "",
+      "normalized": "1a00"
+    },
+    {
+      "wire": "8206040a021a00",
+      "messageType": "media",
+      "mediaType": "",
+      "normalized": "1a00"
+    },
+    {
+      "wire": "ba06040a021a00",
+      "messageType": "media",
+      "mediaType": "",
+      "normalized": "1a00"
+    },
+    {
+      "wire": "c2021d0a1bc202180a16c202130a11c2020e0a0cc202090a07c202040a021a00",
+      "messageType": "text",
+      "mediaType": "",
+      "normalized": "c202040a021a00"
+    },
+    {
+      "wire": "1a00c20200",
+      "messageType": "text",
+      "mediaType": "image",
+      "normalized": null
+    }
+  ],
+  "hashes": [
+    {
+      "input": [
+        "200@s.whatsapp.net",
+        "100@s.whatsapp.net",
+        "100@s.whatsapp.net"
+      ],
+      "sorted": [
+        "100@s.whatsapp.net",
+        "100@s.whatsapp.net",
+        "200@s.whatsapp.net"
+      ],
+      "hash": "2:ZotcDs"
+    },
+    {
+      "input": [
+        "z@lid",
+        "💚@lid",
+        "A@lid",
+        "@lid"
+      ],
+      "sorted": [
+        "A@lid",
+        "z@lid",
+        "💚@lid",
+        "@lid"
+      ],
+      "hash": "2:hc6tu8"
+    },
+    {
+      "input": [],
+      "sorted": [],
+      "hash": "2:47DEQp"
+    }
+  ],
+  "identityCases": [
+    {
+      "include": true,
+      "account": "0a020102120203041a0105220106",
+      "wire": "0a020102120203041a0105220106"
+    },
+    {
+      "include": true,
+      "account": "0a02010212001a0105220106",
+      "wire": "0a0201021a0105220106"
+    },
+    {
+      "include": false,
+      "account": "0a020102120203041a0105220106",
+      "wire": "0a0201021a0105220106"
+    },
+    {
+      "include": false,
+      "account": "0a02010212001a0105220106",
+      "wire": "0a0201021a0105220106"
+    }
+  ],
+  "newsletter": "0a0770617463686564"
+}

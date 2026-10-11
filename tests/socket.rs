@@ -371,6 +371,136 @@ async fn device_discovery_cache_and_session_assertions_use_lid_addresses() {
 }
 
 #[tokio::test]
+async fn native_recipient_fanout_sends_encrypted_payloads_to_peer_and_own_device() {
+    use baileys_rs::{messages, proto, relay, signal::direct};
+    fn receiver() -> (direct::Repository, direct::Bundle) {
+        let store = SqliteAuthStore::in_memory().unwrap();
+        let credentials = Credentials::generate().unwrap();
+        store.save_credentials(&credentials).unwrap();
+        let bundle = direct::Bundle {
+            registration_id: credentials.registration_id.into(),
+            identity: baileys_rs::crypto::signal_public_key(
+                &credentials.signed_identity_key.public,
+            )
+            .unwrap()
+            .to_vec(),
+            signed: direct::PublicPreKey {
+                id: credentials.signed_pre_key.key_id,
+                public: baileys_rs::crypto::signal_public_key(
+                    &credentials.signed_pre_key.key_pair.public,
+                )
+                .unwrap()
+                .to_vec(),
+            },
+            signature: credentials.signed_pre_key.signature.clone(),
+            pre_key: None,
+        };
+        (direct::Repository::new(store), bundle)
+    }
+    timeout(Duration::from_secs(8), async {
+        use prost::Message as _;
+        let temp = tempfile::tempdir().unwrap();
+        let store = store(&temp, true);
+        let creds = store.load_credentials().unwrap();
+        let (remote, remote_bundle) = receiver();
+        let (own, own_bundle) = receiver();
+        let content = proto::Message {
+            conversation: Some("encrypted recipient fanout".into()),
+            ..Default::default()
+        };
+        let dsm = relay::device_sent_message("200@s.whatsapp.net", &content);
+        let expected_identity =
+            relay::encode_device_identity(creds.account.as_ref().unwrap(), true);
+        let server_content = content.clone();
+        let server_dsm = dsm.clone();
+        let me = creds.me_id().unwrap().to_owned();
+        let (listener, config) = listener().await;
+        let server = tokio::spawn(async move {
+            let mut peer = Peer::accept(listener.accept().await.unwrap().0).await;
+            peer.send(BinaryNode::new("success").attr("lid", "987654:7@lid"))
+                .await;
+            assert!(peer.read().await.child("unified_session").is_some());
+            let stanza = peer.read().await;
+            assert_eq!(stanza.tag, "message");
+            assert_eq!(stanza.attrs["id"], "FANOUT");
+            assert_eq!(stanza.attrs["type"], "text");
+            assert_eq!(
+                stanza.child_buffer("device-identity"),
+                Some(expected_identity.as_slice())
+            );
+            let nodes = stanza.child("participants").unwrap().all_children();
+            assert_eq!(nodes.len(), 2);
+            for node in nodes {
+                let ciphertext = node.child_buffer("enc").unwrap();
+                assert_eq!(node.child("enc").unwrap().attrs["type"], "pkmsg");
+                let (repository, expected) = if node.attrs["jid"] == "200:1@s.whatsapp.net" {
+                    (&remote, &server_content)
+                } else {
+                    assert_eq!(node.attrs["jid"], "123456789:2@s.whatsapp.net");
+                    (&own, &server_dsm)
+                };
+                let decrypted = repository
+                    .decrypt(&me, direct::MessageType::PreKey, ciphertext)
+                    .unwrap();
+                assert_eq!(
+                    proto::Message::decode(messages::unpad(&decrypted).unwrap()).unwrap(),
+                    *expected
+                );
+            }
+            peer.closed().await;
+        });
+        let (socket, _) = Socket::connect(config, store.clone()).await.unwrap();
+        socket.wait_for_open(Duration::from_secs(2)).await.unwrap();
+        let repository = direct::Repository::new(store);
+        repository
+            .inject_session("200:1@s.whatsapp.net", &remote_bundle)
+            .unwrap();
+        repository
+            .inject_session("123456789:2@s.whatsapp.net", &own_bundle)
+            .unwrap();
+        let fanout = socket
+            .create_participant_nodes(
+                vec![
+                    "200:1@s.whatsapp.net".into(),
+                    "300:1@s.whatsapp.net".into(),
+                    "123456789:2@s.whatsapp.net".into(),
+                ],
+                content.clone(),
+                Default::default(),
+                Some(dsm),
+            )
+            .await
+            .unwrap();
+        assert!(fanout.should_include_device_identity);
+        assert_eq!(fanout.failures.len(), 1);
+        assert_eq!(fanout.failures[0].jid, "300:1@s.whatsapp.net");
+        let stanza = BinaryNode::new("message")
+            .attr("id", "FANOUT")
+            .attr("to", "200@s.whatsapp.net")
+            .attr("type", relay::message_type(Some(&content)))
+            .with_content(NodeContent::Children(vec![
+                BinaryNode::new("participants").with_content(NodeContent::Children(fanout.nodes)),
+                BinaryNode::new("device-identity").with_content(NodeContent::Bytes(
+                    relay::encode_device_identity(creds.account.as_ref().unwrap(), true),
+                )),
+            ]));
+        socket.send_node(stanza).await.unwrap();
+        assert!(
+            socket
+                .create_participant_nodes(vec![], content, Default::default(), None)
+                .await
+                .unwrap()
+                .nodes
+                .is_empty()
+        );
+        socket.close().await.unwrap();
+        server.await.unwrap();
+    })
+    .await
+    .unwrap();
+}
+
+#[tokio::test]
 async fn encrypted_login_queries_errors_and_shutdown() {
     timeout(Duration::from_secs(8), async {
         let temp = tempfile::tempdir().unwrap();

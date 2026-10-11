@@ -38,6 +38,8 @@ pub enum Error {
     #[error(transparent)]
     Message(#[from] crate::messages::Error),
     #[error(transparent)]
+    Relay(#[from] crate::relay::Error),
+    #[error(transparent)]
     USync(#[from] crate::usync::Error),
     #[error(transparent)]
     Connection(#[from] connection::Error),
@@ -71,6 +73,7 @@ impl Error {
             Self::Closed(code) => Some(*code),
             Self::Auth(e) => e.status_code(),
             Self::Signal(e) => e.status_code(),
+            Self::Relay(e) => e.status_code(),
             Self::USync(e) => e.status_code(),
             Self::Binary(binary::Error::Stanza { code, .. }) => {
                 code.and_then(|n| n.try_into().ok())
@@ -694,6 +697,39 @@ impl Socket {
                 me,
                 lid,
                 decryptor.as_ref(),
+            )?)
+        })
+        .await
+        .map_err(|_| Error::Task)?
+    }
+    /// Encrypt a fanout using persistent sessions. Session discovery and stanza relay
+    /// are separate steps; this call consumes counters for successful recipients.
+    pub async fn create_participant_nodes(
+        &self,
+        recipients: Vec<String>,
+        message: proto::Message,
+        extra_attrs: indexmap::IndexMap<String, String>,
+        device_sent_message: Option<proto::Message>,
+    ) -> Result<crate::relay::ParticipantNodes, Error> {
+        if recipients.is_empty() {
+            return Ok(Default::default());
+        }
+        let store = self.inner.store.clone();
+        let repository = self.inner.decryptor.direct.clone();
+        tokio::task::spawn_blocking(move || {
+            let credentials = store.load_credentials()?;
+            let me = credentials.me_id()?;
+            let lid = credentials.me.as_ref().and_then(|me| me.lid.as_deref());
+            Ok(crate::relay::create_participant_nodes(
+                crate::relay::Fanout {
+                    recipients: &recipients,
+                    message: &message,
+                    me,
+                    me_lid: lid,
+                    extra_attrs: &extra_attrs,
+                    device_sent_message: device_sent_message.as_ref(),
+                },
+                &repository,
             )?)
         })
         .await
