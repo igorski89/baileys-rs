@@ -77,10 +77,17 @@ fn query(id: &str) -> BinaryNode {
 
 #[tokio::test]
 async fn encrypted_incoming_message_decrypts_on_blocking_executor() {
+    use baileys_rs::auth::{KeyCategory, KeyMutation, KeyStore, KeyValue};
     use baileys_rs::{messages, proto, signal::direct};
     timeout(Duration::from_secs(8), async {
         let temp = tempfile::tempdir().unwrap();
         let recipient = store(&temp, true);
+        recipient
+            .set(&[KeyMutation::put(
+                "200",
+                KeyValue::DeviceList(vec!["1".into()]),
+            )])
+            .unwrap();
         let creds = recipient.load_credentials().unwrap();
         let sender_store = SqliteAuthStore::in_memory().unwrap();
         sender_store
@@ -126,6 +133,26 @@ async fn encrypted_incoming_message_decrypts_on_blocking_executor() {
                     .attr("type", "pkmsg")
                     .with_content(NodeContent::Bytes(encrypted.ciphertext)),
             ]));
+        let second_content = proto::Message {
+            conversation: Some("message after envelope migration".into()),
+            ..Default::default()
+        };
+        let second_encrypted = sender
+            .encrypt(
+                creds.me_id().unwrap(),
+                &messages::encode(&second_content).unwrap(),
+            )
+            .unwrap();
+        let second_stanza = BinaryNode::new("message")
+            .attr("id", "MSG2")
+            .attr("from", "200:1@s.whatsapp.net")
+            .attr("t", "1700000001")
+            .attr("sender_lid", "900@lid")
+            .with_content(NodeContent::Children(vec![
+                BinaryNode::new("enc")
+                    .attr("type", "pkmsg")
+                    .with_content(NodeContent::Bytes(second_encrypted.ciphertext)),
+            ]));
         let (listener, config) = listener().await;
         let server = tokio::spawn(async move {
             let mut peer = Peer::accept(listener.accept().await.unwrap().0).await;
@@ -133,6 +160,7 @@ async fn encrypted_incoming_message_decrypts_on_blocking_executor() {
                 .await;
             assert!(peer.read().await.child("unified_session").is_some());
             peer.send(stanza).await;
+            peer.send(second_stanza).await;
             peer.closed().await;
         });
         let (socket, mut events) = Socket::connect(config, recipient.clone()).await.unwrap();
@@ -149,6 +177,36 @@ async fn encrypted_incoming_message_decrypts_on_blocking_executor() {
         assert!(decrypted.envelope.message.message_stub_type.is_none());
         assert_eq!(decrypted.envelope.message.message, Some(content));
         assert!(
+            recipient
+                .get(KeyCategory::Session, &["200.1".into()])
+                .unwrap()
+                .contains_key("200.1")
+        );
+        let Event::Node(node) = event(
+            &mut events,
+            |e| matches!(e, Event::Node(n) if n.tag == "message"),
+        )
+        .await
+        else {
+            unreachable!()
+        };
+        let decrypted = socket.decrypt_message(node).await.unwrap();
+        assert!(decrypted.mapping_errors.is_empty());
+        assert!(decrypted.envelope.message.message_stub_type.is_none());
+        assert_eq!(decrypted.envelope.message.message, Some(second_content));
+        assert!(
+            recipient
+                .get(KeyCategory::Session, &["200.1".into()])
+                .unwrap()
+                .is_empty()
+        );
+        assert!(
+            recipient
+                .get(KeyCategory::Session, &["900_1.1".into()])
+                .unwrap()
+                .contains_key("900_1.1")
+        );
+        assert!(
             direct::Repository::new(recipient)
                 .validate_session("200:1@s.whatsapp.net")
                 .unwrap()
@@ -161,10 +219,42 @@ async fn encrypted_incoming_message_decrypts_on_blocking_executor() {
 }
 
 #[tokio::test]
+async fn own_session_migration_failure_keeps_logged_in_socket_open() {
+    use baileys_rs::auth::{KeyCategory, KeyMutation, KeyStore, KeyValue};
+    timeout(Duration::from_secs(8), async {
+        let temp = tempfile::tempdir().unwrap();
+        let store = store(&temp, true);
+        let record = serde_json::json!({"version":"invalid"});
+        store.set(&[KeyMutation::put("123456789.7", KeyValue::Session(record.clone()))]).unwrap();
+        let (listener, config) = listener().await;
+        let server = tokio::spawn(async move {
+            let mut peer = Peer::accept(listener.accept().await.unwrap().0).await;
+            peer.send(BinaryNode::new("success").attr("lid", "987654:7@lid")).await;
+            assert!(peer.read().await.child("unified_session").is_some());
+            let request = peer.read().await;
+            peer.result(&request).await;
+            peer.closed().await;
+        });
+        let (socket, _) = Socket::connect(config, store.clone()).await.unwrap();
+        socket.wait_for_open(Duration::from_secs(2)).await.unwrap();
+        socket.query(query("after-migration-failure"), None).await.unwrap();
+        assert!(matches!(store.get(KeyCategory::Session, &["123456789.7".into()]).unwrap().get("123456789.7"), Some(KeyValue::Session(value)) if value == &record));
+        assert!(store.get(KeyCategory::Session, &["987654_1.7".into()]).unwrap().is_empty());
+        assert_eq!(baileys_rs::signal::mapping::Store::new(store).get_lid_for_pn("123456789:7@s.whatsapp.net").unwrap().as_deref(), Some("987654:7@lid"));
+        socket.close().await.unwrap();
+        server.await.unwrap();
+    }).await.unwrap();
+}
+
+#[tokio::test]
 async fn encrypted_login_queries_errors_and_shutdown() {
     timeout(Duration::from_secs(8), async {
         let temp = tempfile::tempdir().unwrap();
         let store = store(&temp, true);
+        use baileys_rs::auth::KeyMutation;
+        let direct_fixture: serde_json::Value = serde_json::from_str(include_str!("fixtures/direct.json")).unwrap();
+        let original_session = direct_fixture["initial"]["alice"].clone();
+        store.set(&[KeyMutation::put("123456789.7", KeyValue::Session(original_session.clone()))]).unwrap();
         let (listener, config) = listener().await;
         let server = tokio::spawn(async move {
             let mut peer = Peer::accept(listener.accept().await.unwrap().0).await;
@@ -244,6 +334,8 @@ async fn encrypted_login_queries_errors_and_shutdown() {
         use baileys_rs::auth::{KeyStore,KeyCategory,KeyValue};
         let keys = store.get(KeyCategory::DeviceList, &["123456789".into()]).unwrap();
         assert!(matches!(keys.get("123456789"), Some(KeyValue::DeviceList(devices)) if devices == &["7"]));
+        assert!(store.get(KeyCategory::Session, &["123456789.7".into()]).unwrap().is_empty());
+        assert!(matches!(store.get(KeyCategory::Session, &["987654_1.7".into()]).unwrap().get("987654_1.7"), Some(KeyValue::Session(value)) if value == &original_session));
         server.await.unwrap();
     })
     .await

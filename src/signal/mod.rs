@@ -2,6 +2,7 @@
 pub mod direct;
 pub mod group;
 pub mod mapping;
+pub mod migration;
 pub mod wire;
 use crate::{auth, crypto, jid::Jid};
 

@@ -658,6 +658,7 @@ use crate::auth::{AuthTransaction, KeyCategory, KeyMutation, KeyValue, SqliteAut
 pub struct Repository {
     store: SqliteAuthStore,
     mappings: mapping::Store,
+    migrations: std::sync::Arc<std::sync::Mutex<super::migration::Cache>>,
 }
 fn load_record(tx: &mut AuthTransaction<'_>, id: &str) -> Result<Record, Error> {
     let mut keys = tx.get(KeyCategory::Session, &[id.into()])?;
@@ -676,10 +677,33 @@ impl Repository {
         Self {
             mappings: mapping::Store::new(store.clone()),
             store,
+            migrations: super::migration::Cache::new(Default::default()),
         }
     }
     pub fn with_mappings(store: SqliteAuthStore, mappings: mapping::Store) -> Self {
-        Self { store, mappings }
+        Self {
+            store,
+            mappings,
+            migrations: super::migration::Cache::new(Default::default()),
+        }
+    }
+    /// Replace this handle's migration cache; subsequent clones share the new cache.
+    pub fn with_migration_config(mut self, config: super::migration::Config) -> Self {
+        self.migrations = super::migration::Cache::new(config);
+        self
+    }
+    pub fn lid_mapping(&self) -> &mapping::Store {
+        &self.mappings
+    }
+    /// Migrate device-list-backed open PN sessions to LID addresses atomically.
+    /// Does not create a mapping; store it separately before resolving PN aliases.
+    pub fn migrate_session(&self, from: &str, to: &str) -> Result<super::migration::Result, Error> {
+        super::migration::migrate(&self.store, &self.migrations, from, to)
+    }
+    /// Clear ephemeral caches; persistent sessions and mappings are retained.
+    pub fn close(&self) -> Result<(), Error> {
+        self.migrations.lock().map_err(|_| Error::Invalid)?.clear();
+        self.mappings.close()
     }
     fn address(&self, jid: &str) -> Result<String, Error> {
         Ok(self

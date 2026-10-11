@@ -345,17 +345,24 @@ impl Actor<'_> {
                     };
                     let decoded = crate::jid::Jid::parse(&me.id).ok_or(Error::Config)?;
                     let store = self.store.clone();
-                    tokio::task::spawn_blocking(move || {
-                        crate::signal::mapping::Store::new(store.clone())
-                            .store_mappings(&[mapping])?;
+                    let outcome = tokio::task::spawn_blocking(move || {
+                        let repository = crate::signal::direct::Repository::new(store.clone());
+                        repository
+                            .lid_mapping()
+                            .store_mappings(std::slice::from_ref(&mapping))?;
                         store.set(&[KeyMutation::put(
                             decoded.user,
                             KeyValue::DeviceList(vec![decoded.device.unwrap_or(0).to_string()]),
                         )])?;
+                        repository.migrate_session(&mapping.pn, &mapping.lid)?;
                         Ok::<_, crate::signal::Error>(())
                     })
                     .await
-                    .map_err(|_| Error::Task)??;
+                    .map_err(|_| Error::Task)
+                    .and_then(|result| result.map_err(Error::Signal));
+                    if let Err(error) = outcome {
+                        tracing::warn!(?error, "failed to initialize own LID session");
+                    }
                 }
                 if self.config.initialize_session {
                     self.internal_query(

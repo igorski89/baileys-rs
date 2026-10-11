@@ -144,6 +144,7 @@ impl std::fmt::Debug for Event {
 }
 struct Inner {
     store: SqliteAuthStore,
+    decryptor: Arc<crate::messages::SignalDecryptor>,
     commands: mpsc::Sender<Command>,
     cancel: mpsc::UnboundedSender<u64>,
     events: broadcast::Sender<Event>,
@@ -297,6 +298,7 @@ impl Socket {
         );
         let inner = Arc::new(Inner {
             store: store.clone(),
+            decryptor: Arc::new(crate::messages::SignalDecryptor::new(store.clone())),
             commands,
             cancel,
             events: events.clone(),
@@ -473,6 +475,7 @@ impl Socket {
         node: BinaryNode,
     ) -> Result<crate::messages::Decrypted, Error> {
         let store = self.inner.store.clone();
+        let decryptor = self.inner.decryptor.clone();
         tokio::task::spawn_blocking(move || {
             let credentials = store.load_credentials()?;
             let me = credentials.me_id()?;
@@ -485,7 +488,7 @@ impl Socket {
                 &node,
                 me,
                 lid,
-                &crate::messages::SignalDecryptor::new(store),
+                decryptor.as_ref(),
             )?)
         })
         .await

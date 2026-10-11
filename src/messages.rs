@@ -263,6 +263,15 @@ pub fn decode_node(node: &BinaryNode, me: &str, me_lid: &str) -> Result<Envelope
 
 /// Synchronous decryption backend. Call from a blocking executor in async applications.
 pub trait Decryptor {
+    /// Resolve the author first; return nonfatal mapping/migration diagnostics.
+    fn prepare_envelope(
+        &self,
+        _node: &BinaryNode,
+        _author: &str,
+        _encrypted: bool,
+    ) -> Result<Vec<Error>, Error> {
+        Ok(Vec::new())
+    }
     fn decrypt_direct(
         &self,
         author: &str,
@@ -282,8 +291,7 @@ pub trait Decryptor {
     ) -> Result<(), Error>;
 }
 
-/// Uses existing PN/LID mappings. Learning envelope mappings and migrating sessions
-/// remains part of the pending incoming-message orchestration layer.
+/// Learns PN/LID envelope mappings and migrates device-list-backed open sessions.
 pub struct SignalDecryptor {
     pub direct: signal::direct::Repository,
     pub group: signal::group::Repository,
@@ -297,6 +305,40 @@ impl SignalDecryptor {
     }
 }
 impl Decryptor for SignalDecryptor {
+    fn prepare_envelope(
+        &self,
+        node: &BinaryNode,
+        author: &str,
+        encrypted: bool,
+    ) -> Result<Vec<Error>, Error> {
+        let Some(jid) = Jid::parse(author) else {
+            return Ok(Vec::new());
+        };
+        if jid.is_lid_user() || jid.is_hosted_lid_user() {
+            return Ok(Vec::new());
+        }
+        let mapping = self.direct.lid_mapping();
+        let existing = mapping.get_lid_for_pn(author)?;
+        let Some(alt) = addressing_context(node)
+            .sender_alt
+            .filter(|s| Jid::parse(s).is_some_and(|j| j.is_lid_user()))
+        else {
+            return Ok(Vec::new());
+        };
+        if !encrypted || !jid.is_pn_user() || existing.is_some() {
+            return Ok(Vec::new());
+        }
+        // Upstream persists the mapping before migration and retains it if migration fails.
+        let result = (|| {
+            mapping.store_mappings(&[signal::mapping::Mapping {
+                pn: author.into(),
+                lid: alt.clone(),
+            }])?;
+            self.direct.migrate_session(author, &alt)?;
+            Ok::<_, signal::Error>(())
+        })();
+        Ok(result.err().map(Error::Signal).into_iter().collect())
+    }
     fn decrypt_direct(
         &self,
         author: &str,
@@ -339,6 +381,7 @@ impl Decryptor for SignalDecryptor {
 pub struct Decrypted {
     pub envelope: Envelope,
     pub distribution_errors: Vec<Error>,
+    pub mapping_errors: Vec<Error>,
 }
 
 pub fn decrypt_node(
@@ -350,6 +393,7 @@ pub fn decrypt_node(
     let mut envelope = decode_node(node, me, me_lid)?;
     let mut decryptables = 0;
     let mut distribution_errors = Vec::new();
+    let mut mapping_errors = Vec::new();
     for child in node.all_children() {
         if child.tag == "unavailable" && child.attrs.get("type").is_some_and(|s| s == "view_once") {
             envelope.key_metadata.is_view_once = true;
@@ -379,6 +423,11 @@ pub fn decrypt_node(
             continue;
         }
         decryptables += 1;
+        mapping_errors.extend(repository.prepare_envelope(
+            node,
+            &envelope.author,
+            child.tag != "plaintext",
+        )?);
         let result = (|| {
             let plaintext = child.tag == "plaintext"
                 || child.attrs.get("type").is_some_and(|s| s == "plaintext");
@@ -437,6 +486,7 @@ pub fn decrypt_node(
     Ok(Decrypted {
         envelope,
         distribution_errors,
+        mapping_errors,
     })
 }
 fn ciphertext_stub(envelope: &mut Envelope, error: String) {

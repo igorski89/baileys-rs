@@ -290,6 +290,76 @@ fn native_signal_decrypts_direct_distributions_groups_and_rejects_replay() {
         distribution.sender_key_distribution_message
     );
     assert!(bob.group.has_sender_key(&name).unwrap());
+    // Clear Alice's pending prekey with a reply, so a recreated session could not
+    // accidentally mask a lost session during envelope migration.
+    let reply = bob
+        .direct
+        .encrypt("100:1@s.whatsapp.net", b"acknowledged")
+        .unwrap();
+    alice
+        .decrypt("200:1@s.whatsapp.net", reply.kind, &reply.ciphertext)
+        .unwrap();
+    b.set(&[KeyMutation::put(
+        "100",
+        KeyValue::DeviceList(vec!["1".into()]),
+    )])
+    .unwrap();
+    let message = proto::Message {
+        conversation: Some("ordinary ratchet after LID migration".into()),
+        ..Default::default()
+    };
+    let encrypted = alice
+        .encrypt("200:1@s.whatsapp.net", &messages::encode(&message).unwrap())
+        .unwrap();
+    assert_eq!(encrypted.kind, direct::MessageType::Signal);
+    let node = message_node("100:1@s.whatsapp.net", None, "msg", encrypted.ciphertext)
+        .attr("sender_lid", "900@lid");
+    let result = messages::decrypt_node(&node, "200@s.whatsapp.net", "800@lid", &bob).unwrap();
+    assert!(result.mapping_errors.is_empty());
+    assert!(result.envelope.message.message_stub_type.is_none());
+    assert_eq!(result.envelope.message.message, Some(message));
+    assert!(
+        b.get(KeyCategory::Session, &["100.1".into()])
+            .unwrap()
+            .is_empty()
+    );
+    assert_eq!(
+        b.get(KeyCategory::Session, &["900_1.1".into()])
+            .unwrap()
+            .len(),
+        1
+    );
+    assert_eq!(
+        bob.direct
+            .lid_mapping()
+            .get_lid_for_pn("100:1@s.whatsapp.net")
+            .unwrap()
+            .as_deref(),
+        Some("900:1@lid")
+    );
+    // Existing mappings win over an alternative address on a later envelope.
+    let encrypted = alice
+        .encrypt(
+            "200:1@s.whatsapp.net",
+            &messages::encode(&proto::Message {
+                conversation: Some("follow-up".into()),
+                ..Default::default()
+            })
+            .unwrap(),
+        )
+        .unwrap();
+    let node = message_node("100:1@s.whatsapp.net", None, "msg", encrypted.ciphertext)
+        .attr("sender_lid", "901@lid");
+    let result = messages::decrypt_node(&node, "200@s.whatsapp.net", "800@lid", &bob).unwrap();
+    assert!(result.envelope.message.message_stub_type.is_none());
+    assert_eq!(
+        bob.direct
+            .lid_mapping()
+            .get_lid_for_pn("100@s.whatsapp.net")
+            .unwrap()
+            .as_deref(),
+        Some("900@lid")
+    );
 }
 
 #[test]
@@ -324,5 +394,68 @@ fn failed_distribution_is_reported_without_discarding_decoded_content() {
         format!("{:?}", result.envelope)
             .find("visible content")
             .is_none()
+    );
+}
+
+#[test]
+fn failed_envelope_migration_reports_warning_and_preserves_source_mapping_order() {
+    let (store, _) = credentials(30, 31, 32);
+    store
+        .set(&[
+            KeyMutation::put("100", KeyValue::DeviceList(vec!["1".into()])),
+            KeyMutation::put(
+                "100.1",
+                KeyValue::Session(serde_json::json!({"version":"invalid"})),
+            ),
+        ])
+        .unwrap();
+    let repo = SignalDecryptor::new(store.clone());
+    let plaintext = proto::Message {
+        conversation: Some("plaintext does not learn mappings".into()),
+        ..Default::default()
+    };
+    let mut plain = message_node(
+        "100:1@s.whatsapp.net",
+        None,
+        "plaintext",
+        plaintext.encode_to_vec(),
+    )
+    .attr("sender_lid", "900@lid");
+    if let Some(NodeContent::Children(children)) = &mut plain.content {
+        children[0].tag = "plaintext".into();
+    }
+    let result = messages::decrypt_node(&plain, "200@s.whatsapp.net", "800@lid", &repo).unwrap();
+    assert!(result.mapping_errors.is_empty());
+    assert!(
+        repo.direct
+            .lid_mapping()
+            .get_lid_for_pn("100@s.whatsapp.net")
+            .unwrap()
+            .is_none()
+    );
+    let node =
+        message_node("100:1@s.whatsapp.net", None, "msg", vec![1]).attr("sender_lid", "900@lid");
+    let result = messages::decrypt_node(&node, "200@s.whatsapp.net", "800@lid", &repo).unwrap();
+    assert_eq!(result.mapping_errors.len(), 1);
+    assert!(result.envelope.message.message_stub_type.is_some());
+    assert_eq!(
+        repo.direct
+            .lid_mapping()
+            .get_lid_for_pn("100@s.whatsapp.net")
+            .unwrap()
+            .as_deref(),
+        Some("900@lid")
+    );
+    assert!(
+        store
+            .get(KeyCategory::Session, &["100.1".into()])
+            .unwrap()
+            .contains_key("100.1")
+    );
+    assert!(
+        store
+            .get(KeyCategory::Session, &["900_1.1".into()])
+            .unwrap()
+            .is_empty()
     );
 }
