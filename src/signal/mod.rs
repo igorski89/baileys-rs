@@ -1,4 +1,5 @@
 //! Signal addressing and transactional WhatsApp group sender keys.
+pub mod direct;
 pub mod group;
 pub mod mapping;
 use crate::{auth, crypto, jid::Jid};
@@ -19,21 +20,25 @@ pub enum Error {
     Shared(std::sync::Arc<Error>),
     #[error("mapping resolver aborted")]
     ResolverAborted,
-    #[error("invalid sender-key message or record")]
+    #[error("missing one-time prekey")]
+    MissingPreKey,
+    #[error("invalid Signal message authentication code")]
+    Mac,
+    #[error("invalid Signal message or record")]
     Invalid,
-    #[error("unsupported sender-key version")]
+    #[error("unsupported Signal message version")]
     Version,
-    #[error("no sender-key session")]
+    #[error("no Signal session")]
     NoSession,
     #[error("sender-key signing private key is unavailable")]
     NoSigningKey,
-    #[error("invalid sender-key signature")]
+    #[error("invalid Signal signature")]
     Signature,
-    #[error("sender-key message was already consumed")]
+    #[error("Signal message was already consumed")]
     Replay,
-    #[error("sender-key message exceeds the 2000-iteration skip limit")]
+    #[error("Signal message exceeds the 2000-counter skip limit")]
     Future,
-    #[error("sender-key counter exhausted")]
+    #[error("Signal counter exhausted")]
     Counter,
 }
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
