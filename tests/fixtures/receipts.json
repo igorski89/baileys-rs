@@ -1,0 +1,2446 @@
+{
+  "timestamp": 1700000000,
+  "receiptCases": [
+    {
+      "config": {
+        "jid": "200@s.whatsapp.net",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": null
+      },
+      "wire": "00f8080708fc034f4e4511faedf90305f70101ff82800ff801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "800@lid",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": null
+      },
+      "wire": "00f8080708fc034f4e4511faff82800f7605f70101ff82800ff801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "group@g.us",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": null
+      },
+      "wire": "00f8080708fc034f4e4511faecaa1c05f70101ff82800ff801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "status@broadcast",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": null
+      },
+      "wire": "00f8080708fc034f4e4511fa0b0d05f70101ff82800ff801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "42@newsletter",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": null
+      },
+      "wire": "00f8080708fc034f4e4511faee52fc0a6e6577736c657474657205f70101ff82800ff801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "200@c.us",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": null
+      },
+      "wire": "00f8080708fc034f4e4511faedf9fc04632e757305f70101ff82800ff801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "200:99@hosted",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": null
+      },
+      "wire": "00f8080708fc034f4e4511f78063edf905f70101ff82800ff801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "200@s.whatsapp.net",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "read"
+      },
+      "wire": "00f80c0708fc034f4e451aff05170000000011faedf90305f70101ff82800f042af801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "800@lid",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "read"
+      },
+      "wire": "00f80c0708fc034f4e451aff05170000000011faff82800f7605f70101ff82800f042af801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "group@g.us",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "read"
+      },
+      "wire": "00f80c0708fc034f4e451aff05170000000011faecaa1c05f70101ff82800f042af801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "status@broadcast",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "read"
+      },
+      "wire": "00f80c0708fc034f4e451aff05170000000011fa0b0d05f70101ff82800f042af801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "42@newsletter",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "read"
+      },
+      "wire": "00f80c0708fc034f4e451aff05170000000011faee52fc0a6e6577736c657474657205f70101ff82800f042af801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "200@c.us",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "read"
+      },
+      "wire": "00f80c0708fc034f4e451aff05170000000011faedf9fc04632e757305f70101ff82800f042af801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "200:99@hosted",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "read"
+      },
+      "wire": "00f80c0708fc034f4e451aff05170000000011f78063edf905f70101ff82800f042af801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "200@s.whatsapp.net",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "read-self"
+      },
+      "wire": "00f80c0708fc034f4e451aff05170000000011faedf90305f70101ff82800f04ec00f801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "800@lid",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "read-self"
+      },
+      "wire": "00f80c0708fc034f4e451aff05170000000011faff82800f7605f70101ff82800f04ec00f801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "group@g.us",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "read-self"
+      },
+      "wire": "00f80c0708fc034f4e451aff05170000000011faecaa1c05f70101ff82800f04ec00f801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "status@broadcast",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "read-self"
+      },
+      "wire": "00f80c0708fc034f4e451aff05170000000011fa0b0d05f70101ff82800f04ec00f801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "42@newsletter",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "read-self"
+      },
+      "wire": "00f80c0708fc034f4e451aff05170000000011faee52fc0a6e6577736c657474657205f70101ff82800f04ec00f801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "200@c.us",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "read-self"
+      },
+      "wire": "00f80c0708fc034f4e451aff05170000000011faedf9fc04632e757305f70101ff82800f04ec00f801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "200:99@hosted",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "read-self"
+      },
+      "wire": "00f80c0708fc034f4e451aff05170000000011f78063edf905f70101ff82800f04ec00f801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "200@s.whatsapp.net",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "hist_sync"
+      },
+      "wire": "00f80a0708fc034f4e4511faedf90305f70101ff82800f04ed63f801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "800@lid",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "hist_sync"
+      },
+      "wire": "00f80a0708fc034f4e4511faff82800f7605f70101ff82800f04ed63f801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "group@g.us",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "hist_sync"
+      },
+      "wire": "00f80a0708fc034f4e4511faecaa1c05f70101ff82800f04ed63f801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "status@broadcast",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "hist_sync"
+      },
+      "wire": "00f80a0708fc034f4e4511fa0b0d05f70101ff82800f04ed63f801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "42@newsletter",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "hist_sync"
+      },
+      "wire": "00f80a0708fc034f4e4511faee52fc0a6e6577736c657474657205f70101ff82800f04ed63f801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "200@c.us",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "hist_sync"
+      },
+      "wire": "00f80a0708fc034f4e4511faedf9fc04632e757305f70101ff82800f04ed63f801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "200:99@hosted",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "hist_sync"
+      },
+      "wire": "00f80a0708fc034f4e4511f78063edf905f70101ff82800f04ed63f801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "200@s.whatsapp.net",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "peer_msg"
+      },
+      "wire": "00f80a0708fc034f4e4511faedf90305f70101ff82800f04ed1bf801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "800@lid",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "peer_msg"
+      },
+      "wire": "00f80a0708fc034f4e4511faff82800f7605f70101ff82800f04ed1bf801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "group@g.us",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "peer_msg"
+      },
+      "wire": "00f80a0708fc034f4e4511faecaa1c05f70101ff82800f04ed1bf801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "status@broadcast",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "peer_msg"
+      },
+      "wire": "00f80a0708fc034f4e4511fa0b0d05f70101ff82800f04ed1bf801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "42@newsletter",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "peer_msg"
+      },
+      "wire": "00f80a0708fc034f4e4511faee52fc0a6e6577736c657474657205f70101ff82800f04ed1bf801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "200@c.us",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "peer_msg"
+      },
+      "wire": "00f80a0708fc034f4e4511faedf9fc04632e757305f70101ff82800f04ed1bf801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "200:99@hosted",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "peer_msg"
+      },
+      "wire": "00f80a0708fc034f4e4511f78063edf905f70101ff82800f04ed1bf801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "200@s.whatsapp.net",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "sender"
+      },
+      "wire": "00f80a0708fc034f4e4594faedf90311f70101ff82800f04ec25f801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "800@lid",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "sender"
+      },
+      "wire": "00f80a0708fc034f4e4594faff82800f7611f70101ff82800f04ec25f801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "group@g.us",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "sender"
+      },
+      "wire": "00f80a0708fc034f4e4511faecaa1c05f70101ff82800f04ec25f801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "status@broadcast",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "sender"
+      },
+      "wire": "00f80a0708fc034f4e4511fa0b0d05f70101ff82800f04ec25f801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "42@newsletter",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "sender"
+      },
+      "wire": "00f80a0708fc034f4e4511faee52fc0a6e6577736c657474657205f70101ff82800f04ec25f801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "200@c.us",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "sender"
+      },
+      "wire": "00f80a0708fc034f4e4511faedf9fc04632e757305f70101ff82800f04ec25f801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "200:99@hosted",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "sender"
+      },
+      "wire": "00f80a0708fc034f4e4511f78063edf905f70101ff82800f04ec25f801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "200@s.whatsapp.net",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "inactive"
+      },
+      "wire": "00f80a0708fc034f4e4511faedf90305f70101ff82800f04c6f801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "800@lid",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "inactive"
+      },
+      "wire": "00f80a0708fc034f4e4511faff82800f7605f70101ff82800f04c6f801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "group@g.us",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "inactive"
+      },
+      "wire": "00f80a0708fc034f4e4511faecaa1c05f70101ff82800f04c6f801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "status@broadcast",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "inactive"
+      },
+      "wire": "00f80a0708fc034f4e4511fa0b0d05f70101ff82800f04c6f801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "42@newsletter",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "inactive"
+      },
+      "wire": "00f80a0708fc034f4e4511faee52fc0a6e6577736c657474657205f70101ff82800f04c6f801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "200@c.us",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "inactive"
+      },
+      "wire": "00f80a0708fc034f4e4511faedf9fc04632e757305f70101ff82800f04c6f801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "200:99@hosted",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "inactive"
+      },
+      "wire": "00f80a0708fc034f4e4511f78063edf905f70101ff82800f04c6f801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "200@s.whatsapp.net",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "played"
+      },
+      "wire": "00f80a0708fc034f4e4511faedf90305f70101ff82800f04caf801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "800@lid",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "played"
+      },
+      "wire": "00f80a0708fc034f4e4511faff82800f7605f70101ff82800f04caf801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "group@g.us",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "played"
+      },
+      "wire": "00f80a0708fc034f4e4511faecaa1c05f70101ff82800f04caf801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "status@broadcast",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "played"
+      },
+      "wire": "00f80a0708fc034f4e4511fa0b0d05f70101ff82800f04caf801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "42@newsletter",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "played"
+      },
+      "wire": "00f80a0708fc034f4e4511faee52fc0a6e6577736c657474657205f70101ff82800f04caf801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "200@c.us",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "played"
+      },
+      "wire": "00f80a0708fc034f4e4511faedf9fc04632e757305f70101ff82800f04caf801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "200:99@hosted",
+        "participant": "800:1@lid",
+        "ids": [
+          "ONE",
+          "TWO",
+          "TWO"
+        ],
+        "type": "played"
+      },
+      "wire": "00f80a0708fc034f4e4511f78063edf905f70101ff82800f04caf801f80271f802f8033f08fc0354574ff8033f08fc0354574f"
+    },
+    {
+      "config": {
+        "jid": "200@lid",
+        "participant": null,
+        "ids": [
+          "ONE"
+        ],
+        "type": "sender"
+      },
+      "error": false,
+      "wire": "00f8070708fc034f4e4594faedf97604ec25"
+    },
+    {
+      "config": {
+        "jid": "group@g.us",
+        "participant": "",
+        "ids": [
+          ""
+        ],
+        "type": null
+      },
+      "error": false,
+      "wire": "00f8050708fc0011faecaa1c"
+    },
+    {
+      "config": {
+        "jid": "200@lid",
+        "participant": null,
+        "ids": [
+          null,
+          null
+        ],
+        "type": null
+      },
+      "error": false,
+      "wire": "00f8040711faedf976f801f80271f801f8013f"
+    },
+    {
+      "config": {
+        "jid": "group@g.us",
+        "participant": null,
+        "ids": [],
+        "type": "read"
+      },
+      "error": true,
+      "wire": null
+    }
+  ],
+  "keys": [
+    {
+      "remoteJid": "a@g.us",
+      "id": "A",
+      "participant": "800@lid"
+    },
+    {
+      "remoteJid": "a@g.us",
+      "id": "OWN",
+      "participant": "800@lid",
+      "fromMe": true
+    },
+    {
+      "remoteJid": "b@lid",
+      "id": "B"
+    },
+    {
+      "remoteJid": "a@g.us",
+      "id": "A",
+      "participant": "800@lid"
+    },
+    {
+      "remoteJid": "a@g.us",
+      "id": "C",
+      "participant": "900@lid"
+    },
+    {
+      "remoteJid": "a:g.us",
+      "id": "D",
+      "participant": "x:y"
+    },
+    {
+      "remoteJid": "a:g.us:x",
+      "id": "E",
+      "participant": "y"
+    },
+    {
+      "id": "MISSING"
+    },
+    {
+      "remoteJid": "undefined",
+      "participant": ""
+    },
+    {}
+  ],
+  "aggregated": [
+    {
+      "jid": "a@g.us",
+      "participant": "800@lid",
+      "messageIds": [
+        "A",
+        "A"
+      ]
+    },
+    {
+      "jid": "b@lid",
+      "participant": null,
+      "messageIds": [
+        "B"
+      ]
+    },
+    {
+      "jid": "a@g.us",
+      "participant": "900@lid",
+      "messageIds": [
+        "C"
+      ]
+    },
+    {
+      "jid": "a:g.us",
+      "participant": "x:y",
+      "messageIds": [
+        "D",
+        "E"
+      ]
+    },
+    {
+      "jid": null,
+      "participant": null,
+      "messageIds": [
+        "MISSING",
+        null,
+        null
+      ]
+    }
+  ],
+  "ackCases": [
+    {
+      "node": {
+        "tag": "message",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid"
+        }
+      },
+      "error": null,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c151305f70101ff82800f94faedf97606f70007ec33"
+    },
+    {
+      "node": {
+        "tag": "message",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid"
+        }
+      },
+      "error": 0,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c151305f70101ff82800f94faedf97606f70007ec33"
+    },
+    {
+      "node": {
+        "tag": "message",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid"
+        }
+      },
+      "error": 500,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80f1b08fc0341434b11faecaa1c1513a8eca405f70101ff82800f94faedf97606f70007ec33"
+    },
+    {
+      "node": {
+        "tag": "message",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": ""
+        }
+      },
+      "error": null,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c151305f70101ff82800f94faedf97606f70007ec33"
+    },
+    {
+      "node": {
+        "tag": "message",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": ""
+        }
+      },
+      "error": 0,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c151305f70101ff82800f94faedf97606f70007ec33"
+    },
+    {
+      "node": {
+        "tag": "message",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": ""
+        }
+      },
+      "error": 500,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80f1b08fc0341434b11faecaa1c1513a8eca405f70101ff82800f94faedf97606f70007ec33"
+    },
+    {
+      "node": {
+        "tag": "message",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "read"
+        }
+      },
+      "error": null,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80f1b08fc0341434b11faecaa1c151305f70101ff82800f94faedf976042a06f70007ec33"
+    },
+    {
+      "node": {
+        "tag": "message",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "read"
+        }
+      },
+      "error": 0,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80f1b08fc0341434b11faecaa1c151305f70101ff82800f94faedf976042a06f70007ec33"
+    },
+    {
+      "node": {
+        "tag": "message",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "read"
+        }
+      },
+      "error": 500,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f8111b08fc0341434b11faecaa1c1513a8eca405f70101ff82800f94faedf976042a06f70007ec33"
+    },
+    {
+      "node": {
+        "tag": "message",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "sender"
+        }
+      },
+      "error": null,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80f1b08fc0341434b11faecaa1c151305f70101ff82800f94faedf97604ec2506f70007ec33"
+    },
+    {
+      "node": {
+        "tag": "message",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "sender"
+        }
+      },
+      "error": 0,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80f1b08fc0341434b11faecaa1c151305f70101ff82800f94faedf97604ec2506f70007ec33"
+    },
+    {
+      "node": {
+        "tag": "message",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "sender"
+        }
+      },
+      "error": 500,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f8111b08fc0341434b11faecaa1c1513a8eca405f70101ff82800f94faedf97604ec2506f70007ec33"
+    },
+    {
+      "node": {
+        "tag": "message",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "retry"
+        }
+      },
+      "error": null,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80f1b08fc0341434b11faecaa1c151305f70101ff82800f94faedf97604ec0b06f70007ec33"
+    },
+    {
+      "node": {
+        "tag": "message",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "retry"
+        }
+      },
+      "error": 0,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80f1b08fc0341434b11faecaa1c151305f70101ff82800f94faedf97604ec0b06f70007ec33"
+    },
+    {
+      "node": {
+        "tag": "message",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "retry"
+        }
+      },
+      "error": 500,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f8111b08fc0341434b11faecaa1c1513a8eca405f70101ff82800f94faedf97604ec0b06f70007ec33"
+    },
+    {
+      "node": {
+        "tag": "message",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "unknown"
+        }
+      },
+      "error": null,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80f1b08fc0341434b11faecaa1c151305f70101ff82800f94faedf976045e06f70007ec33"
+    },
+    {
+      "node": {
+        "tag": "message",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "unknown"
+        }
+      },
+      "error": 0,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80f1b08fc0341434b11faecaa1c151305f70101ff82800f94faedf976045e06f70007ec33"
+    },
+    {
+      "node": {
+        "tag": "message",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "unknown"
+        }
+      },
+      "error": 500,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f8111b08fc0341434b11faecaa1c1513a8eca405f70101ff82800f94faedf976045e06f70007ec33"
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid"
+        }
+      },
+      "error": null,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80b1b08fc0341434b11faecaa1c150705f70101ff82800f94faedf976"
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid"
+        }
+      },
+      "error": 0,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80b1b08fc0341434b11faecaa1c150705f70101ff82800f94faedf976"
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid"
+        }
+      },
+      "error": 500,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c1507a8eca405f70101ff82800f94faedf976"
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": ""
+        }
+      },
+      "error": null,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80b1b08fc0341434b11faecaa1c150705f70101ff82800f94faedf976"
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": ""
+        }
+      },
+      "error": 0,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80b1b08fc0341434b11faecaa1c150705f70101ff82800f94faedf976"
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": ""
+        }
+      },
+      "error": 500,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c1507a8eca405f70101ff82800f94faedf976"
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "read"
+        }
+      },
+      "error": null,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c150705f70101ff82800f94faedf976042a"
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "read"
+        }
+      },
+      "error": 0,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c150705f70101ff82800f94faedf976042a"
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "read"
+        }
+      },
+      "error": 500,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80f1b08fc0341434b11faecaa1c1507a8eca405f70101ff82800f94faedf976042a"
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "sender"
+        }
+      },
+      "error": null,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c150705f70101ff82800f94faedf97604ec25"
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "sender"
+        }
+      },
+      "error": 0,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c150705f70101ff82800f94faedf97604ec25"
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "sender"
+        }
+      },
+      "error": 500,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80f1b08fc0341434b11faecaa1c1507a8eca405f70101ff82800f94faedf97604ec25"
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "retry"
+        }
+      },
+      "error": null,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c150705f70101ff82800f94faedf97604ec0b"
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "retry"
+        }
+      },
+      "error": 0,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c150705f70101ff82800f94faedf97604ec0b"
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "retry"
+        }
+      },
+      "error": 500,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80f1b08fc0341434b11faecaa1c1507a8eca405f70101ff82800f94faedf97604ec0b"
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "unknown"
+        }
+      },
+      "error": null,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c150705f70101ff82800f94faedf976045e"
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "unknown"
+        }
+      },
+      "error": 0,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c150705f70101ff82800f94faedf976045e"
+    },
+    {
+      "node": {
+        "tag": "receipt",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "unknown"
+        }
+      },
+      "error": 500,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80f1b08fc0341434b11faecaa1c1507a8eca405f70101ff82800f94faedf976045e"
+    },
+    {
+      "node": {
+        "tag": "notification",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid"
+        }
+      },
+      "error": null,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80b1b08fc0341434b11faecaa1c150905f70101ff82800f94faedf976"
+    },
+    {
+      "node": {
+        "tag": "notification",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid"
+        }
+      },
+      "error": 0,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80b1b08fc0341434b11faecaa1c150905f70101ff82800f94faedf976"
+    },
+    {
+      "node": {
+        "tag": "notification",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid"
+        }
+      },
+      "error": 500,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c1509a8eca405f70101ff82800f94faedf976"
+    },
+    {
+      "node": {
+        "tag": "notification",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": ""
+        }
+      },
+      "error": null,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80b1b08fc0341434b11faecaa1c150905f70101ff82800f94faedf976"
+    },
+    {
+      "node": {
+        "tag": "notification",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": ""
+        }
+      },
+      "error": 0,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80b1b08fc0341434b11faecaa1c150905f70101ff82800f94faedf976"
+    },
+    {
+      "node": {
+        "tag": "notification",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": ""
+        }
+      },
+      "error": 500,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c1509a8eca405f70101ff82800f94faedf976"
+    },
+    {
+      "node": {
+        "tag": "notification",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "read"
+        }
+      },
+      "error": null,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c150905f70101ff82800f94faedf976042a"
+    },
+    {
+      "node": {
+        "tag": "notification",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "read"
+        }
+      },
+      "error": 0,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c150905f70101ff82800f94faedf976042a"
+    },
+    {
+      "node": {
+        "tag": "notification",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "read"
+        }
+      },
+      "error": 500,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80f1b08fc0341434b11faecaa1c1509a8eca405f70101ff82800f94faedf976042a"
+    },
+    {
+      "node": {
+        "tag": "notification",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "sender"
+        }
+      },
+      "error": null,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c150905f70101ff82800f94faedf97604ec25"
+    },
+    {
+      "node": {
+        "tag": "notification",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "sender"
+        }
+      },
+      "error": 0,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c150905f70101ff82800f94faedf97604ec25"
+    },
+    {
+      "node": {
+        "tag": "notification",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "sender"
+        }
+      },
+      "error": 500,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80f1b08fc0341434b11faecaa1c1509a8eca405f70101ff82800f94faedf97604ec25"
+    },
+    {
+      "node": {
+        "tag": "notification",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "retry"
+        }
+      },
+      "error": null,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c150905f70101ff82800f94faedf97604ec0b"
+    },
+    {
+      "node": {
+        "tag": "notification",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "retry"
+        }
+      },
+      "error": 0,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c150905f70101ff82800f94faedf97604ec0b"
+    },
+    {
+      "node": {
+        "tag": "notification",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "retry"
+        }
+      },
+      "error": 500,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80f1b08fc0341434b11faecaa1c1509a8eca405f70101ff82800f94faedf97604ec0b"
+    },
+    {
+      "node": {
+        "tag": "notification",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "unknown"
+        }
+      },
+      "error": null,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c150905f70101ff82800f94faedf976045e"
+    },
+    {
+      "node": {
+        "tag": "notification",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "unknown"
+        }
+      },
+      "error": 0,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c150905f70101ff82800f94faedf976045e"
+    },
+    {
+      "node": {
+        "tag": "notification",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "unknown"
+        }
+      },
+      "error": 500,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80f1b08fc0341434b11faecaa1c1509a8eca405f70101ff82800f94faedf976045e"
+    },
+    {
+      "node": {
+        "tag": "call",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid"
+        }
+      },
+      "error": null,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80b1b08fc0341434b11faecaa1c156405f70101ff82800f94faedf976"
+    },
+    {
+      "node": {
+        "tag": "call",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid"
+        }
+      },
+      "error": 0,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80b1b08fc0341434b11faecaa1c156405f70101ff82800f94faedf976"
+    },
+    {
+      "node": {
+        "tag": "call",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid"
+        }
+      },
+      "error": 500,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c1564a8eca405f70101ff82800f94faedf976"
+    },
+    {
+      "node": {
+        "tag": "call",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": ""
+        }
+      },
+      "error": null,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80b1b08fc0341434b11faecaa1c156405f70101ff82800f94faedf976"
+    },
+    {
+      "node": {
+        "tag": "call",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": ""
+        }
+      },
+      "error": 0,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80b1b08fc0341434b11faecaa1c156405f70101ff82800f94faedf976"
+    },
+    {
+      "node": {
+        "tag": "call",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": ""
+        }
+      },
+      "error": 500,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c1564a8eca405f70101ff82800f94faedf976"
+    },
+    {
+      "node": {
+        "tag": "call",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "read"
+        }
+      },
+      "error": null,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c156405f70101ff82800f94faedf976042a"
+    },
+    {
+      "node": {
+        "tag": "call",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "read"
+        }
+      },
+      "error": 0,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c156405f70101ff82800f94faedf976042a"
+    },
+    {
+      "node": {
+        "tag": "call",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "read"
+        }
+      },
+      "error": 500,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80f1b08fc0341434b11faecaa1c1564a8eca405f70101ff82800f94faedf976042a"
+    },
+    {
+      "node": {
+        "tag": "call",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "sender"
+        }
+      },
+      "error": null,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c156405f70101ff82800f94faedf97604ec25"
+    },
+    {
+      "node": {
+        "tag": "call",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "sender"
+        }
+      },
+      "error": 0,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c156405f70101ff82800f94faedf97604ec25"
+    },
+    {
+      "node": {
+        "tag": "call",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "sender"
+        }
+      },
+      "error": 500,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80f1b08fc0341434b11faecaa1c1564a8eca405f70101ff82800f94faedf97604ec25"
+    },
+    {
+      "node": {
+        "tag": "call",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "retry"
+        }
+      },
+      "error": null,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c156405f70101ff82800f94faedf97604ec0b"
+    },
+    {
+      "node": {
+        "tag": "call",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "retry"
+        }
+      },
+      "error": 0,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c156405f70101ff82800f94faedf97604ec0b"
+    },
+    {
+      "node": {
+        "tag": "call",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "retry"
+        }
+      },
+      "error": 500,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80f1b08fc0341434b11faecaa1c1564a8eca405f70101ff82800f94faedf97604ec0b"
+    },
+    {
+      "node": {
+        "tag": "call",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "unknown"
+        }
+      },
+      "error": null,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c156405f70101ff82800f94faedf976045e"
+    },
+    {
+      "node": {
+        "tag": "call",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "unknown"
+        }
+      },
+      "error": 0,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c156405f70101ff82800f94faedf976045e"
+    },
+    {
+      "node": {
+        "tag": "call",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "unknown"
+        }
+      },
+      "error": 500,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80f1b08fc0341434b11faecaa1c1564a8eca405f70101ff82800f94faedf976045e"
+    },
+    {
+      "node": {
+        "tag": "iq",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid"
+        }
+      },
+      "error": null,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80b1b08fc0341434b11faecaa1c151905f70101ff82800f94faedf976"
+    },
+    {
+      "node": {
+        "tag": "iq",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid"
+        }
+      },
+      "error": 0,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80b1b08fc0341434b11faecaa1c151905f70101ff82800f94faedf976"
+    },
+    {
+      "node": {
+        "tag": "iq",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid"
+        }
+      },
+      "error": 500,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c1519a8eca405f70101ff82800f94faedf976"
+    },
+    {
+      "node": {
+        "tag": "iq",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": ""
+        }
+      },
+      "error": null,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80b1b08fc0341434b11faecaa1c151905f70101ff82800f94faedf976"
+    },
+    {
+      "node": {
+        "tag": "iq",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": ""
+        }
+      },
+      "error": 0,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80b1b08fc0341434b11faecaa1c151905f70101ff82800f94faedf976"
+    },
+    {
+      "node": {
+        "tag": "iq",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": ""
+        }
+      },
+      "error": 500,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c1519a8eca405f70101ff82800f94faedf976"
+    },
+    {
+      "node": {
+        "tag": "iq",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "read"
+        }
+      },
+      "error": null,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c151905f70101ff82800f94faedf976042a"
+    },
+    {
+      "node": {
+        "tag": "iq",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "read"
+        }
+      },
+      "error": 0,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c151905f70101ff82800f94faedf976042a"
+    },
+    {
+      "node": {
+        "tag": "iq",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "read"
+        }
+      },
+      "error": 500,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80f1b08fc0341434b11faecaa1c1519a8eca405f70101ff82800f94faedf976042a"
+    },
+    {
+      "node": {
+        "tag": "iq",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "sender"
+        }
+      },
+      "error": null,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c151905f70101ff82800f94faedf97604ec25"
+    },
+    {
+      "node": {
+        "tag": "iq",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "sender"
+        }
+      },
+      "error": 0,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c151905f70101ff82800f94faedf97604ec25"
+    },
+    {
+      "node": {
+        "tag": "iq",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "sender"
+        }
+      },
+      "error": 500,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80f1b08fc0341434b11faecaa1c1519a8eca405f70101ff82800f94faedf97604ec25"
+    },
+    {
+      "node": {
+        "tag": "iq",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "retry"
+        }
+      },
+      "error": null,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c151905f70101ff82800f94faedf97604ec0b"
+    },
+    {
+      "node": {
+        "tag": "iq",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "retry"
+        }
+      },
+      "error": 0,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c151905f70101ff82800f94faedf97604ec0b"
+    },
+    {
+      "node": {
+        "tag": "iq",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "retry"
+        }
+      },
+      "error": 500,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80f1b08fc0341434b11faecaa1c1519a8eca405f70101ff82800f94faedf97604ec0b"
+    },
+    {
+      "node": {
+        "tag": "iq",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "unknown"
+        }
+      },
+      "error": null,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c151905f70101ff82800f94faedf976045e"
+    },
+    {
+      "node": {
+        "tag": "iq",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "unknown"
+        }
+      },
+      "error": 0,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80d1b08fc0341434b11faecaa1c151905f70101ff82800f94faedf976045e"
+    },
+    {
+      "node": {
+        "tag": "iq",
+        "attrs": {
+          "id": "ACK",
+          "from": "group@g.us",
+          "participant": "800:1@lid",
+          "recipient": "200@lid",
+          "type": "unknown"
+        }
+      },
+      "error": 500,
+      "me": "100:7@s.whatsapp.net",
+      "wire": "00f80f1b08fc0341434b11faecaa1c1519a8eca405f70101ff82800f94faedf976045e"
+    },
+    {
+      "node": {
+        "tag": "message",
+        "attrs": {}
+      },
+      "error": null,
+      "me": null,
+      "wire": "00f8031b1513"
+    },
+    {
+      "node": {
+        "tag": "message",
+        "attrs": {
+          "id": "",
+          "from": "",
+          "participant": "",
+          "recipient": "",
+          "type": ""
+        }
+      },
+      "error": null,
+      "me": null,
+      "wire": "00f8071b08fc0011fc001513"
+    },
+    {
+      "node": {
+        "tag": "message",
+        "attrs": {
+          "id": "A",
+          "from": "200@lid"
+        }
+      },
+      "error": null,
+      "me": null,
+      "wire": "00f8071b08fb81af11faedf9761513"
+    },
+    {
+      "node": {
+        "tag": "ack",
+        "attrs": {
+          "id": "A",
+          "from": "200@lid",
+          "extra": "ignored"
+        }
+      },
+      "error": null,
+      "me": null,
+      "wire": "00f8071b08fb81af11faedf976151b"
+    }
+  ],
+  "privacyResponse": {
+    "tag": "iq",
+    "attrs": {},
+    "content": [
+      {
+        "tag": "privacy",
+        "attrs": {},
+        "content": [
+          {
+            "tag": "category",
+            "attrs": {
+              "name": "readreceipts",
+              "value": "all"
+            }
+          },
+          {
+            "tag": "category",
+            "attrs": {
+              "config_code": "10518",
+              "config_value": "1"
+            }
+          },
+          {
+            "tag": "category",
+            "attrs": {
+              "name": "empty",
+              "value": "",
+              "config_value": "fallback"
+            }
+          },
+          {
+            "tag": "category",
+            "attrs": {
+              "name": "missing"
+            }
+          },
+          {
+            "tag": "ignored",
+            "attrs": {
+              "name": "skip",
+              "value": "all"
+            }
+          },
+          {
+            "tag": "category",
+            "attrs": {
+              "name": "duplicate",
+              "value": "old"
+            }
+          },
+          {
+            "tag": "category",
+            "attrs": {
+              "name": "duplicate",
+              "value": "new"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "settings": {
+    "10518": "1",
+    "readreceipts": "all",
+    "empty": "fallback",
+    "missing": null,
+    "duplicate": "new"
+  },
+  "privacyQueries": [
+    "00f8081916e211fa00030429f801f801e2",
+    "00f8081916e211fa00030429f801f801e2"
+  ],
+  "updates": [
+    {
+      "method": "updateMessagesPrivacy",
+      "value": "all",
+      "wire": "00f8081916e211fa0003045af801f802e2f801f8058189fc086d657373616765736cec60"
+    },
+    {
+      "method": "updateMessagesPrivacy",
+      "value": "contacts",
+      "wire": "00f8081916e211fa0003045af801f802e2f801f8058189fc086d657373616765736c74"
+    },
+    {
+      "method": "updateCallPrivacy",
+      "value": "all",
+      "wire": "00f8081916e211fa0003045af801f802e2f801f8058189fc0763616c6c6164646cec60"
+    },
+    {
+      "method": "updateCallPrivacy",
+      "value": "known",
+      "wire": "00f8081916e211fa0003045af801f802e2f801f8058189fc0763616c6c6164646cfc056b6e6f776e"
+    },
+    {
+      "method": "updateLastSeenPrivacy",
+      "value": "all",
+      "wire": "00f8081916e211fa0003045af801f802e2f801f8058189616cec60"
+    },
+    {
+      "method": "updateLastSeenPrivacy",
+      "value": "contacts",
+      "wire": "00f8081916e211fa0003045af801f802e2f801f8058189616c74"
+    },
+    {
+      "method": "updateLastSeenPrivacy",
+      "value": "contact_blacklist",
+      "wire": "00f8081916e211fa0003045af801f802e2f801f8058189616cecc3"
+    },
+    {
+      "method": "updateLastSeenPrivacy",
+      "value": "none",
+      "wire": "00f8081916e211fa0003045af801f802e2f801f8058189616cecbe"
+    },
+    {
+      "method": "updateOnlinePrivacy",
+      "value": "all",
+      "wire": "00f8081916e211fa0003045af801f802e2f801f8058189ecb16cec60"
+    },
+    {
+      "method": "updateOnlinePrivacy",
+      "value": "match_last_seen",
+      "wire": "00f8081916e211fa0003045af801f802e2f801f8058189ecb16ced56"
+    },
+    {
+      "method": "updateProfilePicturePrivacy",
+      "value": "none",
+      "wire": "00f8081916e211fa0003045af801f802e2f801f8058189656cecbe"
+    },
+    {
+      "method": "updateStatusPrivacy",
+      "value": "contacts",
+      "wire": "00f8081916e211fa0003045af801f802e2f801f80581890b6c74"
+    },
+    {
+      "method": "updateReadReceiptsPrivacy",
+      "value": "all",
+      "wire": "00f8081916e211fa0003045af801f802e2f801f8058189de6cec60"
+    },
+    {
+      "method": "updateReadReceiptsPrivacy",
+      "value": "none",
+      "wire": "00f8081916e211fa0003045af801f802e2f801f8058189de6cecbe"
+    },
+    {
+      "method": "updateGroupsAddPrivacy",
+      "value": "all",
+      "wire": "00f8081916e211fa0003045af801f802e2f801f8058189ec826cec60"
+    },
+    {
+      "method": "updateGroupsAddPrivacy",
+      "value": "contacts",
+      "wire": "00f8081916e211fa0003045af801f802e2f801f8058189ec826c74"
+    },
+    {
+      "method": "updateGroupsAddPrivacy",
+      "value": "contact_blacklist",
+      "wire": "00f8081916e211fa0003045af801f802e2f801f8058189ec826cecc3"
+    }
+  ],
+  "readCases": [
+    {
+      "value": "all",
+      "wires": [
+        "00f80c0708fb81af1aff05170000000011fafc01611c05faff82800f76042af801f80271f801f8033f08fb81af",
+        "00f8090708fb81bf1aff05170000000011fafc016276042a",
+        "00f80b0708fb81cf1aff05170000000011fafc01611c05faed4c76042a"
+      ]
+    },
+    {
+      "value": "none",
+      "wires": [
+        "00f80c0708fb81af1aff05170000000011fafc01611c05faff82800f7604ec00f801f80271f801f8033f08fb81af",
+        "00f8090708fb81bf1aff05170000000011fafc01627604ec00",
+        "00f80b0708fb81cf1aff05170000000011fafc01611c05faed4c7604ec00"
+      ]
+    },
+    {
+      "value": "other",
+      "wires": [
+        "00f80c0708fb81af1aff05170000000011fafc01611c05faff82800f7604ec00f801f80271f801f8033f08fb81af",
+        "00f8090708fb81bf1aff05170000000011fafc01627604ec00",
+        "00f80b0708fb81cf1aff05170000000011fafc01611c05faed4c7604ec00"
+      ]
+    },
+    {
+      "value": null,
+      "wires": [
+        "00f80c0708fb81af1aff05170000000011fafc01611c05faff82800f7604ec00f801f80271f801f8033f08fb81af",
+        "00f8090708fb81bf1aff05170000000011fafc01627604ec00",
+        "00f80b0708fb81cf1aff05170000000011fafc01611c05faed4c7604ec00"
+      ]
+    }
+  ],
+  "rejectCall": "00f8066406f70007ec3311faff82800f76f801f807ed0068fc0443414c4c47faff82800f76412d"
+}

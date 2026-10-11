@@ -1,6 +1,7 @@
 //! Async WhatsApp WebSocket connection with exclusive Noise ownership and IQ routing.
 mod actor;
 mod groups;
+mod receipts;
 mod relay;
 use crate::{
     auth::{self, Credentials, SqliteAuthStore},
@@ -45,6 +46,8 @@ pub enum Error {
     #[error(transparent)]
     Retry(#[from] crate::retry::Error),
     #[error(transparent)]
+    Receipt(#[from] crate::receipts::Error),
+    #[error(transparent)]
     USync(#[from] crate::usync::Error),
     #[error(transparent)]
     Group(#[from] crate::groups::Error),
@@ -77,6 +80,7 @@ impl Error {
     pub fn status_code(&self) -> Option<u16> {
         match self {
             Self::Timeout => Some(408),
+            Self::Receipt(error) => Some(error.status_code()),
             Self::Closed(code) => Some(*code),
             Self::Auth(e) => e.status_code(),
             Self::Signal(e) => e.status_code(),
@@ -166,6 +170,7 @@ impl std::fmt::Debug for Event {
     }
 }
 struct Inner {
+    privacy_settings: std::sync::Mutex<Option<crate::privacy_settings::Settings>>,
     retry_manager: Option<crate::retry::Manager>,
     patch_message_before_sending: crate::relay::MessagePatch,
     relay_lock: tokio::sync::Mutex<()>,
@@ -329,6 +334,7 @@ impl Socket {
             .then(|| crate::retry::Manager::new(config.max_msg_retry_count));
         let actor_retry_manager = retry_manager.clone();
         let inner = Arc::new(Inner {
+            privacy_settings: std::sync::Mutex::new(None),
             retry_manager,
             patch_message_before_sending: config.patch_message_before_sending.clone(),
             relay_lock: tokio::sync::Mutex::new(()),

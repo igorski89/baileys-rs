@@ -11,6 +11,8 @@ pub mod jid;
 pub mod messages;
 pub mod noise;
 pub mod privacy;
+pub mod privacy_settings;
+pub mod receipts;
 pub mod relay;
 pub mod reporting;
 pub mod retry;
