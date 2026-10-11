@@ -3,6 +3,7 @@ mod actor;
 mod groups;
 mod receipts;
 mod relay;
+mod retries;
 use crate::{
     auth::{self, Credentials, SqliteAuthStore},
     binary::{self, BinaryNode},
@@ -115,6 +116,7 @@ pub struct Config {
     pub patch_message_before_sending: crate::relay::MessagePatch,
     pub enable_recent_message_cache: bool,
     pub max_msg_retry_count: u64,
+    pub enable_auto_session_recreation: bool,
 }
 impl Default for Config {
     fn default() -> Self {
@@ -135,6 +137,7 @@ impl Default for Config {
             patch_message_before_sending: Default::default(),
             enable_recent_message_cache: true,
             max_msg_retry_count: 5,
+            enable_auto_session_recreation: true,
         }
     }
 }
@@ -170,6 +173,9 @@ impl std::fmt::Debug for Event {
     }
 }
 struct Inner {
+    retry_requests: Arc<retries::RetryRequests>,
+    max_msg_retry_count: u64,
+    enable_auto_session_recreation: bool,
     privacy_settings: std::sync::Mutex<Option<crate::privacy_settings::Settings>>,
     retry_manager: Option<crate::retry::Manager>,
     patch_message_before_sending: crate::relay::MessagePatch,
@@ -191,6 +197,12 @@ pub struct Socket {
     inner: Arc<Inner>,
 }
 enum Command {
+    RetryReceipt {
+        node: BinaryNode,
+        count: u64,
+        include_keys: bool,
+        reply: oneshot::Sender<Result<(), Error>>,
+    },
     Query {
         node: BinaryNode,
         token: u64,
@@ -333,7 +345,12 @@ impl Socket {
             .enable_recent_message_cache
             .then(|| crate::retry::Manager::new(config.max_msg_retry_count));
         let actor_retry_manager = retry_manager.clone();
+        let retry_requests = Arc::new(retries::RetryRequests::default());
+        let actor_retry_requests = retry_requests.clone();
         let inner = Arc::new(Inner {
+            retry_requests,
+            max_msg_retry_count: config.max_msg_retry_count,
+            enable_auto_session_recreation: config.enable_auto_session_recreation,
             privacy_settings: std::sync::Mutex::new(None),
             retry_manager,
             patch_message_before_sending: config.patch_message_before_sending.clone(),
@@ -363,6 +380,7 @@ impl Socket {
                 events,
                 state,
                 actor_retry_manager,
+                actor_retry_requests,
             )
             .await;
         });

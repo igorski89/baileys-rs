@@ -1,4 +1,5 @@
 //! In-memory message retry state corresponding to upstream MessageRetryManager.
+pub mod request;
 use crate::proto;
 use indexmap::IndexMap;
 use std::{

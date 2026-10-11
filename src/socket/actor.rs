@@ -60,6 +60,7 @@ pub(super) async fn run(
     events: broadcast::Sender<Event>,
     state: watch::Sender<ConnectionState>,
     retry_manager: Option<crate::retry::Manager>,
+    retry_requests: Arc<super::retries::RetryRequests>,
 ) {
     let mut actor = Actor {
         ws,
@@ -145,6 +146,7 @@ pub(super) async fn run(
     {
         tracing::debug!(?error, "retry state cleanup failed");
     }
+    retry_requests.clear();
     actor.state.send_replace(ConnectionState::Closed { code });
     actor.emit(Event::Connection(ConnectionState::Closed { code }));
     for (_, pending) in actor.pending.drain() {
@@ -200,6 +202,71 @@ impl Actor<'_> {
     }
     async fn command(&mut self, command: Command) -> Result<(), Error> {
         match command {
+            Command::RetryReceipt {
+                node,
+                count,
+                include_keys,
+                reply,
+            } => {
+                let store = self.store.clone();
+                let prepared = tokio::task::spawn_blocking(move || {
+                    store.transaction_with_error(|tx| {
+                        let credentials = tx.load_credentials()?;
+                        // Device identity is required even on the no-key first-attempt path.
+                        credentials
+                            .account
+                            .as_ref()
+                            .ok_or(crate::relay::Error::Identity)?;
+                        let prekey = if include_keys {
+                            let batch = tx.allocate_prekeys(1)?;
+                            let id = batch.first_pre_key_id;
+                            let values = tx.get(KeyCategory::PreKey, &[id.to_string()])?;
+                            let pair = match values.get(&id.to_string()) {
+                                Some(KeyValue::PreKey(pair)) => pair.clone(),
+                                _ => {
+                                    return Err(auth::Error::InvalidCredentials(
+                                        "missing retry prekey",
+                                    )
+                                    .into());
+                                }
+                            };
+                            tx.mark_prekeys_uploaded(batch.last_pre_key_id)?;
+                            Some((id, pair))
+                        } else {
+                            None
+                        };
+                        let receipt = crate::retry::request::receipt(
+                            &node,
+                            node.attrs.get("id").ok_or(Error::Config)?,
+                            count,
+                            &credentials,
+                            prekey.as_ref().map(|(id, pair)| (*id, pair)),
+                        )?;
+                        binary::encode(&receipt)?;
+                        Ok::<_, Error>((receipt, tx.load_credentials()?))
+                    })
+                })
+                .await
+                .map_err(|_| Error::Task);
+                match prepared {
+                    Ok(Ok((receipt, credentials))) => {
+                        self.credentials = credentials;
+                        if include_keys {
+                            self.emit(Event::CredentialsUpdated);
+                        }
+                        let result = self.send(&receipt).await;
+                        if result.is_err() {
+                            let _ = reply.send(Err(Error::Closed(428)));
+                            result?;
+                        } else {
+                            let _ = reply.send(Ok(()));
+                        }
+                    }
+                    Ok(Err(error)) | Err(error) => {
+                        let _ = reply.send(Err(error));
+                    }
+                }
+            }
             Command::Query {
                 node,
                 token,
