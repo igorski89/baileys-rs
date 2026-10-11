@@ -31,6 +31,7 @@ x25519-dalek = { version = "2", features = ["static_secrets"] }
 zeroize = { version = "1", features = ["derive"] }
 flate2 = "1"
 indexmap = { version = "2", features = ["serde"] }
+regex = "1"
 prost = "0.14"
 serde = { version = "1", features = ["derive"] }
 thiserror = "2"

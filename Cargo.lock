@@ -80,6 +80,7 @@ dependencies = [
  "prost",
  "prost-build",
  "protoc-bin-vendored",
+ "regex",
  "rusqlite",
  "serde",
  "serde_json",
