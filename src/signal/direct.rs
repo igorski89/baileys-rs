@@ -705,7 +705,7 @@ impl Repository {
         self.migrations.lock().map_err(|_| Error::Invalid)?.clear();
         self.mappings.close()
     }
-    fn address(&self, jid: &str) -> Result<String, Error> {
+    pub(crate) fn address(&self, jid: &str) -> Result<String, Error> {
         Ok(self
             .mappings
             .resolve_address(&Address::from_jid(jid)?)?
@@ -731,17 +731,23 @@ impl Repository {
     }
     pub fn encrypt(&self, jid: &str, plaintext: &[u8]) -> Result<Encrypted, Error> {
         let id = self.address(jid)?;
-        self.store.transaction_with_error(|tx| {
-            let creds = tx.load_credentials()?;
-            let mut record = load_record(tx, &id)?;
-            let result = record.encrypt(
-                &creds.signed_identity_key,
-                u32::from(creds.registration_id),
-                plaintext,
-            )?;
-            save_record(tx, &id, &record)?;
-            Ok(result)
-        })
+        self.store
+            .transaction_with_error(|tx| Self::encrypt_in_transaction(tx, &id, plaintext))
+    }
+    pub(crate) fn encrypt_in_transaction(
+        tx: &mut AuthTransaction<'_>,
+        id: &str,
+        plaintext: &[u8],
+    ) -> Result<Encrypted, Error> {
+        let creds = tx.load_credentials()?;
+        let mut record = load_record(tx, id)?;
+        let result = record.encrypt(
+            &creds.signed_identity_key,
+            u32::from(creds.registration_id),
+            plaintext,
+        )?;
+        save_record(tx, id, &record)?;
+        Ok(result)
     }
     pub fn decrypt(&self, jid: &str, kind: MessageType, wire: &[u8]) -> Result<Vec<u8>, Error> {
         self.decrypt_with_rng(jid, kind, wire, KeyPair::generate)

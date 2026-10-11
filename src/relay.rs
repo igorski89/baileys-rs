@@ -1,5 +1,6 @@
 //! Recipient fanout and wire metadata used by the message relay orchestrator.
 mod stanza;
+mod transaction;
 use crate::{
     binary::{BinaryNode, NodeContent},
     crypto,
@@ -11,9 +12,12 @@ use base64::{Engine, engine::general_purpose::STANDARD};
 use indexmap::IndexMap;
 use prost::Message as _;
 pub use stanza::*;
+pub use transaction::*;
 
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
+    #[error(transparent)]
+    Auth(#[from] crate::auth::Error),
     #[error(transparent)]
     Message(#[from] messages::Error),
     #[error(transparent)]
@@ -32,6 +36,7 @@ pub enum Error {
 impl Error {
     pub fn status_code(&self) -> Option<u16> {
         match self {
+            Self::Auth(e) => e.status_code(),
             Self::AllEncryptionsFailed { .. } => Some(500),
             Self::Signal(e) => e.status_code(),
             _ => None,

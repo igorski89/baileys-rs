@@ -13,10 +13,34 @@ pub struct RetryDistribution {
     pub bytes: Option<Vec<u8>>,
     pub warning: Option<crate::signal::Error>,
 }
+pub trait SenderKeys {
+    fn has_sender_key(
+        &self,
+        name: &crate::signal::SenderKeyName,
+    ) -> Result<bool, crate::signal::Error>;
+    fn distribution(
+        &self,
+        name: &crate::signal::SenderKeyName,
+    ) -> Result<Vec<u8>, crate::signal::Error>;
+}
+impl SenderKeys for crate::signal::group::Repository {
+    fn has_sender_key(
+        &self,
+        name: &crate::signal::SenderKeyName,
+    ) -> Result<bool, crate::signal::Error> {
+        self.has_sender_key(name)
+    }
+    fn distribution(
+        &self,
+        name: &crate::signal::SenderKeyName,
+    ) -> Result<Vec<u8>, crate::signal::Error> {
+        self.distribution(name)
+    }
+}
 /// Prefer an existing LID sender key. A distribution failure sends the retry
 /// without SKDM, rather than falling back to a different sender identity.
 pub fn retry_distribution(
-    repository: &crate::signal::group::Repository,
+    repository: &impl SenderKeys,
     destination: &str,
     me: &str,
     me_lid: Option<&str>,

@@ -1,7 +1,7 @@
 //! Sender-key distribution, chain derivation, signatures and persistent group cipher.
 use super::{Error, SenderKeyName};
 use crate::{
-    auth::{KeyCategory, KeyMutation, KeyStore, KeyValue, SqliteAuthStore},
+    auth::{AuthTransaction, KeyCategory, KeyMutation, KeyStore, KeyValue, SqliteAuthStore},
     crypto::{self, KeyPair},
     proto,
 };
@@ -309,19 +309,8 @@ impl Repository {
         name: &SenderKeyName,
         work: impl FnOnce(&mut Record) -> Result<T, Error>,
     ) -> Result<T, Error> {
-        self.store.transaction_with_error(|tx| {
-            let id = name.to_string();
-            let mut keys = tx.get(KeyCategory::SenderKey, std::slice::from_ref(&id))?;
-            let mut record = match keys.remove(&id) {
-                Some(KeyValue::SenderKey(bytes)) => Record::from_bytes(&bytes)?,
-                None => Record::default(),
-                _ => return Err(Error::Invalid),
-            };
-            let result = work(&mut record)?;
-            let bytes = record.to_bytes()?;
-            tx.set(&[KeyMutation::put(id, KeyValue::SenderKey(bytes))])?;
-            Ok(result)
-        })
+        self.store
+            .transaction_with_error(|tx| update_in_transaction(tx, name, work))
     }
     pub fn has_sender_key(&self, name: &SenderKeyName) -> Result<bool, Error> {
         let id = name.to_string();
@@ -341,18 +330,43 @@ impl Repository {
         name: &SenderKeyName,
         plaintext: &[u8],
     ) -> Result<EncryptedGroupMessage, Error> {
-        self.update(name, |record| {
-            let distribution = record.create_distribution()?;
-            let ciphertext = record.encrypt(plaintext)?;
-            Ok(EncryptedGroupMessage {
-                ciphertext,
-                distribution,
-            })
-        })
+        self.store
+            .transaction_with_error(|tx| encrypt_in_transaction(tx, name, plaintext))
     }
     pub fn decrypt(&self, name: &SenderKeyName, bytes: &[u8]) -> Result<Vec<u8>, Error> {
         self.update(name, |r| r.decrypt(bytes))
     }
+}
+pub(crate) fn update_in_transaction<T>(
+    tx: &mut AuthTransaction<'_>,
+    name: &SenderKeyName,
+    work: impl FnOnce(&mut Record) -> Result<T, Error>,
+) -> Result<T, Error> {
+    let id = name.to_string();
+    let mut keys = tx.get(KeyCategory::SenderKey, std::slice::from_ref(&id))?;
+    let mut record = match keys.remove(&id) {
+        Some(KeyValue::SenderKey(bytes)) => Record::from_bytes(&bytes)?,
+        None => Record::default(),
+        _ => return Err(Error::Invalid),
+    };
+    let result = work(&mut record)?;
+    let bytes = record.to_bytes()?;
+    tx.set(&[KeyMutation::put(id, KeyValue::SenderKey(bytes))])?;
+    Ok(result)
+}
+pub(crate) fn encrypt_in_transaction(
+    tx: &mut AuthTransaction<'_>,
+    name: &SenderKeyName,
+    plaintext: &[u8],
+) -> Result<EncryptedGroupMessage, Error> {
+    update_in_transaction(tx, name, |record| {
+        let distribution = record.create_distribution()?;
+        let ciphertext = record.encrypt(plaintext)?;
+        Ok(EncryptedGroupMessage {
+            ciphertext,
+            distribution,
+        })
+    })
 }
 /// Distribution is captured before encryption, matching the upstream repository.
 pub struct EncryptedGroupMessage {

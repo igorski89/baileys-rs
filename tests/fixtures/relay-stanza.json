@@ -694,5 +694,198 @@
       "message": "0a0552656c61799a02221a200707070707070707070707070707070707070707070707070707070707070707",
       "wire": "00f8081311fc086f7665727269646508fc095354414e5a412d494404ed77f801f802fc09706c61696e74657874fc2c0a0552656c61799a02221a200707070707070707070707070707070707070707070707070707070707070707"
     }
+  ],
+  "senderKeySelection": [
+    {
+      "devices": [
+        {
+          "jid": "200:1@s.whatsapp.net",
+          "user": "200",
+          "device": 1
+        },
+        {
+          "jid": "200:1@s.whatsapp.net",
+          "user": "200",
+          "device": 1
+        },
+        {
+          "jid": "300:1@lid",
+          "user": "300",
+          "device": 1
+        },
+        {
+          "jid": "200:99@s.whatsapp.net",
+          "user": "200",
+          "device": 99
+        },
+        {
+          "jid": "400:1@hosted",
+          "user": "400",
+          "device": 1
+        },
+        {
+          "jid": "500:1@hosted.lid",
+          "user": "500",
+          "device": 1
+        }
+      ],
+      "memory": {},
+      "force": false,
+      "expected": {
+        "recipients": [
+          "200:1@s.whatsapp.net",
+          "300:1@lid"
+        ],
+        "memory": {
+          "200:1@s.whatsapp.net": true,
+          "300:1@lid": true
+        }
+      }
+    },
+    {
+      "devices": [
+        {
+          "jid": "200:1@s.whatsapp.net",
+          "user": "200",
+          "device": 1
+        },
+        {
+          "jid": "200:1@s.whatsapp.net",
+          "user": "200",
+          "device": 1
+        },
+        {
+          "jid": "300:1@lid",
+          "user": "300",
+          "device": 1
+        },
+        {
+          "jid": "200:99@s.whatsapp.net",
+          "user": "200",
+          "device": 99
+        },
+        {
+          "jid": "400:1@hosted",
+          "user": "400",
+          "device": 1
+        },
+        {
+          "jid": "500:1@hosted.lid",
+          "user": "500",
+          "device": 1
+        }
+      ],
+      "memory": {
+        "200:1@s.whatsapp.net": true,
+        "300:1@lid": false
+      },
+      "force": false,
+      "expected": {
+        "recipients": [
+          "300:1@lid"
+        ],
+        "memory": {
+          "200:1@s.whatsapp.net": true,
+          "300:1@lid": true
+        }
+      }
+    },
+    {
+      "devices": [
+        {
+          "jid": "200:1@s.whatsapp.net",
+          "user": "200",
+          "device": 1
+        },
+        {
+          "jid": "200:1@s.whatsapp.net",
+          "user": "200",
+          "device": 1
+        },
+        {
+          "jid": "300:1@lid",
+          "user": "300",
+          "device": 1
+        },
+        {
+          "jid": "200:99@s.whatsapp.net",
+          "user": "200",
+          "device": 99
+        },
+        {
+          "jid": "400:1@hosted",
+          "user": "400",
+          "device": 1
+        },
+        {
+          "jid": "500:1@hosted.lid",
+          "user": "500",
+          "device": 1
+        }
+      ],
+      "memory": {},
+      "force": true,
+      "expected": {
+        "recipients": [
+          "200:1@s.whatsapp.net",
+          "200:1@s.whatsapp.net",
+          "300:1@lid"
+        ],
+        "memory": {
+          "200:1@s.whatsapp.net": true,
+          "300:1@lid": true
+        }
+      }
+    },
+    {
+      "devices": [
+        {
+          "jid": "200:1@s.whatsapp.net",
+          "user": "200",
+          "device": 1
+        },
+        {
+          "jid": "200:1@s.whatsapp.net",
+          "user": "200",
+          "device": 1
+        },
+        {
+          "jid": "300:1@lid",
+          "user": "300",
+          "device": 1
+        },
+        {
+          "jid": "200:99@s.whatsapp.net",
+          "user": "200",
+          "device": 99
+        },
+        {
+          "jid": "400:1@hosted",
+          "user": "400",
+          "device": 1
+        },
+        {
+          "jid": "500:1@hosted.lid",
+          "user": "500",
+          "device": 1
+        }
+      ],
+      "memory": {
+        "200:1@s.whatsapp.net": true,
+        "300:1@lid": false
+      },
+      "force": true,
+      "expected": {
+        "recipients": [
+          "200:1@s.whatsapp.net",
+          "200:1@s.whatsapp.net",
+          "300:1@lid"
+        ],
+        "memory": {
+          "200:1@s.whatsapp.net": true,
+          "300:1@lid": true
+        }
+      }
+    }
   ]
 }

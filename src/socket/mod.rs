@@ -737,23 +737,27 @@ impl Socket {
         if recipients.is_empty() {
             return Ok(Default::default());
         }
-        let store = self.inner.store.clone();
-        let repository = self.inner.decryptor.direct.clone();
+        let repository = crate::relay::Repository::with_mappings(
+            self.inner.store.clone(),
+            self.inner.decryptor.direct.lid_mapping().clone(),
+        );
         tokio::task::spawn_blocking(move || {
-            let credentials = store.load_credentials()?;
-            let me = credentials.me_id()?;
-            let lid = credentials.me.as_ref().and_then(|me| me.lid.as_deref());
-            Ok(crate::relay::create_participant_nodes(
-                crate::relay::Fanout {
-                    recipients: &recipients,
-                    message: &message,
-                    me,
-                    me_lid: lid,
-                    extra_attrs: &extra_attrs,
-                    device_sent_message: device_sent_message.as_ref(),
-                },
-                &repository,
-            )?)
+            Ok(repository.transaction(&recipients, |transaction| {
+                let credentials = transaction.credentials()?;
+                let me = credentials.me_id()?;
+                let lid = credentials.me.as_ref().and_then(|me| me.lid.as_deref());
+                crate::relay::create_participant_nodes(
+                    crate::relay::Fanout {
+                        recipients: &recipients,
+                        message: &message,
+                        me,
+                        me_lid: lid,
+                        extra_attrs: &extra_attrs,
+                        device_sent_message: device_sent_message.as_ref(),
+                    },
+                    transaction,
+                )
+            })?)
         })
         .await
         .map_err(|_| Error::Task)?

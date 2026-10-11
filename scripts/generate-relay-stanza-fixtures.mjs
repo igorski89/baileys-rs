@@ -33,5 +33,13 @@ try {
   for(const destination of ['200@s.whatsapp.net','123@g.us','status@broadcast'])for(const recipient of ['200:2@s.whatsapp.net','100:2@s.whatsapp.net','900:2@lid'])for(const available of [[],['100:7@s.whatsapp.net'],['100:7@s.whatsapp.net','900:7@lid']]){const config={destination,participant:{jid:recipient,count:2},available,message};const node=await h.retryPayload(config);retries.push({destination,recipient,available,message:wire(message),wire:hex(node.content),node:hex(encodeBinaryNode(node))})}
   const splits=[[],['100:7@s.whatsapp.net','900:7@lid','100:2@s.whatsapp.net','900:2@lid','200:2@s.whatsapp.net','200:2@s.whatsapp.net'],['100:2@hosted','900:99@hosted.lid','300@s.whatsapp.net']].map(jids=>{const devices=jids.map(jid=>{const parts=jid.split('@')[0].split(':');return {jid,user:parts[0],device:Number(parts[1]??0)}});return {devices,expected:h.split({devices})}})
   const newsletters=[];for(const attrs of [{},{to:'override',type:'other'}]){const config={destination:'123@newsletter',message,attrs,additionalNodes:[n('extra')],identity:true};newsletters.push({attrs,message:wire(message),wire:hex(encodeBinaryNode(await h.news(config)))})}
-  await writeFile('tests/fixtures/relay-stanza.json',JSON.stringify({assembled,retries,splits,newsletters},null,2)+'\n');console.log(`Generated ${assembled.length} assemblies, ${retries.length} retries and newsletter/split cases`)
+  const selection=send.slice(send.indexOf('const senderKeyRecipients: string[] = []',start),send.indexOf('\t\t\t\tif (senderKeyRecipients.length)',start))
+  await writeFile(join(temp,'selection.mjs'),`import {isHostedLidUser,isHostedPnUser} from './jid-utils.mjs';`+stripTypeScriptTypes(`export function select(devices,memory,force){const senderKeyMap={...memory},participant=force?{}:undefined;`+selection+`return {recipients:senderKeyRecipients,memory:senderKeyMap};}`))
+  const {select}=await import(pathToFileURL(join(temp,'selection.mjs')))
+  const senderKeySelection=[]
+  for(const force of [false,true])for(const memory of [{},{'200:1@s.whatsapp.net':true,'300:1@lid':false}]){
+    const devices=['200:1@s.whatsapp.net','200:1@s.whatsapp.net','300:1@lid','200:99@s.whatsapp.net','400:1@hosted','500:1@hosted.lid'].map(jid=>{const [user,device]=jid.split('@')[0].split(':');return {jid,user,device:Number(device)}})
+    senderKeySelection.push({devices,memory,force,expected:select(devices,memory,force)})
+  }
+  await writeFile('tests/fixtures/relay-stanza.json',JSON.stringify({assembled,retries,splits,newsletters,senderKeySelection},null,2)+'\n');console.log(`Generated ${assembled.length} assemblies, ${retries.length} retries and newsletter/split/sender-key cases`)
 }finally{await rm(temp,{recursive:true,force:true})}
