@@ -199,18 +199,40 @@ impl HttpClient {
         url: &str,
         keys: Keys,
         range: Range,
+        headers: HeaderMap,
+        output: W,
+    ) -> Result<u64, Error>
+    where
+        W: AsyncWrite + Unpin + Send + 'static,
+    {
+        let response = self.download_response(url, range, headers).await?;
+        self.decrypt_response_to(response, keys, range, output)
+            .await
+    }
+    pub async fn download_response(
+        &self,
+        url: &str,
+        range: Range,
         mut headers: HeaderMap,
+    ) -> Result<reqwest::Response, Error> {
+        let plan = DownloadPlan::new(range)?;
+        headers.insert(ORIGIN, defaults::DEFAULT_ORIGIN.parse().unwrap());
+        if let Some(range) = plan.range_header() {
+            headers.insert(RANGE, range.parse().unwrap());
+        }
+        self.get(url, headers).await
+    }
+    pub async fn decrypt_response_to<W>(
+        &self,
+        response: reqwest::Response,
+        keys: Keys,
+        range: Range,
         output: W,
     ) -> Result<u64, Error>
     where
         W: AsyncWrite + Unpin + Send + 'static,
     {
         let plan = DownloadPlan::new(range)?;
-        headers.insert(ORIGIN, defaults::DEFAULT_ORIGIN.parse().unwrap());
-        if let Some(range) = plan.range_header() {
-            headers.insert(RANGE, range.parse().unwrap());
-        }
-        let response = self.get(url, headers).await?;
         let input = StreamReader::new(
             response
                 .bytes_stream()
@@ -226,6 +248,30 @@ impl HttpClient {
         })
         .await
         .map_err(|_| Error::Task)?
+    }
+    pub async fn download_message_to<W>(
+        &self,
+        message: &crate::proto::WebMessageInfo,
+        options: &super::DownloadOptions,
+        output: W,
+    ) -> Result<u64, Error>
+    where
+        W: AsyncWrite + Unpin + Send + 'static,
+    {
+        let media = super::download_content(message.message.as_ref())?;
+        let url = super::download_url(
+            media.direct_path.as_deref(),
+            media.url.as_deref(),
+            options.host.as_deref(),
+        )?;
+        self.download_to(
+            &url,
+            Keys::derive(&media.key, media.kind)?,
+            options.range,
+            options.headers.clone(),
+            output,
+        )
+        .await
     }
     /// Download remote plaintext and encrypt directly to owned temporary files.
     pub async fn encrypt_remote(

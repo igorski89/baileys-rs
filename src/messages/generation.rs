@@ -147,7 +147,7 @@ pub struct Options {
     pub ephemeral_expiration: Option<u32>,
 }
 
-fn normalize_mut(mut message: &mut proto::Message) -> Option<&mut proto::Message> {
+pub(crate) fn normalize_mut(mut message: &mut proto::Message) -> Option<&mut proto::Message> {
     for _ in 0..5 {
         if message.ephemeral_message.is_none()
             && message.view_once_message.is_none()

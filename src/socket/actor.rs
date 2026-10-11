@@ -496,6 +496,17 @@ impl Actor<'_> {
                 self.send(&pairing.reply).await?;
                 self.unified_session().await?;
             }
+            "notification"
+                if node.attrs.get("type").is_some_and(|s| s == "mediaretry")
+                    && self.config.process_media_notifications =>
+            {
+                match crate::media::decode_retry(&node) {
+                    Ok(event) => self.emit(Event::MediaUpdated(vec![event])),
+                    Err(error) => tracing::debug!(?error, "media notification decode failed"),
+                }
+                let ack = crate::receipts::acknowledgement(&node, None, None);
+                self.send(&ack).await?;
+            }
             "notification" if node.child("link_code_companion_reg").is_some() => {
                 let credentials = self.credentials.clone();
                 let notification = node.clone();

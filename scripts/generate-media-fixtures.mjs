@@ -86,6 +86,31 @@ try {
     mediaContent.push({kind,newsletter,modifier,template:hex(proto.Message.encode(template).finish()),output:hex(proto.Message.encode(output).finish()),...prep.trace()});
   }
   await writeFile('tests/fixtures/media_content.json',JSON.stringify(mediaContent,null,2)+'\n');
+  const extraction=messageSource.slice(messageSource.indexOf('export const getContentType'),messageSource.indexOf('export const getDevice'));
+  const assertSource=messageSource.slice(messageSource.indexOf('export const assertMediaContent'));
+  const updateSource=sendSource.slice(sendSource.indexOf('updateMediaMessage: async'),sendSource.indexOf('sendMessage: async',sendSource.indexOf('updateMediaMessage: async'))).trim().replace('updateMediaMessage: async','export const updateMediaMessage = async').replace(/,$/,'');
+  const downloadSource=messageSource.slice(messageSource.indexOf('export const downloadMediaMessage'),messageSource.indexOf('/** Checks whether'));
+  const retryPrefix=`import {proto} from './proto.mjs';import {encryptMediaRetryRequest,decryptMediaRetryData,getStatusCodeForMediaRetry,getUrlFromDirectPath} from './media.mjs';import {Boom} from ${JSON.stringify(pathToFileURL(require.resolve('@hapi/boom')).href)};import {Readable} from 'node:stream';const authState={creds:{me:{id:'100:7@s.whatsapp.net'}}},logger={debug(){}};let updates,mediaHost,sent,emitted,downloads;export function retrySetup(value,host){updates=value;mediaHost=host;sent=[];emitted=[];downloads=[]};export function retryTrace(){return {sent,emitted,downloads}};const sendNode=async node=>sent.push(node),waitForMsgMediaUpdate=async check=>{if(!await check(updates))throw new Error('not matched')},ev={emit:(name,value)=>emitted.push({name,value})};const REUPLOAD_REQUIRED_STATUS=[410,404],downloadContentFromMessage=async(download,type,options)=>{downloads.push({download,type,options});return Readable.from([Buffer.from([1,2,3])])};`;
+  await writeFile(join(temp,'media-retry-message.mjs'),retryPrefix+stripTypeScriptTypes([extraction,assertSource,updateSource,downloadSource].join("\n")));
+  const retryMessage=await import(pathToFileURL(join(temp,'media-retry-message.mjs'))),retryMessageCases=[],downloadMessageCases=[];
+  const runtime=obj=>proto.WebMessageInfo.decode(proto.WebMessageInfo.encode(proto.WebMessageInfo.fromObject(obj)).finish());
+  const payload={mediaKey:Array.from(key),url:'https://old.example/media',directPath:'/old'};
+  const roots=['documentMessage','imageMessage','videoMessage','audioMessage','stickerMessage'].map(type=>({[type]:payload}));
+  const nested=[{buttonsMessage:{imageMessage:payload}},{templateMessage:{hydratedFourRowTemplate:{documentMessage:payload}}},{templateMessage:{hydratedTemplate:{videoMessage:payload}}},{templateMessage:{fourRowTemplate:{imageMessage:payload}}}];
+  const wrappers=['ephemeralMessage','viewOnceMessage','documentWithCaptionMessage','viewOnceMessageV2','viewOnceMessageV2Extension','editedMessage','associatedChildMessage','groupStatusMessage','groupStatusMessageV2'].map(type=>({[type]:{message:{imageMessage:payload}}}));
+  const inputs=[...roots,...nested,...wrappers,{ptvMessage:payload},{extendedTextMessage:{mediaKey:Array.from(key),thumbnailDirectPath:'/thumb'}},{conversation:'text'},{},null,{imageMessage:payload,documentMessage:{...payload,caption:'priority'}}];
+  const crypto=await import('node:crypto');
+  for(const input of inputs){for(const variant of ['success','missingPath','missingResult','unknownResult','deviceError','notificationError','tampered']){
+    const message=runtime({key:{id:'ID',remoteJid:'200@s.whatsapp.net',fromMe:false},message:input}),before=hex(proto.WebMessageInfo.encode(message).finish());
+    const event={key:{id:'ID',remoteJid:'different@lid',fromMe:true}};
+    if(variant==='notificationError')event.error=new (await import(pathToFileURL(require.resolve('@hapi/boom')).href)).Boom('failed',{statusCode:503});
+    else{const plain=proto.MediaRetryNotification.encode({stanzaId:'different-stanza',...(variant==='missingResult'?{}:{result:variant==='unknownResult'?99:variant==='deviceError'?proto.MediaRetryNotification.ResultType.NOT_FOUND:proto.MediaRetryNotification.ResultType.SUCCESS}),...(variant==='missingPath'?{}:{directPath:'/new'})}).finish();const k=Buffer.from(crypto.hkdfSync('sha256',key,Buffer.alloc(0),'WhatsApp Media Retry Notification',32)),iv=Buffer.alloc(12,4),c=crypto.createCipheriv('aes-256-gcm',k,iv);c.setAAD(Buffer.from('ID'));const ciphertext=Buffer.concat([c.update(plain),c.final(),c.getAuthTag()]);if(variant==='tampered')ciphertext[0]^=1;event.media={ciphertext,iv};}
+    retryMessage.retrySetup([event],'custom.example:8443');let error,status;try{await retryMessage.updateMediaMessage(message)}catch(e){error=e.message;status=e.output?.statusCode}
+    retryMessageCases.push({variant,input:before,event:convert({key:event.key,media:event.media,error:event.error?{status:503}:undefined}),output:hex(proto.WebMessageInfo.encode(message).finish()),error,status,...convert(retryMessage.retryTrace())});
+  }
+  retryMessage.retrySetup([],undefined);const message=runtime({message:input});let output,error,status;try{output=hex(await retryMessage.downloadMediaMessage(message,'buffer',{}))}catch(e){error=e.message;status=e.output?.statusCode}downloadMessageCases.push({input:hex(proto.WebMessageInfo.encode(message).finish()),output,error,status,...convert(retryMessage.retryTrace())});}
+  await writeFile('tests/fixtures/media_message_retry.json',JSON.stringify(retryMessageCases,null,2)+'\n');
+  await writeFile('tests/fixtures/media_message_download.json',JSON.stringify(downloadMessageCases,null,2)+'\n');
   const initial={hosts:[{hostname:'first.example',maxContentLengthBytes:100},{hostname:'second.example',maxContentLengthBytes:200}],auth:'old +/',ttl:60};
   const updated={...initial,hosts:[{hostname:'changed.example',maxContentLengthBytes:300}],auth:'new +/'};
   const uploadCases=[];

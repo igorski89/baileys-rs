@@ -120,3 +120,150 @@ impl Socket {
         Ok(crate::media::prepare(request, options, http, uploader, hooks).await?)
     }
 }
+impl Socket {
+    /// Handle a mediaretry notification explicitly when automatic processing is disabled.
+    pub async fn handle_media_notification(
+        &self,
+        node: &crate::binary::BinaryNode,
+    ) -> Result<bool, Error> {
+        if node.tag != "notification" || node.attrs.get("type").is_none_or(|s| s != "mediaretry") {
+            return Ok(false);
+        }
+        let result = crate::media::decode_retry(node);
+        if let Ok(event) = &result {
+            let _ = self
+                .inner
+                .events
+                .send(super::Event::MediaUpdated(vec![event.clone()]));
+        }
+        self.send_node(crate::receipts::acknowledgement(node, None, None))
+            .await?;
+        result?;
+        Ok(true)
+    }
+    /// Request a phone reupload and mutate the selected original media payload.
+    /// None/zero timeout waits until an ID-matched notification or connection close.
+    pub async fn update_media_message(
+        &self,
+        message: &mut crate::proto::WebMessageInfo,
+        limit: Option<std::time::Duration>,
+    ) -> Result<(), Error> {
+        let media_key = crate::media::retry_media_key(
+            message
+                .message
+                .as_mut()
+                .ok_or(crate::media::Error::NotMedia)?,
+        )?;
+        let key = message
+            .key
+            .clone()
+            .ok_or(crate::media::Error::Input("missing message key"))?;
+        let credentials = super::load_credentials(self.inner.store.clone()).await?;
+        let request = crate::media::retry_request(&key, &media_key, credentials.me_id()?)?;
+        let mut updates = self.subscribe();
+        let mut state = self.inner.state.clone();
+        let wait = async {
+            loop {
+                // A notification published before close must remain observable after close.
+                match updates.try_recv() {
+                    Ok(super::Event::MediaUpdated(events)) => {
+                        if let Some(event) = events.into_iter().find(|e| e.key.id == key.id) {
+                            return Ok(event);
+                        }
+                        continue;
+                    }
+                    Ok(_) => continue,
+                    Err(tokio::sync::broadcast::error::TryRecvError::Lagged(n)) => {
+                        return Err(Error::EventLagged(n));
+                    }
+                    Err(tokio::sync::broadcast::error::TryRecvError::Closed) => {
+                        return Err(Error::Closed(428));
+                    }
+                    Err(tokio::sync::broadcast::error::TryRecvError::Empty) => {}
+                }
+                if let super::ConnectionState::Closed { code } = state.borrow().clone() {
+                    return Err(Error::Closed(code));
+                }
+                tokio::select! {
+                    biased;
+                    update=updates.recv()=>match update {
+                        Ok(super::Event::MediaUpdated(events))=>if let Some(event)=events.into_iter().find(|e|e.key.id==key.id){return Ok(event);},
+                        Ok(_)=>{},
+                        Err(tokio::sync::broadcast::error::RecvError::Lagged(n))=>return Err(Error::EventLagged(n)),
+                        Err(_)=>return Err(Error::Closed(428)),
+                    },
+                    result=state.changed()=>{result.map_err(|_|Error::Closed(428))?;}
+                }
+            }
+        };
+        let wait = async {
+            match limit.filter(|d| !d.is_zero()) {
+                Some(limit) => tokio::time::timeout(limit, wait)
+                    .await
+                    .map_err(|_| Error::Timeout)?,
+                None => wait.await,
+            }
+        };
+        let (_, event) = tokio::try_join!(self.send_node(request), wait)?;
+        crate::media::apply_retry(message, &event, &self.media_host().await)?;
+        let _ = self
+            .inner
+            .events
+            .send(super::Event::MessageContentsUpdated(vec![
+                crate::media::ContentUpdate {
+                    key,
+                    message: message.message.clone().map(Box::new),
+                },
+            ]));
+        Ok(())
+    }
+}
+impl Socket {
+    /// Download an encrypted message, optionally requesting one phone reupload on HTTP 404/410.
+    /// The writer is consumed only after a successful HTTP response, so the retry retains it.
+    pub async fn download_media_message_to<W>(
+        &self,
+        message: &mut crate::proto::WebMessageInfo,
+        options: &crate::media::DownloadOptions,
+        output: W,
+        reupload: bool,
+        limit: Option<std::time::Duration>,
+    ) -> Result<u64, Error>
+    where
+        W: tokio::io::AsyncWrite + Unpin + Send + 'static,
+    {
+        let http = self
+            .inner
+            .media_http
+            .get_or_try_init(|| async { crate::media::HttpClient::new() })
+            .await?
+            .clone();
+        let fetch = |message: &crate::proto::WebMessageInfo| {
+            let media = crate::media::download_content(message.message.as_ref())?;
+            let url = crate::media::download_url(
+                media.direct_path.as_deref(),
+                media.url.as_deref(),
+                options.host.as_deref(),
+            )?;
+            let keys = crate::media::Keys::derive(&media.key, media.kind)?;
+            Ok::<_, crate::media::Error>((url, keys))
+        };
+        let (url, mut keys) = fetch(message)?;
+        let response = match http
+            .download_response(&url, options.range, options.headers.clone())
+            .await
+        {
+            Err(crate::media::Error::HttpStatus(404 | 410)) if reupload => {
+                self.update_media_message(message, limit).await?;
+                let (url, updated_keys) = fetch(message)?;
+                keys = updated_keys;
+                http.download_response(&url, options.range, options.headers.clone())
+                    .await?
+            }
+            result => result?,
+        };
+        Ok(http
+            .decrypt_response_to(response, keys, options.range, output)
+            .await?)
+    }
+}

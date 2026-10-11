@@ -1,11 +1,13 @@
 //! Media encryption, streaming CBC downloads and media-retry wire helpers.
 mod http;
+mod message;
 mod overlay;
 mod prepare;
 mod retry;
 mod stream;
 use crate::crypto;
 pub use http::*;
+pub use message::*;
 pub use prepare::*;
 pub use retry::*;
 pub use stream::*;
@@ -21,6 +23,18 @@ pub enum Error {
     Protobuf(#[from] prost::DecodeError),
     #[error("invalid media range or byte count overflow")]
     Range,
+    #[error("given message is not a media message")]
+    NotMedia,
+    #[error("No message present")]
+    MissingMessage,
+    #[error("message is not a downloadable media message")]
+    DownloadNotMedia,
+    #[error("media key missing")]
+    MissingMediaKey,
+    #[error("media retry failed ({0:?})")]
+    RetryFailure(RetryFailure),
+    #[error("media reupload failed by device ({result:?})")]
+    RetryResult { result: Option<i32>, status: u16 },
     #[error("invalid media input: {0}")]
     Input(&'static str),
     #[error("media uploader unavailable")]
@@ -50,7 +64,10 @@ pub enum Error {
 impl Error {
     pub fn status_code(&self) -> Option<u16> {
         match self {
-            Self::Url => Some(400),
+            Self::Url | Self::NotMedia | Self::MissingMessage => Some(400),
+            Self::DownloadNotMedia | Self::MissingMediaKey => Some(500),
+            Self::RetryFailure(e) => Some(e.status),
+            Self::RetryResult { status, .. } => Some(*status),
             Self::HttpStatus(code) => Some(*code),
             Self::UploadFailed => Some(500),
             Self::Refresh { status, .. } => *status,

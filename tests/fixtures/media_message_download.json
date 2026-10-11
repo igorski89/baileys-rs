@@ -1,0 +1,472 @@
+[
+  {
+    "input": "12453a430a1968747470733a2f2f6f6c642e6578616d706c652f6d656469613a20000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f52042f6f6c64",
+    "output": "010203",
+    "sent": [],
+    "emitted": [],
+    "downloads": [
+      {
+        "download": {
+          "url": "https://old.example/media",
+          "mediaKey": {
+            "hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f"
+          },
+          "directPath": "/old"
+        },
+        "type": "document",
+        "options": {}
+      }
+    ]
+  },
+  {
+    "input": "12451a430a1968747470733a2f2f6f6c642e6578616d706c652f6d656469614220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f5a042f6f6c64",
+    "output": "010203",
+    "sent": [],
+    "emitted": [],
+    "downloads": [
+      {
+        "download": {
+          "interactiveAnnotations": [],
+          "scanLengths": [],
+          "annotations": [],
+          "url": "https://old.example/media",
+          "mediaKey": {
+            "hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f"
+          },
+          "directPath": "/old"
+        },
+        "type": "image",
+        "options": {}
+      }
+    ]
+  },
+  {
+    "input": "12454a430a1968747470733a2f2f6f6c642e6578616d706c652f6d656469613220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f6a042f6f6c64",
+    "output": "010203",
+    "sent": [],
+    "emitted": [],
+    "downloads": [
+      {
+        "download": {
+          "interactiveAnnotations": [],
+          "annotations": [],
+          "processedVideos": [],
+          "url": "https://old.example/media",
+          "mediaKey": {
+            "hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f"
+          },
+          "directPath": "/old"
+        },
+        "type": "video",
+        "options": {}
+      }
+    ]
+  },
+  {
+    "input": "124542430a1968747470733a2f2f6f6c642e6578616d706c652f6d656469613a20000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f4a042f6f6c64",
+    "output": "010203",
+    "sent": [],
+    "emitted": [],
+    "downloads": [
+      {
+        "download": {
+          "url": "https://old.example/media",
+          "mediaKey": {
+            "hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f"
+          },
+          "directPath": "/old"
+        },
+        "type": "audio",
+        "options": {}
+      }
+    ]
+  },
+  {
+    "input": "1246d201430a1968747470733a2f2f6f6c642e6578616d706c652f6d656469612220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f42042f6f6c64",
+    "output": "010203",
+    "sent": [],
+    "emitted": [],
+    "downloads": [
+      {
+        "download": {
+          "url": "https://old.example/media",
+          "mediaKey": {
+            "hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f"
+          },
+          "directPath": "/old"
+        },
+        "type": "sticker",
+        "options": {}
+      }
+    ]
+  },
+  {
+    "input": "1248d202451a430a1968747470733a2f2f6f6c642e6578616d706c652f6d656469614220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f5a042f6f6c64",
+    "output": "010203",
+    "sent": [],
+    "emitted": [],
+    "downloads": [
+      {
+        "download": {
+          "interactiveAnnotations": [],
+          "scanLengths": [],
+          "annotations": [],
+          "url": "https://old.example/media",
+          "mediaKey": {
+            "hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f"
+          },
+          "directPath": "/old"
+        },
+        "type": "image",
+        "options": {}
+      }
+    ]
+  },
+  {
+    "input": "124aca014712450a430a1968747470733a2f2f6f6c642e6578616d706c652f6d656469613a20000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f52042f6f6c64",
+    "output": "010203",
+    "sent": [],
+    "emitted": [],
+    "downloads": [
+      {
+        "download": {
+          "url": "https://old.example/media",
+          "mediaKey": {
+            "hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f"
+          },
+          "directPath": "/old"
+        },
+        "type": "document",
+        "options": {}
+      }
+    ]
+  },
+  {
+    "input": "124aca0147224522430a1968747470733a2f2f6f6c642e6578616d706c652f6d656469613220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f6a042f6f6c64",
+    "output": "010203",
+    "sent": [],
+    "emitted": [],
+    "downloads": [
+      {
+        "download": {
+          "interactiveAnnotations": [],
+          "annotations": [],
+          "processedVideos": [],
+          "url": "https://old.example/media",
+          "mediaKey": {
+            "hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f"
+          },
+          "directPath": "/old"
+        },
+        "type": "video",
+        "options": {}
+      }
+    ]
+  },
+  {
+    "input": "124aca01470a451a430a1968747470733a2f2f6f6c642e6578616d706c652f6d656469614220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f5a042f6f6c64",
+    "output": "010203",
+    "sent": [],
+    "emitted": [],
+    "downloads": [
+      {
+        "download": {
+          "interactiveAnnotations": [],
+          "scanLengths": [],
+          "annotations": [],
+          "url": "https://old.example/media",
+          "mediaKey": {
+            "hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f"
+          },
+          "directPath": "/old"
+        },
+        "type": "image",
+        "options": {}
+      }
+    ]
+  },
+  {
+    "input": "124ac202470a451a430a1968747470733a2f2f6f6c642e6578616d706c652f6d656469614220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f5a042f6f6c64",
+    "output": "010203",
+    "sent": [],
+    "emitted": [],
+    "downloads": [
+      {
+        "download": {
+          "interactiveAnnotations": [],
+          "scanLengths": [],
+          "annotations": [],
+          "url": "https://old.example/media",
+          "mediaKey": {
+            "hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f"
+          },
+          "directPath": "/old"
+        },
+        "type": "image",
+        "options": {}
+      }
+    ]
+  },
+  {
+    "input": "124aaa02470a451a430a1968747470733a2f2f6f6c642e6578616d706c652f6d656469614220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f5a042f6f6c64",
+    "output": "010203",
+    "sent": [],
+    "emitted": [],
+    "downloads": [
+      {
+        "download": {
+          "interactiveAnnotations": [],
+          "scanLengths": [],
+          "annotations": [],
+          "url": "https://old.example/media",
+          "mediaKey": {
+            "hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f"
+          },
+          "directPath": "/old"
+        },
+        "type": "image",
+        "options": {}
+      }
+    ]
+  },
+  {
+    "input": "124aaa03470a451a430a1968747470733a2f2f6f6c642e6578616d706c652f6d656469614220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f5a042f6f6c64",
+    "output": "010203",
+    "sent": [],
+    "emitted": [],
+    "downloads": [
+      {
+        "download": {
+          "interactiveAnnotations": [],
+          "scanLengths": [],
+          "annotations": [],
+          "url": "https://old.example/media",
+          "mediaKey": {
+            "hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f"
+          },
+          "directPath": "/old"
+        },
+        "type": "image",
+        "options": {}
+      }
+    ]
+  },
+  {
+    "input": "124aba03470a451a430a1968747470733a2f2f6f6c642e6578616d706c652f6d656469614220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f5a042f6f6c64",
+    "output": "010203",
+    "sent": [],
+    "emitted": [],
+    "downloads": [
+      {
+        "download": {
+          "interactiveAnnotations": [],
+          "scanLengths": [],
+          "annotations": [],
+          "url": "https://old.example/media",
+          "mediaKey": {
+            "hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f"
+          },
+          "directPath": "/old"
+        },
+        "type": "image",
+        "options": {}
+      }
+    ]
+  },
+  {
+    "input": "124ada03470a451a430a1968747470733a2f2f6f6c642e6578616d706c652f6d656469614220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f5a042f6f6c64",
+    "output": "010203",
+    "sent": [],
+    "emitted": [],
+    "downloads": [
+      {
+        "download": {
+          "interactiveAnnotations": [],
+          "scanLengths": [],
+          "annotations": [],
+          "url": "https://old.example/media",
+          "mediaKey": {
+            "hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f"
+          },
+          "directPath": "/old"
+        },
+        "type": "image",
+        "options": {}
+      }
+    ]
+  },
+  {
+    "input": "124ad203470a451a430a1968747470733a2f2f6f6c642e6578616d706c652f6d656469614220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f5a042f6f6c64",
+    "output": "010203",
+    "sent": [],
+    "emitted": [],
+    "downloads": [
+      {
+        "download": {
+          "interactiveAnnotations": [],
+          "scanLengths": [],
+          "annotations": [],
+          "url": "https://old.example/media",
+          "mediaKey": {
+            "hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f"
+          },
+          "directPath": "/old"
+        },
+        "type": "image",
+        "options": {}
+      }
+    ]
+  },
+  {
+    "input": "124ada05470a451a430a1968747470733a2f2f6f6c642e6578616d706c652f6d656469614220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f5a042f6f6c64",
+    "output": "010203",
+    "sent": [],
+    "emitted": [],
+    "downloads": [
+      {
+        "download": {
+          "interactiveAnnotations": [],
+          "scanLengths": [],
+          "annotations": [],
+          "url": "https://old.example/media",
+          "mediaKey": {
+            "hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f"
+          },
+          "directPath": "/old"
+        },
+        "type": "image",
+        "options": {}
+      }
+    ]
+  },
+  {
+    "input": "124a8206470a451a430a1968747470733a2f2f6f6c642e6578616d706c652f6d656469614220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f5a042f6f6c64",
+    "output": "010203",
+    "sent": [],
+    "emitted": [],
+    "downloads": [
+      {
+        "download": {
+          "interactiveAnnotations": [],
+          "scanLengths": [],
+          "annotations": [],
+          "url": "https://old.example/media",
+          "mediaKey": {
+            "hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f"
+          },
+          "directPath": "/old"
+        },
+        "type": "image",
+        "options": {}
+      }
+    ]
+  },
+  {
+    "input": "124aba06470a451a430a1968747470733a2f2f6f6c642e6578616d706c652f6d656469614220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f5a042f6f6c64",
+    "output": "010203",
+    "sent": [],
+    "emitted": [],
+    "downloads": [
+      {
+        "download": {
+          "interactiveAnnotations": [],
+          "scanLengths": [],
+          "annotations": [],
+          "url": "https://old.example/media",
+          "mediaKey": {
+            "hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f"
+          },
+          "directPath": "/old"
+        },
+        "type": "image",
+        "options": {}
+      }
+    ]
+  },
+  {
+    "input": "12469204430a1968747470733a2f2f6f6c642e6578616d706c652f6d656469613220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f6a042f6f6c64",
+    "output": "010203",
+    "sent": [],
+    "emitted": [],
+    "downloads": [
+      {
+        "download": {
+          "interactiveAnnotations": [],
+          "annotations": [],
+          "processedVideos": [],
+          "url": "https://old.example/media",
+          "mediaKey": {
+            "hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f"
+          },
+          "directPath": "/old"
+        },
+        "type": "ptv",
+        "options": {}
+      }
+    ]
+  },
+  {
+    "input": "122e322c9a01062f7468756d62b20120000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f",
+    "output": "010203",
+    "sent": [],
+    "emitted": [],
+    "downloads": [
+      {
+        "download": {
+          "directPath": "/thumb",
+          "mediaKey": {
+            "hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f"
+          }
+        },
+        "type": "thumbnail-link",
+        "options": {}
+      }
+    ]
+  },
+  {
+    "input": "12060a0474657874",
+    "error": "\"conversation\" message is not a media message",
+    "status": 500,
+    "sent": [],
+    "emitted": [],
+    "downloads": []
+  },
+  {
+    "input": "1200",
+    "error": "\"undefined\" message is not a media message",
+    "status": 500,
+    "sent": [],
+    "emitted": [],
+    "downloads": []
+  },
+  {
+    "input": "",
+    "error": "No message present",
+    "status": 400,
+    "sent": [],
+    "emitted": [],
+    "downloads": []
+  },
+  {
+    "input": "1295011a430a1968747470733a2f2f6f6c642e6578616d706c652f6d656469614220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f5a042f6f6c643a4e0a1968747470733a2f2f6f6c642e6578616d706c652f6d656469613a20000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f52042f6f6c64a201087072696f72697479",
+    "output": "010203",
+    "sent": [],
+    "emitted": [],
+    "downloads": [
+      {
+        "download": {
+          "interactiveAnnotations": [],
+          "scanLengths": [],
+          "annotations": [],
+          "url": "https://old.example/media",
+          "mediaKey": {
+            "hex": "000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f"
+          },
+          "directPath": "/old"
+        },
+        "type": "image",
+        "options": {}
+      }
+    ]
+  }
+]

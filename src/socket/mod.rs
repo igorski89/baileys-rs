@@ -82,6 +82,8 @@ pub enum Error {
     Config,
     #[error("duplicate or excessive pending queries")]
     PendingLimit,
+    #[error("event receiver lagged by {0} events")]
+    EventLagged(u64),
     #[error("blocking auth task failed")]
     Task,
     #[error("message tag counter exhausted")]
@@ -131,6 +133,7 @@ pub struct Config {
     pub max_msg_retry_count: u64,
     pub enable_auto_session_recreation: bool,
     pub process_receipts: bool,
+    pub process_media_notifications: bool,
     pub get_message: crate::relay::MessageLookup,
     pub generation_hooks: crate::messages::generation::GenerationHooks,
     pub emit_own_events: bool,
@@ -158,6 +161,7 @@ impl Default for Config {
             max_msg_retry_count: 5,
             enable_auto_session_recreation: true,
             process_receipts: true,
+            process_media_notifications: true,
             get_message: Default::default(),
             generation_hooks: Default::default(),
             emit_own_events: true,
@@ -180,6 +184,8 @@ pub enum Event {
     PairingComplete,
     CredentialsUpdated,
     PendingNotifications,
+    MediaUpdated(Vec<crate::media::RetryEvent>),
+    MessageContentsUpdated(Vec<crate::media::ContentUpdate>),
     GroupsUpdated(Vec<crate::groups::Metadata>),
     MessagesUpdated(Vec<crate::receipts::MessageUpdate>),
     MessageReceiptsUpdated(Vec<crate::receipts::UserUpdate>),
@@ -197,6 +203,13 @@ impl std::fmt::Debug for Event {
             Self::PairingComplete => f.write_str("PairingComplete"),
             Self::CredentialsUpdated => f.write_str("CredentialsUpdated"),
             Self::PendingNotifications => f.write_str("PendingNotifications"),
+            Self::MediaUpdated(events) => {
+                f.debug_tuple("MediaUpdated").field(&events.len()).finish()
+            }
+            Self::MessageContentsUpdated(updates) => f
+                .debug_tuple("MessageContentsUpdated")
+                .field(&updates.len())
+                .finish(),
             Self::MessagesUpserted(upsert) => f
                 .debug_tuple("MessagesUpserted")
                 .field(&upsert.messages.len())
