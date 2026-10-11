@@ -246,6 +246,7 @@ async fn high_level_content_and_hook_order_match_original_upstream() {
         let hooks = Hooks::new(case["hooks"].clone());
         let o = &case["options"];
         let options = ContentOptions {
+            media: Default::default(),
             background_color: o.get("backgroundColor").map(|v| match v {
                 Value::String(s) => Color::Hex(s.clone()),
                 _ => Color::Number(v.as_f64().unwrap()),

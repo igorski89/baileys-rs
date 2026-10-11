@@ -11,6 +11,13 @@ pub type HookFuture<'a, T> = Pin<Box<dyn Future<Output = Result<T, Error>> + Sen
 /// Async enrichment plus clock/entropy hooks. Thumbnail hooks fetch the actual image bytes.
 /// Link-preview failures are suppressed; thumbnail and call-link errors propagate.
 pub trait ContentHooks: Send + Sync {
+    fn prepare_media<'a>(
+        &'a self,
+        _request: &'a crate::media::Request,
+        _options: &'a crate::media::PrepareOptions,
+    ) -> HookFuture<'a, proto::Message> {
+        Box::pin(async { Err(crate::media::Error::UploadUnavailable.into()) })
+    }
     fn link_preview(&self, _url: String) -> HookFuture<'_, Option<LinkPreview>> {
         Box::pin(async { Ok(None) })
     }
@@ -88,6 +95,7 @@ pub enum Color {
 }
 #[derive(Debug, Default, Clone)]
 pub struct ContentOptions {
+    pub media: crate::media::PrepareOptions,
     pub background_color: Option<Color>,
     pub font: Option<i32>,
 }
@@ -171,6 +179,12 @@ pub enum Content {
     LimitSharing(bool),
     /// Media already prepared by an external uploader; built-in preparation remains separate.
     PreparedMedia(Box<proto::Message>),
+    Media(Box<crate::media::Request>),
+    VideoNote(crate::media::Input),
+    Product {
+        image: crate::media::Input,
+        template: Box<proto::message::ProductMessage>,
+    },
 }
 impl Content {
     pub fn text(text: impl Into<String>) -> Self {
@@ -280,7 +294,7 @@ pub fn color_argb(color: &Color) -> Option<u32> {
     Some(if negative { low.wrapping_neg() } else { low })
 }
 
-/// Generate non-media content and apply wrappers/context in the source's operation order.
+/// Generate content with async media/enrichment hooks and apply wrappers/context in the source's operation order.
 pub async fn content(
     input: &Content,
     modifiers: &Modifiers,
@@ -542,6 +556,37 @@ pub async fn content(
             }));
             Field::ProtocolMessage
         }
+        Content::VideoNote(input) => {
+            let request = crate::media::Request {
+                input: input.clone(),
+                payload: crate::media::Payload::Video(Box::default()),
+                video_note: false,
+            };
+            let prepared = hooks.prepare_media(&request, &options.media).await?;
+            m.ptv_message = prepared.video_message;
+            Field::PtvMessage
+        }
+        Content::Product { image, template } => {
+            let request = crate::media::Request {
+                input: image.clone(),
+                payload: crate::media::Payload::Image(Box::default()),
+                video_note: false,
+            };
+            let prepared = hooks.prepare_media(&request, &options.media).await?;
+            let mut product = template.clone();
+            product
+                .product
+                .get_or_insert_with(Box::default)
+                .product_image = prepared.image_message;
+            m.product_message = Some(product);
+            Field::ProductMessage
+        }
+        Content::Media(request) => {
+            let mut media_options = options.media.clone();
+            media_options.background_color = options.background_color.clone();
+            m = hooks.prepare_media(request, &media_options).await?;
+            Field::first(&m, false).ok_or(Error::InvalidContent)?
+        }
         Content::PreparedMedia(message) => {
             m = *message.clone();
             Field::first(&m, false).ok_or(Error::InvalidContent)?
@@ -549,7 +594,12 @@ pub async fn content(
     };
     let context_member = matches!(
         input,
-        Content::Contacts(_) | Content::Location(_) | Content::PreparedMedia(_)
+        Content::Contacts(_)
+            | Content::Location(_)
+            | Content::PreparedMedia(_)
+            | Content::Media(_)
+            | Content::VideoNote(_)
+            | Content::Product { .. }
     ) || first.context(&m).is_some();
     if modifiers.view_once {
         m = proto::Message {

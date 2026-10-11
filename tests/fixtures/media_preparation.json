@@ -1,0 +1,2363 @@
+[
+  {
+    "type": "image",
+    "newsletter": false,
+    "mode": "ok",
+    "fields": {},
+    "template": "1a00",
+    "output": "1aae010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120a696d6167652f6a70656722203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e281130c80138c0024220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f4a208e27c2204700c6040a4fdc1809f5b14167fcea90e726473c0206b923b1687f205a0b2f6d656469612f66696c656080e2cfaa068201020908",
+    "calls": [
+      {
+        "kind": "thumbnail",
+        "type": "image",
+        "original": true
+      }
+    ],
+    "uploads": [
+      {
+        "fileEncSha256B64": "jifCIEcAxgQKT9wYCfWxQWf86pDnJkc8Aga5I7FofyA=",
+        "mediaType": "image",
+        "timeoutMs": 500,
+        "bytes": "10de6b61747820d2b6b933c2d40c042099754d5d9053731cdfd75f139e47c89e962464261e8328ef2dc5"
+      }
+    ]
+  },
+  {
+    "type": "image",
+    "newsletter": false,
+    "mode": "ok",
+    "fields": {
+      "mimetype": "",
+      "fileName": "",
+      "caption": "caption",
+      "ptt": true,
+      "ptv": false,
+      "seconds": 0,
+      "width": 0,
+      "height": 5,
+      "jpegThumbnail": [],
+      "waveform": []
+    },
+    "template": "1a1212001a0763617074696f6e30053800820100",
+    "output": "1ab3010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120a696d6167652f6a7065671a0763617074696f6e22203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e2811300538004220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f4a208e27c2204700c6040a4fdc1809f5b14167fcea90e726473c0206b923b1687f205a0b2f6d656469612f66696c656080e2cfaa06820100",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "jifCIEcAxgQKT9wYCfWxQWf86pDnJkc8Aga5I7FofyA=",
+        "mediaType": "image",
+        "timeoutMs": 500,
+        "bytes": "10de6b61747820d2b6b933c2d40c042099754d5d9053731cdfd75f139e47c89e962464261e8328ef2dc5"
+      }
+    ]
+  },
+  {
+    "type": "image",
+    "newsletter": false,
+    "mode": "ok",
+    "fields": {
+      "mimetype": "custom/type",
+      "fileName": "named",
+      "caption": "caption",
+      "ptt": true,
+      "width": 77,
+      "height": 88
+    },
+    "template": "1a1a120b637573746f6d2f747970651a0763617074696f6e3058384d",
+    "output": "1ab6010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120b637573746f6d2f747970651a0763617074696f6e22203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e28113058384d4220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f4a208e27c2204700c6040a4fdc1809f5b14167fcea90e726473c0206b923b1687f205a0b2f6d656469612f66696c656080e2cfaa068201020908",
+    "calls": [
+      {
+        "kind": "thumbnail",
+        "type": "image",
+        "original": true
+      }
+    ],
+    "uploads": [
+      {
+        "fileEncSha256B64": "jifCIEcAxgQKT9wYCfWxQWf86pDnJkc8Aga5I7FofyA=",
+        "mediaType": "image",
+        "timeoutMs": 500,
+        "bytes": "10de6b61747820d2b6b933c2d40c042099754d5d9053731cdfd75f139e47c89e962464261e8328ef2dc5"
+      }
+    ]
+  },
+  {
+    "type": "image",
+    "newsletter": false,
+    "mode": "ok",
+    "fields": {
+      "url": "override",
+      "directPath": "override-path",
+      "mediaKey": [
+        99
+      ],
+      "fileSha256": [
+        98
+      ],
+      "fileEncSha256": [
+        97
+      ],
+      "fileLength": 99,
+      "mediaKeyTimestamp": 7,
+      "stickerSentTs": 42
+    },
+    "template": "1a260a086f7665727269646522016228634201634a01615a0d6f766572726964652d706174686007",
+    "output": "1a3d0a086f76657272696465120a696d6167652f6a706567220162286330c80138c0024201634a01615a0d6f766572726964652d7061746860078201020908",
+    "calls": [
+      {
+        "kind": "thumbnail",
+        "type": "image",
+        "original": true
+      }
+    ],
+    "uploads": [
+      {
+        "fileEncSha256B64": "jifCIEcAxgQKT9wYCfWxQWf86pDnJkc8Aga5I7FofyA=",
+        "mediaType": "image",
+        "timeoutMs": 500,
+        "bytes": "10de6b61747820d2b6b933c2d40c042099754d5d9053731cdfd75f139e47c89e962464261e8328ef2dc5"
+      }
+    ]
+  },
+  {
+    "type": "image",
+    "newsletter": false,
+    "mode": "fail",
+    "fields": {},
+    "template": "1a00",
+    "output": "1aa3010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120a696d6167652f6a70656722203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e28114220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f4a208e27c2204700c6040a4fdc1809f5b14167fcea90e726473c0206b923b1687f205a0b2f6d656469612f66696c656080e2cfaa06",
+    "calls": [
+      {
+        "kind": "thumbnail",
+        "type": "image",
+        "original": true
+      }
+    ],
+    "uploads": [
+      {
+        "fileEncSha256B64": "jifCIEcAxgQKT9wYCfWxQWf86pDnJkc8Aga5I7FofyA=",
+        "mediaType": "image",
+        "timeoutMs": 500,
+        "bytes": "10de6b61747820d2b6b933c2d40c042099754d5d9053731cdfd75f139e47c89e962464261e8328ef2dc5"
+      }
+    ]
+  },
+  {
+    "type": "image",
+    "newsletter": false,
+    "mode": "fail",
+    "fields": {
+      "mimetype": "",
+      "fileName": "",
+      "caption": "caption",
+      "ptt": true,
+      "ptv": false,
+      "seconds": 0,
+      "width": 0,
+      "height": 5,
+      "jpegThumbnail": [],
+      "waveform": []
+    },
+    "template": "1a1212001a0763617074696f6e30053800820100",
+    "output": "1ab3010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120a696d6167652f6a7065671a0763617074696f6e22203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e2811300538004220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f4a208e27c2204700c6040a4fdc1809f5b14167fcea90e726473c0206b923b1687f205a0b2f6d656469612f66696c656080e2cfaa06820100",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "jifCIEcAxgQKT9wYCfWxQWf86pDnJkc8Aga5I7FofyA=",
+        "mediaType": "image",
+        "timeoutMs": 500,
+        "bytes": "10de6b61747820d2b6b933c2d40c042099754d5d9053731cdfd75f139e47c89e962464261e8328ef2dc5"
+      }
+    ]
+  },
+  {
+    "type": "image",
+    "newsletter": false,
+    "mode": "fail",
+    "fields": {
+      "mimetype": "custom/type",
+      "fileName": "named",
+      "caption": "caption",
+      "ptt": true,
+      "width": 77,
+      "height": 88
+    },
+    "template": "1a1a120b637573746f6d2f747970651a0763617074696f6e3058384d",
+    "output": "1ab1010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120b637573746f6d2f747970651a0763617074696f6e22203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e28113058384d4220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f4a208e27c2204700c6040a4fdc1809f5b14167fcea90e726473c0206b923b1687f205a0b2f6d656469612f66696c656080e2cfaa06",
+    "calls": [
+      {
+        "kind": "thumbnail",
+        "type": "image",
+        "original": true
+      }
+    ],
+    "uploads": [
+      {
+        "fileEncSha256B64": "jifCIEcAxgQKT9wYCfWxQWf86pDnJkc8Aga5I7FofyA=",
+        "mediaType": "image",
+        "timeoutMs": 500,
+        "bytes": "10de6b61747820d2b6b933c2d40c042099754d5d9053731cdfd75f139e47c89e962464261e8328ef2dc5"
+      }
+    ]
+  },
+  {
+    "type": "image",
+    "newsletter": false,
+    "mode": "fail",
+    "fields": {
+      "url": "override",
+      "directPath": "override-path",
+      "mediaKey": [
+        99
+      ],
+      "fileSha256": [
+        98
+      ],
+      "fileEncSha256": [
+        97
+      ],
+      "fileLength": 99,
+      "mediaKeyTimestamp": 7,
+      "stickerSentTs": 42
+    },
+    "template": "1a260a086f7665727269646522016228634201634a01615a0d6f766572726964652d706174686007",
+    "output": "1a320a086f76657272696465120a696d6167652f6a70656722016228634201634a01615a0d6f766572726964652d706174686007",
+    "calls": [
+      {
+        "kind": "thumbnail",
+        "type": "image",
+        "original": true
+      }
+    ],
+    "uploads": [
+      {
+        "fileEncSha256B64": "jifCIEcAxgQKT9wYCfWxQWf86pDnJkc8Aga5I7FofyA=",
+        "mediaType": "image",
+        "timeoutMs": 500,
+        "bytes": "10de6b61747820d2b6b933c2d40c042099754d5d9053731cdfd75f139e47c89e962464261e8328ef2dc5"
+      }
+    ]
+  },
+  {
+    "type": "image",
+    "newsletter": true,
+    "mode": "ok",
+    "fields": {},
+    "template": "1a00",
+    "output": "1a590a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120a696d6167652f6a70656722203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e28115a0b2f6d656469612f66696c65",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "image",
+        "timeoutMs": 500,
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "type": "image",
+    "newsletter": true,
+    "mode": "ok",
+    "fields": {
+      "mimetype": "",
+      "fileName": "",
+      "caption": "caption",
+      "ptt": true,
+      "ptv": false,
+      "seconds": 0,
+      "width": 0,
+      "height": 5,
+      "jpegThumbnail": [],
+      "waveform": []
+    },
+    "template": "1a1212001a0763617074696f6e30053800820100",
+    "output": "1a690a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120a696d6167652f6a7065671a0763617074696f6e22203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e2811300538005a0b2f6d656469612f66696c65820100",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "image",
+        "timeoutMs": 500,
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "type": "image",
+    "newsletter": true,
+    "mode": "ok",
+    "fields": {
+      "mimetype": "custom/type",
+      "fileName": "named",
+      "caption": "caption",
+      "ptt": true,
+      "width": 77,
+      "height": 88
+    },
+    "template": "1a1a120b637573746f6d2f747970651a0763617074696f6e3058384d",
+    "output": "1a670a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120b637573746f6d2f747970651a0763617074696f6e22203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e28113058384d5a0b2f6d656469612f66696c65",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "image",
+        "timeoutMs": 500,
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "type": "image",
+    "newsletter": true,
+    "mode": "ok",
+    "fields": {
+      "url": "override",
+      "directPath": "override-path",
+      "mediaKey": [
+        99
+      ],
+      "fileSha256": [
+        98
+      ],
+      "fileEncSha256": [
+        97
+      ],
+      "fileLength": 99,
+      "mediaKeyTimestamp": 7,
+      "stickerSentTs": 42
+    },
+    "template": "1a260a086f7665727269646522016228634201634a01615a0d6f766572726964652d706174686007",
+    "output": "1a320a086f76657272696465120a696d6167652f6a70656722016228634201634a01615a0d6f766572726964652d706174686007",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "image",
+        "timeoutMs": 500,
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "type": "image",
+    "newsletter": true,
+    "mode": "fail",
+    "fields": {},
+    "template": "1a00",
+    "output": "1a590a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120a696d6167652f6a70656722203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e28115a0b2f6d656469612f66696c65",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "image",
+        "timeoutMs": 500,
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "type": "image",
+    "newsletter": true,
+    "mode": "fail",
+    "fields": {
+      "mimetype": "",
+      "fileName": "",
+      "caption": "caption",
+      "ptt": true,
+      "ptv": false,
+      "seconds": 0,
+      "width": 0,
+      "height": 5,
+      "jpegThumbnail": [],
+      "waveform": []
+    },
+    "template": "1a1212001a0763617074696f6e30053800820100",
+    "output": "1a690a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120a696d6167652f6a7065671a0763617074696f6e22203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e2811300538005a0b2f6d656469612f66696c65820100",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "image",
+        "timeoutMs": 500,
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "type": "image",
+    "newsletter": true,
+    "mode": "fail",
+    "fields": {
+      "mimetype": "custom/type",
+      "fileName": "named",
+      "caption": "caption",
+      "ptt": true,
+      "width": 77,
+      "height": 88
+    },
+    "template": "1a1a120b637573746f6d2f747970651a0763617074696f6e3058384d",
+    "output": "1a670a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120b637573746f6d2f747970651a0763617074696f6e22203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e28113058384d5a0b2f6d656469612f66696c65",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "image",
+        "timeoutMs": 500,
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "type": "image",
+    "newsletter": true,
+    "mode": "fail",
+    "fields": {
+      "url": "override",
+      "directPath": "override-path",
+      "mediaKey": [
+        99
+      ],
+      "fileSha256": [
+        98
+      ],
+      "fileEncSha256": [
+        97
+      ],
+      "fileLength": 99,
+      "mediaKeyTimestamp": 7,
+      "stickerSentTs": 42
+    },
+    "template": "1a260a086f7665727269646522016228634201634a01615a0d6f766572726964652d706174686007",
+    "output": "1a320a086f76657272696465120a696d6167652f6a70656722016228634201634a01615a0d6f766572726964652d706174686007",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "image",
+        "timeoutMs": 500,
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "type": "video",
+    "newsletter": false,
+    "mode": "ok",
+    "fields": {},
+    "template": "4a00",
+    "output": "4aad010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c651209766964656f2f6d70341a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e20113220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f48c80150c0025a203f2b7e0f9406caa1f71053a6240d8dd64d76313b70f23cc4f8a86aec7f30efe96a0b2f6d656469612f66696c657080e2cfaa068201020908",
+    "calls": [
+      {
+        "kind": "thumbnail",
+        "type": "video",
+        "original": true
+      }
+    ],
+    "uploads": [
+      {
+        "fileEncSha256B64": "Pyt+D5QGyqH3EFOmJA2N1k12MTtw8jzE+Khq7H8w7+k=",
+        "mediaType": "video",
+        "timeoutMs": 500,
+        "bytes": "484004c77bb7f20948d8ee35b4d9f14a2e5769ff0a21f6950db9173b4b1c0f8bcbf5cce236af7aafc4b9"
+      }
+    ]
+  },
+  {
+    "type": "video",
+    "newsletter": false,
+    "mode": "ok",
+    "fields": {
+      "mimetype": "",
+      "fileName": "",
+      "caption": "caption",
+      "ptt": true,
+      "ptv": true,
+      "seconds": 0,
+      "width": 0,
+      "height": 5,
+      "jpegThumbnail": [],
+      "waveform": []
+    },
+    "template": "4a14120028003a0763617074696f6e48055000820100",
+    "output": "9204b4010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c651209766964656f2f6d70341a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e201128003220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f3a0763617074696f6e480550005a203f2b7e0f9406caa1f71053a6240d8dd64d76313b70f23cc4f8a86aec7f30efe96a0b2f6d656469612f66696c657080e2cfaa06820100",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "Pyt+D5QGyqH3EFOmJA2N1k12MTtw8jzE+Khq7H8w7+k=",
+        "mediaType": "video",
+        "timeoutMs": 500,
+        "bytes": "484004c77bb7f20948d8ee35b4d9f14a2e5769ff0a21f6950db9173b4b1c0f8bcbf5cce236af7aafc4b9"
+      }
+    ]
+  },
+  {
+    "type": "video",
+    "newsletter": false,
+    "mode": "ok",
+    "fields": {
+      "mimetype": "custom/type",
+      "fileName": "named",
+      "caption": "caption",
+      "ptt": true,
+      "width": 77,
+      "height": 88
+    },
+    "template": "4a1a120b637573746f6d2f747970653a0763617074696f6e4858504d",
+    "output": "4ab6010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120b637573746f6d2f747970651a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e20113220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f3a0763617074696f6e4858504d5a203f2b7e0f9406caa1f71053a6240d8dd64d76313b70f23cc4f8a86aec7f30efe96a0b2f6d656469612f66696c657080e2cfaa068201020908",
+    "calls": [
+      {
+        "kind": "thumbnail",
+        "type": "video",
+        "original": true
+      }
+    ],
+    "uploads": [
+      {
+        "fileEncSha256B64": "Pyt+D5QGyqH3EFOmJA2N1k12MTtw8jzE+Khq7H8w7+k=",
+        "mediaType": "video",
+        "timeoutMs": 500,
+        "bytes": "484004c77bb7f20948d8ee35b4d9f14a2e5769ff0a21f6950db9173b4b1c0f8bcbf5cce236af7aafc4b9"
+      }
+    ]
+  },
+  {
+    "type": "video",
+    "newsletter": false,
+    "mode": "ok",
+    "fields": {
+      "url": "override",
+      "directPath": "override-path",
+      "mediaKey": [
+        99
+      ],
+      "fileSha256": [
+        98
+      ],
+      "fileEncSha256": [
+        97
+      ],
+      "fileLength": 99,
+      "mediaKeyTimestamp": 7,
+      "stickerSentTs": 42
+    },
+    "template": "4a260a086f766572726964651a016220633201635a01616a0d6f766572726964652d706174687007",
+    "output": "4a3c0a086f766572726964651209766964656f2f6d70341a0162206332016348c80150c0025a01616a0d6f766572726964652d7061746870078201020908",
+    "calls": [
+      {
+        "kind": "thumbnail",
+        "type": "video",
+        "original": true
+      }
+    ],
+    "uploads": [
+      {
+        "fileEncSha256B64": "Pyt+D5QGyqH3EFOmJA2N1k12MTtw8jzE+Khq7H8w7+k=",
+        "mediaType": "video",
+        "timeoutMs": 500,
+        "bytes": "484004c77bb7f20948d8ee35b4d9f14a2e5769ff0a21f6950db9173b4b1c0f8bcbf5cce236af7aafc4b9"
+      }
+    ]
+  },
+  {
+    "type": "video",
+    "newsletter": false,
+    "mode": "fail",
+    "fields": {},
+    "template": "4a00",
+    "output": "4aa2010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c651209766964656f2f6d70341a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e20113220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f5a203f2b7e0f9406caa1f71053a6240d8dd64d76313b70f23cc4f8a86aec7f30efe96a0b2f6d656469612f66696c657080e2cfaa06",
+    "calls": [
+      {
+        "kind": "thumbnail",
+        "type": "video",
+        "original": true
+      }
+    ],
+    "uploads": [
+      {
+        "fileEncSha256B64": "Pyt+D5QGyqH3EFOmJA2N1k12MTtw8jzE+Khq7H8w7+k=",
+        "mediaType": "video",
+        "timeoutMs": 500,
+        "bytes": "484004c77bb7f20948d8ee35b4d9f14a2e5769ff0a21f6950db9173b4b1c0f8bcbf5cce236af7aafc4b9"
+      }
+    ]
+  },
+  {
+    "type": "video",
+    "newsletter": false,
+    "mode": "fail",
+    "fields": {
+      "mimetype": "",
+      "fileName": "",
+      "caption": "caption",
+      "ptt": true,
+      "ptv": true,
+      "seconds": 0,
+      "width": 0,
+      "height": 5,
+      "jpegThumbnail": [],
+      "waveform": []
+    },
+    "template": "4a14120028003a0763617074696f6e48055000820100",
+    "output": "9204b4010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c651209766964656f2f6d70341a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e201128003220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f3a0763617074696f6e480550005a203f2b7e0f9406caa1f71053a6240d8dd64d76313b70f23cc4f8a86aec7f30efe96a0b2f6d656469612f66696c657080e2cfaa06820100",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "Pyt+D5QGyqH3EFOmJA2N1k12MTtw8jzE+Khq7H8w7+k=",
+        "mediaType": "video",
+        "timeoutMs": 500,
+        "bytes": "484004c77bb7f20948d8ee35b4d9f14a2e5769ff0a21f6950db9173b4b1c0f8bcbf5cce236af7aafc4b9"
+      }
+    ]
+  },
+  {
+    "type": "video",
+    "newsletter": false,
+    "mode": "fail",
+    "fields": {
+      "mimetype": "custom/type",
+      "fileName": "named",
+      "caption": "caption",
+      "ptt": true,
+      "width": 77,
+      "height": 88
+    },
+    "template": "4a1a120b637573746f6d2f747970653a0763617074696f6e4858504d",
+    "output": "4ab1010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120b637573746f6d2f747970651a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e20113220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f3a0763617074696f6e4858504d5a203f2b7e0f9406caa1f71053a6240d8dd64d76313b70f23cc4f8a86aec7f30efe96a0b2f6d656469612f66696c657080e2cfaa06",
+    "calls": [
+      {
+        "kind": "thumbnail",
+        "type": "video",
+        "original": true
+      }
+    ],
+    "uploads": [
+      {
+        "fileEncSha256B64": "Pyt+D5QGyqH3EFOmJA2N1k12MTtw8jzE+Khq7H8w7+k=",
+        "mediaType": "video",
+        "timeoutMs": 500,
+        "bytes": "484004c77bb7f20948d8ee35b4d9f14a2e5769ff0a21f6950db9173b4b1c0f8bcbf5cce236af7aafc4b9"
+      }
+    ]
+  },
+  {
+    "type": "video",
+    "newsletter": false,
+    "mode": "fail",
+    "fields": {
+      "url": "override",
+      "directPath": "override-path",
+      "mediaKey": [
+        99
+      ],
+      "fileSha256": [
+        98
+      ],
+      "fileEncSha256": [
+        97
+      ],
+      "fileLength": 99,
+      "mediaKeyTimestamp": 7,
+      "stickerSentTs": 42
+    },
+    "template": "4a260a086f766572726964651a016220633201635a01616a0d6f766572726964652d706174687007",
+    "output": "4a310a086f766572726964651209766964656f2f6d70341a016220633201635a01616a0d6f766572726964652d706174687007",
+    "calls": [
+      {
+        "kind": "thumbnail",
+        "type": "video",
+        "original": true
+      }
+    ],
+    "uploads": [
+      {
+        "fileEncSha256B64": "Pyt+D5QGyqH3EFOmJA2N1k12MTtw8jzE+Khq7H8w7+k=",
+        "mediaType": "video",
+        "timeoutMs": 500,
+        "bytes": "484004c77bb7f20948d8ee35b4d9f14a2e5769ff0a21f6950db9173b4b1c0f8bcbf5cce236af7aafc4b9"
+      }
+    ]
+  },
+  {
+    "type": "video",
+    "newsletter": true,
+    "mode": "ok",
+    "fields": {},
+    "template": "4a00",
+    "output": "4a580a1a68747470733a2f2f6d656469612e6578616d706c652f66696c651209766964656f2f6d70341a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e20116a0b2f6d656469612f66696c65",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "video",
+        "timeoutMs": 500,
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "type": "video",
+    "newsletter": true,
+    "mode": "ok",
+    "fields": {
+      "mimetype": "",
+      "fileName": "",
+      "caption": "caption",
+      "ptt": true,
+      "ptv": true,
+      "seconds": 0,
+      "width": 0,
+      "height": 5,
+      "jpegThumbnail": [],
+      "waveform": []
+    },
+    "template": "4a14120028003a0763617074696f6e48055000820100",
+    "output": "92046a0a1a68747470733a2f2f6d656469612e6578616d706c652f66696c651209766964656f2f6d70341a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e201128003a0763617074696f6e480550006a0b2f6d656469612f66696c65820100",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "video",
+        "timeoutMs": 500,
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "type": "video",
+    "newsletter": true,
+    "mode": "ok",
+    "fields": {
+      "mimetype": "custom/type",
+      "fileName": "named",
+      "caption": "caption",
+      "ptt": true,
+      "width": 77,
+      "height": 88
+    },
+    "template": "4a1a120b637573746f6d2f747970653a0763617074696f6e4858504d",
+    "output": "4a670a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120b637573746f6d2f747970651a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e20113a0763617074696f6e4858504d6a0b2f6d656469612f66696c65",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "video",
+        "timeoutMs": 500,
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "type": "video",
+    "newsletter": true,
+    "mode": "ok",
+    "fields": {
+      "url": "override",
+      "directPath": "override-path",
+      "mediaKey": [
+        99
+      ],
+      "fileSha256": [
+        98
+      ],
+      "fileEncSha256": [
+        97
+      ],
+      "fileLength": 99,
+      "mediaKeyTimestamp": 7,
+      "stickerSentTs": 42
+    },
+    "template": "4a260a086f766572726964651a016220633201635a01616a0d6f766572726964652d706174687007",
+    "output": "4a310a086f766572726964651209766964656f2f6d70341a016220633201635a01616a0d6f766572726964652d706174687007",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "video",
+        "timeoutMs": 500,
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "type": "video",
+    "newsletter": true,
+    "mode": "fail",
+    "fields": {},
+    "template": "4a00",
+    "output": "4a580a1a68747470733a2f2f6d656469612e6578616d706c652f66696c651209766964656f2f6d70341a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e20116a0b2f6d656469612f66696c65",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "video",
+        "timeoutMs": 500,
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "type": "video",
+    "newsletter": true,
+    "mode": "fail",
+    "fields": {
+      "mimetype": "",
+      "fileName": "",
+      "caption": "caption",
+      "ptt": true,
+      "ptv": true,
+      "seconds": 0,
+      "width": 0,
+      "height": 5,
+      "jpegThumbnail": [],
+      "waveform": []
+    },
+    "template": "4a14120028003a0763617074696f6e48055000820100",
+    "output": "92046a0a1a68747470733a2f2f6d656469612e6578616d706c652f66696c651209766964656f2f6d70341a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e201128003a0763617074696f6e480550006a0b2f6d656469612f66696c65820100",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "video",
+        "timeoutMs": 500,
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "type": "video",
+    "newsletter": true,
+    "mode": "fail",
+    "fields": {
+      "mimetype": "custom/type",
+      "fileName": "named",
+      "caption": "caption",
+      "ptt": true,
+      "width": 77,
+      "height": 88
+    },
+    "template": "4a1a120b637573746f6d2f747970653a0763617074696f6e4858504d",
+    "output": "4a670a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120b637573746f6d2f747970651a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e20113a0763617074696f6e4858504d6a0b2f6d656469612f66696c65",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "video",
+        "timeoutMs": 500,
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "type": "video",
+    "newsletter": true,
+    "mode": "fail",
+    "fields": {
+      "url": "override",
+      "directPath": "override-path",
+      "mediaKey": [
+        99
+      ],
+      "fileSha256": [
+        98
+      ],
+      "fileEncSha256": [
+        97
+      ],
+      "fileLength": 99,
+      "mediaKeyTimestamp": 7,
+      "stickerSentTs": 42
+    },
+    "template": "4a260a086f766572726964651a016220633201635a01616a0d6f766572726964652d706174687007",
+    "output": "4a310a086f766572726964651209766964656f2f6d70341a016220633201635a01616a0d6f766572726964652d706174687007",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "video",
+        "timeoutMs": 500,
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "type": "audio",
+    "newsletter": false,
+    "mode": "ok",
+    "fields": {},
+    "template": "4200",
+    "output": "42b1010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c651216617564696f2f6f67673b20636f646563733d6f7075731a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e201128033a20000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f42204a344ce04d218258f89740e94866d632d8ac223203c36ad8a8c38fa60dddb1494a0b2f6d656469612f66696c655080e2cfaa06",
+    "calls": [
+      {
+        "kind": "duration",
+        "original": true
+      }
+    ],
+    "uploads": [
+      {
+        "fileEncSha256B64": "SjRM4E0hglj4l0DpSGbWMtisIjIDw2rYqMOPpg3dsUk=",
+        "mediaType": "audio",
+        "timeoutMs": 500,
+        "bytes": "f0052ae14b3653ae1206018569aa50e6b642e68f17b02d3cede7ece4d40f6795d794e4e24d9f8420ec54"
+      }
+    ]
+  },
+  {
+    "type": "audio",
+    "newsletter": false,
+    "mode": "ok",
+    "fields": {
+      "mimetype": "",
+      "fileName": "",
+      "caption": "caption",
+      "ptt": true,
+      "ptv": false,
+      "seconds": 0,
+      "width": 0,
+      "height": 5,
+      "jpegThumbnail": [],
+      "waveform": []
+    },
+    "template": "42091200280030019a0100",
+    "output": "42bc010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c651216617564696f2f6f67673b20636f646563733d6f7075731a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e2011280030013a20000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f42204a344ce04d218258f89740e94866d632d8ac223203c36ad8a8c38fa60dddb1494a0b2f6d656469612f66696c655080e2cfaa069a0100a501563412ff",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "SjRM4E0hglj4l0DpSGbWMtisIjIDw2rYqMOPpg3dsUk=",
+        "mediaType": "audio",
+        "timeoutMs": 500,
+        "bytes": "f0052ae14b3653ae1206018569aa50e6b642e68f17b02d3cede7ece4d40f6795d794e4e24d9f8420ec54"
+      }
+    ]
+  },
+  {
+    "type": "audio",
+    "newsletter": false,
+    "mode": "ok",
+    "fields": {
+      "mimetype": "custom/type",
+      "fileName": "named",
+      "caption": "caption",
+      "ptt": true,
+      "width": 77,
+      "height": 88
+    },
+    "template": "420f120b637573746f6d2f747970653001",
+    "output": "42b4010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120b637573746f6d2f747970651a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e2011280330013a20000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f42204a344ce04d218258f89740e94866d632d8ac223203c36ad8a8c38fa60dddb1494a0b2f6d656469612f66696c655080e2cfaa069a0103010203a501563412ff",
+    "calls": [
+      {
+        "kind": "duration",
+        "original": true
+      },
+      {
+        "kind": "waveform",
+        "original": true
+      }
+    ],
+    "uploads": [
+      {
+        "fileEncSha256B64": "SjRM4E0hglj4l0DpSGbWMtisIjIDw2rYqMOPpg3dsUk=",
+        "mediaType": "audio",
+        "timeoutMs": 500,
+        "bytes": "f0052ae14b3653ae1206018569aa50e6b642e68f17b02d3cede7ece4d40f6795d794e4e24d9f8420ec54"
+      }
+    ]
+  },
+  {
+    "type": "audio",
+    "newsletter": false,
+    "mode": "ok",
+    "fields": {
+      "url": "override",
+      "directPath": "override-path",
+      "mediaKey": [
+        99
+      ],
+      "fileSha256": [
+        98
+      ],
+      "fileEncSha256": [
+        97
+      ],
+      "fileLength": 99,
+      "mediaKeyTimestamp": 7,
+      "stickerSentTs": 42
+    },
+    "template": "42260a086f766572726964651a016220633a01634201614a0d6f766572726964652d706174685007",
+    "output": "42400a086f766572726964651216617564696f2f6f67673b20636f646563733d6f7075731a0162206328033a01634201614a0d6f766572726964652d706174685007",
+    "calls": [
+      {
+        "kind": "duration",
+        "original": true
+      }
+    ],
+    "uploads": [
+      {
+        "fileEncSha256B64": "SjRM4E0hglj4l0DpSGbWMtisIjIDw2rYqMOPpg3dsUk=",
+        "mediaType": "audio",
+        "timeoutMs": 500,
+        "bytes": "f0052ae14b3653ae1206018569aa50e6b642e68f17b02d3cede7ece4d40f6795d794e4e24d9f8420ec54"
+      }
+    ]
+  },
+  {
+    "type": "audio",
+    "newsletter": false,
+    "mode": "fail",
+    "fields": {},
+    "template": "4200",
+    "output": "42af010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c651216617564696f2f6f67673b20636f646563733d6f7075731a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e20113a20000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f42204a344ce04d218258f89740e94866d632d8ac223203c36ad8a8c38fa60dddb1494a0b2f6d656469612f66696c655080e2cfaa06",
+    "calls": [
+      {
+        "kind": "duration",
+        "original": true
+      }
+    ],
+    "uploads": [
+      {
+        "fileEncSha256B64": "SjRM4E0hglj4l0DpSGbWMtisIjIDw2rYqMOPpg3dsUk=",
+        "mediaType": "audio",
+        "timeoutMs": 500,
+        "bytes": "f0052ae14b3653ae1206018569aa50e6b642e68f17b02d3cede7ece4d40f6795d794e4e24d9f8420ec54"
+      }
+    ]
+  },
+  {
+    "type": "audio",
+    "newsletter": false,
+    "mode": "fail",
+    "fields": {
+      "mimetype": "",
+      "fileName": "",
+      "caption": "caption",
+      "ptt": true,
+      "ptv": false,
+      "seconds": 0,
+      "width": 0,
+      "height": 5,
+      "jpegThumbnail": [],
+      "waveform": []
+    },
+    "template": "42091200280030019a0100",
+    "output": "42bc010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c651216617564696f2f6f67673b20636f646563733d6f7075731a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e2011280030013a20000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f42204a344ce04d218258f89740e94866d632d8ac223203c36ad8a8c38fa60dddb1494a0b2f6d656469612f66696c655080e2cfaa069a0100a501563412ff",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "SjRM4E0hglj4l0DpSGbWMtisIjIDw2rYqMOPpg3dsUk=",
+        "mediaType": "audio",
+        "timeoutMs": 500,
+        "bytes": "f0052ae14b3653ae1206018569aa50e6b642e68f17b02d3cede7ece4d40f6795d794e4e24d9f8420ec54"
+      }
+    ]
+  },
+  {
+    "type": "audio",
+    "newsletter": false,
+    "mode": "fail",
+    "fields": {
+      "mimetype": "custom/type",
+      "fileName": "named",
+      "caption": "caption",
+      "ptt": true,
+      "width": 77,
+      "height": 88
+    },
+    "template": "420f120b637573746f6d2f747970653001",
+    "output": "42a6010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120b637573746f6d2f747970651a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e201130013a20000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f42204a344ce04d218258f89740e94866d632d8ac223203c36ad8a8c38fa60dddb1494a0b2f6d656469612f66696c655080e2cfaa06",
+    "calls": [
+      {
+        "kind": "duration",
+        "original": true
+      }
+    ],
+    "uploads": [
+      {
+        "fileEncSha256B64": "SjRM4E0hglj4l0DpSGbWMtisIjIDw2rYqMOPpg3dsUk=",
+        "mediaType": "audio",
+        "timeoutMs": 500,
+        "bytes": "f0052ae14b3653ae1206018569aa50e6b642e68f17b02d3cede7ece4d40f6795d794e4e24d9f8420ec54"
+      }
+    ]
+  },
+  {
+    "type": "audio",
+    "newsletter": false,
+    "mode": "fail",
+    "fields": {
+      "url": "override",
+      "directPath": "override-path",
+      "mediaKey": [
+        99
+      ],
+      "fileSha256": [
+        98
+      ],
+      "fileEncSha256": [
+        97
+      ],
+      "fileLength": 99,
+      "mediaKeyTimestamp": 7,
+      "stickerSentTs": 42
+    },
+    "template": "42260a086f766572726964651a016220633a01634201614a0d6f766572726964652d706174685007",
+    "output": "423e0a086f766572726964651216617564696f2f6f67673b20636f646563733d6f7075731a016220633a01634201614a0d6f766572726964652d706174685007",
+    "calls": [
+      {
+        "kind": "duration",
+        "original": true
+      }
+    ],
+    "uploads": [
+      {
+        "fileEncSha256B64": "SjRM4E0hglj4l0DpSGbWMtisIjIDw2rYqMOPpg3dsUk=",
+        "mediaType": "audio",
+        "timeoutMs": 500,
+        "bytes": "f0052ae14b3653ae1206018569aa50e6b642e68f17b02d3cede7ece4d40f6795d794e4e24d9f8420ec54"
+      }
+    ]
+  },
+  {
+    "type": "audio",
+    "newsletter": true,
+    "mode": "ok",
+    "fields": {},
+    "template": "4200",
+    "output": "42650a1a68747470733a2f2f6d656469612e6578616d706c652f66696c651216617564696f2f6f67673b20636f646563733d6f7075731a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e20114a0b2f6d656469612f66696c65",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "audio",
+        "timeoutMs": 500,
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "type": "audio",
+    "newsletter": true,
+    "mode": "ok",
+    "fields": {
+      "mimetype": "",
+      "fileName": "",
+      "caption": "caption",
+      "ptt": true,
+      "ptv": false,
+      "seconds": 0,
+      "width": 0,
+      "height": 5,
+      "jpegThumbnail": [],
+      "waveform": []
+    },
+    "template": "42091200280030019a0100",
+    "output": "426c0a1a68747470733a2f2f6d656469612e6578616d706c652f66696c651216617564696f2f6f67673b20636f646563733d6f7075731a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e2011280030014a0b2f6d656469612f66696c659a0100",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "audio",
+        "timeoutMs": 500,
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "type": "audio",
+    "newsletter": true,
+    "mode": "ok",
+    "fields": {
+      "mimetype": "custom/type",
+      "fileName": "named",
+      "caption": "caption",
+      "ptt": true,
+      "width": 77,
+      "height": 88
+    },
+    "template": "420f120b637573746f6d2f747970653001",
+    "output": "425c0a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120b637573746f6d2f747970651a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e201130014a0b2f6d656469612f66696c65",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "audio",
+        "timeoutMs": 500,
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "type": "audio",
+    "newsletter": true,
+    "mode": "ok",
+    "fields": {
+      "url": "override",
+      "directPath": "override-path",
+      "mediaKey": [
+        99
+      ],
+      "fileSha256": [
+        98
+      ],
+      "fileEncSha256": [
+        97
+      ],
+      "fileLength": 99,
+      "mediaKeyTimestamp": 7,
+      "stickerSentTs": 42
+    },
+    "template": "42260a086f766572726964651a016220633a01634201614a0d6f766572726964652d706174685007",
+    "output": "423e0a086f766572726964651216617564696f2f6f67673b20636f646563733d6f7075731a016220633a01634201614a0d6f766572726964652d706174685007",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "audio",
+        "timeoutMs": 500,
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "type": "audio",
+    "newsletter": true,
+    "mode": "fail",
+    "fields": {},
+    "template": "4200",
+    "output": "42650a1a68747470733a2f2f6d656469612e6578616d706c652f66696c651216617564696f2f6f67673b20636f646563733d6f7075731a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e20114a0b2f6d656469612f66696c65",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "audio",
+        "timeoutMs": 500,
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "type": "audio",
+    "newsletter": true,
+    "mode": "fail",
+    "fields": {
+      "mimetype": "",
+      "fileName": "",
+      "caption": "caption",
+      "ptt": true,
+      "ptv": false,
+      "seconds": 0,
+      "width": 0,
+      "height": 5,
+      "jpegThumbnail": [],
+      "waveform": []
+    },
+    "template": "42091200280030019a0100",
+    "output": "426c0a1a68747470733a2f2f6d656469612e6578616d706c652f66696c651216617564696f2f6f67673b20636f646563733d6f7075731a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e2011280030014a0b2f6d656469612f66696c659a0100",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "audio",
+        "timeoutMs": 500,
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "type": "audio",
+    "newsletter": true,
+    "mode": "fail",
+    "fields": {
+      "mimetype": "custom/type",
+      "fileName": "named",
+      "caption": "caption",
+      "ptt": true,
+      "width": 77,
+      "height": 88
+    },
+    "template": "420f120b637573746f6d2f747970653001",
+    "output": "425c0a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120b637573746f6d2f747970651a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e201130014a0b2f6d656469612f66696c65",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "audio",
+        "timeoutMs": 500,
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "type": "audio",
+    "newsletter": true,
+    "mode": "fail",
+    "fields": {
+      "url": "override",
+      "directPath": "override-path",
+      "mediaKey": [
+        99
+      ],
+      "fileSha256": [
+        98
+      ],
+      "fileEncSha256": [
+        97
+      ],
+      "fileLength": 99,
+      "mediaKeyTimestamp": 7,
+      "stickerSentTs": 42
+    },
+    "template": "42260a086f766572726964651a016220633a01634201614a0d6f766572726964652d706174685007",
+    "output": "423e0a086f766572726964651216617564696f2f6f67673b20636f646563733d6f7075731a016220633a01634201614a0d6f766572726964652d706174685007",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "audio",
+        "timeoutMs": 500,
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "type": "document",
+    "newsletter": false,
+    "mode": "ok",
+    "fields": {},
+    "template": "3a00",
+    "output": "3aae010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120f6170706c69636174696f6e2f70646622203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e28113a20000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f420466696c654a2032286ff82a4d236670e67a28dc4d3d8d65c87ba642feda1c718c7380f10e6e04520b2f6d656469612f66696c655880e2cfaa06",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "Mihv+CpNI2Zw5noo3E09jWXIe6ZC/toccYxzgPEObgQ=",
+        "mediaType": "document",
+        "timeoutMs": 500,
+        "bytes": "d37df83a954fb9936c8752bbcd0fc32fc579c9a2cc5898bb551fda392bd34e963c1604f6959a502e7594"
+      }
+    ]
+  },
+  {
+    "type": "document",
+    "newsletter": false,
+    "mode": "ok",
+    "fields": {
+      "mimetype": "",
+      "fileName": "",
+      "caption": "caption",
+      "ptt": true,
+      "ptv": false,
+      "seconds": 0,
+      "width": 0,
+      "height": 5,
+      "jpegThumbnail": [],
+      "waveform": []
+    },
+    "template": "3a1112004200820100a2010763617074696f6e",
+    "output": "3abb010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120f6170706c69636174696f6e2f70646622203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e28113a20000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f420466696c654a2032286ff82a4d236670e67a28dc4d3d8d65c87ba642feda1c718c7380f10e6e04520b2f6d656469612f66696c655880e2cfaa06820100a2010763617074696f6e",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "Mihv+CpNI2Zw5noo3E09jWXIe6ZC/toccYxzgPEObgQ=",
+        "mediaType": "document",
+        "timeoutMs": 500,
+        "bytes": "d37df83a954fb9936c8752bbcd0fc32fc579c9a2cc5898bb551fda392bd34e963c1604f6959a502e7594"
+      }
+    ]
+  },
+  {
+    "type": "document",
+    "newsletter": false,
+    "mode": "ok",
+    "fields": {
+      "mimetype": "custom/type",
+      "fileName": "named",
+      "caption": "caption",
+      "ptt": true,
+      "width": 77,
+      "height": 88
+    },
+    "template": "3a1e120b637573746f6d2f7479706542056e616d6564a2010763617074696f6e",
+    "output": "3ab5010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120b637573746f6d2f7479706522203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e28113a20000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f42056e616d65644a2032286ff82a4d236670e67a28dc4d3d8d65c87ba642feda1c718c7380f10e6e04520b2f6d656469612f66696c655880e2cfaa06a2010763617074696f6e",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "Mihv+CpNI2Zw5noo3E09jWXIe6ZC/toccYxzgPEObgQ=",
+        "mediaType": "document",
+        "timeoutMs": 500,
+        "bytes": "d37df83a954fb9936c8752bbcd0fc32fc579c9a2cc5898bb551fda392bd34e963c1604f6959a502e7594"
+      }
+    ]
+  },
+  {
+    "type": "document",
+    "newsletter": false,
+    "mode": "ok",
+    "fields": {
+      "url": "override",
+      "directPath": "override-path",
+      "mediaKey": [
+        99
+      ],
+      "fileSha256": [
+        98
+      ],
+      "fileEncSha256": [
+        97
+      ],
+      "fileLength": 99,
+      "mediaKeyTimestamp": 7,
+      "stickerSentTs": 42
+    },
+    "template": "3a260a086f7665727269646522016228633a01634a0161520d6f766572726964652d706174685807",
+    "output": "3a3d0a086f76657272696465120f6170706c69636174696f6e2f70646622016228633a0163420466696c654a0161520d6f766572726964652d706174685807",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "Mihv+CpNI2Zw5noo3E09jWXIe6ZC/toccYxzgPEObgQ=",
+        "mediaType": "document",
+        "timeoutMs": 500,
+        "bytes": "d37df83a954fb9936c8752bbcd0fc32fc579c9a2cc5898bb551fda392bd34e963c1604f6959a502e7594"
+      }
+    ]
+  },
+  {
+    "type": "document",
+    "newsletter": false,
+    "mode": "fail",
+    "fields": {},
+    "template": "3a00",
+    "output": "3aae010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120f6170706c69636174696f6e2f70646622203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e28113a20000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f420466696c654a2032286ff82a4d236670e67a28dc4d3d8d65c87ba642feda1c718c7380f10e6e04520b2f6d656469612f66696c655880e2cfaa06",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "Mihv+CpNI2Zw5noo3E09jWXIe6ZC/toccYxzgPEObgQ=",
+        "mediaType": "document",
+        "timeoutMs": 500,
+        "bytes": "d37df83a954fb9936c8752bbcd0fc32fc579c9a2cc5898bb551fda392bd34e963c1604f6959a502e7594"
+      }
+    ]
+  },
+  {
+    "type": "document",
+    "newsletter": false,
+    "mode": "fail",
+    "fields": {
+      "mimetype": "",
+      "fileName": "",
+      "caption": "caption",
+      "ptt": true,
+      "ptv": false,
+      "seconds": 0,
+      "width": 0,
+      "height": 5,
+      "jpegThumbnail": [],
+      "waveform": []
+    },
+    "template": "3a1112004200820100a2010763617074696f6e",
+    "output": "3abb010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120f6170706c69636174696f6e2f70646622203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e28113a20000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f420466696c654a2032286ff82a4d236670e67a28dc4d3d8d65c87ba642feda1c718c7380f10e6e04520b2f6d656469612f66696c655880e2cfaa06820100a2010763617074696f6e",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "Mihv+CpNI2Zw5noo3E09jWXIe6ZC/toccYxzgPEObgQ=",
+        "mediaType": "document",
+        "timeoutMs": 500,
+        "bytes": "d37df83a954fb9936c8752bbcd0fc32fc579c9a2cc5898bb551fda392bd34e963c1604f6959a502e7594"
+      }
+    ]
+  },
+  {
+    "type": "document",
+    "newsletter": false,
+    "mode": "fail",
+    "fields": {
+      "mimetype": "custom/type",
+      "fileName": "named",
+      "caption": "caption",
+      "ptt": true,
+      "width": 77,
+      "height": 88
+    },
+    "template": "3a1e120b637573746f6d2f7479706542056e616d6564a2010763617074696f6e",
+    "output": "3ab5010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120b637573746f6d2f7479706522203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e28113a20000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f42056e616d65644a2032286ff82a4d236670e67a28dc4d3d8d65c87ba642feda1c718c7380f10e6e04520b2f6d656469612f66696c655880e2cfaa06a2010763617074696f6e",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "Mihv+CpNI2Zw5noo3E09jWXIe6ZC/toccYxzgPEObgQ=",
+        "mediaType": "document",
+        "timeoutMs": 500,
+        "bytes": "d37df83a954fb9936c8752bbcd0fc32fc579c9a2cc5898bb551fda392bd34e963c1604f6959a502e7594"
+      }
+    ]
+  },
+  {
+    "type": "document",
+    "newsletter": false,
+    "mode": "fail",
+    "fields": {
+      "url": "override",
+      "directPath": "override-path",
+      "mediaKey": [
+        99
+      ],
+      "fileSha256": [
+        98
+      ],
+      "fileEncSha256": [
+        97
+      ],
+      "fileLength": 99,
+      "mediaKeyTimestamp": 7,
+      "stickerSentTs": 42
+    },
+    "template": "3a260a086f7665727269646522016228633a01634a0161520d6f766572726964652d706174685807",
+    "output": "3a3d0a086f76657272696465120f6170706c69636174696f6e2f70646622016228633a0163420466696c654a0161520d6f766572726964652d706174685807",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "Mihv+CpNI2Zw5noo3E09jWXIe6ZC/toccYxzgPEObgQ=",
+        "mediaType": "document",
+        "timeoutMs": 500,
+        "bytes": "d37df83a954fb9936c8752bbcd0fc32fc579c9a2cc5898bb551fda392bd34e963c1604f6959a502e7594"
+      }
+    ]
+  },
+  {
+    "type": "document",
+    "newsletter": true,
+    "mode": "ok",
+    "fields": {},
+    "template": "3a00",
+    "output": "3a640a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120f6170706c69636174696f6e2f70646622203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e2811420466696c65520b2f6d656469612f66696c65",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "document",
+        "timeoutMs": 500,
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "type": "document",
+    "newsletter": true,
+    "mode": "ok",
+    "fields": {
+      "mimetype": "",
+      "fileName": "",
+      "caption": "caption",
+      "ptt": true,
+      "ptv": false,
+      "seconds": 0,
+      "width": 0,
+      "height": 5,
+      "jpegThumbnail": [],
+      "waveform": []
+    },
+    "template": "3a1112004200820100a2010763617074696f6e",
+    "output": "3a710a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120f6170706c69636174696f6e2f70646622203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e2811420466696c65520b2f6d656469612f66696c65820100a2010763617074696f6e",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "document",
+        "timeoutMs": 500,
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "type": "document",
+    "newsletter": true,
+    "mode": "ok",
+    "fields": {
+      "mimetype": "custom/type",
+      "fileName": "named",
+      "caption": "caption",
+      "ptt": true,
+      "width": 77,
+      "height": 88
+    },
+    "template": "3a1e120b637573746f6d2f7479706542056e616d6564a2010763617074696f6e",
+    "output": "3a6b0a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120b637573746f6d2f7479706522203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e281142056e616d6564520b2f6d656469612f66696c65a2010763617074696f6e",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "document",
+        "timeoutMs": 500,
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "type": "document",
+    "newsletter": true,
+    "mode": "ok",
+    "fields": {
+      "url": "override",
+      "directPath": "override-path",
+      "mediaKey": [
+        99
+      ],
+      "fileSha256": [
+        98
+      ],
+      "fileEncSha256": [
+        97
+      ],
+      "fileLength": 99,
+      "mediaKeyTimestamp": 7,
+      "stickerSentTs": 42
+    },
+    "template": "3a260a086f7665727269646522016228633a01634a0161520d6f766572726964652d706174685807",
+    "output": "3a3d0a086f76657272696465120f6170706c69636174696f6e2f70646622016228633a0163420466696c654a0161520d6f766572726964652d706174685807",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "document",
+        "timeoutMs": 500,
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "type": "document",
+    "newsletter": true,
+    "mode": "fail",
+    "fields": {},
+    "template": "3a00",
+    "output": "3a640a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120f6170706c69636174696f6e2f70646622203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e2811420466696c65520b2f6d656469612f66696c65",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "document",
+        "timeoutMs": 500,
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "type": "document",
+    "newsletter": true,
+    "mode": "fail",
+    "fields": {
+      "mimetype": "",
+      "fileName": "",
+      "caption": "caption",
+      "ptt": true,
+      "ptv": false,
+      "seconds": 0,
+      "width": 0,
+      "height": 5,
+      "jpegThumbnail": [],
+      "waveform": []
+    },
+    "template": "3a1112004200820100a2010763617074696f6e",
+    "output": "3a710a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120f6170706c69636174696f6e2f70646622203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e2811420466696c65520b2f6d656469612f66696c65820100a2010763617074696f6e",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "document",
+        "timeoutMs": 500,
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "type": "document",
+    "newsletter": true,
+    "mode": "fail",
+    "fields": {
+      "mimetype": "custom/type",
+      "fileName": "named",
+      "caption": "caption",
+      "ptt": true,
+      "width": 77,
+      "height": 88
+    },
+    "template": "3a1e120b637573746f6d2f7479706542056e616d6564a2010763617074696f6e",
+    "output": "3a6b0a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120b637573746f6d2f7479706522203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e281142056e616d6564520b2f6d656469612f66696c65a2010763617074696f6e",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "document",
+        "timeoutMs": 500,
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "type": "document",
+    "newsletter": true,
+    "mode": "fail",
+    "fields": {
+      "url": "override",
+      "directPath": "override-path",
+      "mediaKey": [
+        99
+      ],
+      "fileSha256": [
+        98
+      ],
+      "fileEncSha256": [
+        97
+      ],
+      "fileLength": 99,
+      "mediaKeyTimestamp": 7,
+      "stickerSentTs": 42
+    },
+    "template": "3a260a086f7665727269646522016228633a01634a0161520d6f766572726964652d706174685807",
+    "output": "3a3d0a086f76657272696465120f6170706c69636174696f6e2f70646622016228633a0163420466696c654a0161520d6f766572726964652d706174685807",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "document",
+        "timeoutMs": 500,
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "type": "sticker",
+    "newsletter": false,
+    "mode": "ok",
+    "fields": {},
+    "template": "d20100",
+    "output": "d201a3010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c6512203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e1a208e27c2204700c6040a4fdc1809f5b14167fcea90e726473c0206b923b1687f202220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f2a0a696d6167652f77656270420b2f6d656469612f66696c6548115080e2cfaa06",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "jifCIEcAxgQKT9wYCfWxQWf86pDnJkc8Aga5I7FofyA=",
+        "mediaType": "sticker",
+        "timeoutMs": 500,
+        "bytes": "10de6b61747820d2b6b933c2d40c042099754d5d9053731cdfd75f139e47c89e962464261e8328ef2dc5"
+      }
+    ]
+  },
+  {
+    "type": "sticker",
+    "newsletter": false,
+    "mode": "ok",
+    "fields": {
+      "mimetype": "",
+      "fileName": "",
+      "caption": "caption",
+      "ptt": true,
+      "ptv": false,
+      "seconds": 0,
+      "width": 0,
+      "height": 5,
+      "jpegThumbnail": [],
+      "waveform": []
+    },
+    "template": "d201062a0030053800",
+    "output": "d201a7010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c6512203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e1a208e27c2204700c6040a4fdc1809f5b14167fcea90e726473c0206b923b1687f202220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f2a0a696d6167652f7765627030053800420b2f6d656469612f66696c6548115080e2cfaa06",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "jifCIEcAxgQKT9wYCfWxQWf86pDnJkc8Aga5I7FofyA=",
+        "mediaType": "sticker",
+        "timeoutMs": 500,
+        "bytes": "10de6b61747820d2b6b933c2d40c042099754d5d9053731cdfd75f139e47c89e962464261e8328ef2dc5"
+      }
+    ]
+  },
+  {
+    "type": "sticker",
+    "newsletter": false,
+    "mode": "ok",
+    "fields": {
+      "mimetype": "custom/type",
+      "fileName": "named",
+      "caption": "caption",
+      "ptt": true,
+      "width": 77,
+      "height": 88
+    },
+    "template": "d201112a0b637573746f6d2f747970653058384d",
+    "output": "d201a8010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c6512203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e1a208e27c2204700c6040a4fdc1809f5b14167fcea90e726473c0206b923b1687f202220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f2a0b637573746f6d2f747970653058384d420b2f6d656469612f66696c6548115080e2cfaa06",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "jifCIEcAxgQKT9wYCfWxQWf86pDnJkc8Aga5I7FofyA=",
+        "mediaType": "sticker",
+        "timeoutMs": 500,
+        "bytes": "10de6b61747820d2b6b933c2d40c042099754d5d9053731cdfd75f139e47c89e962464261e8328ef2dc5"
+      }
+    ]
+  },
+  {
+    "type": "sticker",
+    "newsletter": false,
+    "mode": "ok",
+    "fields": {
+      "url": "override",
+      "directPath": "override-path",
+      "mediaKey": [
+        99
+      ],
+      "fileSha256": [
+        98
+      ],
+      "fileEncSha256": [
+        97
+      ],
+      "fileLength": 99,
+      "mediaKeyTimestamp": 7,
+      "stickerSentTs": 42
+    },
+    "template": "d201290a086f766572726964651201621a0161220163420d6f766572726964652d706174684863500790012a",
+    "output": "d201350a086f766572726964651201621a01612201632a0a696d6167652f77656270420d6f766572726964652d706174684863500790012a",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "jifCIEcAxgQKT9wYCfWxQWf86pDnJkc8Aga5I7FofyA=",
+        "mediaType": "sticker",
+        "timeoutMs": 500,
+        "bytes": "10de6b61747820d2b6b933c2d40c042099754d5d9053731cdfd75f139e47c89e962464261e8328ef2dc5"
+      }
+    ]
+  },
+  {
+    "type": "sticker",
+    "newsletter": false,
+    "mode": "fail",
+    "fields": {},
+    "template": "d20100",
+    "output": "d201a3010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c6512203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e1a208e27c2204700c6040a4fdc1809f5b14167fcea90e726473c0206b923b1687f202220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f2a0a696d6167652f77656270420b2f6d656469612f66696c6548115080e2cfaa06",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "jifCIEcAxgQKT9wYCfWxQWf86pDnJkc8Aga5I7FofyA=",
+        "mediaType": "sticker",
+        "timeoutMs": 500,
+        "bytes": "10de6b61747820d2b6b933c2d40c042099754d5d9053731cdfd75f139e47c89e962464261e8328ef2dc5"
+      }
+    ]
+  },
+  {
+    "type": "sticker",
+    "newsletter": false,
+    "mode": "fail",
+    "fields": {
+      "mimetype": "",
+      "fileName": "",
+      "caption": "caption",
+      "ptt": true,
+      "ptv": false,
+      "seconds": 0,
+      "width": 0,
+      "height": 5,
+      "jpegThumbnail": [],
+      "waveform": []
+    },
+    "template": "d201062a0030053800",
+    "output": "d201a7010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c6512203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e1a208e27c2204700c6040a4fdc1809f5b14167fcea90e726473c0206b923b1687f202220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f2a0a696d6167652f7765627030053800420b2f6d656469612f66696c6548115080e2cfaa06",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "jifCIEcAxgQKT9wYCfWxQWf86pDnJkc8Aga5I7FofyA=",
+        "mediaType": "sticker",
+        "timeoutMs": 500,
+        "bytes": "10de6b61747820d2b6b933c2d40c042099754d5d9053731cdfd75f139e47c89e962464261e8328ef2dc5"
+      }
+    ]
+  },
+  {
+    "type": "sticker",
+    "newsletter": false,
+    "mode": "fail",
+    "fields": {
+      "mimetype": "custom/type",
+      "fileName": "named",
+      "caption": "caption",
+      "ptt": true,
+      "width": 77,
+      "height": 88
+    },
+    "template": "d201112a0b637573746f6d2f747970653058384d",
+    "output": "d201a8010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c6512203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e1a208e27c2204700c6040a4fdc1809f5b14167fcea90e726473c0206b923b1687f202220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f2a0b637573746f6d2f747970653058384d420b2f6d656469612f66696c6548115080e2cfaa06",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "jifCIEcAxgQKT9wYCfWxQWf86pDnJkc8Aga5I7FofyA=",
+        "mediaType": "sticker",
+        "timeoutMs": 500,
+        "bytes": "10de6b61747820d2b6b933c2d40c042099754d5d9053731cdfd75f139e47c89e962464261e8328ef2dc5"
+      }
+    ]
+  },
+  {
+    "type": "sticker",
+    "newsletter": false,
+    "mode": "fail",
+    "fields": {
+      "url": "override",
+      "directPath": "override-path",
+      "mediaKey": [
+        99
+      ],
+      "fileSha256": [
+        98
+      ],
+      "fileEncSha256": [
+        97
+      ],
+      "fileLength": 99,
+      "mediaKeyTimestamp": 7,
+      "stickerSentTs": 42
+    },
+    "template": "d201290a086f766572726964651201621a0161220163420d6f766572726964652d706174684863500790012a",
+    "output": "d201350a086f766572726964651201621a01612201632a0a696d6167652f77656270420d6f766572726964652d706174684863500790012a",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "jifCIEcAxgQKT9wYCfWxQWf86pDnJkc8Aga5I7FofyA=",
+        "mediaType": "sticker",
+        "timeoutMs": 500,
+        "bytes": "10de6b61747820d2b6b933c2d40c042099754d5d9053731cdfd75f139e47c89e962464261e8328ef2dc5"
+      }
+    ]
+  },
+  {
+    "type": "sticker",
+    "newsletter": true,
+    "mode": "ok",
+    "fields": {},
+    "template": "d20100",
+    "output": "d201610a1a68747470733a2f2f6d656469612e6578616d706c652f66696c6512203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e2a0a696d6167652f77656270420b2f6d656469612f66696c6548119001fbd095ffbc31",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "sticker",
+        "timeoutMs": 500,
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "type": "sticker",
+    "newsletter": true,
+    "mode": "ok",
+    "fields": {
+      "mimetype": "",
+      "fileName": "",
+      "caption": "caption",
+      "ptt": true,
+      "ptv": false,
+      "seconds": 0,
+      "width": 0,
+      "height": 5,
+      "jpegThumbnail": [],
+      "waveform": []
+    },
+    "template": "d201062a0030053800",
+    "output": "d201650a1a68747470733a2f2f6d656469612e6578616d706c652f66696c6512203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e2a0a696d6167652f7765627030053800420b2f6d656469612f66696c6548119001fbd095ffbc31",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "sticker",
+        "timeoutMs": 500,
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "type": "sticker",
+    "newsletter": true,
+    "mode": "ok",
+    "fields": {
+      "mimetype": "custom/type",
+      "fileName": "named",
+      "caption": "caption",
+      "ptt": true,
+      "width": 77,
+      "height": 88
+    },
+    "template": "d201112a0b637573746f6d2f747970653058384d",
+    "output": "d201660a1a68747470733a2f2f6d656469612e6578616d706c652f66696c6512203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e2a0b637573746f6d2f747970653058384d420b2f6d656469612f66696c6548119001fbd095ffbc31",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "sticker",
+        "timeoutMs": 500,
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "type": "sticker",
+    "newsletter": true,
+    "mode": "ok",
+    "fields": {
+      "url": "override",
+      "directPath": "override-path",
+      "mediaKey": [
+        99
+      ],
+      "fileSha256": [
+        98
+      ],
+      "fileEncSha256": [
+        97
+      ],
+      "fileLength": 99,
+      "mediaKeyTimestamp": 7,
+      "stickerSentTs": 42
+    },
+    "template": "d201290a086f766572726964651201621a0161220163420d6f766572726964652d706174684863500790012a",
+    "output": "d2013a0a086f766572726964651201621a01612201632a0a696d6167652f77656270420d6f766572726964652d70617468486350079001fbd095ffbc31",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "sticker",
+        "timeoutMs": 500,
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "type": "sticker",
+    "newsletter": true,
+    "mode": "fail",
+    "fields": {},
+    "template": "d20100",
+    "output": "d201610a1a68747470733a2f2f6d656469612e6578616d706c652f66696c6512203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e2a0a696d6167652f77656270420b2f6d656469612f66696c6548119001fbd095ffbc31",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "sticker",
+        "timeoutMs": 500,
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "type": "sticker",
+    "newsletter": true,
+    "mode": "fail",
+    "fields": {
+      "mimetype": "",
+      "fileName": "",
+      "caption": "caption",
+      "ptt": true,
+      "ptv": false,
+      "seconds": 0,
+      "width": 0,
+      "height": 5,
+      "jpegThumbnail": [],
+      "waveform": []
+    },
+    "template": "d201062a0030053800",
+    "output": "d201650a1a68747470733a2f2f6d656469612e6578616d706c652f66696c6512203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e2a0a696d6167652f7765627030053800420b2f6d656469612f66696c6548119001fbd095ffbc31",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "sticker",
+        "timeoutMs": 500,
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "type": "sticker",
+    "newsletter": true,
+    "mode": "fail",
+    "fields": {
+      "mimetype": "custom/type",
+      "fileName": "named",
+      "caption": "caption",
+      "ptt": true,
+      "width": 77,
+      "height": 88
+    },
+    "template": "d201112a0b637573746f6d2f747970653058384d",
+    "output": "d201660a1a68747470733a2f2f6d656469612e6578616d706c652f66696c6512203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e2a0b637573746f6d2f747970653058384d420b2f6d656469612f66696c6548119001fbd095ffbc31",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "sticker",
+        "timeoutMs": 500,
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "type": "sticker",
+    "newsletter": true,
+    "mode": "fail",
+    "fields": {
+      "url": "override",
+      "directPath": "override-path",
+      "mediaKey": [
+        99
+      ],
+      "fileSha256": [
+        98
+      ],
+      "fileEncSha256": [
+        97
+      ],
+      "fileLength": 99,
+      "mediaKeyTimestamp": 7,
+      "stickerSentTs": 42
+    },
+    "template": "d201290a086f766572726964651201621a0161220163420d6f766572726964652d706174684863500790012a",
+    "output": "d2013a0a086f766572726964651201621a01612201632a0a696d6167652f77656270420d6f766572726964652d70617468486350079001fbd095ffbc31",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "sticker",
+        "timeoutMs": 500,
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "type": "audio",
+    "newsletter": false,
+    "mode": "ok",
+    "fields": {
+      "ptt": true,
+      "seconds": 0,
+      "waveform": [],
+      "backgroundArgb": 42
+    },
+    "backgroundColor": "",
+    "template": "420d280030019a0100a5012a000000",
+    "output": "42bc010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c651216617564696f2f6f67673b20636f646563733d6f7075731a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e2011280030013a20000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f42204a344ce04d218258f89740e94866d632d8ac223203c36ad8a8c38fa60dddb1494a0b2f6d656469612f66696c655080e2cfaa069a0100a5012a000000",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "SjRM4E0hglj4l0DpSGbWMtisIjIDw2rYqMOPpg3dsUk=",
+        "mediaType": "audio",
+        "timeoutMs": 500,
+        "bytes": "f0052ae14b3653ae1206018569aa50e6b642e68f17b02d3cede7ece4d40f6795d794e4e24d9f8420ec54"
+      }
+    ]
+  },
+  {
+    "type": "audio",
+    "newsletter": false,
+    "mode": "ok",
+    "fields": {
+      "ptt": true,
+      "seconds": 0,
+      "waveform": [],
+      "backgroundArgb": 42
+    },
+    "backgroundColor": 0,
+    "template": "420d280030019a0100a5012a000000",
+    "output": "42bc010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c651216617564696f2f6f67673b20636f646563733d6f7075731a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e2011280030013a20000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f42204a344ce04d218258f89740e94866d632d8ac223203c36ad8a8c38fa60dddb1494a0b2f6d656469612f66696c655080e2cfaa069a0100a5012a000000",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "SjRM4E0hglj4l0DpSGbWMtisIjIDw2rYqMOPpg3dsUk=",
+        "mediaType": "audio",
+        "timeoutMs": 500,
+        "bytes": "f0052ae14b3653ae1206018569aa50e6b642e68f17b02d3cede7ece4d40f6795d794e4e24d9f8420ec54"
+      }
+    ]
+  },
+  {
+    "type": "audio",
+    "newsletter": false,
+    "mode": "ok",
+    "fields": {
+      "ptt": true,
+      "seconds": 0,
+      "waveform": [],
+      "backgroundArgb": 42
+    },
+    "backgroundColor": 1,
+    "template": "420d280030019a0100a5012a000000",
+    "output": "42b6010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c651216617564696f2f6f67673b20636f646563733d6f7075731a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e2011280030013a20000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f42204a344ce04d218258f89740e94866d632d8ac223203c36ad8a8c38fa60dddb1494a0b2f6d656469612f66696c655080e2cfaa069a0100",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "SjRM4E0hglj4l0DpSGbWMtisIjIDw2rYqMOPpg3dsUk=",
+        "mediaType": "audio",
+        "timeoutMs": 500,
+        "bytes": "f0052ae14b3653ae1206018569aa50e6b642e68f17b02d3cede7ece4d40f6795d794e4e24d9f8420ec54"
+      }
+    ]
+  },
+  {
+    "type": "audio",
+    "newsletter": false,
+    "mode": "ok",
+    "fields": {
+      "ptt": true,
+      "seconds": 0,
+      "waveform": [],
+      "backgroundArgb": 42
+    },
+    "backgroundColor": -1,
+    "template": "420d280030019a0100a5012a000000",
+    "output": "42b6010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c651216617564696f2f6f67673b20636f646563733d6f7075731a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e2011280030013a20000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f42204a344ce04d218258f89740e94866d632d8ac223203c36ad8a8c38fa60dddb1494a0b2f6d656469612f66696c655080e2cfaa069a0100",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "SjRM4E0hglj4l0DpSGbWMtisIjIDw2rYqMOPpg3dsUk=",
+        "mediaType": "audio",
+        "timeoutMs": 500,
+        "bytes": "f0052ae14b3653ae1206018569aa50e6b642e68f17b02d3cede7ece4d40f6795d794e4e24d9f8420ec54"
+      }
+    ]
+  },
+  {
+    "type": "audio",
+    "newsletter": false,
+    "mode": "ok",
+    "fields": {
+      "ptt": true,
+      "seconds": 0,
+      "waveform": [],
+      "backgroundArgb": 42
+    },
+    "backgroundColor": "#abc",
+    "template": "420d280030019a0100a5012a000000",
+    "output": "42bc010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c651216617564696f2f6f67673b20636f646563733d6f7075731a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e2011280030013a20000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f42204a344ce04d218258f89740e94866d632d8ac223203c36ad8a8c38fa60dddb1494a0b2f6d656469612f66696c655080e2cfaa069a0100a501bc0a00ff",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "SjRM4E0hglj4l0DpSGbWMtisIjIDw2rYqMOPpg3dsUk=",
+        "mediaType": "audio",
+        "timeoutMs": 500,
+        "bytes": "f0052ae14b3653ae1206018569aa50e6b642e68f17b02d3cede7ece4d40f6795d794e4e24d9f8420ec54"
+      }
+    ]
+  },
+  {
+    "type": "audio",
+    "newsletter": false,
+    "mode": "ok",
+    "fields": {
+      "ptt": true,
+      "seconds": 0,
+      "waveform": [],
+      "backgroundArgb": 42
+    },
+    "backgroundColor": "  ",
+    "template": "420d280030019a0100a5012a000000",
+    "output": "42bc010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c651216617564696f2f6f67673b20636f646563733d6f7075731a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e2011280030013a20000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f42204a344ce04d218258f89740e94866d632d8ac223203c36ad8a8c38fa60dddb1494a0b2f6d656469612f66696c655080e2cfaa069a0100a501000000ff",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "SjRM4E0hglj4l0DpSGbWMtisIjIDw2rYqMOPpg3dsUk=",
+        "mediaType": "audio",
+        "timeoutMs": 500,
+        "bytes": "f0052ae14b3653ae1206018569aa50e6b642e68f17b02d3cede7ece4d40f6795d794e4e24d9f8420ec54"
+      }
+    ]
+  },
+  {
+    "type": "image",
+    "cache": true,
+    "outputs": [
+      "1aae010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120a696d6167652f6a70656722203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e281130c80138c0024220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f4a208e27c2204700c6040a4fdc1809f5b14167fcea90e726473c0206b923b1687f205a0b2f6d656469612f66696c656080e2cfaa068201020908",
+      "1abd010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120b637573746f6d2f747970651a067365636f6e6422203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e281130c80138c0024220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f4a208e27c2204700c6040a4fdc1809f5b14167fcea90e726473c0206b923b1687f205a0b2f6d656469612f66696c656080e2cfaa0682010209088a0103c80107"
+    ],
+    "calls": [
+      {
+        "kind": "thumbnail",
+        "type": "image",
+        "original": true
+      }
+    ],
+    "uploads": [
+      {
+        "fileEncSha256B64": "jifCIEcAxgQKT9wYCfWxQWf86pDnJkc8Aga5I7FofyA=",
+        "mediaType": "image",
+        "bytes": "10de6b61747820d2b6b933c2d40c042099754d5d9053731cdfd75f139e47c89e962464261e8328ef2dc5"
+      }
+    ]
+  },
+  {
+    "type": "video",
+    "cache": true,
+    "outputs": [
+      "4aad010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c651209766964656f2f6d70341a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e20113220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f48c80150c0025a203f2b7e0f9406caa1f71053a6240d8dd64d76313b70f23cc4f8a86aec7f30efe96a0b2f6d656469612f66696c657080e2cfaa068201020908",
+      "4abf010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120b637573746f6d2f747970651a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e201128003220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f3a067365636f6e6448c80150c0025a203f2b7e0f9406caa1f71053a6240d8dd64d76313b70f23cc4f8a86aec7f30efe96a0b2f6d656469612f66696c657080e2cfaa0682010209088a0103c80107"
+    ],
+    "calls": [
+      {
+        "kind": "thumbnail",
+        "type": "video",
+        "original": true
+      }
+    ],
+    "uploads": [
+      {
+        "fileEncSha256B64": "Pyt+D5QGyqH3EFOmJA2N1k12MTtw8jzE+Khq7H8w7+k=",
+        "mediaType": "video",
+        "bytes": "484004c77bb7f20948d8ee35b4d9f14a2e5769ff0a21f6950db9173b4b1c0f8bcbf5cce236af7aafc4b9"
+      }
+    ]
+  },
+  {
+    "type": "audio",
+    "cache": true,
+    "outputs": [
+      "42b1010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c651216617564696f2f6f67673b20636f646563733d6f7075731a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e201128033a20000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f42204a344ce04d218258f89740e94866d632d8ac223203c36ad8a8c38fa60dddb1494a0b2f6d656469612f66696c655080e2cfaa06",
+      "42ac010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120b637573746f6d2f747970651a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e201128003a20000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f42204a344ce04d218258f89740e94866d632d8ac223203c36ad8a8c38fa60dddb1494a0b2f6d656469612f66696c655080e2cfaa068a0103c80107"
+    ],
+    "calls": [
+      {
+        "kind": "duration",
+        "original": true
+      }
+    ],
+    "uploads": [
+      {
+        "fileEncSha256B64": "SjRM4E0hglj4l0DpSGbWMtisIjIDw2rYqMOPpg3dsUk=",
+        "mediaType": "audio",
+        "bytes": "f0052ae14b3653ae1206018569aa50e6b642e68f17b02d3cede7ece4d40f6795d794e4e24d9f8420ec54"
+      }
+    ]
+  },
+  {
+    "type": "document",
+    "cache": true,
+    "outputs": [
+      "3aae010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120f6170706c69636174696f6e2f70646622203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e28113a20000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f420466696c654a2032286ff82a4d236670e67a28dc4d3d8d65c87ba642feda1c718c7380f10e6e04520b2f6d656469612f66696c655880e2cfaa06",
+      "3ab9010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120b637573746f6d2f7479706522203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e28113a20000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f420466696c654a2032286ff82a4d236670e67a28dc4d3d8d65c87ba642feda1c718c7380f10e6e04520b2f6d656469612f66696c655880e2cfaa068a0103c80107a201067365636f6e64"
+    ],
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "Mihv+CpNI2Zw5noo3E09jWXIe6ZC/toccYxzgPEObgQ=",
+        "mediaType": "document",
+        "bytes": "d37df83a954fb9936c8752bbcd0fc32fc579c9a2cc5898bb551fda392bd34e963c1604f6959a502e7594"
+      }
+    ]
+  },
+  {
+    "type": "sticker",
+    "cache": true,
+    "outputs": [
+      "d201a3010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c6512203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e1a208e27c2204700c6040a4fdc1809f5b14167fcea90e726473c0206b923b1687f202220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f2a0a696d6167652f77656270420b2f6d656469612f66696c6548115080e2cfaa06",
+      "d201aa010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c6512203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e1a208e27c2204700c6040a4fdc1809f5b14167fcea90e726473c0206b923b1687f202220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f2a0b637573746f6d2f74797065420b2f6d656469612f66696c6548115080e2cfaa068a0103c80107"
+    ],
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "jifCIEcAxgQKT9wYCfWxQWf86pDnJkc8Aga5I7FofyA=",
+        "mediaType": "sticker",
+        "bytes": "10de6b61747820d2b6b933c2d40c042099754d5d9053731cdfd75f139e47c89e962464261e8328ef2dc5"
+      }
+    ]
+  }
+]

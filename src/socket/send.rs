@@ -15,6 +15,7 @@ pub struct SendOptions {
     pub ephemeral_expiration: Option<u32>,
     pub content: generation::ContentOptions,
     pub hooks: Option<generation::GenerationHooks>,
+    pub media_hooks: Option<crate::media::PreparationHooks>,
     pub use_cached_group_metadata: bool,
     pub cached_group_metadata: Option<crate::groups::Metadata>,
     pub status_jid_list: Vec<String>,
@@ -28,6 +29,7 @@ impl Default for SendOptions {
             ephemeral_expiration: None,
             content: Default::default(),
             hooks: None,
+            media_hooks: None,
             use_cached_group_metadata: true,
             cached_group_metadata: None,
             status_jid_list: vec![],
@@ -101,6 +103,16 @@ impl Socket {
             .hooks
             .as_ref()
             .unwrap_or(&self.inner.generation_hooks);
+        let media_hooks = options
+            .media_hooks
+            .as_ref()
+            .unwrap_or(&self.inner.media_preparation_hooks);
+        let socket_hooks = SocketContentHooks {
+            socket: self,
+            base: hooks.get(),
+            media: media_hooks.get(),
+            destination,
+        };
         // Keep protobuf-heavy generation and relay futures out of the caller's stack frame.
         let full = Box::pin(generation::generate(
             destination,
@@ -114,7 +126,7 @@ impl Socket {
                 quoted: options.quoted,
                 ephemeral_expiration: options.ephemeral_expiration,
             },
-            hooks.get(),
+            &socket_hooks,
         ))
         .await?;
         Box::pin(
@@ -173,4 +185,54 @@ pub(super) fn spawn_own_worker(
             }
         }
     });
+}
+
+struct SocketContentHooks<'a> {
+    socket: &'a Socket,
+    base: &'a dyn generation::ContentHooks,
+    media: &'a dyn crate::media::PrepareHooks,
+    destination: &'a str,
+}
+impl generation::ContentHooks for SocketContentHooks<'_> {
+    fn link_preview(
+        &self,
+        url: String,
+    ) -> generation::HookFuture<'_, Option<generation::LinkPreview>> {
+        self.base.link_preview(url)
+    }
+    fn invite_thumbnail(&self, jid: String) -> generation::HookFuture<'_, Option<Vec<u8>>> {
+        self.base.invite_thumbnail(jid)
+    }
+    fn call_link(
+        &self,
+        kind: generation::CallKind,
+        time: i64,
+    ) -> generation::HookFuture<'_, Option<String>> {
+        self.base.call_link(kind, time)
+    }
+    fn now_ms(&self) -> Result<i64, generation::Error> {
+        self.base.now_ms()
+    }
+    fn message_secret(&self) -> Result<Vec<u8>, generation::Error> {
+        self.base.message_secret()
+    }
+    fn prepare_media<'a>(
+        &'a self,
+        request: &'a crate::media::Request,
+        options: &'a crate::media::PrepareOptions,
+    ) -> generation::HookFuture<'a, crate::proto::Message> {
+        Box::pin(async move {
+            let mut options = options.clone();
+            options.destination = Some(self.destination.into());
+            self.socket
+                .prepare_media_message(request, &options, self.media)
+                .await
+                .map_err(|e| {
+                    generation::Error::Media(crate::media::Error::Refresh {
+                        status: e.status_code(),
+                        message: e.to_string(),
+                    })
+                })
+        })
+    }
 }

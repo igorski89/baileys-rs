@@ -552,3 +552,166 @@ async fn newsletter_send_supports_generated_ids_hook_override_and_disabled_own_e
     .await
     .unwrap();
 }
+#[derive(Clone, Default)]
+struct MediaUpload {
+    paths: Arc<Mutex<Vec<std::path::PathBuf>>>,
+    fail: Arc<std::sync::atomic::AtomicBool>,
+}
+impl baileys_rs::media::MediaUploader for MediaUpload {
+    fn upload_media<'a>(
+        &'a self,
+        path: std::path::PathBuf,
+        _kind: baileys_rs::media::MediaType,
+        _hash: String,
+        _options: baileys_rs::media::UploadOptions,
+    ) -> futures_util::future::BoxFuture<
+        'a,
+        Result<baileys_rs::media::UploadResponse, baileys_rs::media::Error>,
+    > {
+        Box::pin(async move {
+            assert_eq!(std::fs::read(&path).unwrap(), (0..17u8).collect::<Vec<_>>());
+            self.paths.lock().unwrap().push(path);
+            if self.fail.load(std::sync::atomic::Ordering::Relaxed) {
+                return Err(baileys_rs::media::Error::UploadFailed);
+            }
+            Ok(baileys_rs::media::UploadResponse {
+                url: Some("https://media.example/file".into()),
+                direct_path: Some("/media/file".into()),
+                ..Default::default()
+            })
+        })
+    }
+}
+#[tokio::test]
+async fn send_media_prepares_newsletter_images_video_notes_and_products_before_relay() {
+    timeout(Duration::from_secs(8), async {
+        use baileys_rs::media;
+        let temp = tempfile::tempdir().unwrap();
+        let store = store(&temp);
+        let (listener, mut config) = listener().await;
+        config.emit_own_events = false;
+        let (tx, mut rx) = tokio::sync::mpsc::unbounded_channel();
+        let server = tokio::spawn(async move {
+            let mut peer = Peer::accept(listener.accept().await.unwrap().0).await;
+            peer.send(BinaryNode::new("success")).await;
+            assert!(peer.read().await.child("unified_session").is_some());
+            for _ in 0..3 {
+                let node = peer.read().await;
+                assert_eq!(node.tag, "message");
+                assert_eq!(node.attrs["to"], "channel@newsletter");
+                tx.send(proto::Message::decode(node.child_buffer("plaintext").unwrap()).unwrap())
+                    .unwrap();
+            }
+            let probe = peer.read().await;
+            assert!(probe.child("probe").is_some());
+            peer.result(&probe).await;
+            peer.closed().await;
+        });
+        let (socket, _events) = Socket::connect(config, store).await.unwrap();
+        socket.wait_for_open(Duration::from_secs(2)).await.unwrap();
+        let uploader = MediaUpload::default();
+        let input = media::Input::bytes((0..17u8).collect::<Vec<_>>());
+        let contents = [
+            Content::Media(Box::new(media::Request {
+                input: input.clone(),
+                payload: media::Payload::Image(Box::new(proto::message::ImageMessage {
+                    caption: Some("image caption".into()),
+                    ..Default::default()
+                })),
+                video_note: false,
+            })),
+            Content::VideoNote(input.clone()),
+            Content::Product {
+                image: input,
+                template: Box::new(proto::message::ProductMessage {
+                    body: Some("product body".into()),
+                    ..Default::default()
+                }),
+            },
+        ];
+        for (i, content) in contents.iter().enumerate() {
+            let full = socket
+                .send_message(
+                    "channel@newsletter",
+                    content,
+                    &Modifiers {
+                        mentions: vec!["300@lid".into()],
+                        ..Default::default()
+                    },
+                    SendOptions {
+                        message_id: Some(format!("MEDIA{i}")),
+                        content: generation::ContentOptions {
+                            media: media::PrepareOptions {
+                                uploader: Some(media::UploadFunction::new(uploader.clone())),
+                                ..Default::default()
+                            },
+                            ..Default::default()
+                        },
+                        ..Default::default()
+                    },
+                )
+                .await
+                .unwrap()
+                .unwrap();
+            let wire = rx.recv().await.unwrap();
+            assert_eq!(full.message.as_ref(), Some(&wire));
+            match i {
+                0 => {
+                    let p = wire.image_message.unwrap();
+                    assert_eq!(p.caption.as_deref(), Some("image caption"));
+                    assert!(p.media_key.is_none());
+                    assert_eq!(p.file_length, Some(17));
+                    assert_eq!(p.context_info.unwrap().mentioned_jid, ["300@lid"]);
+                }
+                1 => {
+                    assert!(wire.video_message.is_none());
+                    assert_eq!(wire.ptv_message.unwrap().file_length, Some(17));
+                }
+                _ => {
+                    let p = wire.product_message.unwrap();
+                    assert_eq!(p.body.as_deref(), Some("product body"));
+                    assert_eq!(
+                        p.product.unwrap().product_image.unwrap().file_length,
+                        Some(17)
+                    );
+                }
+            }
+        }
+        uploader
+            .fail
+            .store(true, std::sync::atomic::Ordering::Relaxed);
+        let error = socket
+            .send_message(
+                "channel@newsletter",
+                &contents[0],
+                &Modifiers::default(),
+                SendOptions {
+                    content: generation::ContentOptions {
+                        media: media::PrepareOptions {
+                            uploader: Some(media::UploadFunction::new(uploader.clone())),
+                            ..Default::default()
+                        },
+                        ..Default::default()
+                    },
+                    ..Default::default()
+                },
+            )
+            .await
+            .unwrap_err();
+        assert_eq!(error.status_code(), Some(500));
+        assert!(uploader.paths.lock().unwrap().iter().all(|p| !p.exists()));
+        socket
+            .query(
+                BinaryNode::new("iq")
+                    .attr("type", "get")
+                    .with_content(NodeContent::Children(vec![BinaryNode::new("probe")])),
+                None,
+            )
+            .await
+            .unwrap();
+        socket.close().await.unwrap();
+        server.await.unwrap();
+    })
+    .await
+    .unwrap();
+}

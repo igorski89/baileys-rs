@@ -1,0 +1,354 @@
+[
+  {
+    "kind": "ptv",
+    "newsletter": false,
+    "modifier": {},
+    "template": "",
+    "output": "9a02221a2007070707070707070707070707070707070707070707070707070707070707079204ad010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c651209766964656f2f6d70341a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e20113220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f48c80150c0025a203f2b7e0f9406caa1f71053a6240d8dd64d76313b70f23cc4f8a86aec7f30efe96a0b2f6d656469612f66696c657080e2cfaa068201020908",
+    "calls": [
+      {
+        "kind": "thumbnail",
+        "type": "video",
+        "original": true
+      }
+    ],
+    "uploads": [
+      {
+        "fileEncSha256B64": "Pyt+D5QGyqH3EFOmJA2N1k12MTtw8jzE+Khq7H8w7+k=",
+        "mediaType": "video",
+        "bytes": "484004c77bb7f20948d8ee35b4d9f14a2e5769ff0a21f6950db9173b4b1c0f8bcbf5cce236af7aafc4b9"
+      }
+    ]
+  },
+  {
+    "kind": "ptv",
+    "newsletter": false,
+    "modifier": {
+      "mentions": [
+        "300@lid"
+      ],
+      "mentionAll": true
+    },
+    "template": "",
+    "output": "9a02221a2007070707070707070707070707070707070707070707070707070707070707079204bc010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c651209766964656f2f6d70341a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e20113220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f48c80150c0025a203f2b7e0f9406caa1f71053a6240d8dd64d76313b70f23cc4f8a86aec7f30efe96a0b2f6d656469612f66696c657080e2cfaa0682010209088a010c7a07333030406c6964b00401",
+    "calls": [
+      {
+        "kind": "thumbnail",
+        "type": "video",
+        "original": true
+      }
+    ],
+    "uploads": [
+      {
+        "fileEncSha256B64": "Pyt+D5QGyqH3EFOmJA2N1k12MTtw8jzE+Khq7H8w7+k=",
+        "mediaType": "video",
+        "bytes": "484004c77bb7f20948d8ee35b4d9f14a2e5769ff0a21f6950db9173b4b1c0f8bcbf5cce236af7aafc4b9"
+      }
+    ]
+  },
+  {
+    "kind": "ptv",
+    "newsletter": false,
+    "modifier": {
+      "viewOnce": true,
+      "mentions": [
+        "300@lid"
+      ]
+    },
+    "template": "",
+    "output": "9a02221a200707070707070707070707070707070707070707070707070707070707070707aa02b4010ab1019204ad010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c651209766964656f2f6d70341a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e20113220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f48c80150c0025a203f2b7e0f9406caa1f71053a6240d8dd64d76313b70f23cc4f8a86aec7f30efe96a0b2f6d656469612f66696c657080e2cfaa068201020908",
+    "calls": [
+      {
+        "kind": "thumbnail",
+        "type": "video",
+        "original": true
+      }
+    ],
+    "uploads": [
+      {
+        "fileEncSha256B64": "Pyt+D5QGyqH3EFOmJA2N1k12MTtw8jzE+Khq7H8w7+k=",
+        "mediaType": "video",
+        "bytes": "484004c77bb7f20948d8ee35b4d9f14a2e5769ff0a21f6950db9173b4b1c0f8bcbf5cce236af7aafc4b9"
+      }
+    ]
+  },
+  {
+    "kind": "ptv",
+    "newsletter": false,
+    "modifier": {
+      "edit": {
+        "id": "EDIT",
+        "remoteJid": "200@s.whatsapp.net",
+        "fromMe": true
+      }
+    },
+    "template": "",
+    "output": "62db010a1c0a1232303040732e77686174736170702e6e657410011a0445444954100e72b1019204ad010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c651209766964656f2f6d70341a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e20113220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f48c80150c0025a203f2b7e0f9406caa1f71053a6240d8dd64d76313b70f23cc4f8a86aec7f30efe96a0b2f6d656469612f66696c657080e2cfaa06820102090878fbd095ffbc319a02221a200707070707070707070707070707070707070707070707070707070707070707",
+    "calls": [
+      {
+        "kind": "thumbnail",
+        "type": "video",
+        "original": true
+      }
+    ],
+    "uploads": [
+      {
+        "fileEncSha256B64": "Pyt+D5QGyqH3EFOmJA2N1k12MTtw8jzE+Khq7H8w7+k=",
+        "mediaType": "video",
+        "bytes": "484004c77bb7f20948d8ee35b4d9f14a2e5769ff0a21f6950db9173b4b1c0f8bcbf5cce236af7aafc4b9"
+      }
+    ]
+  },
+  {
+    "kind": "ptv",
+    "newsletter": true,
+    "modifier": {},
+    "template": "",
+    "output": "9a02221a2007070707070707070707070707070707070707070707070707070707070707079204580a1a68747470733a2f2f6d656469612e6578616d706c652f66696c651209766964656f2f6d70341a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e20116a0b2f6d656469612f66696c65",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "video",
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "kind": "ptv",
+    "newsletter": true,
+    "modifier": {
+      "mentions": [
+        "300@lid"
+      ],
+      "mentionAll": true
+    },
+    "template": "",
+    "output": "9a02221a2007070707070707070707070707070707070707070707070707070707070707079204670a1a68747470733a2f2f6d656469612e6578616d706c652f66696c651209766964656f2f6d70341a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e20116a0b2f6d656469612f66696c658a010c7a07333030406c6964b00401",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "video",
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "kind": "ptv",
+    "newsletter": true,
+    "modifier": {
+      "viewOnce": true,
+      "mentions": [
+        "300@lid"
+      ]
+    },
+    "template": "",
+    "output": "9a02221a200707070707070707070707070707070707070707070707070707070707070707aa025d0a5b9204580a1a68747470733a2f2f6d656469612e6578616d706c652f66696c651209766964656f2f6d70341a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e20116a0b2f6d656469612f66696c65",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "video",
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "kind": "ptv",
+    "newsletter": true,
+    "modifier": {
+      "edit": {
+        "id": "EDIT",
+        "remoteJid": "200@s.whatsapp.net",
+        "fromMe": true
+      }
+    },
+    "template": "",
+    "output": "6284010a1c0a1232303040732e77686174736170702e6e657410011a0445444954100e725b9204580a1a68747470733a2f2f6d656469612e6578616d706c652f66696c651209766964656f2f6d70341a203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e20116a0b2f6d656469612f66696c6578fbd095ffbc319a02221a200707070707070707070707070707070707070707070707070707070707070707",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "video",
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "kind": "product",
+    "newsletter": false,
+    "modifier": {},
+    "template": "f201230a0c1201501a055469746c6530631207323030406c69642a04626f64798a0103c80107",
+    "output": "f201d5010abd010aae010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120a696d6167652f6a70656722203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e281130c80138c0024220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f4a208e27c2204700c6040a4fdc1809f5b14167fcea90e726473c0206b923b1687f205a0b2f6d656469612f66696c656080e2cfaa0682010209081201501a055469746c6530631207323030406c69642a04626f64798a0103c801079a02221a200707070707070707070707070707070707070707070707070707070707070707",
+    "calls": [
+      {
+        "kind": "thumbnail",
+        "type": "image",
+        "original": true
+      }
+    ],
+    "uploads": [
+      {
+        "fileEncSha256B64": "jifCIEcAxgQKT9wYCfWxQWf86pDnJkc8Aga5I7FofyA=",
+        "mediaType": "image",
+        "bytes": "10de6b61747820d2b6b933c2d40c042099754d5d9053731cdfd75f139e47c89e962464261e8328ef2dc5"
+      }
+    ]
+  },
+  {
+    "kind": "product",
+    "newsletter": false,
+    "modifier": {
+      "mentions": [
+        "300@lid"
+      ],
+      "mentionAll": true
+    },
+    "template": "f2012f0a0c1201501a055469746c6530631207323030406c69642a04626f64798a010f7a07333030406c6964c80107b00401",
+    "output": "f201e1010abd010aae010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120a696d6167652f6a70656722203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e281130c80138c0024220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f4a208e27c2204700c6040a4fdc1809f5b14167fcea90e726473c0206b923b1687f205a0b2f6d656469612f66696c656080e2cfaa0682010209081201501a055469746c6530631207323030406c69642a04626f64798a010f7a07333030406c6964c80107b004019a02221a200707070707070707070707070707070707070707070707070707070707070707",
+    "calls": [
+      {
+        "kind": "thumbnail",
+        "type": "image",
+        "original": true
+      }
+    ],
+    "uploads": [
+      {
+        "fileEncSha256B64": "jifCIEcAxgQKT9wYCfWxQWf86pDnJkc8Aga5I7FofyA=",
+        "mediaType": "image",
+        "bytes": "10de6b61747820d2b6b933c2d40c042099754d5d9053731cdfd75f139e47c89e962464261e8328ef2dc5"
+      }
+    ]
+  },
+  {
+    "kind": "product",
+    "newsletter": false,
+    "modifier": {
+      "viewOnce": true,
+      "mentions": [
+        "300@lid"
+      ]
+    },
+    "template": "f201230a0c1201501a055469746c6530631207323030406c69642a04626f64798a0103c80107",
+    "output": "9a02221a200707070707070707070707070707070707070707070707070707070707070707aa02dc010ad901f201d5010abd010aae010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120a696d6167652f6a70656722203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e281130c80138c0024220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f4a208e27c2204700c6040a4fdc1809f5b14167fcea90e726473c0206b923b1687f205a0b2f6d656469612f66696c656080e2cfaa0682010209081201501a055469746c6530631207323030406c69642a04626f64798a0103c80107",
+    "calls": [
+      {
+        "kind": "thumbnail",
+        "type": "image",
+        "original": true
+      }
+    ],
+    "uploads": [
+      {
+        "fileEncSha256B64": "jifCIEcAxgQKT9wYCfWxQWf86pDnJkc8Aga5I7FofyA=",
+        "mediaType": "image",
+        "bytes": "10de6b61747820d2b6b933c2d40c042099754d5d9053731cdfd75f139e47c89e962464261e8328ef2dc5"
+      }
+    ]
+  },
+  {
+    "kind": "product",
+    "newsletter": false,
+    "modifier": {
+      "edit": {
+        "id": "EDIT",
+        "remoteJid": "200@s.whatsapp.net",
+        "fromMe": true
+      }
+    },
+    "template": "f201230a0c1201501a055469746c6530631207323030406c69642a04626f64798a0103c80107",
+    "output": "6283020a1c0a1232303040732e77686174736170702e6e657410011a0445444954100e72d901f201d5010abd010aae010a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120a696d6167652f6a70656722203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e281130c80138c0024220000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f4a208e27c2204700c6040a4fdc1809f5b14167fcea90e726473c0206b923b1687f205a0b2f6d656469612f66696c656080e2cfaa0682010209081201501a055469746c6530631207323030406c69642a04626f64798a0103c8010778fbd095ffbc319a02221a200707070707070707070707070707070707070707070707070707070707070707",
+    "calls": [
+      {
+        "kind": "thumbnail",
+        "type": "image",
+        "original": true
+      }
+    ],
+    "uploads": [
+      {
+        "fileEncSha256B64": "jifCIEcAxgQKT9wYCfWxQWf86pDnJkc8Aga5I7FofyA=",
+        "mediaType": "image",
+        "bytes": "10de6b61747820d2b6b933c2d40c042099754d5d9053731cdfd75f139e47c89e962464261e8328ef2dc5"
+      }
+    ]
+  },
+  {
+    "kind": "product",
+    "newsletter": true,
+    "modifier": {},
+    "template": "f201230a0c1201501a055469746c6530631207323030406c69642a04626f64798a0103c80107",
+    "output": "f2017e0a670a590a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120a696d6167652f6a70656722203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e28115a0b2f6d656469612f66696c651201501a055469746c6530631207323030406c69642a04626f64798a0103c801079a02221a200707070707070707070707070707070707070707070707070707070707070707",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "image",
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "kind": "product",
+    "newsletter": true,
+    "modifier": {
+      "mentions": [
+        "300@lid"
+      ],
+      "mentionAll": true
+    },
+    "template": "f2012f0a0c1201501a055469746c6530631207323030406c69642a04626f64798a010f7a07333030406c6964c80107b00401",
+    "output": "f2018a010a670a590a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120a696d6167652f6a70656722203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e28115a0b2f6d656469612f66696c651201501a055469746c6530631207323030406c69642a04626f64798a010f7a07333030406c6964c80107b004019a02221a200707070707070707070707070707070707070707070707070707070707070707",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "image",
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "kind": "product",
+    "newsletter": true,
+    "modifier": {
+      "viewOnce": true,
+      "mentions": [
+        "300@lid"
+      ]
+    },
+    "template": "f201230a0c1201501a055469746c6530631207323030406c69642a04626f64798a0103c80107",
+    "output": "9a02221a200707070707070707070707070707070707070707070707070707070707070707aa0284010a8101f2017e0a670a590a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120a696d6167652f6a70656722203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e28115a0b2f6d656469612f66696c651201501a055469746c6530631207323030406c69642a04626f64798a0103c80107",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "image",
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  },
+  {
+    "kind": "product",
+    "newsletter": true,
+    "modifier": {
+      "edit": {
+        "id": "EDIT",
+        "remoteJid": "200@s.whatsapp.net",
+        "fromMe": true
+      }
+    },
+    "template": "f201230a0c1201501a055469746c6530631207323030406c69642a04626f64798a0103c80107",
+    "output": "62ab010a1c0a1232303040732e77686174736170702e6e657410011a0445444954100e728101f2017e0a670a590a1a68747470733a2f2f6d656469612e6578616d706c652f66696c65120a696d6167652f6a70656722203e5718fea51a8f3f5baca61c77afab473c1810f8b9db330273b4011ce92c787e28115a0b2f6d656469612f66696c651201501a055469746c6530631207323030406c69642a04626f64798a0103c8010778fbd095ffbc319a02221a200707070707070707070707070707070707070707070707070707070707070707",
+    "calls": [],
+    "uploads": [
+      {
+        "fileEncSha256B64": "PlcY/qUajz9brKYcd6+rRzwYEPi52zMCc7QBHOkseH4=",
+        "mediaType": "image",
+        "bytes": "000102030405060708090a0b0c0d0e0f10"
+      }
+    ]
+  }
+]

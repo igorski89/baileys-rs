@@ -1,9 +1,12 @@
 //! Media encryption, streaming CBC downloads and media-retry wire helpers.
 mod http;
+mod overlay;
+mod prepare;
 mod retry;
 mod stream;
 use crate::crypto;
 pub use http::*;
+pub use prepare::*;
 pub use retry::*;
 pub use stream::*;
 use zeroize::Zeroizing;
@@ -18,6 +21,10 @@ pub enum Error {
     Protobuf(#[from] prost::DecodeError),
     #[error("invalid media range or byte count overflow")]
     Range,
+    #[error("invalid media input: {0}")]
+    Input(&'static str),
+    #[error("media uploader unavailable")]
+    UploadUnavailable,
     #[error(transparent)]
     Http(#[from] reqwest::Error),
     #[error("media HTTP status {0}")]
@@ -101,36 +108,11 @@ impl std::fmt::Debug for Keys {
 }
 impl Keys {
     pub fn derive_base64(value: &str, kind: MediaType) -> Result<Self, Error> {
-        use base64::{
-            Engine, alphabet,
-            engine::{DecodePaddingMode, GeneralPurpose, GeneralPurposeConfig},
-        };
         if value.is_empty() {
-            return Err(Error::Node("Cannot derive from empty media key"));
+            return Err(Error::Input("Cannot derive from empty media key"));
         }
         let text = value.replacen("data:;base64,", "", 1);
-        let mut text: String = text
-            .split('=')
-            .next()
-            .unwrap_or_default()
-            .chars()
-            .filter(|c| c.is_ascii_alphanumeric() || matches!(c, '+' | '/' | '-' | '_'))
-            .collect();
-        text = text.replace('-', "+").replace('_', "/");
-        if text.len() % 4 == 1 {
-            text.pop();
-        }
-        let engine = GeneralPurpose::new(
-            &alphabet::STANDARD,
-            GeneralPurposeConfig::new()
-                .with_decode_padding_mode(DecodePaddingMode::Indifferent)
-                .with_decode_allow_trailing_bits(true),
-        );
-        let key = Zeroizing::new(
-            engine
-                .decode(text)
-                .map_err(|_| Error::Node("invalid media key"))?,
-        );
+        let key = Zeroizing::new(decode_base64(&text)?);
         Self::derive(&key, kind)
     }
     /// Empty byte keys are accepted, as with upstream Buffer.alloc(0).
@@ -201,4 +183,30 @@ pub fn download_url(
         .filter(|s| !s.is_empty())
         .map(str::to_owned)
         .ok_or(Error::Url)
+}
+
+pub(crate) fn decode_base64(value: &str) -> Result<Vec<u8>, Error> {
+    use base64::{
+        Engine, alphabet,
+        engine::{DecodePaddingMode, GeneralPurpose, GeneralPurposeConfig},
+    };
+    let mut text: String = value
+        .split('=')
+        .next()
+        .unwrap_or_default()
+        .chars()
+        .filter(|c| c.is_ascii_alphanumeric() || matches!(c, '+' | '/' | '-' | '_'))
+        .collect();
+    text = text.replace('-', "+").replace('_', "/");
+    if text.len() % 4 == 1 {
+        text.pop();
+    }
+    GeneralPurpose::new(
+        &alphabet::STANDARD,
+        GeneralPurposeConfig::new()
+            .with_decode_padding_mode(DecodePaddingMode::Indifferent)
+            .with_decode_allow_trailing_bits(true),
+    )
+    .decode(text)
+    .map_err(|_| Error::Input("invalid base64"))
 }

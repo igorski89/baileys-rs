@@ -82,3 +82,41 @@ impl Socket {
         .await?)
     }
 }
+impl crate::media::MediaUploader for Socket {
+    fn upload_media<'a>(
+        &'a self,
+        path: std::path::PathBuf,
+        kind: crate::media::MediaType,
+        hash: String,
+        options: crate::media::UploadOptions,
+    ) -> futures_util::future::BoxFuture<
+        'a,
+        Result<crate::media::UploadResponse, crate::media::Error>,
+    > {
+        Box::pin(async move {
+            Socket::upload_media(self, &path, kind, &hash, &options)
+                .await
+                .map_err(|e| crate::media::Error::Refresh {
+                    status: e.status_code(),
+                    message: e.to_string(),
+                })
+        })
+    }
+}
+impl Socket {
+    pub async fn prepare_media_message(
+        &self,
+        request: &crate::media::Request,
+        options: &crate::media::PrepareOptions,
+        hooks: &dyn crate::media::PrepareHooks,
+    ) -> Result<crate::proto::Message, Error> {
+        let http = self
+            .inner
+            .media_http
+            .get_or_try_init(|| async { crate::media::HttpClient::new() })
+            .await?;
+        let uploader: &dyn crate::media::MediaUploader =
+            options.uploader.as_ref().map(|u| u.get()).unwrap_or(self);
+        Ok(crate::media::prepare(request, options, http, uploader, hooks).await?)
+    }
+}

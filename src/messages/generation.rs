@@ -6,6 +6,8 @@ pub use content::*;
 
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
+    #[error(transparent)]
+    Media(#[from] crate::media::Error),
     #[error("no content in message")]
     MissingContent,
     #[error("message content cannot carry quote or expiration metadata")]
@@ -22,6 +24,7 @@ pub enum Error {
 impl Error {
     pub fn status_code(&self) -> Option<u16> {
         match self {
+            Self::Media(error) => error.status_code(),
             Self::MissingContent
             | Self::InvalidContent
             | Self::EmptyContacts

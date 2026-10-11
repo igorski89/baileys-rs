@@ -135,6 +135,7 @@ pub struct Config {
     pub generation_hooks: crate::messages::generation::GenerationHooks,
     pub emit_own_events: bool,
     pub media_http: Option<crate::media::HttpClient>,
+    pub media_preparation_hooks: crate::media::PreparationHooks,
 }
 impl Default for Config {
     fn default() -> Self {
@@ -161,6 +162,7 @@ impl Default for Config {
             generation_hooks: Default::default(),
             emit_own_events: true,
             media_http: None,
+            media_preparation_hooks: Default::default(),
         }
     }
 }
@@ -227,6 +229,7 @@ impl std::fmt::Debug for Event {
 struct Inner {
     media_cache: tokio::sync::Mutex<media::MediaCache>,
     media_http: tokio::sync::OnceCell<crate::media::HttpClient>,
+    media_preparation_hooks: crate::media::PreparationHooks,
     own_messages: Option<mpsc::UnboundedSender<proto::WebMessageInfo>>,
     generation_hooks: crate::messages::generation::GenerationHooks,
     receipt_lock: tokio::sync::Mutex<()>,
@@ -411,6 +414,7 @@ impl Socket {
         let inner = Arc::new(Inner {
             media_cache: tokio::sync::Mutex::new(Default::default()),
             media_http: tokio::sync::OnceCell::new_with(config.media_http.clone()),
+            media_preparation_hooks: config.media_preparation_hooks.clone(),
             own_messages: config.emit_own_events.then_some(own_sender),
             generation_hooks: config.generation_hooks.clone(),
             receipt_lock: tokio::sync::Mutex::new(()),
