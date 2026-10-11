@@ -88,6 +88,39 @@ impl Transaction<'_, '_> {
     pub fn credentials(&self) -> Result<Credentials, Error> {
         Ok(self.tx.borrow().load_credentials()?)
     }
+    pub fn privacy_token(
+        &self,
+        storage: &str,
+        now: u64,
+    ) -> Result<(Option<Vec<u8>>, Option<u64>), Error> {
+        let mut tx = self.tx.borrow_mut();
+        let Some(KeyValue::Tctoken(entry)) = tx
+            .get(KeyCategory::Tctoken, &[storage.into()])?
+            .remove(storage)
+        else {
+            return Ok((None, None));
+        };
+        let sender = entry.sender_timestamp;
+        if entry.token.is_empty() {
+            return Ok((None, sender));
+        }
+        if crate::privacy::is_expired(entry.timestamp.as_ref(), now) {
+            let mutation = match sender {
+                Some(sender) => KeyMutation::put(
+                    storage,
+                    KeyValue::Tctoken(crate::auth::TcToken {
+                        sender_timestamp: Some(sender),
+                        ..Default::default()
+                    }),
+                ),
+                None => KeyMutation::delete(KeyCategory::Tctoken, storage),
+            };
+            let _ = tx.set(&[mutation]);
+            Ok((None, sender))
+        } else {
+            Ok((Some(entry.token), sender))
+        }
+    }
     pub fn encrypt_group(
         &self,
         name: &SenderKeyName,

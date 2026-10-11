@@ -1,6 +1,7 @@
 //! Async WhatsApp WebSocket connection with exclusive Noise ownership and IQ routing.
 mod actor;
 mod groups;
+mod relay;
 use crate::{
     auth::{self, Credentials, SqliteAuthStore},
     binary::{self, BinaryNode},
@@ -12,6 +13,7 @@ use crate::{
 use base64::{Engine, engine::general_purpose::URL_SAFE_NO_PAD};
 use futures_util::{SinkExt, StreamExt};
 use prost::Message;
+pub use relay::{RelayOptions, ServerProps};
 use std::{
     collections::BTreeMap,
     sync::{
@@ -156,6 +158,8 @@ impl std::fmt::Debug for Event {
     }
 }
 struct Inner {
+    relay_lock: tokio::sync::Mutex<()>,
+    relay_state: std::sync::Mutex<relay::RelayState>,
     store: SqliteAuthStore,
     decryptor: Arc<crate::messages::SignalDecryptor>,
     devices: crate::devices::Cache,
@@ -311,6 +315,8 @@ impl Socket {
             u16::from_be_bytes([random[2], random[3]])
         );
         let inner = Arc::new(Inner {
+            relay_lock: tokio::sync::Mutex::new(()),
+            relay_state: std::sync::Mutex::new(Default::default()),
             store: store.clone(),
             decryptor: Arc::new(crate::messages::SignalDecryptor::new(store.clone())),
             devices: crate::devices::Cache::new(config.devices.clone()),

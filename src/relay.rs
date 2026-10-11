@@ -24,6 +24,8 @@ pub enum Error {
     Signal(#[from] crate::signal::Error),
     #[error(transparent)]
     Crypto(#[from] crypto::Error),
+    #[error(transparent)]
+    Binary(#[from] crate::binary::Error),
     #[error("invalid recipient JID")]
     Recipient,
     #[error("missing signed device identity")]
@@ -37,6 +39,9 @@ impl Error {
     pub fn status_code(&self) -> Option<u16> {
         match self {
             Self::Auth(e) => e.status_code(),
+            Self::Binary(crate::binary::Error::Stanza { code, .. }) => {
+                code.and_then(|n| n.try_into().ok())
+            }
             Self::AllEncryptionsFailed { .. } => Some(500),
             Self::Signal(e) => e.status_code(),
             _ => None,
