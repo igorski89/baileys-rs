@@ -266,6 +266,20 @@ impl Manager {
             s.index.insert(id.to_owned(), key);
         })
     }
+    // Mirror mutation of the upstream cache's shared payload reference, keeping
+    // the original timestamp, TTL, insertion order and ID index unchanged.
+    pub(crate) fn update_recent_message(
+        &self,
+        to: &str,
+        id: &str,
+        message: proto::Message,
+    ) -> Result<(), Error> {
+        self.work(|s, _| {
+            if let Some(entry) = s.recent.entries.get_mut(&format!("{to}\0{id}")) {
+                entry.value.message = message;
+            }
+        })
+    }
     pub fn get_recent_message(&self, to: &str, id: &str) -> Result<Option<RecentMessage>, Error> {
         self.work(|s, now| s.recent.get(&format!("{to}\0{id}"), now))
     }

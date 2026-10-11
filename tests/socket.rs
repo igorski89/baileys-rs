@@ -157,7 +157,8 @@ async fn encrypted_incoming_message_decrypts_on_blocking_executor() {
                     .attr("type", "pkmsg")
                     .with_content(NodeContent::Bytes(second_encrypted.ciphertext)),
             ]));
-        let (listener, config) = listener().await;
+        let (listener, mut config) = listener().await;
+        config.process_messages = false;
         let server = tokio::spawn(async move {
             let mut peer = Peer::accept(listener.accept().await.unwrap().0).await;
             peer.send(BinaryNode::new("success").attr("lid", "987654:7@lid"))

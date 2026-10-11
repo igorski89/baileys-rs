@@ -1,6 +1,7 @@
 //! Async WhatsApp WebSocket connection with exclusive Noise ownership and IQ routing.
 mod actor;
 mod groups;
+mod incoming_messages;
 mod incoming_receipts;
 mod media;
 mod receipts;
@@ -133,6 +134,9 @@ pub struct Config {
     pub max_msg_retry_count: u64,
     pub enable_auto_session_recreation: bool,
     pub process_receipts: bool,
+    pub process_messages: bool,
+    pub send_active_receipts: bool,
+    pub retry_request_delay: Duration,
     pub process_media_notifications: bool,
     pub get_message: crate::relay::MessageLookup,
     pub generation_hooks: crate::messages::generation::GenerationHooks,
@@ -161,6 +165,9 @@ impl Default for Config {
             max_msg_retry_count: 5,
             enable_auto_session_recreation: true,
             process_receipts: true,
+            process_messages: true,
+            send_active_receipts: false,
+            retry_request_delay: Duration::from_millis(250),
             process_media_notifications: true,
             get_message: Default::default(),
             generation_hooks: Default::default(),
@@ -185,6 +192,8 @@ pub enum Event {
     CredentialsUpdated,
     PendingNotifications,
     MediaUpdated(Vec<crate::media::RetryEvent>),
+    ContactsUpdated(Vec<crate::auth::Contact>),
+    MessageStubsUpdated(Vec<crate::messages::incoming::StubUpdate>),
     MessageContentsUpdated(Vec<crate::media::ContentUpdate>),
     GroupsUpdated(Vec<crate::groups::Metadata>),
     MessagesUpdated(Vec<crate::receipts::MessageUpdate>),
@@ -197,6 +206,14 @@ pub enum Event {
 impl std::fmt::Debug for Event {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
+            Self::ContactsUpdated(updates) => f
+                .debug_tuple("ContactsUpdated")
+                .field(&updates.len())
+                .finish(),
+            Self::MessageStubsUpdated(updates) => f
+                .debug_tuple("MessageStubsUpdated")
+                .field(&updates.len())
+                .finish(),
             Self::Connection(s) => f.debug_tuple("Connection").field(s).finish(),
             Self::Node(n) => f.debug_tuple("Node").field(&n.tag).finish(),
             Self::Qr(_) => f.write_str("Qr(<redacted>)"),
@@ -240,6 +257,9 @@ impl std::fmt::Debug for Event {
     }
 }
 struct Inner {
+    message_lock: tokio::sync::Mutex<()>,
+    active_receipts: std::sync::atomic::AtomicBool,
+    retry_request_delay: Duration,
     media_cache: tokio::sync::Mutex<media::MediaCache>,
     media_http: tokio::sync::OnceCell<crate::media::HttpClient>,
     media_preparation_hooks: crate::media::PreparationHooks,
@@ -271,6 +291,10 @@ pub struct Socket {
     inner: Arc<Inner>,
 }
 enum Command {
+    PushName {
+        name: String,
+        reply: oneshot::Sender<Result<(), Error>>,
+    },
     RetryReceipt {
         node: BinaryNode,
         count: u64,
@@ -423,8 +447,13 @@ impl Socket {
         let actor_retry_requests = retry_requests.clone();
         let (receipt_sender, mut receipt_receiver) = mpsc::unbounded_channel::<BinaryNode>();
         let receipt_sender = config.process_receipts.then_some(receipt_sender);
+        let (message_sender, message_receiver) = mpsc::unbounded_channel();
+        let message_sender = config.process_messages.then_some(message_sender);
         let (own_sender, own_receiver) = mpsc::unbounded_channel();
         let inner = Arc::new(Inner {
+            message_lock: tokio::sync::Mutex::new(()),
+            active_receipts: std::sync::atomic::AtomicBool::new(config.send_active_receipts),
+            retry_request_delay: config.retry_request_delay,
             media_cache: tokio::sync::Mutex::new(Default::default()),
             media_http: tokio::sync::OnceCell::new_with(config.media_http.clone()),
             media_preparation_hooks: config.media_preparation_hooks.clone(),
@@ -452,6 +481,7 @@ impl Socket {
             query_timeout: config.query_timeout,
         });
         send::spawn_own_worker(&inner, own_receiver);
+        incoming_messages::spawn_worker(&inner, message_receiver);
         let receipt_inner = Arc::downgrade(&inner);
         tokio::spawn(async move {
             while let Some(node) = receipt_receiver.recv().await {
@@ -478,6 +508,7 @@ impl Socket {
                 actor_retry_manager,
                 actor_retry_requests,
                 receipt_sender,
+                message_sender,
             )
             .await;
         });
@@ -847,7 +878,8 @@ impl Socket {
     }
     /// Decode/decrypt a received Node event using this socket's persistent keys.
     /// Consumes Signal counters; callers must process each stanza once, in arrival order.
-    /// Receipt/acknowledgement and retry orchestration are separate operations.
+    /// Disable automatic processing before using this on raw Node events.
+    /// handle_message adds receipt/acknowledgement and retry orchestration.
     pub async fn decrypt_message(
         &self,
         node: BinaryNode,

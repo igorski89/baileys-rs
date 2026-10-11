@@ -29,6 +29,7 @@ struct Pending {
 }
 struct Actor<'a> {
     receipts: Option<mpsc::UnboundedSender<BinaryNode>>,
+    messages: Option<mpsc::UnboundedSender<BinaryNode>>,
     ws: &'a mut WebSocket,
     noise: &'a mut NoiseHandler,
     config: Config,
@@ -63,9 +64,11 @@ pub(super) async fn run(
     retry_manager: Option<crate::retry::Manager>,
     retry_requests: Arc<super::retries::RetryRequests>,
     receipts: Option<mpsc::UnboundedSender<BinaryNode>>,
+    messages: Option<mpsc::UnboundedSender<BinaryNode>>,
 ) {
     let mut actor = Actor {
         receipts,
+        messages,
         ws,
         noise,
         config,
@@ -205,6 +208,19 @@ impl Actor<'_> {
     }
     async fn command(&mut self, command: Command) -> Result<(), Error> {
         match command {
+            Command::PushName { name, reply } => {
+                let result = if let Some(me) = self.credentials.me.as_mut() {
+                    if me.name.as_ref() == Some(&name) {
+                        Ok(())
+                    } else {
+                        me.name = Some(name);
+                        self.persist().await
+                    }
+                } else {
+                    Err(Error::Config)
+                };
+                let _ = reply.send(result);
+            }
             Command::RetryReceipt {
                 node,
                 count,
@@ -375,6 +391,11 @@ impl Actor<'_> {
         }
         if node.tag == "receipt"
             && let Some(sender) = &self.receipts
+        {
+            let _ = sender.send(node.clone());
+        }
+        if node.tag == "message"
+            && let Some(sender) = &self.messages
         {
             let _ = sender.send(node.clone());
         }

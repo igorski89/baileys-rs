@@ -1,5 +1,6 @@
 //! Message envelopes and protobuf payloads, independent of socket receipt processing.
 pub mod generation;
+pub mod incoming;
 pub mod own;
 use crate::{
     binary::{BinaryNode, NodeContent},
@@ -151,6 +152,26 @@ pub struct KeyMetadata {
     pub server_id: Option<String>,
 }
 
+/// Runtime receive properties associated with a protobuf message.
+#[derive(Debug, Clone, PartialEq)]
+pub struct EnvelopeMetadata {
+    pub key_metadata: KeyMetadata,
+    pub category: Option<String>,
+    pub retry_count: Option<u32>,
+    pub author: String,
+    pub sender: String,
+}
+impl From<&Envelope> for EnvelopeMetadata {
+    fn from(envelope: &Envelope) -> Self {
+        Self {
+            key_metadata: envelope.key_metadata.clone(),
+            category: envelope.category.clone(),
+            retry_count: envelope.retry_count,
+            author: envelope.author.clone(),
+            sender: envelope.sender.clone(),
+        }
+    }
+}
 #[derive(Clone, PartialEq)]
 pub struct Envelope {
     pub message: proto::WebMessageInfo,
@@ -479,7 +500,12 @@ pub fn decrypt_node(
             Ok::<_, Error>(())
         })();
         if let Err(error) = result {
-            ciphertext_stub(&mut envelope, error.to_string());
+            let reason = if matches!(error, Error::Signal(signal::Error::MissingPreKey)) {
+                incoming::MISSING_KEYS.into()
+            } else {
+                error.to_string()
+            };
+            ciphertext_stub(&mut envelope, reason);
         }
     }
     if decryptables == 0 && !envelope.key_metadata.is_view_once {

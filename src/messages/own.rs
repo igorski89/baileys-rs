@@ -1,4 +1,4 @@
-//! Local events derived from an outgoing message after successful relay.
+//! Common chat, protocol and reaction effects for generated and received messages.
 use crate::{jid, messages, proto, relay};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -11,6 +11,8 @@ pub struct Upsert {
     pub messages: Vec<proto::WebMessageInfo>,
     pub kind: UpsertKind,
     pub request_id: Option<String>,
+    /// Runtime receive properties in message order; empty for generated own events.
+    pub metadata: Vec<messages::EnvelopeMetadata>,
 }
 #[derive(Debug, Clone, PartialEq)]
 pub enum Mutation {
@@ -34,6 +36,8 @@ pub struct ChatUpdate {
     pub id: String,
     pub messages: Option<Vec<proto::WebMessageInfo>>,
     pub conversation_timestamp: Option<f64>,
+    /// An unread-count delta, matching the upstream buffered chat update.
+    pub unread_count: Option<i64>,
     pub archived: Option<bool>,
     pub read_only: Option<bool>,
     pub ephemeral_setting_timestamp: Option<f64>,
@@ -59,18 +63,20 @@ pub fn effects(
     if key.from_me != Some(true) {
         return Err(messages::Error::Envelope("expected own message"));
     }
-    let remote = key
-        .remote_jid
-        .as_deref()
-        .filter(|s| !s.is_empty())
-        .ok_or(messages::Error::Envelope("missing own chat JID"))?;
+    effects_received(message, unarchive)
+}
+/// Shared chat, edit, revoke and reaction effects after received-key cleanup.
+pub fn effects_received(
+    message: &proto::WebMessageInfo,
+    unarchive: bool,
+) -> Result<Effects, messages::Error> {
+    let key = message
+        .key
+        .as_ref()
+        .ok_or(messages::Error::Envelope("missing message key"))?;
+    let remote = messages::incoming::chat_id(key)?;
     let content = relay::normalize(message.message.as_ref());
-    let real = messages::generation::content_type(content).is_some()
-        && content.is_some_and(|m| {
-            m.protocol_message.is_none()
-                && m.reaction_message.is_none()
-                && m.poll_update_message.is_none()
-        });
+    let real = messages::incoming::is_real(message);
     let mut chat = ChatUpdate {
         id: jid::normalized_user(remote),
         ..Default::default()
@@ -79,6 +85,9 @@ pub fn effects(
     if real {
         chat.messages = Some(vec![message.clone()]);
         chat.conversation_timestamp = Some(timestamp);
+        if messages::incoming::increments_unread(message) {
+            chat.unread_count = Some(1);
+        }
     }
     if unarchive
         && (real

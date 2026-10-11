@@ -164,6 +164,7 @@ pub(super) fn spawn_own_worker(
                 messages: vec![message.clone()],
                 kind: own::UpsertKind::Append,
                 request_id: None,
+                metadata: vec![],
             }));
             let result = async {
                 let credentials = load_credentials(inner.store.clone()).await?;
