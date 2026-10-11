@@ -31,6 +31,14 @@ try {
   const classifications=[null,...types].map(m=>{const decoded=m?obj(m):null,c=helpers.classify(decoded);return {wire:decoded?wire(decoded):null,messageType:c.messageType,mediaType:c.mediaType,normalized:c.normalized?wire(c.normalized):null}})
   const hashes=[['200@s.whatsapp.net','100@s.whatsapp.net','100@s.whatsapp.net'],['z@lid','💚@lid','A@lid','\uE000@lid'],[]].map(input=>{const sorted=[...input],hash=helpers.generateParticipantHashV2(sorted);return {input,sorted,hash}})
   const identityCases=[true,false].flatMap(include=>[false,true].map(empty=>{const account={details:Buffer.from([1,2]),accountSignatureKey:empty?Buffer.alloc(0):Buffer.from([3,4]),accountSignature:Buffer.from([5]),deviceSignature:Buffer.from([6])};return {include,account:hex(proto.ADVSignedDeviceIdentity.encode(account).finish()),wire:hex(helpers.encodeSignedDeviceIdentity(account,include))}}))
-  await writeFile('tests/fixtures/relay.json',JSON.stringify({fanouts,classifications,hashes,identityCases,newsletter:hex(helpers.encodeNewsletterMessage(base))},null,2)+'\n')
+  const selectionStart=send.indexOf('reportingMessage = Array.isArray(patchedForReporting)')+'reportingMessage = '.length
+  const selectionEnd=send.indexOf(': patchedForReporting',selectionStart)+': patchedForReporting'.length
+  const selectReporting=new Function('patchedForReporting','jid','return '+send.slice(selectionStart,selectionEnd))
+  const withSecret={conversation:'synthetic reporting',messageContextInfo:{messageSecret:Buffer.alloc(32,3)}}
+  const reportingPatches=[withSecret,[{recipientJid:'200@lid',message:withSecret}],[{recipientJid:'300@lid',message:withSecret}],[]].map(patched=>{
+    const selected=selectReporting(patched,'200@lid')
+    return {perRecipient:Array.isArray(patched),message:wire(withSecret),recipients:Array.isArray(patched)?patched.map(p=>p.recipientJid):null,hasRootSecret:!!selected?.messageContextInfo?.messageSecret}
+  })
+  await writeFile('tests/fixtures/relay.json',JSON.stringify({fanouts,classifications,hashes,identityCases,newsletter:hex(helpers.encodeNewsletterMessage(base)),newsletterArray:hex(helpers.encodeNewsletterMessage([{recipientJid:"200@lid",message:base}])),reportingPatches},null,2)+'\n')
   console.log(`Generated ${fanouts.length} fanouts and ${classifications.length} classifications from upstream`)
 }finally{await rm(temp,{recursive:true,force:true})}

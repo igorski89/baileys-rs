@@ -106,6 +106,7 @@ pub struct Config {
     pub event_capacity: usize,
     pub initialize_session: bool,
     pub devices: crate::devices::Config,
+    pub patch_message_before_sending: crate::relay::MessagePatch,
 }
 impl Default for Config {
     fn default() -> Self {
@@ -123,6 +124,7 @@ impl Default for Config {
             event_capacity: 256,
             initialize_session: true,
             devices: Default::default(),
+            patch_message_before_sending: Default::default(),
         }
     }
 }
@@ -158,6 +160,7 @@ impl std::fmt::Debug for Event {
     }
 }
 struct Inner {
+    patch_message_before_sending: crate::relay::MessagePatch,
     relay_lock: tokio::sync::Mutex<()>,
     relay_state: std::sync::Mutex<relay::RelayState>,
     store: SqliteAuthStore,
@@ -315,6 +318,7 @@ impl Socket {
             u16::from_be_bytes([random[2], random[3]])
         );
         let inner = Arc::new(Inner {
+            patch_message_before_sending: config.patch_message_before_sending.clone(),
             relay_lock: tokio::sync::Mutex::new(()),
             relay_state: std::sync::Mutex::new(Default::default()),
             store: store.clone(),
@@ -747,12 +751,13 @@ impl Socket {
             self.inner.store.clone(),
             self.inner.decryptor.direct.lid_mapping().clone(),
         );
+        let patch = self.inner.patch_message_before_sending.clone();
         tokio::task::spawn_blocking(move || {
             Ok(repository.transaction(&recipients, |transaction| {
                 let credentials = transaction.credentials()?;
                 let me = credentials.me_id()?;
                 let lid = credentials.me.as_ref().and_then(|me| me.lid.as_deref());
-                crate::relay::create_participant_nodes(
+                crate::relay::create_participant_nodes_patched(
                     crate::relay::Fanout {
                         recipients: &recipients,
                         message: &message,
@@ -762,6 +767,7 @@ impl Socket {
                         device_sent_message: device_sent_message.as_ref(),
                     },
                     transaction,
+                    |message, recipients| patch.apply(message, Some(recipients)),
                 )
             })?)
         })
@@ -775,15 +781,19 @@ impl Socket {
         message_id: Option<&str>,
         options: &crate::relay::StanzaOptions,
     ) -> Result<String, Error> {
-        let credentials = load_credentials(self.inner.store.clone()).await?;
-        let me = credentials.me_id()?;
-        let id = match message_id.filter(|id| !id.is_empty()) {
-            Some(id) => id.to_owned(),
-            None => crate::messages::generate_id_v2(Some(me))?,
-        };
-        let node = crate::relay::newsletter_stanza(destination, &id, message, message, options)?;
-        self.send_node(node).await?;
-        Ok(id)
+        if !crate::jid::Jid::parse(destination).is_some_and(|jid| jid.is_newsletter()) {
+            return Err(crate::relay::Error::Recipient.into());
+        }
+        self.relay_message(
+            destination,
+            message.clone(),
+            RelayOptions {
+                message_id: message_id.map(str::to_owned),
+                stanza: options.clone(),
+                ..Default::default()
+            },
+        )
+        .await
     }
     pub async fn send_node(&self, node: BinaryNode) -> Result<(), Error> {
         let (reply, receiver) = oneshot::channel();

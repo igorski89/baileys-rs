@@ -54,7 +54,7 @@ impl ServerProps {
         }
     }
 }
-/// Options for explicit relay; automatic resend caching and custom patches are pending.
+/// Options for explicit relay; automatic resend caching remains pending.
 #[derive(Debug, Clone)]
 pub struct RelayOptions {
     pub message_id: Option<String>,
@@ -139,14 +139,36 @@ impl Socket {
             .filter(|s| !s.is_empty())
             .map(Ok)
             .unwrap_or_else(|| messages::generate_id_v2(Some(&me)))?;
+        let patch = self.inner.patch_message_before_sending.clone();
         if target.is_newsletter() {
+            let original = message.clone();
+            let patched = tokio::task::spawn_blocking(move || patch.apply(&message, Some(&[])))
+                .await
+                .map_err(|_| Error::Task)??;
+            // The source encodes an array patch as an object with no protobuf fields.
+            let patched = match patched {
+                relay::Patch::Shared(message) => *message,
+                relay::Patch::PerRecipient(_) => Default::default(),
+            };
             let node =
-                relay::newsletter_stanza(destination, &id, &message, &message, &options.stanza)?;
+                relay::newsletter_stanza(destination, &id, &original, &patched, &options.stanza)?;
             self.send_node(node).await?;
             return Ok(id);
         }
         let group = target.is_group() || destination == jid::STORIES_JID;
         let retry = options.stanza.retry.is_some();
+        let mut reporting_message = if !group && !retry {
+            let patch = patch.clone();
+            let original = message.clone();
+            let destination = destination.to_owned();
+            relay::reporting_patch_message(
+                tokio::task::spawn_blocking(move || patch.apply(&original, Some(&[destination])))
+                    .await
+                    .map_err(|_| Error::Task)??,
+            )
+        } else {
+            None
+        };
         let mut sender = me.clone();
         let devices = if let Some(participant) = &options.stanza.retry {
             vec![Device::from(
@@ -314,15 +336,27 @@ impl Socket {
                 let mut participants = vec![];
                 let mut include_identity = retry;
                 if group && !retry {
-                    let nodes = tx.group_fanout(relay::GroupFanout {
-                        destination: &destination_owned,
-                        sender: &sender,
-                        message: &message,
-                        devices: &devices,
-                        me: &me,
-                        me_lid: me_lid.as_deref(),
-                        extra_attrs: &attrs,
-                    })?;
+                    let patched = match patch.apply(&message, None)? {
+                        relay::Patch::Shared(message) => *message,
+                        relay::Patch::PerRecipient(_) => {
+                            return Err(relay::Error::Patch(
+                                "Per-jid patching is not supported in groups".into(),
+                            ));
+                        }
+                    };
+                    reporting_message = Some(patched.clone());
+                    let nodes = tx.group_fanout_patched(
+                        relay::GroupFanout {
+                            destination: &destination_owned,
+                            sender: &sender,
+                            message: &patched,
+                            devices: &devices,
+                            me: &me,
+                            me_lid: me_lid.as_deref(),
+                            extra_attrs: &attrs,
+                        },
+                        |message, recipients| patch.apply(message, Some(recipients)),
+                    )?;
                     content.push(nodes.encrypted);
                     include_identity |= nodes.participants.should_include_device_identity;
                     participants.extend(nodes.participants.nodes);
@@ -334,7 +368,7 @@ impl Socket {
                         (&recipients.own, &dsm, None),
                         (&recipients.other, &message, Some(&dsm)),
                     ] {
-                        let nodes = relay::create_participant_nodes(
+                        let nodes = relay::create_participant_nodes_patched(
                             relay::Fanout {
                                 recipients: targets,
                                 message: payload,
@@ -344,6 +378,7 @@ impl Socket {
                                 device_sent_message: override_dsm,
                             },
                             tx,
+                            |message, recipients| patch.apply(message, Some(recipients)),
                         )?;
                         include_identity |= nodes.should_include_device_identity;
                         participants.extend(nodes.nodes);
@@ -374,13 +409,14 @@ impl Socket {
                     (None, None)
                 };
                 let report_bytes = if !retry
-                    && message
-                        .message_context_info
-                        .as_ref()
-                        .is_some_and(|context| context.message_secret.is_some())
-                    && crate::reporting::should_include_token(&message)
-                {
-                    match messages::encode(&message) {
+                    && reporting_message.as_ref().is_some_and(|message| {
+                        message
+                            .message_context_info
+                            .as_ref()
+                            .is_some_and(|context| context.message_secret.is_some())
+                            && crate::reporting::should_include_token(message)
+                    }) {
+                    match messages::encode(reporting_message.as_ref().unwrap()) {
                         Ok(bytes) => Some(bytes),
                         Err(error) => {
                             tracing::debug!(?error, "report token encoding failed");
@@ -400,7 +436,9 @@ impl Socket {
                     participants,
                     include_device_identity: include_identity,
                     account: credentials.account.as_ref(),
-                    reporting: report_bytes.as_deref().map(|b| (&message, b)),
+                    reporting: report_bytes
+                        .as_deref()
+                        .map(|b| (reporting_message.as_ref().unwrap(), b)),
                     privacy_token: token.as_deref(),
                     privacy_token_on_1_to_1: props.privacy_token_on_1_to_1,
                 })?;

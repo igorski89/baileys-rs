@@ -147,7 +147,28 @@ async fn relay_discovers_devices_encrypts_direct_group_status_retry_and_peer_and
                 }),
             )])
             .unwrap();
-        let (listener, config) = listener().await;
+        let (listener, mut config) = listener().await;
+        let patch_calls = std::sync::Arc::new(std::sync::Mutex::new(vec![]));
+        let observed = patch_calls.clone();
+        config.patch_message_before_sending =
+            relay::MessagePatch::new(move |message, recipients| {
+                observed
+                    .lock()
+                    .unwrap()
+                    .push(recipients.map(<[String]>::to_vec));
+                if recipients == Some(["800@lid".to_owned()].as_slice()) {
+                    let mut reporting = message.clone();
+                    reporting
+                        .message_context_info
+                        .get_or_insert_with(Default::default)
+                        .message_secret = Some(vec![3; 32]);
+                    return Ok(relay::Patch::PerRecipient(vec![relay::PatchedMessage {
+                        recipient_jid: Some("800@lid".into()),
+                        message: reporting,
+                    }]));
+                }
+                Ok(relay::Patch::Shared(Box::new(message.clone())))
+            });
         let content = proto::Message {
             conversation: Some("Network relay".into()),
             ..Default::default()
@@ -210,6 +231,7 @@ async fn relay_discovers_devices_encrypts_direct_group_status_retry_and_peer_and
             let direct = peer.read().await;
             assert_eq!(direct.attrs["id"], "DIRECT");
             assert_eq!(direct.attrs["to"], "800@lid");
+            assert!(direct.child("reporting").is_none());
             assert_eq!(direct.child_buffer("tctoken"), Some([5, 6].as_slice()));
             let participants = direct.child("participants").unwrap().all_children();
             assert_eq!(participants.len(), 2);
@@ -422,6 +444,10 @@ async fn relay_discovers_devices_encrypts_direct_group_status_retry_and_peer_and
             .unwrap();
         socket.close().await.unwrap();
         server.await.unwrap();
+        let calls = patch_calls.lock().unwrap();
+        assert_eq!(calls[0], Some(vec!["800@lid".into()]));
+        assert_eq!(calls[1], Some(vec!["987654:2@lid".into()]));
+        assert_eq!(calls[2], Some(vec!["800:1@lid".into()]));
     })
     .await
     .unwrap();
@@ -520,6 +546,301 @@ async fn relay_rolls_back_preparation_but_retains_counters_after_transport_failu
             .unwrap_err();
         assert_eq!(error.status_code(), Some(428));
         assert_ne!(snapshot(), before);
+    })
+    .await
+    .unwrap();
+}
+
+#[tokio::test]
+async fn relay_patch_hooks_cover_group_distribution_retry_newsletter_and_rollback() {
+    use std::sync::{Arc, Mutex};
+    timeout(Duration::from_secs(8), async {
+        let temp = tempfile::tempdir().unwrap();
+        let store = store(&temp);
+        let me = store
+            .load_credentials()
+            .unwrap()
+            .me_id()
+            .unwrap()
+            .to_owned();
+        let (bob_store, bob, bundle) = receiver();
+        let (_, carol, carol_bundle) = receiver();
+        let sending = direct::Repository::new(store.clone());
+        sending.inject_session("800:1@lid", &bundle).unwrap();
+        sending
+            .lid_mapping()
+            .store_mappings(&[signal::mapping::Mapping {
+                pn: "500@s.whatsapp.net".into(),
+                lid: "900@lid".into(),
+            }])
+            .unwrap();
+        sending.inject_session("900:1@lid", &carol_bundle).unwrap();
+        let calls = Arc::new(Mutex::new(vec![]));
+        let observed = calls.clone();
+        let reject_distribution = std::sync::atomic::AtomicBool::new(false);
+        let (listener, mut config) = listener().await;
+        config.patch_message_before_sending =
+            relay::MessagePatch::new(move |message, recipients| {
+                observed.lock().unwrap().push((
+                    message.conversation.clone(),
+                    recipients.map(<[String]>::to_vec),
+                    message.sender_key_distribution_message.is_some(),
+                ));
+                if recipients.is_none() {
+                    reject_distribution.store(
+                        message.conversation.as_deref() == Some("Reject distribution"),
+                        std::sync::atomic::Ordering::SeqCst,
+                    );
+                    if message.conversation.as_deref() == Some("Reject group array") {
+                        return Ok(relay::Patch::PerRecipient(vec![]));
+                    }
+                    let mut patched = message.clone();
+                    patched.conversation = Some("Patched group".into());
+                    return Ok(relay::Patch::Shared(Box::new(patched)));
+                }
+                if message.sender_key_distribution_message.is_some() {
+                    if reject_distribution.swap(false, std::sync::atomic::Ordering::SeqCst) {
+                        return Err(relay::Error::Patch(
+                            "synthetic distribution rejection".into(),
+                        ));
+                    }
+                    let mut patched = message.clone();
+                    patched.conversation = Some("Patched distribution".into());
+                    return Ok(relay::Patch::Shared(Box::new(patched)));
+                }
+                if recipients == Some(["800:1@lid".to_owned()].as_slice()) {
+                    if message.conversation.as_deref() == Some("Reject fanout") {
+                        return Err(relay::Error::Patch("synthetic rejection".into()));
+                    }
+                    return Ok(relay::Patch::PerRecipient(vec![relay::PatchedMessage {
+                        recipient_jid: Some("500:1@s.whatsapp.net".into()),
+                        message: proto::Message {
+                            conversation: Some("Patched extra recipient".into()),
+                            ..Default::default()
+                        },
+                    }]));
+                }
+                if message.conversation.as_deref() == Some("Array newsletter") {
+                    return Ok(relay::Patch::PerRecipient(vec![]));
+                }
+                let mut patched = message.clone();
+                patched.conversation = Some("Patched newsletter".into());
+                Ok(relay::Patch::Shared(Box::new(patched)))
+            });
+        let server = tokio::spawn(async move {
+            let mut peer = Peer::accept(listener.accept().await.unwrap().0).await;
+            peer.send(BinaryNode::new("success").attr("lid", "987654:7@lid"))
+                .await;
+            assert!(peer.read().await.child("unified_session").is_some());
+            let stanza = peer.read().await;
+            assert_eq!(stanza.attrs["id"], "PATCHGROUP");
+            let distribution = plaintext(
+                &bob,
+                &me,
+                stanza.child("participants").unwrap().all_children()[0]
+                    .child("enc")
+                    .unwrap(),
+            );
+            assert_eq!(
+                distribution.conversation.as_deref(),
+                Some("Patched distribution")
+            );
+            let distribution = distribution.sender_key_distribution_message.unwrap();
+            let name = signal::SenderKeyName::new("group@g.us", "987654:7@lid").unwrap();
+            let groups = group::Repository::new(bob_store);
+            groups
+                .process_distribution(
+                    &name,
+                    distribution
+                        .axolotl_sender_key_distribution_message
+                        .as_deref()
+                        .unwrap(),
+                )
+                .unwrap();
+            let bytes = groups
+                .decrypt(&name, stanza.child_buffer("enc").unwrap())
+                .unwrap();
+            let payload = proto::Message::decode(messages::unpad(&bytes).unwrap()).unwrap();
+            assert_eq!(payload.conversation.as_deref(), Some("Patched group"));
+            let retry = peer.read().await;
+            assert_eq!(retry.attrs["id"], "PATCHRETRY");
+            assert_eq!(
+                plaintext(&bob, &me, retry.child("enc").unwrap())
+                    .conversation
+                    .as_deref(),
+                Some("Original")
+            );
+            let participant = &retry.child("participants").unwrap().all_children()[0];
+            assert_eq!(participant.attrs["jid"], "500:1@s.whatsapp.net");
+            assert_eq!(
+                plaintext(&carol, &me, participant.child("enc").unwrap())
+                    .conversation
+                    .as_deref(),
+                Some("Patched extra recipient")
+            );
+            let newsletter = peer.read().await;
+            assert_eq!(newsletter.attrs["id"], "PATCHNEWS");
+            assert_eq!(
+                proto::Message::decode(newsletter.child_buffer("plaintext").unwrap())
+                    .unwrap()
+                    .conversation
+                    .as_deref(),
+                Some("Patched newsletter")
+            );
+            let array = peer.read().await;
+            assert_eq!(array.attrs["id"], "ARRAYNEWS");
+            assert!(array.child_buffer("plaintext").unwrap().is_empty());
+            peer.closed().await;
+        });
+        let (socket, _) = Socket::connect(config, store.clone()).await.unwrap();
+        socket.wait_for_open(Duration::from_secs(2)).await.unwrap();
+        let mut metadata = baileys_rs::groups::extract_metadata(&group_query_result(
+            &BinaryNode::new("iq").attr("id", "cached"),
+        ))
+        .unwrap();
+        metadata.participants[0].id = Some("800:1@lid".into());
+        let mut group = options("PATCHGROUP");
+        group.cached_group_metadata = Some(metadata);
+        let original = proto::Message {
+            conversation: Some("Original".into()),
+            ..Default::default()
+        };
+        socket
+            .relay_message("group@g.us", original.clone(), group.clone())
+            .await
+            .unwrap();
+        let session_before = serde_json::to_value(
+            store
+                .get(KeyCategory::Session, &["800_1.1".into(), "900_1.1".into()])
+                .unwrap(),
+        )
+        .unwrap();
+        let group_before = serde_json::to_value(
+            store
+                .get(
+                    KeyCategory::SenderKey,
+                    &[signal::SenderKeyName::new("group@g.us", "987654:7@lid")
+                        .unwrap()
+                        .to_string()],
+                )
+                .unwrap(),
+        )
+        .unwrap();
+        let rejected = proto::Message {
+            conversation: Some("Reject group array".into()),
+            ..Default::default()
+        };
+        assert!(matches!(
+            socket
+                .relay_message("group@g.us", rejected, group)
+                .await
+                .unwrap_err(),
+            baileys_rs::socket::Error::Relay(relay::Error::Patch(_))
+        ));
+        let mut status = options("REJECTEDSTATUS");
+        status.status_jid_list = vec!["800:1@lid".into()];
+        let rejected = proto::Message {
+            conversation: Some("Reject distribution".into()),
+            ..Default::default()
+        };
+        let status_name = signal::SenderKeyName::new(jid::STORIES_JID, "987654:7@lid")
+            .unwrap()
+            .to_string();
+        assert!(
+            store
+                .get(KeyCategory::SenderKey, std::slice::from_ref(&status_name))
+                .unwrap()
+                .is_empty()
+        );
+        assert!(matches!(
+            socket
+                .relay_message(jid::STORIES_JID, rejected, status)
+                .await
+                .unwrap_err(),
+            baileys_rs::socket::Error::Relay(relay::Error::Patch(_))
+        ));
+        assert!(
+            store
+                .get(KeyCategory::SenderKey, &[status_name])
+                .unwrap()
+                .is_empty()
+        );
+        assert!(
+            store
+                .get(KeyCategory::SenderKeyMemory, &[jid::STORIES_JID.into()])
+                .unwrap()
+                .is_empty()
+        );
+        let mut retry = options("PATCHRETRY");
+        retry.stanza.retry = Some(relay::Retry {
+            jid: "800:1@lid".into(),
+            count: 1,
+        });
+        let rejected = proto::Message {
+            conversation: Some("Reject fanout".into()),
+            ..Default::default()
+        };
+        assert!(matches!(
+            socket
+                .relay_message("group@g.us", rejected, retry.clone())
+                .await
+                .unwrap_err(),
+            baileys_rs::socket::Error::Relay(relay::Error::Patch(_))
+        ));
+        assert_eq!(
+            serde_json::to_value(
+                store
+                    .get(KeyCategory::Session, &["800_1.1".into(), "900_1.1".into()])
+                    .unwrap()
+            )
+            .unwrap(),
+            session_before
+        );
+        assert_eq!(
+            serde_json::to_value(
+                store
+                    .get(
+                        KeyCategory::SenderKey,
+                        &[signal::SenderKeyName::new("group@g.us", "987654:7@lid")
+                            .unwrap()
+                            .to_string()]
+                    )
+                    .unwrap()
+            )
+            .unwrap(),
+            group_before
+        );
+        socket
+            .relay_message("group@g.us", original.clone(), retry)
+            .await
+            .unwrap();
+        socket
+            .relay_message("42@newsletter", original, options("PATCHNEWS"))
+            .await
+            .unwrap();
+        socket
+            .relay_message(
+                "42@newsletter",
+                proto::Message {
+                    conversation: Some("Array newsletter".into()),
+                    ..Default::default()
+                },
+                options("ARRAYNEWS"),
+            )
+            .await
+            .unwrap();
+        socket.close().await.unwrap();
+        server.await.unwrap();
+        let calls = calls.lock().unwrap();
+        assert_eq!(calls.len(), 9);
+        assert_eq!(calls[0].1, None);
+        assert_eq!(calls[1].1, Some(vec!["800:1@lid".into()]));
+        assert!(calls[1].2);
+        assert_eq!(calls[2].1, None);
+        assert_eq!(calls[3].1, None);
+        assert!(calls[4].2);
+        assert_eq!(calls[7].1, Some(vec![]));
+        assert_eq!(calls[8].1, Some(vec![]));
     })
     .await
     .unwrap();

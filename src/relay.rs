@@ -48,6 +48,40 @@ impl Error {
         }
     }
 }
+type PatchCallback =
+    dyn Fn(&proto::Message, Option<&[String]>) -> Result<Patch, Error> + Send + Sync;
+/// Synchronous message patch executed on the relay blocking worker.
+/// Group payloads receive `None`; newsletters receive an empty recipient slice.
+/// Do not access the same auth store or re-enter relay from this callback.
+#[derive(Clone)]
+pub struct MessagePatch(std::sync::Arc<PatchCallback>);
+impl MessagePatch {
+    pub fn new(
+        callback: impl Fn(&proto::Message, Option<&[String]>) -> Result<Patch, Error>
+        + Send
+        + Sync
+        + 'static,
+    ) -> Self {
+        Self(std::sync::Arc::new(callback))
+    }
+    pub fn apply(
+        &self,
+        message: &proto::Message,
+        recipients: Option<&[String]>,
+    ) -> Result<Patch, Error> {
+        (self.0)(message, recipients)
+    }
+}
+impl Default for MessagePatch {
+    fn default() -> Self {
+        Self::new(|message, _| Ok(Patch::Shared(Box::new(message.clone()))))
+    }
+}
+impl std::fmt::Debug for MessagePatch {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("MessagePatch").finish_non_exhaustive()
+    }
+}
 pub struct PatchedMessage {
     pub recipient_jid: Option<String>,
     pub message: proto::Message,
@@ -55,6 +89,14 @@ pub struct PatchedMessage {
 pub enum Patch {
     Shared(Box<proto::Message>),
     PerRecipient(Vec<PatchedMessage>),
+}
+/// Upstream selects the per-recipient wrapper itself for reporting. That wrapper
+/// has no root message context, so per-recipient patches suppress report tokens.
+pub fn reporting_patch_message(patch: Patch) -> Option<proto::Message> {
+    match patch {
+        Patch::Shared(message) => Some(*message),
+        Patch::PerRecipient(_) => None,
+    }
 }
 #[derive(Debug)]
 pub struct RecipientFailure {
@@ -209,16 +251,20 @@ pub fn create_participant_nodes(
     input: Fanout<'_>,
     repository: &impl Encryptor,
 ) -> Result<ParticipantNodes, Error> {
-    create_participant_nodes_with(
-        input,
-        repository,
-        |message, _| Ok(Patch::Shared(Box::new(message.clone()))),
-        || {
-            let mut byte = [0];
-            getrandom::fill(&mut byte).map_err(|_| crypto::Error::Random)?;
-            Ok(byte[0])
-        },
-    )
+    create_participant_nodes_patched(input, repository, |message, _| {
+        Ok(Patch::Shared(Box::new(message.clone())))
+    })
+}
+pub fn create_participant_nodes_patched(
+    input: Fanout<'_>,
+    repository: &impl Encryptor,
+    patch: impl FnOnce(&proto::Message, &[String]) -> Result<Patch, Error>,
+) -> Result<ParticipantNodes, Error> {
+    create_participant_nodes_with(input, repository, patch, || {
+        let mut byte = [0];
+        getrandom::fill(&mut byte).map_err(|_| crypto::Error::Random)?;
+        Ok(byte[0])
+    })
 }
 /// Patches once and supports per-recipient payloads. Own-device DSM replaces the patch,
 /// except for the exact sender device. Partial failures preserve other recipients.

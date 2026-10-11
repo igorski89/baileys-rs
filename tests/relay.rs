@@ -251,3 +251,38 @@ fn native_fanout_decrypts_payloads_dsm_and_retains_successful_recipients() {
         );
     }
 }
+
+#[test]
+fn patch_reporting_wrapper_and_newsletter_array_match_original() {
+    let fixture = fixtures();
+    assert_eq!(
+        relay::encode_newsletter_message(&proto::Message::default()),
+        hex(fixture["newsletterArray"].as_str().unwrap())
+    );
+    for case in fixture["reportingPatches"].as_array().unwrap() {
+        let original = message(&case["message"]);
+        let patch = if case["perRecipient"].as_bool().unwrap() {
+            Patch::PerRecipient(
+                case["recipients"]
+                    .as_array()
+                    .unwrap()
+                    .iter()
+                    .map(|jid| PatchedMessage {
+                        recipient_jid: jid.as_str().map(str::to_owned),
+                        message: original.clone(),
+                    })
+                    .collect(),
+            )
+        } else {
+            Patch::Shared(Box::new(original))
+        };
+        let selected = relay::reporting_patch_message(patch);
+        assert_eq!(
+            selected
+                .as_ref()
+                .and_then(|m| m.message_context_info.as_ref())
+                .is_some_and(|c| c.message_secret.is_some()),
+            case["hasRootSecret"].as_bool().unwrap()
+        );
+    }
+}

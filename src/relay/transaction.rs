@@ -1,4 +1,4 @@
-use super::{Encryptor, Error, Fanout, ParticipantNodes, create_participant_nodes};
+use super::{Encryptor, Error, Fanout, ParticipantNodes};
 use crate::{
     auth::{AuthTransaction, Credentials, KeyCategory, KeyMutation, KeyValue, SqliteAuthStore},
     binary::{BinaryNode, NodeContent},
@@ -56,10 +56,36 @@ pub struct Transaction<'a, 'db> {
 }
 impl Encryptor for Transaction<'_, '_> {
     fn encrypt(&self, jid: &str, data: &[u8]) -> Result<direct::Encrypted, Error> {
-        let id = self.addresses.get(jid).ok_or(Error::Recipient)?;
-        let id = id
-            .as_ref()
-            .map_err(|error| signal::Error::Shared(error.clone()))?;
+        let resolved;
+        let id = if let Some(id) = self.addresses.get(jid) {
+            id.as_ref()
+                .map_err(|error| signal::Error::Shared(error.clone()))?
+        } else {
+            // Per-recipient patches may introduce targets outside the discovery list.
+            // Resolve persisted aliases through this transaction, without re-locking SQLite.
+            let mut address = signal::Address::from_jid(jid)?;
+            let decoded = Jid::parse(jid).ok_or(Error::Recipient)?;
+            if !matches!(decoded.domain_type, 1 | 129)
+                && let Some(KeyValue::LidMapping(lid)) = self
+                    .tx
+                    .borrow_mut()
+                    .get(KeyCategory::LidMapping, std::slice::from_ref(&decoded.user))?
+                    .remove(&decoded.user)
+            {
+                address = signal::Address::from_jid(&jid::encode(
+                    &lid,
+                    if address.device == 99 {
+                        "hosted.lid"
+                    } else {
+                        "lid"
+                    },
+                    Some(address.device),
+                    None,
+                ))?;
+            }
+            resolved = address.to_string();
+            &resolved
+        };
         Ok(direct::Repository::encrypt_in_transaction(
             &mut self.tx.borrow_mut(),
             id,
@@ -154,6 +180,16 @@ impl Transaction<'_, '_> {
             .set(&[KeyMutation::put(jid, KeyValue::SenderKeyMemory(memory))])?)
     }
     pub fn group_fanout(&self, input: GroupFanout<'_>) -> Result<GroupNodes, Error> {
+        self.group_fanout_patched(input, |message, _| {
+            Ok(super::Patch::Shared(Box::new(message.clone())))
+        })
+    }
+    /// Patches the sender-key distribution; the group payload must already be patched.
+    pub fn group_fanout_patched(
+        &self,
+        input: GroupFanout<'_>,
+        patch: impl FnOnce(&proto::Message, &[String]) -> Result<super::Patch, Error>,
+    ) -> Result<GroupNodes, Error> {
         if !Jid::parse(input.destination).is_some_and(|j| j.is_group())
             && input.destination != jid::STORIES_JID
         {
@@ -177,7 +213,7 @@ impl Transaction<'_, '_> {
             }),
             ..Default::default()
         };
-        let participants = create_participant_nodes(
+        let participants = super::create_participant_nodes_patched(
             Fanout {
                 recipients: &recipients,
                 message: &distribution,
@@ -187,6 +223,7 @@ impl Transaction<'_, '_> {
                 device_sent_message: None,
             },
             self,
+            patch,
         )?;
         let mut node = BinaryNode::new("enc").attr("v", "2").attr("type", "skmsg");
         node.attrs.extend(input.extra_attrs.clone());

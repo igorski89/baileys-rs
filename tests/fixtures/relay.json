@@ -531,5 +531,36 @@
       "wire": "0a0201021a0105220106"
     }
   ],
-  "newsletter": "0a0770617463686564"
+  "newsletter": "0a0770617463686564",
+  "newsletterArray": "",
+  "reportingPatches": [
+    {
+      "perRecipient": false,
+      "message": "0a1373796e746865746963207265706f7274696e679a02221a200303030303030303030303030303030303030303030303030303030303030303",
+      "recipients": null,
+      "hasRootSecret": true
+    },
+    {
+      "perRecipient": true,
+      "message": "0a1373796e746865746963207265706f7274696e679a02221a200303030303030303030303030303030303030303030303030303030303030303",
+      "recipients": [
+        "200@lid"
+      ],
+      "hasRootSecret": false
+    },
+    {
+      "perRecipient": true,
+      "message": "0a1373796e746865746963207265706f7274696e679a02221a200303030303030303030303030303030303030303030303030303030303030303",
+      "recipients": [
+        "300@lid"
+      ],
+      "hasRootSecret": false
+    },
+    {
+      "perRecipient": true,
+      "message": "0a1373796e746865746963207265706f7274696e679a02221a200303030303030303030303030303030303030303030303030303030303030303",
+      "recipients": [],
+      "hasRootSecret": false
+    }
+  ]
 }
