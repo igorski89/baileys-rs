@@ -66,7 +66,7 @@ pub fn admission(
 }
 pub(super) fn spawn_worker(inner: &Arc<Inner>, mut receiver: mpsc::UnboundedReceiver<BinaryNode>) {
     let mut handlers: HashMap<String, offline::Handler<Error>> = HashMap::new();
-    for kind in ["message", "receipt", "notification"] {
+    for kind in ["message", "call", "receipt", "notification"] {
         let weak = Arc::downgrade(inner);
         handlers.insert(
             kind.into(),
@@ -79,6 +79,7 @@ pub(super) fn spawn_worker(inner: &Arc<Inner>, mut receiver: mpsc::UnboundedRece
                     let socket = Socket { inner };
                     match kind {
                         "message" => socket.handle_message(&node).await,
+                        "call" => socket.handle_call(&node).await,
                         "receipt" => socket.handle_receipt(&node).await,
                         _ if node.attrs.get("type").is_some_and(|t| t == "mediaretry") => {
                             match crate::media::decode_retry(&node) {

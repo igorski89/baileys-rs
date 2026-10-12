@@ -3,6 +3,7 @@
 pub mod app_state;
 pub mod auth;
 pub mod binary;
+pub mod calls;
 pub mod connection;
 pub mod crypto;
 pub mod defaults;

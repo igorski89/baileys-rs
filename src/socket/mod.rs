@@ -1,6 +1,7 @@
 //! Async WhatsApp WebSocket connection with exclusive Noise ownership and IQ routing.
 mod actor;
 mod app_state;
+mod calls;
 pub mod dispatch;
 mod event_responses;
 mod events;
@@ -51,6 +52,8 @@ use tokio_tungstenite::{
 
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
+    #[error(transparent)]
+    Call(#[from] crate::calls::Error),
     #[error(transparent)]
     EventBuffer(#[from] crate::event_buffer::Error),
     #[error(transparent)]
@@ -167,6 +170,11 @@ pub struct Config {
     pub max_msg_retry_count: u64,
     pub enable_auto_session_recreation: bool,
     pub process_receipts: bool,
+    /// Automatically process incoming calls, including offline calls.
+    pub process_calls: bool,
+    /// Optional asynchronous offer cache. External providers remain owned by the caller
+    /// and are never closed or cleared when the socket closes.
+    pub call_offer_cache: Option<crate::calls::Cache>,
     pub process_messages: bool,
     pub send_active_receipts: bool,
     pub retry_request_delay: Duration,
@@ -205,6 +213,8 @@ impl Default for Config {
             max_msg_retry_count: 5,
             enable_auto_session_recreation: true,
             process_receipts: true,
+            process_calls: true,
+            call_offer_cache: None,
             process_messages: true,
             send_active_receipts: false,
             retry_request_delay: Duration::from_millis(250),
@@ -232,6 +242,7 @@ pub enum Event {
     Online(bool),
     PresenceUpdated(presence::Update),
     Node(BinaryNode),
+    Calls(Vec<crate::calls::Event>),
     Qr(String),
     PairingComplete,
     CredentialsUpdated,
@@ -313,6 +324,7 @@ impl std::fmt::Debug for Event {
             Self::Online(v) => f.debug_tuple("Online").field(v).finish(),
             Self::PresenceUpdated(v) => f.debug_tuple("PresenceUpdated").field(v).finish(),
             Self::Connection(s) => f.debug_tuple("Connection").field(s).finish(),
+            Self::Calls(calls) => f.debug_tuple("Calls").field(calls).finish(),
             Self::Node(n) => f.debug_tuple("Node").field(&n.tag).finish(),
             Self::Qr(_) => f.write_str("Qr(<redacted>)"),
             Self::PairingComplete => f.write_str("PairingComplete"),
@@ -362,6 +374,7 @@ impl std::fmt::Debug for Event {
     }
 }
 struct Inner {
+    call_offer_cache: crate::calls::Cache,
     notification_lock: Arc<tokio::sync::Mutex<()>>,
     message_lock: tokio::sync::Mutex<()>,
     active_receipts: std::sync::atomic::AtomicBool,
@@ -590,9 +603,12 @@ impl Socket {
         let notification_sender = config
             .process_app_state_notifications
             .then_some(notification_sender);
+        let (call_sender, call_receiver) = mpsc::unbounded_channel();
+        let call_sender = config.process_calls.then_some(call_sender);
         let (offline_sender, offline_receiver) = mpsc::unbounded_channel();
         let (own_sender, own_receiver) = mpsc::unbounded_channel();
         let inner = Arc::new(Inner {
+            call_offer_cache: config.call_offer_cache.clone().unwrap_or_default(),
             notification_lock: Arc::new(tokio::sync::Mutex::new(())),
             message_lock: tokio::sync::Mutex::new(()),
             active_receipts: std::sync::atomic::AtomicBool::new(config.send_active_receipts),
@@ -631,6 +647,7 @@ impl Socket {
         send::spawn_own_worker(&inner, own_receiver);
         startup::spawn_worker(&inner, config.fire_init_queries);
         dispatch::spawn_worker(&inner, offline_receiver);
+        calls::spawn_worker(&inner, call_receiver);
         incoming_messages::spawn_worker(&inner, message_receiver);
         notifications::spawn_worker(&inner, notification_receiver);
         let receipt_inner = Arc::downgrade(&inner);
@@ -663,6 +680,7 @@ impl Socket {
                 message_sender,
                 notification_sender,
                 offline_sender,
+                call_sender,
                 actor_inner,
             )
             .await;

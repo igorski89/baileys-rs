@@ -28,6 +28,7 @@ struct Pending {
     deadline: Instant,
 }
 struct Actor<'a> {
+    calls: Option<mpsc::UnboundedSender<BinaryNode>>,
     socket_inner: std::sync::Weak<super::Inner>,
     offline: mpsc::UnboundedSender<BinaryNode>,
     notifications: Option<mpsc::UnboundedSender<BinaryNode>>,
@@ -70,9 +71,11 @@ pub(super) async fn run(
     messages: Option<mpsc::UnboundedSender<BinaryNode>>,
     notifications: Option<mpsc::UnboundedSender<BinaryNode>>,
     offline: mpsc::UnboundedSender<BinaryNode>,
+    calls: Option<mpsc::UnboundedSender<BinaryNode>>,
     socket_inner: std::sync::Weak<super::Inner>,
 ) {
     let mut actor = Actor {
+        calls,
         socket_inner: socket_inner.clone(),
         offline,
         notifications,
@@ -515,6 +518,7 @@ impl Actor<'_> {
             && match node.tag.as_str() {
                 "message" => self.messages.is_some(),
                 "receipt" => self.receipts.is_some(),
+                "call" => self.calls.is_some(),
                 "notification" => {
                     (node.attrs.get("type").is_some_and(|t| t == "server_sync")
                         && self.notifications.is_some())
@@ -537,6 +541,13 @@ impl Actor<'_> {
             && !queued
             && node.tag == "message"
             && let Some(sender) = &self.messages
+        {
+            let _ = sender.send(node.clone());
+        }
+        if !ignored
+            && !queued
+            && node.tag == "call"
+            && let Some(sender) = &self.calls
         {
             let _ = sender.send(node.clone());
         }
