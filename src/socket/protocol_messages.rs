@@ -39,6 +39,7 @@ impl Socket {
                     .await
                     .map_err(|_| Error::Closed(428))?;
                 response.await.map_err(|_| Error::Closed(428))??;
+                self.schedule_app_state_retry().await;
             }
             Some(Type::PeerDataOperationRequestResponseMessage) => {
                 let Some(response) = protocol

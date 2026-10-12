@@ -42,6 +42,12 @@ pub struct ChatUpdate {
     /// An unread-count delta, matching the upstream buffered chat update.
     pub unread_count: Option<i64>,
     pub archived: Option<bool>,
+    pub clear_archived: bool,
+    pub mute_end_time: Option<Option<f64>>,
+    pub pinned: Option<Option<f64>>,
+    /// Source null clears the unread count during initial synchronization.
+    pub clear_unread_count: bool,
+    pub conditional: Option<crate::app_state::ChatCondition>,
     pub read_only: Option<bool>,
     pub ephemeral_setting_timestamp: Option<f64>,
     /// None means unchanged; Some(None) disables expiration.

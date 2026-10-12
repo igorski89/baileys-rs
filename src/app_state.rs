@@ -1,4 +1,5 @@
 //! App-state mutation integrity and snapshot/patch codecs.
+mod actions;
 mod codec;
 mod network;
 mod sync;
@@ -6,6 +7,7 @@ use crate::{
     auth::{LtHashState, ValueMac},
     crypto, proto,
 };
+pub use actions::*;
 use base64::{Engine, engine::general_purpose::STANDARD};
 pub use codec::*;
 pub use network::*;

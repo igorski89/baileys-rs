@@ -256,6 +256,14 @@ impl Actor<'_> {
                 };
                 let _ = reply.send(result);
             }
+            Command::UnarchiveChats { value, reply } => {
+                self.credentials.account_settings = auth::AccountSettings {
+                    unarchive_chats: value,
+                    ..Default::default()
+                };
+                let result = self.persist().await;
+                let _ = reply.send(result);
+            }
             Command::RetryReceipt {
                 node,
                 count,

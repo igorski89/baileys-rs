@@ -201,6 +201,15 @@ pub enum Event {
     PendingNotifications,
     MediaUpdated(Vec<crate::media::RetryEvent>),
     ContactsUpdated(Vec<crate::auth::Contact>),
+    ContactsUpserted(Vec<crate::auth::Contact>),
+    MessagesDeleted(Vec<proto::MessageKey>),
+    MessagesStarred(Vec<crate::app_state::StarUpdate>),
+    ChatsDeleted(Vec<Option<String>>),
+    LabelEdited(crate::app_state::LabelEdit),
+    LabelAssociationUpdated(crate::app_state::LabelAssociation),
+    SettingUpdated(crate::app_state::SettingUpdate),
+    LidMappingUpdated { lid: Option<String>, pn: String },
+    ChatLocked(crate::app_state::ChatLock),
     MessageStubsUpdated(Vec<crate::messages::incoming::StubUpdate>),
     MessageContentsUpdated(Vec<crate::media::ContentUpdate>),
     GroupsUpdated(Vec<crate::groups::Metadata>),
@@ -216,6 +225,21 @@ pub enum Event {
 impl std::fmt::Debug for Event {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
+            Self::ContactsUpserted(v) => f.debug_tuple("ContactsUpserted").field(&v.len()).finish(),
+            Self::MessagesDeleted(v) => f.debug_tuple("MessagesDeleted").field(&v.len()).finish(),
+            Self::MessagesStarred(v) => f.debug_tuple("MessagesStarred").field(&v.len()).finish(),
+            Self::ChatsDeleted(v) => f.debug_tuple("ChatsDeleted").field(&v.len()).finish(),
+            Self::LabelEdited(v) => f.debug_tuple("LabelEdited").field(v).finish(),
+            Self::LabelAssociationUpdated(v) => {
+                f.debug_tuple("LabelAssociationUpdated").field(v).finish()
+            }
+            Self::SettingUpdated(v) => f.debug_tuple("SettingUpdated").field(v).finish(),
+            Self::LidMappingUpdated { lid, pn } => f
+                .debug_struct("LidMappingUpdated")
+                .field("lid", lid)
+                .field("pn", pn)
+                .finish(),
+            Self::ChatLocked(v) => f.debug_tuple("ChatLocked").field(v).finish(),
             Self::EventResponsesUpdated(updates) => f
                 .debug_tuple("EventResponsesUpdated")
                 .field(&updates.len())
@@ -280,6 +304,8 @@ struct Inner {
     media_cache: tokio::sync::Mutex<media::MediaCache>,
     media_http: tokio::sync::OnceCell<crate::media::HttpClient>,
     app_state_sync: tokio::sync::OnceCell<crate::app_state::Synchronizer>,
+    app_state_apply_lock: tokio::sync::Mutex<()>,
+    app_state_options: std::sync::Mutex<crate::app_state::SyncOptions>,
     media_preparation_hooks: crate::media::PreparationHooks,
     own_messages: Option<mpsc::UnboundedSender<proto::WebMessageInfo>>,
     generation_hooks: crate::messages::generation::GenerationHooks,
@@ -315,6 +341,10 @@ enum Command {
     },
     PushName {
         name: String,
+        reply: oneshot::Sender<Result<(), Error>>,
+    },
+    UnarchiveChats {
+        value: bool,
         reply: oneshot::Sender<Result<(), Error>>,
     },
     RetryReceipt {
@@ -479,6 +509,8 @@ impl Socket {
             media_cache: tokio::sync::Mutex::new(Default::default()),
             media_http: tokio::sync::OnceCell::new_with(config.media_http.clone()),
             app_state_sync: tokio::sync::OnceCell::new(),
+            app_state_apply_lock: tokio::sync::Mutex::new(()),
+            app_state_options: std::sync::Mutex::new(Default::default()),
             media_preparation_hooks: config.media_preparation_hooks.clone(),
             own_messages: config.emit_own_events.then_some(own_sender),
             generation_hooks: config.generation_hooks.clone(),

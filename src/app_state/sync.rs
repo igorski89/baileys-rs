@@ -68,6 +68,7 @@ pub struct Synchronizer {
     downloader: BlobDownloader,
     transport: CollectionTransport,
     blocked: tokio::sync::Mutex<IndexSet<String>>,
+    run_lock: tokio::sync::Mutex<()>,
 }
 impl Synchronizer {
     pub fn new(
@@ -82,6 +83,7 @@ impl Synchronizer {
             downloader,
             transport,
             blocked: tokio::sync::Mutex::new(IndexSet::new()),
+            run_lock: tokio::sync::Mutex::new(()),
         }
     }
     pub async fn blocked_collections(&self) -> Vec<String> {
@@ -97,7 +99,7 @@ impl Synchronizer {
         collections: &[String],
         options: &SyncOptions,
     ) -> Result<SyncResult, Error> {
-        let mut blocked = self.blocked.lock().await;
+        let _serial = self.run_lock.lock().await;
         let mut remaining: IndexSet<String> = collections.iter().cloned().collect();
         let mut cached_states: HashMap<String, Option<LtHashState>> = HashMap::new();
         let mut initial_versions = HashMap::new();
@@ -220,7 +222,7 @@ impl Synchronizer {
                         let attempt = attempts.entry(name.clone()).or_insert(0);
                         *attempt += 1;
                         if error.is_missing_key() && *attempt >= MAX_SYNC_ATTEMPTS {
-                            blocked.insert(name.clone());
+                            self.blocked.lock().await.insert(name.clone());
                             remaining.shift_remove(&name);
                         } else if error.is_missing_key() {
                             force_snapshot.insert(name.clone());
@@ -271,7 +273,7 @@ impl Synchronizer {
         Ok(SyncResult {
             mutations,
             states: staged,
-            blocked: blocked.iter().cloned().collect(),
+            blocked: self.blocked_collections().await,
             gave_up,
             attempts,
         })

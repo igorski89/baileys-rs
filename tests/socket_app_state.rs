@@ -9,6 +9,150 @@ use baileys_rs::{
     socket::{Config, Socket},
 };
 use socket_peer::{Peer, ROOT_PRIVATE};
+#[path = "support/app_state_actions.rs"]
+mod actions;
+#[path = "support/json_numbers.rs"]
+mod json_numbers;
+use baileys_rs::{
+    app_state::{ActionEvent, ChatMutation, MutationMap},
+    socket::Event,
+};
+use prost::Message as _;
+#[tokio::test]
+async fn parsed_actions_publish_source_events_and_persist_credentials_and_mappings() {
+    timeout(Duration::from_secs(12),async {
+        let cases:serde_json::Value=serde_json::from_str(include_str!("fixtures/app_state_actions.json")).unwrap();
+        let store=SqliteAuthStore::in_memory().unwrap();let mut creds=store.load_credentials().unwrap();
+        let me:baileys_rs::auth::Contact=serde_json::from_value(cases[0]["me"].clone()).unwrap();creds.me=Some(me.clone());creds.account_settings.default_disappearing_mode=Some(baileys_rs::auth::DisappearingMode{ephemeral_expiration:Some(1800),..Default::default()});store.save_credentials(&creds).unwrap();
+        let (listener,config)=setup().await;let server=tokio::spawn(async move{let mut peer=Peer::accept(listener.accept().await.unwrap().0).await;peer.closed().await;});
+        let (socket,mut events)=Socket::connect(config,store.clone()).await.unwrap();while events.try_recv().is_ok(){}
+        let normal=cases.as_array().unwrap().iter().filter(|c|c["mode"]=="normal" && c["index"][0]=="other");
+        let initial=cases.as_array().unwrap().iter().filter(|c|c["mode"]=="initialUnarchive" && c["index"][0]=="other" && (c["events"][0]["data"][0]["archived"]==true || c["events"][0]["data"][0].get("unreadCount").is_some_and(serde_json::Value::is_null)));
+        for case in normal.chain(initial) {
+            let value=proto::SyncActionValue::decode(actions::unhex(case["action"].as_str().unwrap()).as_slice()).unwrap();
+            if value.push_name_setting.as_ref().and_then(|n|n.name.as_deref())==Some("Old"){continue;}
+            let mutation=ChatMutation{index:case["index"].clone(),sync_action:proto::SyncActionData{value:Some(value.clone()),..Default::default()}};
+            let mut mutations=MutationMap::new();mutations.insert("test".into(),mutation);socket.apply_app_state_mutations(&mutations,case["mode"]!="normal").await.unwrap();
+            let mut observed=Vec::new();
+            while let Ok(event)=events.try_recv(){
+                let action=match event {
+                    Event::ChatsUpdated(mut c)=>ActionEvent::Chat(c.remove(0)),Event::MessagesDeleted(k)=>ActionEvent::DeleteMessages(k),Event::ContactsUpserted(c)=>ActionEvent::Contacts(c),Event::MessagesStarred(s)=>ActionEvent::Stars(s),Event::ChatsDeleted(c)=>ActionEvent::DeleteChats(c),Event::LabelEdited(l)=>ActionEvent::LabelEdit(l),Event::LabelAssociationUpdated(l)=>ActionEvent::LabelAssociation(l),Event::SettingUpdated(s)=>ActionEvent::Setting(s),Event::LidMappingUpdated{lid,pn}=>ActionEvent::LidMapping{lid,pn},Event::ChatLocked(c)=>ActionEvent::Lock(c),
+                    Event::CredentialsUpdated=>{
+                        let creds=store.load_credentials().unwrap();
+                        let data=if value.push_name_setting.is_some(){serde_json::json!({"me":creds.me})}else{assert!(creds.account_settings.default_disappearing_mode.is_none());serde_json::json!({"accountSettings":{"unarchiveChats":creds.account_settings.unarchive_chats}})};
+                        observed.push(serde_json::json!({"event":"creds.update","data":data}));continue;
+                    }, _=>continue,
+                };observed.push(actions::normalized(&action,&me));
+            }
+            assert_eq!(json_numbers::canonical(&serde_json::json!(observed)),json_numbers::canonical(&case["events"]),"{}",case["action"]);
+            if value.contact_action.as_ref().and_then(|c|c.full_name.as_deref())==Some("Full") {
+                assert_eq!(baileys_rs::signal::direct::Repository::new(store.clone()).lid_mapping().get_lid_for_pn("200@s.whatsapp.net").unwrap().as_deref(),Some("201@lid"));
+            }
+        }
+        assert_eq!(store.load_credentials().unwrap().me.as_ref().unwrap().name.as_deref(),Some("New"));
+        socket.close().await.unwrap();server.await.unwrap();
+    }).await.unwrap();
+}
+#[tokio::test]
+async fn phone_key_share_automatically_resyncs_parked_collections_and_emits_actions() {
+    timeout(Duration::from_secs(8), async {
+        let store = SqliteAuthStore::in_memory().unwrap();
+        let mut creds = store.load_credentials().unwrap();
+        creds.me = Some(baileys_rs::auth::Contact {
+            id: "100@s.whatsapp.net".into(),
+            ..Default::default()
+        });
+        store.save_credentials(&creds).unwrap();
+        let (listener, config) = setup().await;
+        let patch = patches().remove(0);
+        let (send_key, key_ready) = tokio::sync::oneshot::channel();
+        let server = tokio::spawn(async move {
+            let mut peer = Peer::accept(listener.accept().await.unwrap().0).await;
+            for _ in 0..2 {
+                let request = peer.read().await;
+                verify_request(&request, 0, true);
+                peer.send(response(&request, patch.clone(), false)).await;
+            }
+            key_ready.await.unwrap();
+            let message = proto::Message {
+                protocol_message: Some(Box::new(proto::message::ProtocolMessage {
+                    r#type: Some(
+                        proto::message::protocol_message::Type::AppStateSyncKeyShare as i32,
+                    ),
+                    app_state_sync_key_share: Some(proto::message::AppStateSyncKeyShare {
+                        keys: vec![proto::message::AppStateSyncKey {
+                            key_id: Some(proto::message::AppStateSyncKeyId {
+                                key_id: Some(vec![1, 2, 3]),
+                            }),
+                            key_data: Some(proto::message::AppStateSyncKeyData {
+                                key_data: Some(vec![7; 32]),
+                                ..Default::default()
+                            }),
+                        }],
+                    }),
+                    ..Default::default()
+                })),
+                ..Default::default()
+            };
+            peer.send(
+                BinaryNode::new("message")
+                    .attr("id", "shared-key")
+                    .attr("from", "100@s.whatsapp.net")
+                    .attr("t", "1700000000")
+                    .with_content(NodeContent::Children(vec![
+                        BinaryNode::new("plaintext")
+                            .with_content(NodeContent::Bytes(message.encode_to_vec())),
+                    ])),
+            )
+            .await;
+            loop {
+                let request = peer.read().await;
+                if request.tag == "iq" {
+                    verify_request(&request, 0, true);
+                    peer.send(response(&request, patch.clone(), false)).await;
+                    break;
+                }
+                assert!(request.tag == "ack" || request.tag == "receipt");
+            }
+            peer.closed().await;
+        });
+        let (socket, mut events) = Socket::connect(config, store.clone()).await.unwrap();
+        let blocked = socket
+            .resync_app_state(&["regular".into()], false, &options())
+            .await
+            .unwrap();
+        assert_eq!(blocked.blocked, ["regular"]);
+        send_key.send(()).unwrap();
+        loop {
+            if let Event::ChatsUpdated(chats) = events.recv().await.unwrap()
+                && chats
+                    .iter()
+                    .any(|c| c.id == "0" && c.mute_end_time == Some(Some(0.0)))
+            {
+                break;
+            }
+        }
+        assert!(socket.blocked_app_state_collections().await.is_empty());
+        let values = store
+            .get(KeyCategory::AppStateSyncVersion, &["regular".into()])
+            .unwrap();
+        assert!(
+            matches!(values.get("regular"),Some(KeyValue::AppStateSyncVersion(s))if s.version==1)
+        );
+        assert_eq!(
+            store
+                .load_credentials()
+                .unwrap()
+                .my_app_state_key_id
+                .as_deref(),
+            Some("AQID")
+        );
+        socket.close().await.unwrap();
+        server.await.unwrap();
+    })
+    .await
+    .unwrap();
+}
 use tokio::{
     net::TcpListener,
     time::{Duration, timeout},
