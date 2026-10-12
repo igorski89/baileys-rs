@@ -22,6 +22,78 @@ impl Socket {
             return Ok(());
         }
         match kind {
+            Some(Type::HistorySyncNotification) => {
+                let Some(notification) = protocol.history_sync_notification.clone() else {
+                    return Ok(());
+                };
+                if !self.inner.history_policy.should_process(&notification) {
+                    return Ok(());
+                }
+                let demand = notification.sync_type == Some(6);
+                let latest = if demand {
+                    None
+                } else {
+                    let (reply, response) = oneshot::channel();
+                    self.inner
+                        .commands
+                        .send(Command::RecordHistory {
+                            key: message.key.clone(),
+                            timestamp: message.message_timestamp,
+                            reply,
+                        })
+                        .await
+                        .map_err(|_| Error::Closed(428))?;
+                    Some(response.await.map_err(|_| Error::Closed(428))??)
+                };
+                let downloader = self
+                    .inner
+                    .history_downloader
+                    .get_or_try_init(|| async {
+                        let client = self
+                            .inner
+                            .media_http
+                            .get_or_try_init(|| async { crate::media::HttpClient::new() })
+                            .await?
+                            .clone();
+                        Ok::<_, Error>(crate::history::Downloader::from_http(
+                            client,
+                            Default::default(),
+                        ))
+                    })
+                    .await?;
+                let chunk_order = notification.chunk_order;
+                let peer_data_request_session_id =
+                    notification.peer_data_request_session_id.clone();
+                let data = downloader.download_and_process(notification).await?;
+                let repository = self.inner.decryptor.direct.clone();
+                let mappings = data.lid_pn_mappings.clone();
+                let chats = data.chats.clone();
+                let store = self.inner.store.clone();
+                tokio::task::spawn_blocking(move || {
+                    if !mappings.is_empty()
+                        && let Err(error) = repository.lid_mapping().store_mappings(&mappings)
+                    {
+                        tracing::warn!(?error, "failed to store history PN-LID mappings");
+                    }
+                    let privacy = crate::privacy::Repository::with_mappings(
+                        store,
+                        repository.lid_mapping().clone(),
+                    );
+                    privacy.store_from_history(&chats)?;
+                    Ok::<_, crate::signal::Error>(())
+                })
+                .await
+                .map_err(|_| Error::Task)??;
+                let _ = self
+                    .inner
+                    .events
+                    .send(Event::MessagingHistorySet(crate::history::Set {
+                        data,
+                        is_latest: latest,
+                        chunk_order,
+                        peer_data_request_session_id,
+                    }));
+            }
             Some(Type::AppStateSyncKeyShare) => {
                 let keys = protocol
                     .app_state_sync_key_share

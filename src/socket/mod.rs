@@ -46,6 +46,8 @@ use tokio_tungstenite::{
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
     #[error(transparent)]
+    History(#[from] crate::history::Error),
+    #[error(transparent)]
     AppState(#[from] crate::app_state::Error),
     #[error(transparent)]
     Media(#[from] crate::media::Error),
@@ -100,6 +102,7 @@ impl Error {
     pub fn status_code(&self) -> Option<u16> {
         match self {
             Self::Timeout => Some(408),
+            Self::History(crate::history::Error::Media(error)) => error.status_code(),
             Self::AppState(crate::app_state::Error::Media(error)) => error.status_code(),
             Self::AppState(crate::app_state::Error::Transport { status_code, .. }) => *status_code,
             Self::Media(error) => error.status_code(),
@@ -151,6 +154,8 @@ pub struct Config {
     pub emit_own_events: bool,
     pub media_http: Option<crate::media::HttpClient>,
     pub media_preparation_hooks: crate::media::PreparationHooks,
+    pub history_policy: crate::history::Policy,
+    pub history_downloader: Option<crate::history::Downloader>,
 }
 impl Default for Config {
     fn default() -> Self {
@@ -182,6 +187,8 @@ impl Default for Config {
             emit_own_events: true,
             media_http: None,
             media_preparation_hooks: Default::default(),
+            history_policy: Default::default(),
+            history_downloader: None,
         }
     }
 }
@@ -221,10 +228,16 @@ pub enum Event {
     MessageReactions(Vec<crate::messages::own::ReactionUpdate>),
     ChatsUpdated(Vec<crate::messages::own::ChatUpdate>),
     EventResponsesUpdated(Vec<crate::messages::EventResponseUpdate>),
+    MessagingHistorySet(crate::history::Set),
 }
 impl std::fmt::Debug for Event {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
+            Self::MessagingHistorySet(v) => f
+                .debug_struct("MessagingHistorySet")
+                .field("chats", &v.data.chats.len())
+                .field("messages", &v.data.messages.len())
+                .finish(),
             Self::ContactsUpserted(v) => f.debug_tuple("ContactsUpserted").field(&v.len()).finish(),
             Self::MessagesDeleted(v) => f.debug_tuple("MessagesDeleted").field(&v.len()).finish(),
             Self::MessagesStarred(v) => f.debug_tuple("MessagesStarred").field(&v.len()).finish(),
@@ -306,6 +319,8 @@ struct Inner {
     app_state_sync: tokio::sync::OnceCell<crate::app_state::Synchronizer>,
     app_state_apply_lock: tokio::sync::Mutex<()>,
     app_state_options: std::sync::Mutex<crate::app_state::SyncOptions>,
+    history_policy: crate::history::Policy,
+    history_downloader: tokio::sync::OnceCell<crate::history::Downloader>,
     media_preparation_hooks: crate::media::PreparationHooks,
     own_messages: Option<mpsc::UnboundedSender<proto::WebMessageInfo>>,
     generation_hooks: crate::messages::generation::GenerationHooks,
@@ -346,6 +361,11 @@ enum Command {
     UnarchiveChats {
         value: bool,
         reply: oneshot::Sender<Result<(), Error>>,
+    },
+    RecordHistory {
+        key: Option<proto::MessageKey>,
+        timestamp: Option<u64>,
+        reply: oneshot::Sender<Result<bool, Error>>,
     },
     RetryReceipt {
         node: BinaryNode,
@@ -511,6 +531,8 @@ impl Socket {
             app_state_sync: tokio::sync::OnceCell::new(),
             app_state_apply_lock: tokio::sync::Mutex::new(()),
             app_state_options: std::sync::Mutex::new(Default::default()),
+            history_policy: config.history_policy.clone(),
+            history_downloader: tokio::sync::OnceCell::new_with(config.history_downloader.clone()),
             media_preparation_hooks: config.media_preparation_hooks.clone(),
             own_messages: config.emit_own_events.then_some(own_sender),
             generation_hooks: config.generation_hooks.clone(),

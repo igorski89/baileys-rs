@@ -339,6 +339,74 @@ impl Repository {
             Ok(stored)
         })
     }
+    /// History token candidates compare against the pre-batch snapshot, so the
+    /// last duplicate replaces earlier candidates even if its timestamp is older.
+    pub fn store_from_history(&self, chats: &[crate::history::Chat]) -> Result<Vec<String>, Error> {
+        let mut candidates = vec![];
+        for chat in chats {
+            let chat = &chat.conversation;
+            let ts = chat.tc_token_timestamp.unwrap_or(0) as f64;
+            if let Some(token) = chat.tc_token.as_ref().filter(|token| !token.is_empty())
+                && ts > 0.0
+            {
+                let jid = self.storage_jid(&jid::normalized_user(&chat.id))?;
+                candidates.push((jid, token.clone(), ts, chat.tc_token_sender_timestamp));
+            }
+        }
+        if candidates.is_empty() {
+            return Ok(vec![]);
+        }
+        let ids: Vec<_> = candidates.iter().map(|c| c.0.clone()).collect();
+        let existing = self.store.get(KeyCategory::Tctoken, &ids)?;
+        let mut entries = indexmap::IndexMap::new();
+        for (jid, token, ts, sender) in candidates {
+            let mut entry = match existing.get(&jid) {
+                Some(KeyValue::Tctoken(entry)) => entry.clone(),
+                _ => Default::default(),
+            };
+            let old = entry
+                .timestamp
+                .as_ref()
+                .map(|t| timestamp_value(t, false))
+                .unwrap_or(0.0);
+            if old > 0.0 && old >= ts {
+                continue;
+            }
+            entry.token = token;
+            entry.timestamp = Some(ts.to_string().into());
+            if let Some(sender) = sender {
+                entry.sender_timestamp = Some(sender);
+            }
+            entries.insert(jid, entry);
+        }
+        if entries.is_empty() {
+            return Ok(vec![]);
+        }
+        let ids: Vec<_> = entries.keys().cloned().collect();
+        let write = (|| {
+            let old_index = read_index(
+                self.store
+                    .get(KeyCategory::Tctoken, &[INDEX_KEY.into()])?
+                    .get(INDEX_KEY),
+            );
+            let mut writes: Vec<_> = entries
+                .into_iter()
+                .map(|(id, entry)| KeyMutation::put(id, KeyValue::Tctoken(entry)))
+                .collect();
+            writes.push(index_write(
+                old_index.into_iter().chain(ids.iter().cloned()),
+            )?);
+            self.store.set(&writes)?;
+            Ok::<_, Error>(())
+        })();
+        match write {
+            Ok(()) => Ok(ids),
+            Err(error) => {
+                tracing::warn!(?error, "failed to store history privacy tokens");
+                Ok(vec![])
+            }
+        }
+    }
     pub fn mark_issued(&self, storage_jid: &str, timestamp: u64) -> Result<(), Error> {
         self.store.transaction_with_error(|tx| {
             let mut entry = load(tx, storage_jid)?.unwrap_or_default();

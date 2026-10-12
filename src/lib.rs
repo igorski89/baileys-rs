@@ -8,6 +8,7 @@ pub mod crypto;
 pub mod defaults;
 pub mod devices;
 pub mod groups;
+pub mod history;
 pub mod jid;
 pub mod media;
 pub mod messages;

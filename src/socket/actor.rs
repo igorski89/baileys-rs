@@ -264,6 +264,21 @@ impl Actor<'_> {
                 let result = self.persist().await;
                 let _ = reply.send(result);
             }
+            Command::RecordHistory {
+                key,
+                timestamp,
+                reply,
+            } => {
+                let latest = self.credentials.processed_history_messages.is_empty();
+                self.credentials
+                    .processed_history_messages
+                    .push(auth::MinimalMessage {
+                        key,
+                        message_timestamp: timestamp,
+                    });
+                let result = self.persist().await.map(|()| latest);
+                let _ = reply.send(result);
+            }
             Command::RetryReceipt {
                 node,
                 count,
