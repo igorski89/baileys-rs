@@ -69,6 +69,16 @@ pub fn admission(
         Admission::Online
     }
 }
+/// Notifications handled by the ordered notification worker.
+pub(super) fn worker_notification(node: &BinaryNode, config: &super::Config) -> bool {
+    let kind = node.attrs.get("type").map(String::as_str);
+    if kind == Some("server_sync") {
+        config.process_app_state_notifications
+    } else {
+        config.process_notifications
+            && (kind == Some("devices") || crate::notifications::is_supported(kind))
+    }
+}
 pub(super) fn spawn_worker(inner: &Arc<Inner>, mut receiver: mpsc::UnboundedReceiver<BinaryNode>) {
     let mut handlers: HashMap<String, offline::Handler<Error>> = HashMap::new();
     for kind in ["message", "call", "receipt", "notification"] {
@@ -100,10 +110,7 @@ pub(super) fn spawn_worker(inner: &Arc<Inner>, mut receiver: mpsc::UnboundedRece
                             }
                             socket.send_message_ack(&node, None).await
                         }
-                        _ => socket
-                            .handle_app_state_notification(&node)
-                            .await
-                            .map(|_| ()),
+                        _ => socket.handle_notification(&node).await.map(|_| ()),
                     }
                 })
             }),

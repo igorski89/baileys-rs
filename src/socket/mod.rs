@@ -55,6 +55,8 @@ pub enum Error {
     #[error(transparent)]
     Call(#[from] crate::calls::Error),
     #[error(transparent)]
+    Notification(#[from] crate::notifications::Error),
+    #[error(transparent)]
     EventBuffer(#[from] crate::event_buffer::Error),
     #[error(transparent)]
     EventJson(#[from] crate::proto_json::Error),
@@ -180,6 +182,9 @@ pub struct Config {
     pub retry_request_delay: Duration,
     pub process_media_notifications: bool,
     pub process_app_state_notifications: bool,
+    /// Automatically process group, picture, account-sync and device-list notifications,
+    /// including offline ones. Disable to dispatch raw Node events with handle_notification.
+    pub process_notifications: bool,
     pub get_message: crate::relay::MessageLookup,
     pub generation_hooks: crate::messages::generation::GenerationHooks,
     pub emit_own_events: bool,
@@ -220,6 +225,7 @@ impl Default for Config {
             retry_request_delay: Duration::from_millis(250),
             process_media_notifications: true,
             process_app_state_notifications: true,
+            process_notifications: true,
             get_message: Default::default(),
             generation_hooks: Default::default(),
             emit_own_events: true,
@@ -264,6 +270,13 @@ pub enum Event {
     MessageStubsUpdated(Vec<crate::messages::incoming::StubUpdate>),
     MessageContentsUpdated(Vec<crate::media::ContentUpdate>),
     GroupsUpdated(Vec<crate::groups::Metadata>),
+    /// Groups created while connected, with the acting participant.
+    GroupsUpserted(Vec<crate::notifications::GroupUpsert>),
+    /// One account-sync blocklist change: added (blocked) or removed entries.
+    BlocklistUpdated {
+        blocklist: Vec<Option<String>>,
+        add: bool,
+    },
     GroupEffects(Vec<crate::messages::group_effects::GroupEvent>),
     MessagesUpdated(Vec<crate::receipts::MessageUpdate>),
     /// Atomic messages.update batches produced by event consolidation.
@@ -367,6 +380,15 @@ impl std::fmt::Debug for Event {
                 .debug_tuple("MessageReceiptsUpdated")
                 .field(&updates.len())
                 .finish(),
+            Self::GroupsUpserted(groups) => f
+                .debug_tuple("GroupsUpserted")
+                .field(&groups.len())
+                .finish(),
+            Self::BlocklistUpdated { blocklist, add } => f
+                .debug_struct("BlocklistUpdated")
+                .field("blocklist", &blocklist.len())
+                .field("add", add)
+                .finish(),
             Self::GroupsUpdated(groups) => {
                 f.debug_tuple("GroupsUpdated").field(&groups.len()).finish()
             }
@@ -376,6 +398,7 @@ impl std::fmt::Debug for Event {
 struct Inner {
     call_offer_cache: crate::calls::Cache,
     notification_lock: Arc<tokio::sync::Mutex<()>>,
+    devices_lock: tokio::sync::Mutex<()>,
     message_lock: tokio::sync::Mutex<()>,
     active_receipts: std::sync::atomic::AtomicBool,
     retry_request_delay: Duration,
@@ -425,6 +448,10 @@ enum Command {
     },
     UnarchiveChats {
         value: bool,
+        reply: oneshot::Sender<Result<(), Error>>,
+    },
+    DisappearingMode {
+        mode: auth::DisappearingMode,
         reply: oneshot::Sender<Result<(), Error>>,
     },
     RecordHistory {
@@ -601,8 +628,8 @@ impl Socket {
         let (message_sender, message_receiver) = mpsc::unbounded_channel();
         let message_sender = config.process_messages.then_some(message_sender);
         let (notification_sender, notification_receiver) = mpsc::unbounded_channel();
-        let notification_sender = config
-            .process_app_state_notifications
+        let notification_sender = (config.process_app_state_notifications
+            || config.process_notifications)
             .then_some(notification_sender);
         let (call_sender, call_receiver) = mpsc::unbounded_channel();
         let call_sender = config.process_calls.then_some(call_sender);
@@ -611,6 +638,7 @@ impl Socket {
         let inner = Arc::new(Inner {
             call_offer_cache: config.call_offer_cache.clone().unwrap_or_default(),
             notification_lock: Arc::new(tokio::sync::Mutex::new(())),
+            devices_lock: tokio::sync::Mutex::new(()),
             message_lock: tokio::sync::Mutex::new(()),
             active_receipts: std::sync::atomic::AtomicBool::new(config.send_active_receipts),
             retry_request_delay: config.retry_request_delay,

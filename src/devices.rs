@@ -46,6 +46,43 @@ impl From<Jid> for Device {
         }
     }
 }
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Change {
+    Add,
+    Remove,
+    Update,
+    Unknown,
+}
+/// A parsed `devices` notification grouped by user in arrival order.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ListChange {
+    pub change: Change,
+    pub users: IndexMap<String, Vec<(String, Jid)>>,
+}
+/// Parse a device-list notification; None when it carries no decodable devices.
+pub fn parse_notification(node: &crate::binary::BinaryNode) -> Option<ListChange> {
+    let child = node.all_children().first()?;
+    let mut users = IndexMap::<String, Vec<(String, Jid)>>::new();
+    for device in child.children("device") {
+        let Some(raw) = device.attrs.get("jid").filter(|s| !s.is_empty()) else {
+            continue;
+        };
+        let Some(jid) = Jid::parse(raw) else { continue };
+        users
+            .entry(jid.user.clone())
+            .or_default()
+            .push((raw.clone(), jid));
+    }
+    (!users.is_empty()).then(|| ListChange {
+        change: match child.tag.as_str() {
+            "add" => Change::Add,
+            "remove" => Change::Remove,
+            "update" => Change::Update,
+            _ => Change::Unknown,
+        },
+        users,
+    })
+}
 #[derive(Debug)]
 pub struct Plan {
     pub devices: Vec<Device>,
@@ -146,6 +183,55 @@ impl Cache {
             }
         }
         Ok(groups)
+    }
+    /// Unexpired cached devices for one user.
+    pub fn cached(&self, user: &str) -> Result<Option<Vec<Device>>, Error> {
+        let state = self.state.lock().map_err(|_| Error::Invalid)?;
+        Ok(state
+            .entries
+            .get(user)
+            .filter(|entry| entry.expires > Instant::now())
+            .map(|entry| entry.devices.clone()))
+    }
+    /// Apply one user's device-list notification delta. Users without a cached
+    /// baseline are left for a later full USync refresh.
+    pub fn apply_change(&self, user: &str, change: Change, devices: &[Jid]) -> Result<(), Error> {
+        let mut state = self.state.lock().map_err(|_| Error::Invalid)?;
+        let now = Instant::now();
+        state.entries.retain(|_, entry| entry.expires > now);
+        if change == Change::Update {
+            state.entries.remove(user);
+            return Ok(());
+        }
+        let Some(existing) = state.entries.get(user).filter(|e| !e.devices.is_empty()) else {
+            return Ok(());
+        };
+        // A device-less JID matches no cached device number, as upstream's undefined.
+        let mut updated: Vec<_> = existing
+            .devices
+            .iter()
+            .filter(|d| !devices.iter().any(|j| j.device == Some(d.device)))
+            .cloned()
+            .collect();
+        match change {
+            Change::Add => updated.extend(devices.iter().cloned().map(Device::from)),
+            Change::Remove => (),
+            _ => return Ok(()),
+        }
+        if updated.is_empty() {
+            state.entries.remove(user);
+        } else {
+            let expires = now.checked_add(state.config.ttl).unwrap_or(now);
+            state.entries.insert(
+                user.into(),
+                Entry {
+                    devices: updated,
+                    expires,
+                    used: now,
+                },
+            );
+        }
+        Ok(())
     }
     pub fn invalidate_users(&self, users: &[String]) -> Result<(), Error> {
         let mut state = self.state.lock().map_err(|_| Error::Invalid)?;

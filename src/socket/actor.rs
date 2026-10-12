@@ -285,6 +285,11 @@ impl Actor<'_> {
                 let result = self.persist().await;
                 let _ = reply.send(result);
             }
+            Command::DisappearingMode { mode, reply } => {
+                self.credentials.account_settings.default_disappearing_mode = Some(mode);
+                let result = self.persist().await;
+                let _ = reply.send(result);
+            }
             Command::RecordHistory {
                 key,
                 timestamp,
@@ -520,8 +525,7 @@ impl Actor<'_> {
                 "receipt" => self.receipts.is_some(),
                 "call" => self.calls.is_some(),
                 "notification" => {
-                    (node.attrs.get("type").is_some_and(|t| t == "server_sync")
-                        && self.notifications.is_some())
+                    super::dispatch::worker_notification(&node, &self.config)
                         || (node.attrs.get("type").is_some_and(|t| t == "mediaretry")
                             && self.config.process_media_notifications)
                 }
@@ -686,7 +690,7 @@ impl Actor<'_> {
                 self.send(&pairing.reply).await?;
                 self.unified_session().await?;
             }
-            "notification" if node.attrs.get("type").is_some_and(|t| t == "server_sync") => {
+            "notification" if super::dispatch::worker_notification(&node, &self.config) => {
                 if let Some(sender) = &self.notifications {
                     let _ = sender.send(super::dispatch::OnlineNode {
                         node: node.clone(),
