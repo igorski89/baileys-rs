@@ -101,6 +101,7 @@ impl Error {
         match self {
             Self::Timeout => Some(408),
             Self::AppState(crate::app_state::Error::Media(error)) => error.status_code(),
+            Self::AppState(crate::app_state::Error::Transport { status_code, .. }) => *status_code,
             Self::Media(error) => error.status_code(),
             Self::MediaConnection(error) => error.status_code(),
             Self::Receipt(error) => Some(error.status_code()),
@@ -278,6 +279,7 @@ struct Inner {
     retry_request_delay: Duration,
     media_cache: tokio::sync::Mutex<media::MediaCache>,
     media_http: tokio::sync::OnceCell<crate::media::HttpClient>,
+    app_state_sync: tokio::sync::OnceCell<crate::app_state::Synchronizer>,
     media_preparation_hooks: crate::media::PreparationHooks,
     own_messages: Option<mpsc::UnboundedSender<proto::WebMessageInfo>>,
     generation_hooks: crate::messages::generation::GenerationHooks,
@@ -476,6 +478,7 @@ impl Socket {
             retry_request_delay: config.retry_request_delay,
             media_cache: tokio::sync::Mutex::new(Default::default()),
             media_http: tokio::sync::OnceCell::new_with(config.media_http.clone()),
+            app_state_sync: tokio::sync::OnceCell::new(),
             media_preparation_hooks: config.media_preparation_hooks.clone(),
             own_messages: config.emit_own_events.then_some(own_sender),
             generation_hooks: config.generation_hooks.clone(),

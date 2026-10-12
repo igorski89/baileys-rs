@@ -1,0 +1,2453 @@
+[
+  {
+    "name": "empty",
+    "validate": false,
+    "names": [],
+    "keyMode": "good",
+    "initial": {},
+    "pages": [],
+    "expected": {
+      "requests": [],
+      "calls": [],
+      "writes": [],
+      "states": {},
+      "mutations": [],
+      "downloads": [],
+      "blocked": []
+    }
+  },
+  {
+    "name": "pagination",
+    "validate": false,
+    "names": [
+      "regular"
+    ],
+    "keyMode": "good",
+    "initial": {},
+    "pages": [
+      {
+        "regular": {
+          "patches": [
+            "0a0208011283010800127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a0301020322204642943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade37482a20f7921e4f42e47da640e978f662ac111f7c83ded6a1784eacf58e3db63a10115f32050a03010203"
+          ],
+          "hasMorePatches": true,
+          "snapshot": null
+        }
+      },
+      {
+        "regular": {
+          "patches": [
+            "0a0208021283010800127f0a220a20abccf1f1c0777feab64d7c920c4dc750249ae4bb66706aa5682ee1b8c638f4fb12520a50000102030405060708090a0b0c0d0e0fed9ef11b8e6d948952dc8de0d02e23a6794cf6bacf7392d19a44b85645a8286e5a429960a86e19eda1e4057d423de72a665521058ff704723a4eb941597a8b301a050a030102032220dce6a8396ece6cca5915f39aee7e79719a4e76ed2899d99f8e02c8af9b14bceb2a20a491d683b70fac19286f5fdf1d1a29d050a10b6d340b428fe22639537fba190532050a03010203"
+          ],
+          "hasMorePatches": true,
+          "snapshot": null
+        }
+      },
+      {
+        "regular": {
+          "patches": [
+            "0a0208031283010800127f0a220a200a4dc3c120ccc96cd9d934ad87db920f53bb91865c9ae0ac63d1b4fefebbcfb812520a50000102030405060708090a0b0c0d0e0f7eada289c8977f8e8c87125742d1073171a567b7a27f7745fb6e91598d944fbcad4504fe28e50710a017e8af41ebe69cbc6c81cd32ad38dbdd6f7fd50513e4a11a050a030102032220e54e9dc7b095ee4daa79f34a8be8725d530b3238d402d6be70c4f068f33c3d912a20d8ce5ee52193097510f996aa8f32e45abea95529ca811412d968e030033efa3532050a03010203"
+          ],
+          "hasMorePatches": false,
+          "snapshot": null
+        }
+      }
+    ],
+    "expected": {
+      "requests": [
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ],
+        [
+          {
+            "name": "regular",
+            "version": "1",
+            "return_snapshot": "false"
+          }
+        ],
+        [
+          {
+            "name": "regular",
+            "version": "2",
+            "return_snapshot": "false"
+          }
+        ]
+      ],
+      "calls": [
+        "AQID"
+      ],
+      "writes": [
+        "regular",
+        "regular",
+        "regular"
+      ],
+      "states": {
+        "regular": {
+          "version": 3,
+          "hash": "3ea7490d1a86d61bc2c65ef6b4f48bcac899b068c0bbe0a6cce23677f239bfd68508b61fbc2ab843c68d06b91a8da63d7239186b8cf02ec749918060ce328f2e72908bc1a2e8feb120d83f6a559d44995ee1c9e5e4de616d1e1346e8487399326b9faa7c920e90c5e73de1e785db1cde1848d5e11afb521b7054b01abfca36a7",
+          "map": {
+            "G5WdbdBWGfLSX4kka32M/1apuMFVphjDnKMF4ZKIJDg=": "1498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a9",
+            "q8zx8cB3f+q2TXySDE3HUCSa5LtmcGqlaC7huMY49Ps=": "5a429960a86e19eda1e4057d423de72a665521058ff704723a4eb941597a8b30",
+            "Ck3DwSDMyWzZ2TSth9uSD1O7kYZcmuCsY9G0/v67z7g=": "ad4504fe28e50710a017e8af41ebe69cbc6c81cd32ad38dbdd6f7fd50513e4a1"
+          }
+        }
+      },
+      "mutations": [
+        {
+          "action": "0a0c5b226d757465222c2230225d12060800220208011a002003",
+          "index": [
+            "mute",
+            "0"
+          ]
+        },
+        {
+          "action": "0a0c5b226d757465222c2231225d12060801220208011a002003",
+          "index": [
+            "mute",
+            "1"
+          ]
+        },
+        {
+          "action": "0a0c5b226d757465222c2232225d12060802220208011a002003",
+          "index": [
+            "mute",
+            "2"
+          ]
+        }
+      ],
+      "downloads": [],
+      "blocked": []
+    }
+  },
+  {
+    "name": "snapshot",
+    "validate": false,
+    "names": [
+      "regular"
+    ],
+    "keyMode": "good",
+    "initial": {},
+    "pages": [
+      {
+        "regular": {
+          "patches": [],
+          "hasMorePatches": false,
+          "snapshot": "0a020801127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a030102031a204642943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade374822050a03010203"
+        }
+      }
+    ],
+    "expected": {
+      "requests": [
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ]
+      ],
+      "calls": [
+        "AQID"
+      ],
+      "writes": [
+        "regular"
+      ],
+      "states": {
+        "regular": {
+          "version": 1,
+          "hash": "61edd6b70ca331d05a2c94c91072c4c9aa52231eacb50277ba17e05f396fd1fde1aba983e1dc7d3d6b25a8b2116e620142a8e936064d6ba05fd68a59115e303d4f72354062bdf1f672b034a2952717f45ce77851dad3126cfbff3e8fe24c2faa211a068d22c0dfcb2f2f740b2d550766c8d452d57de554f5d9f22c313afcb15d",
+          "map": {
+            "G5WdbdBWGfLSX4kka32M/1apuMFVphjDnKMF4ZKIJDg=": "1498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a9"
+          }
+        }
+      },
+      "mutations": [
+        {
+          "action": "0a0c5b226d757465222c2230225d12060800220208011a002003",
+          "index": [
+            "mute",
+            "0"
+          ]
+        }
+      ],
+      "downloads": [],
+      "blocked": []
+    }
+  },
+  {
+    "name": "badSnapshotMac",
+    "validate": false,
+    "names": [
+      "regular"
+    ],
+    "keyMode": "good",
+    "initial": {},
+    "pages": [
+      {
+        "regular": {
+          "patches": [],
+          "hasMorePatches": false,
+          "snapshot": "0a020801127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a030102031a204742943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade374822050a03010203"
+        }
+      }
+    ],
+    "expected": {
+      "requests": [
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ]
+      ],
+      "calls": [
+        "AQID"
+      ],
+      "writes": [
+        "regular"
+      ],
+      "states": {
+        "regular": {
+          "version": 1,
+          "hash": "61edd6b70ca331d05a2c94c91072c4c9aa52231eacb50277ba17e05f396fd1fde1aba983e1dc7d3d6b25a8b2116e620142a8e936064d6ba05fd68a59115e303d4f72354062bdf1f672b034a2952717f45ce77851dad3126cfbff3e8fe24c2faa211a068d22c0dfcb2f2f740b2d550766c8d452d57de554f5d9f22c313afcb15d",
+          "map": {
+            "G5WdbdBWGfLSX4kka32M/1apuMFVphjDnKMF4ZKIJDg=": "1498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a9"
+          }
+        }
+      },
+      "mutations": [
+        {
+          "action": "0a0c5b226d757465222c2230225d12060800220208011a002003",
+          "index": [
+            "mute",
+            "0"
+          ]
+        }
+      ],
+      "downloads": [],
+      "blocked": []
+    }
+  },
+  {
+    "name": "savedVersion",
+    "validate": false,
+    "names": [
+      "regular"
+    ],
+    "keyMode": "good",
+    "initial": {
+      "regular": {
+        "version": 1,
+        "hash": "61edd6b70ca331d05a2c94c91072c4c9aa52231eacb50277ba17e05f396fd1fde1aba983e1dc7d3d6b25a8b2116e620142a8e936064d6ba05fd68a59115e303d4f72354062bdf1f672b034a2952717f45ce77851dad3126cfbff3e8fe24c2faa211a068d22c0dfcb2f2f740b2d550766c8d452d57de554f5d9f22c313afcb15d",
+        "map": {
+          "G5WdbdBWGfLSX4kka32M/1apuMFVphjDnKMF4ZKIJDg=": "1498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a9"
+        }
+      }
+    },
+    "pages": [
+      {
+        "regular": {
+          "patches": [
+            "0a0208011283010800127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a0301020322204642943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade37482a20f7921e4f42e47da640e978f662ac111f7c83ded6a1784eacf58e3db63a10115f32050a03010203",
+            "0a0208021283010800127f0a220a20abccf1f1c0777feab64d7c920c4dc750249ae4bb66706aa5682ee1b8c638f4fb12520a50000102030405060708090a0b0c0d0e0fed9ef11b8e6d948952dc8de0d02e23a6794cf6bacf7392d19a44b85645a8286e5a429960a86e19eda1e4057d423de72a665521058ff704723a4eb941597a8b301a050a030102032220dce6a8396ece6cca5915f39aee7e79719a4e76ed2899d99f8e02c8af9b14bceb2a20a491d683b70fac19286f5fdf1d1a29d050a10b6d340b428fe22639537fba190532050a03010203",
+            "0a0208031283010800127f0a220a200a4dc3c120ccc96cd9d934ad87db920f53bb91865c9ae0ac63d1b4fefebbcfb812520a50000102030405060708090a0b0c0d0e0f7eada289c8977f8e8c87125742d1073171a567b7a27f7745fb6e91598d944fbcad4504fe28e50710a017e8af41ebe69cbc6c81cd32ad38dbdd6f7fd50513e4a11a050a030102032220e54e9dc7b095ee4daa79f34a8be8725d530b3238d402d6be70c4f068f33c3d912a20d8ce5ee52193097510f996aa8f32e45abea95529ca811412d968e030033efa3532050a03010203"
+          ],
+          "hasMorePatches": false,
+          "snapshot": null
+        }
+      }
+    ],
+    "expected": {
+      "requests": [
+        [
+          {
+            "name": "regular",
+            "version": "1",
+            "return_snapshot": "false"
+          }
+        ]
+      ],
+      "calls": [
+        "AQID"
+      ],
+      "writes": [
+        "regular"
+      ],
+      "states": {
+        "regular": {
+          "version": 3,
+          "hash": "3ea7490d1a86d61bc2c65ef6b4f48bcac899b068c0bbe0a6cce23677f239bfd68508b61fbc2ab843c68d06b91a8da63d7239186b8cf02ec749918060ce328f2e72908bc1a2e8feb120d83f6a559d44995ee1c9e5e4de616d1e1346e8487399326b9faa7c920e90c5e73de1e785db1cde1848d5e11afb521b7054b01abfca36a7",
+          "map": {
+            "G5WdbdBWGfLSX4kka32M/1apuMFVphjDnKMF4ZKIJDg=": "1498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a9",
+            "q8zx8cB3f+q2TXySDE3HUCSa5LtmcGqlaC7huMY49Ps=": "5a429960a86e19eda1e4057d423de72a665521058ff704723a4eb941597a8b30",
+            "Ck3DwSDMyWzZ2TSth9uSD1O7kYZcmuCsY9G0/v67z7g=": "ad4504fe28e50710a017e8af41ebe69cbc6c81cd32ad38dbdd6f7fd50513e4a1"
+          }
+        }
+      },
+      "mutations": [
+        {
+          "action": "0a0c5b226d757465222c2231225d12060801220208011a002003",
+          "index": [
+            "mute",
+            "1"
+          ]
+        },
+        {
+          "action": "0a0c5b226d757465222c2232225d12060802220208011a002003",
+          "index": [
+            "mute",
+            "2"
+          ]
+        }
+      ],
+      "downloads": [],
+      "blocked": []
+    }
+  },
+  {
+    "name": "deduplicated",
+    "validate": false,
+    "names": [
+      "regular",
+      "regular"
+    ],
+    "keyMode": "good",
+    "initial": {},
+    "pages": [
+      {
+        "regular": {
+          "patches": [
+            "0a0208011283010800127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a0301020322204642943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade37482a20f7921e4f42e47da640e978f662ac111f7c83ded6a1784eacf58e3db63a10115f32050a03010203"
+          ],
+          "hasMorePatches": false,
+          "snapshot": null
+        }
+      }
+    ],
+    "expected": {
+      "requests": [
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ]
+      ],
+      "calls": [
+        "AQID"
+      ],
+      "writes": [
+        "regular"
+      ],
+      "states": {
+        "regular": {
+          "version": 1,
+          "hash": "61edd6b70ca331d05a2c94c91072c4c9aa52231eacb50277ba17e05f396fd1fde1aba983e1dc7d3d6b25a8b2116e620142a8e936064d6ba05fd68a59115e303d4f72354062bdf1f672b034a2952717f45ce77851dad3126cfbff3e8fe24c2faa211a068d22c0dfcb2f2f740b2d550766c8d452d57de554f5d9f22c313afcb15d",
+          "map": {
+            "G5WdbdBWGfLSX4kka32M/1apuMFVphjDnKMF4ZKIJDg=": "1498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a9"
+          }
+        }
+      },
+      "mutations": [
+        {
+          "action": "0a0c5b226d757465222c2230225d12060800220208011a002003",
+          "index": [
+            "mute",
+            "0"
+          ]
+        }
+      ],
+      "downloads": [],
+      "blocked": []
+    }
+  },
+  {
+    "name": "missingResponse",
+    "validate": false,
+    "names": [
+      "regular"
+    ],
+    "keyMode": "good",
+    "initial": {},
+    "pages": [
+      {},
+      {
+        "regular": {
+          "patches": [
+            "0a0208011283010800127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a0301020322204642943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade37482a20f7921e4f42e47da640e978f662ac111f7c83ded6a1784eacf58e3db63a10115f32050a03010203"
+          ],
+          "hasMorePatches": false,
+          "snapshot": null
+        }
+      }
+    ],
+    "expected": {
+      "requests": [
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ],
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ]
+      ],
+      "calls": [
+        "AQID"
+      ],
+      "writes": [
+        "regular"
+      ],
+      "states": {
+        "regular": {
+          "version": 1,
+          "hash": "61edd6b70ca331d05a2c94c91072c4c9aa52231eacb50277ba17e05f396fd1fde1aba983e1dc7d3d6b25a8b2116e620142a8e936064d6ba05fd68a59115e303d4f72354062bdf1f672b034a2952717f45ce77851dad3126cfbff3e8fe24c2faa211a068d22c0dfcb2f2f740b2d550766c8d452d57de554f5d9f22c313afcb15d",
+          "map": {
+            "G5WdbdBWGfLSX4kka32M/1apuMFVphjDnKMF4ZKIJDg=": "1498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a9"
+          }
+        }
+      },
+      "mutations": [
+        {
+          "action": "0a0c5b226d757465222c2230225d12060800220208011a002003",
+          "index": [
+            "mute",
+            "0"
+          ]
+        }
+      ],
+      "downloads": [],
+      "blocked": []
+    }
+  },
+  {
+    "name": "missingKeys",
+    "validate": false,
+    "names": [
+      "regular"
+    ],
+    "keyMode": "missing",
+    "initial": {},
+    "pages": [
+      {
+        "regular": {
+          "patches": [
+            "0a0208011283010800127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a0301020322204642943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade37482a20f7921e4f42e47da640e978f662ac111f7c83ded6a1784eacf58e3db63a10115f32050a03010203"
+          ],
+          "hasMorePatches": false,
+          "snapshot": null
+        }
+      },
+      {
+        "regular": {
+          "patches": [
+            "0a0208011283010800127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a0301020322204642943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade37482a20f7921e4f42e47da640e978f662ac111f7c83ded6a1784eacf58e3db63a10115f32050a03010203"
+          ],
+          "hasMorePatches": false,
+          "snapshot": null
+        }
+      }
+    ],
+    "expected": {
+      "requests": [
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ],
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ]
+      ],
+      "calls": [
+        "AQID"
+      ],
+      "writes": [],
+      "states": {},
+      "mutations": [],
+      "downloads": [],
+      "blocked": [
+        "regular"
+      ]
+    }
+  },
+  {
+    "name": "snapshotRecovery",
+    "validate": false,
+    "names": [
+      "regular"
+    ],
+    "keyMode": "good",
+    "initial": {},
+    "pages": [
+      {
+        "regular": {
+          "patches": [
+            "0a0208011283010800127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a0301020322204642943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade37482a20f7921e4f42e47da640e978f662ac111f7c83ded6a1784eacf58e3db63a10115f32030a0109"
+          ],
+          "hasMorePatches": false,
+          "snapshot": null
+        }
+      },
+      {
+        "regular": {
+          "patches": [
+            "0a0208021283010800127f0a220a20abccf1f1c0777feab64d7c920c4dc750249ae4bb66706aa5682ee1b8c638f4fb12520a50000102030405060708090a0b0c0d0e0fed9ef11b8e6d948952dc8de0d02e23a6794cf6bacf7392d19a44b85645a8286e5a429960a86e19eda1e4057d423de72a665521058ff704723a4eb941597a8b301a050a030102032220dce6a8396ece6cca5915f39aee7e79719a4e76ed2899d99f8e02c8af9b14bceb2a20a491d683b70fac19286f5fdf1d1a29d050a10b6d340b428fe22639537fba190532050a03010203"
+          ],
+          "hasMorePatches": false,
+          "snapshot": "0a020801127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a030102031a204642943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade374822050a03010203"
+        }
+      }
+    ],
+    "expected": {
+      "requests": [
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ]
+      ],
+      "calls": [
+        "AQID"
+      ],
+      "writes": [
+        "regular"
+      ],
+      "states": {
+        "regular": {
+          "version": 1,
+          "hash": "61edd6b70ca331d05a2c94c91072c4c9aa52231eacb50277ba17e05f396fd1fde1aba983e1dc7d3d6b25a8b2116e620142a8e936064d6ba05fd68a59115e303d4f72354062bdf1f672b034a2952717f45ce77851dad3126cfbff3e8fe24c2faa211a068d22c0dfcb2f2f740b2d550766c8d452d57de554f5d9f22c313afcb15d",
+          "map": {
+            "G5WdbdBWGfLSX4kka32M/1apuMFVphjDnKMF4ZKIJDg=": "1498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a9"
+          }
+        }
+      },
+      "mutations": [
+        {
+          "action": "0a0c5b226d757465222c2230225d12060800220208011a002003",
+          "index": [
+            "mute",
+            "0"
+          ]
+        }
+      ],
+      "downloads": [],
+      "blocked": []
+    }
+  },
+  {
+    "name": "snapshotBeforeBlocked",
+    "validate": false,
+    "names": [
+      "regular"
+    ],
+    "keyMode": "good",
+    "initial": {},
+    "pages": [
+      {
+        "regular": {
+          "patches": [
+            "0a0208011283010800127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a0301020322204642943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade37482a20f7921e4f42e47da640e978f662ac111f7c83ded6a1784eacf58e3db63a10115f32030a0109"
+          ],
+          "hasMorePatches": false,
+          "snapshot": "0a020801127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a030102031a204642943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade374822050a03010203"
+        }
+      },
+      {
+        "regular": {
+          "patches": [
+            "0a0208011283010800127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a0301020322204642943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade37482a20f7921e4f42e47da640e978f662ac111f7c83ded6a1784eacf58e3db63a10115f32030a0109"
+          ],
+          "hasMorePatches": false,
+          "snapshot": null
+        }
+      }
+    ],
+    "expected": {
+      "requests": [
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ]
+      ],
+      "calls": [
+        "AQID"
+      ],
+      "writes": [
+        "regular",
+        "regular"
+      ],
+      "states": {
+        "regular": {
+          "version": 1,
+          "hash": "61edd6b70ca331d05a2c94c91072c4c9aa52231eacb50277ba17e05f396fd1fde1aba983e1dc7d3d6b25a8b2116e620142a8e936064d6ba05fd68a59115e303d4f72354062bdf1f672b034a2952717f45ce77851dad3126cfbff3e8fe24c2faa211a068d22c0dfcb2f2f740b2d550766c8d452d57de554f5d9f22c313afcb15d",
+          "map": {
+            "G5WdbdBWGfLSX4kka32M/1apuMFVphjDnKMF4ZKIJDg=": "1498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a9"
+          }
+        }
+      },
+      "mutations": [
+        {
+          "action": "0a0c5b226d757465222c2230225d12060800220208011a002003",
+          "index": [
+            "mute",
+            "0"
+          ]
+        }
+      ],
+      "downloads": [],
+      "blocked": []
+    }
+  },
+  {
+    "name": "queryRollback",
+    "validate": false,
+    "names": [
+      "regular"
+    ],
+    "keyMode": "good",
+    "initial": {},
+    "pages": [
+      {
+        "regular": {
+          "patches": [
+            "0a0208011283010800127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a0301020322204642943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade37482a20f7921e4f42e47da640e978f662ac111f7c83ded6a1784eacf58e3db63a10115f32050a03010203"
+          ],
+          "hasMorePatches": true,
+          "snapshot": null
+        }
+      },
+      {
+        "error": true
+      }
+    ],
+    "expected": {
+      "requests": [
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ],
+        [
+          {
+            "name": "regular",
+            "version": "1",
+            "return_snapshot": "false"
+          }
+        ]
+      ],
+      "calls": [
+        "AQID"
+      ],
+      "writes": [
+        "regular"
+      ],
+      "states": {},
+      "mutations": [],
+      "downloads": [],
+      "blocked": [],
+      "error": "query failed"
+    }
+  },
+  {
+    "name": "fatalInput",
+    "validate": false,
+    "names": [
+      "regular"
+    ],
+    "keyMode": "good",
+    "initial": {},
+    "pages": [
+      {
+        "regular": {
+          "patches": [],
+          "hasMorePatches": false,
+          "snapshot": "0a020801122b0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e1928824381a050a030102031a204642943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade374822050a03010203"
+        }
+      }
+    ],
+    "expected": {
+      "requests": [
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ]
+      ],
+      "calls": [
+        "AQID"
+      ],
+      "writes": [],
+      "states": {},
+      "mutations": [],
+      "downloads": [],
+      "blocked": []
+    }
+  },
+  {
+    "name": "downloadRetry",
+    "validate": false,
+    "names": [
+      "regular"
+    ],
+    "keyMode": "good",
+    "initial": {},
+    "pages": [
+      {
+        "regular": {
+          "patches": [
+            "0a0208011283010800127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a030102031a0712052f6661696c22204642943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade37482a20f7921e4f42e47da640e978f662ac111f7c83ded6a1784eacf58e3db63a10115f32050a03010203"
+          ],
+          "hasMorePatches": false,
+          "snapshot": null
+        }
+      },
+      {
+        "regular": {
+          "patches": [
+            "0a0208011283010800127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a030102031a0712052f6661696c22204642943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade37482a20f7921e4f42e47da640e978f662ac111f7c83ded6a1784eacf58e3db63a10115f32050a03010203"
+          ],
+          "hasMorePatches": false,
+          "snapshot": null
+        }
+      }
+    ],
+    "expected": {
+      "requests": [
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ],
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ]
+      ],
+      "calls": [],
+      "writes": [],
+      "states": {},
+      "mutations": [],
+      "downloads": [
+        "/fail",
+        "/fail"
+      ],
+      "blocked": []
+    }
+  },
+  {
+    "name": "unsolicitedPatch",
+    "validate": false,
+    "names": [
+      "regular"
+    ],
+    "keyMode": "good",
+    "initial": {},
+    "pages": [
+      {
+        "regular_high": {
+          "patches": [
+            "0a0208011294010800128f010a220a2003b7feb63e346d73f88b12493ec0bc26eefcb7ab3f2d36cd0b62c2f9effa8c5a12620a60000102030405060708090a0b0c0d0e0f4572f619a64bd0735d122b4a703bbd65d74be81b397040996a6d7d402858feb678886a9970bb45d3e88fdb79c28869c7293672a555b637bb38f11bd465b57b70ef696fee05bb337a26e1ced3cb4022781a050a030102032220f2c40cd2a7427c9233a98ebf3764c3b1f1c8c6d7186b8abee65c213b38a918662a20f14eb92c49c0a7319acbc2fc3f313ac67d53ab5a96d2443c0b0c9b70f57c693432050a03010203"
+          ],
+          "hasMorePatches": false,
+          "snapshot": null
+        }
+      }
+    ],
+    "expected": {
+      "requests": [
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ]
+      ],
+      "calls": [],
+      "writes": [],
+      "states": {},
+      "mutations": [],
+      "downloads": [],
+      "blocked": [],
+      "error": "Cannot read properties of undefined (reading 'version')"
+    }
+  },
+  {
+    "name": "multipleCollections",
+    "validate": false,
+    "names": [
+      "regular",
+      "regular_high"
+    ],
+    "keyMode": "good",
+    "initial": {},
+    "pages": [
+      {
+        "regular": {
+          "patches": [
+            "0a0208011283010800127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a0301020322204642943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade37482a20f7921e4f42e47da640e978f662ac111f7c83ded6a1784eacf58e3db63a10115f32050a03010203"
+          ],
+          "hasMorePatches": true,
+          "snapshot": null
+        },
+        "regular_high": {
+          "patches": [
+            "0a0208011294010800128f010a220a2003b7feb63e346d73f88b12493ec0bc26eefcb7ab3f2d36cd0b62c2f9effa8c5a12620a60000102030405060708090a0b0c0d0e0f4572f619a64bd0735d122b4a703bbd65d74be81b397040996a6d7d402858feb678886a9970bb45d3e88fdb79c28869c7293672a555b637bb38f11bd465b57b70ef696fee05bb337a26e1ced3cb4022781a050a030102032220f2c40cd2a7427c9233a98ebf3764c3b1f1c8c6d7186b8abee65c213b38a918662a20f14eb92c49c0a7319acbc2fc3f313ac67d53ab5a96d2443c0b0c9b70f57c693432050a03010203"
+          ],
+          "hasMorePatches": false,
+          "snapshot": null
+        }
+      },
+      {
+        "regular": {
+          "patches": [
+            "0a0208021283010800127f0a220a20abccf1f1c0777feab64d7c920c4dc750249ae4bb66706aa5682ee1b8c638f4fb12520a50000102030405060708090a0b0c0d0e0fed9ef11b8e6d948952dc8de0d02e23a6794cf6bacf7392d19a44b85645a8286e5a429960a86e19eda1e4057d423de72a665521058ff704723a4eb941597a8b301a050a030102032220dce6a8396ece6cca5915f39aee7e79719a4e76ed2899d99f8e02c8af9b14bceb2a20a491d683b70fac19286f5fdf1d1a29d050a10b6d340b428fe22639537fba190532050a03010203"
+          ],
+          "hasMorePatches": false,
+          "snapshot": null
+        }
+      }
+    ],
+    "expected": {
+      "requests": [
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          },
+          {
+            "name": "regular_high",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ],
+        [
+          {
+            "name": "regular",
+            "version": "1",
+            "return_snapshot": "false"
+          }
+        ]
+      ],
+      "calls": [
+        "AQID"
+      ],
+      "writes": [
+        "regular",
+        "regular_high",
+        "regular"
+      ],
+      "states": {
+        "regular": {
+          "version": 2,
+          "hash": "82162b8287c95c3bdf0ee35830b5bc1d752bb153cafe42cd6752f3a44aa0aaee621f72feae568f105ce3904237a46ac4815128558bc48916af18a0914b84cfec00b4e87bf092f0ca2ba8788e7a200050def8ced7956fa4356f9391b04fbc1850aaac248eae07586ab1197cc7ee5d37f80026a8b608d21b920d8f8b2b630b03b7",
+          "map": {
+            "G5WdbdBWGfLSX4kka32M/1apuMFVphjDnKMF4ZKIJDg=": "1498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a9",
+            "q8zx8cB3f+q2TXySDE3HUCSa5LtmcGqlaC7huMY49Ps=": "5a429960a86e19eda1e4057d423de72a665521058ff704723a4eb941597a8b30"
+          }
+        },
+        "regular_high": {
+          "version": 1,
+          "hash": "6260e74270e13f12ae9dc8d6c009a087606bd641f3ae87dd850c3907467e8025eeca497def8175e48a9d5a95b3ea0accdd0d11def779c1a4323d7df3c7f0438d3b63394eac9e4ebd863a53ccf3124bd8c1d4f974e5a97a33a57997529dae3dd195f0cd1c549c79dbe39c49513fca6bf65b88401eb1fdcedc445860fd899c03d4",
+          "map": {
+            "A7f+tj40bXP4ixJJPsC8Ju78t6s/LTbNC2LC+e/6jFo=": "293672a555b637bb38f11bd465b57b70ef696fee05bb337a26e1ced3cb402278"
+          }
+        }
+      },
+      "mutations": [
+        {
+          "action": "0a0c5b226d757465222c2230225d12060800220208011a002003",
+          "index": [
+            "mute",
+            "0"
+          ]
+        },
+        {
+          "action": "0a1d5b226d757465222c2233303040732e77686174736170702e6e6574225d12060800220208011a002003",
+          "index": [
+            "mute",
+            "300@s.whatsapp.net"
+          ]
+        },
+        {
+          "action": "0a0c5b226d757465222c2231225d12060801220208011a002003",
+          "index": [
+            "mute",
+            "1"
+          ]
+        }
+      ],
+      "downloads": [],
+      "blocked": []
+    }
+  },
+  {
+    "name": "oneBlockedCollection",
+    "validate": false,
+    "names": [
+      "regular",
+      "regular_high"
+    ],
+    "keyMode": "good",
+    "initial": {},
+    "pages": [
+      {
+        "regular": {
+          "patches": [
+            "0a0208011283010800127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a0301020322204642943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade37482a20f7921e4f42e47da640e978f662ac111f7c83ded6a1784eacf58e3db63a10115f32050a03010203"
+          ],
+          "hasMorePatches": false,
+          "snapshot": null
+        },
+        "regular_high": {
+          "patches": [
+            "0a0208011294010800128f010a220a2003b7feb63e346d73f88b12493ec0bc26eefcb7ab3f2d36cd0b62c2f9effa8c5a12620a60000102030405060708090a0b0c0d0e0f4572f619a64bd0735d122b4a703bbd65d74be81b397040996a6d7d402858feb678886a9970bb45d3e88fdb79c28869c7293672a555b637bb38f11bd465b57b70ef696fee05bb337a26e1ced3cb4022781a050a030102032220f2c40cd2a7427c9233a98ebf3764c3b1f1c8c6d7186b8abee65c213b38a918662a20f14eb92c49c0a7319acbc2fc3f313ac67d53ab5a96d2443c0b0c9b70f57c693432030a0109"
+          ],
+          "hasMorePatches": false,
+          "snapshot": null
+        }
+      },
+      {
+        "regular_high": {
+          "patches": [
+            "0a0208011294010800128f010a220a2003b7feb63e346d73f88b12493ec0bc26eefcb7ab3f2d36cd0b62c2f9effa8c5a12620a60000102030405060708090a0b0c0d0e0f4572f619a64bd0735d122b4a703bbd65d74be81b397040996a6d7d402858feb678886a9970bb45d3e88fdb79c28869c7293672a555b637bb38f11bd465b57b70ef696fee05bb337a26e1ced3cb4022781a050a030102032220f2c40cd2a7427c9233a98ebf3764c3b1f1c8c6d7186b8abee65c213b38a918662a20f14eb92c49c0a7319acbc2fc3f313ac67d53ab5a96d2443c0b0c9b70f57c693432030a0109"
+          ],
+          "hasMorePatches": false,
+          "snapshot": null
+        }
+      }
+    ],
+    "expected": {
+      "requests": [
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          },
+          {
+            "name": "regular_high",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ]
+      ],
+      "calls": [
+        "AQID"
+      ],
+      "writes": [
+        "regular",
+        "regular_high"
+      ],
+      "states": {
+        "regular": {
+          "version": 1,
+          "hash": "61edd6b70ca331d05a2c94c91072c4c9aa52231eacb50277ba17e05f396fd1fde1aba983e1dc7d3d6b25a8b2116e620142a8e936064d6ba05fd68a59115e303d4f72354062bdf1f672b034a2952717f45ce77851dad3126cfbff3e8fe24c2faa211a068d22c0dfcb2f2f740b2d550766c8d452d57de554f5d9f22c313afcb15d",
+          "map": {
+            "G5WdbdBWGfLSX4kka32M/1apuMFVphjDnKMF4ZKIJDg=": "1498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a9"
+          }
+        },
+        "regular_high": {
+          "version": 1,
+          "hash": "6260e74270e13f12ae9dc8d6c009a087606bd641f3ae87dd850c3907467e8025eeca497def8175e48a9d5a95b3ea0accdd0d11def779c1a4323d7df3c7f0438d3b63394eac9e4ebd863a53ccf3124bd8c1d4f974e5a97a33a57997529dae3dd195f0cd1c549c79dbe39c49513fca6bf65b88401eb1fdcedc445860fd899c03d4",
+          "map": {
+            "A7f+tj40bXP4ixJJPsC8Ju78t6s/LTbNC2LC+e/6jFo=": "293672a555b637bb38f11bd465b57b70ef696fee05bb337a26e1ced3cb402278"
+          }
+        }
+      },
+      "mutations": [
+        {
+          "action": "0a0c5b226d757465222c2230225d12060800220208011a002003",
+          "index": [
+            "mute",
+            "0"
+          ]
+        },
+        {
+          "action": "0a1d5b226d757465222c2233303040732e77686174736170702e6e6574225d12060800220208011a002003",
+          "index": [
+            "mute",
+            "300@s.whatsapp.net"
+          ]
+        }
+      ],
+      "downloads": [],
+      "blocked": []
+    }
+  },
+  {
+    "name": "firstAggregate",
+    "validate": false,
+    "names": [
+      "regular"
+    ],
+    "keyMode": "good",
+    "initial": {},
+    "pages": [
+      {
+        "regular": {
+          "patches": [
+            "0a0208011283010800127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a0301020322204742943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade37482a20131104f183d0ddb9b35e99fd3a09d13a6c3705c7c6fed203e2e426ea1d73ccb932050a03010203",
+            "0a0208021283010800127f0a220a20abccf1f1c0777feab64d7c920c4dc750249ae4bb66706aa5682ee1b8c638f4fb12520a50000102030405060708090a0b0c0d0e0fed9ef11b8e6d948952dc8de0d02e23a6794cf6bacf7392d19a44b85645a8286e5a429960a86e19eda1e4057d423de72a665521058ff704723a4eb941597a8b301a050a030102032220dce6a8396ece6cca5915f39aee7e79719a4e76ed2899d99f8e02c8af9b14bceb2a20a491d683b70fac19286f5fdf1d1a29d050a10b6d340b428fe22639537fba190532050a03010203",
+            "0a0208031283010800127f0a220a200a4dc3c120ccc96cd9d934ad87db920f53bb91865c9ae0ac63d1b4fefebbcfb812520a50000102030405060708090a0b0c0d0e0f7eada289c8977f8e8c87125742d1073171a567b7a27f7745fb6e91598d944fbcad4504fe28e50710a017e8af41ebe69cbc6c81cd32ad38dbdd6f7fd50513e4a11a050a030102032220e54e9dc7b095ee4daa79f34a8be8725d530b3238d402d6be70c4f068f33c3d912a20d8ce5ee52193097510f996aa8f32e45abea95529ca811412d968e030033efa3532050a03010203"
+          ],
+          "hasMorePatches": false,
+          "snapshot": null
+        }
+      }
+    ],
+    "expected": {
+      "requests": [
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ]
+      ],
+      "calls": [
+        "AQID"
+      ],
+      "writes": [
+        "regular"
+      ],
+      "states": {
+        "regular": {
+          "version": 3,
+          "hash": "3ea7490d1a86d61bc2c65ef6b4f48bcac899b068c0bbe0a6cce23677f239bfd68508b61fbc2ab843c68d06b91a8da63d7239186b8cf02ec749918060ce328f2e72908bc1a2e8feb120d83f6a559d44995ee1c9e5e4de616d1e1346e8487399326b9faa7c920e90c5e73de1e785db1cde1848d5e11afb521b7054b01abfca36a7",
+          "map": {
+            "G5WdbdBWGfLSX4kka32M/1apuMFVphjDnKMF4ZKIJDg=": "1498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a9",
+            "q8zx8cB3f+q2TXySDE3HUCSa5LtmcGqlaC7huMY49Ps=": "5a429960a86e19eda1e4057d423de72a665521058ff704723a4eb941597a8b30",
+            "Ck3DwSDMyWzZ2TSth9uSD1O7kYZcmuCsY9G0/v67z7g=": "ad4504fe28e50710a017e8af41ebe69cbc6c81cd32ad38dbdd6f7fd50513e4a1"
+          }
+        }
+      },
+      "mutations": [
+        {
+          "action": "0a0c5b226d757465222c2230225d12060800220208011a002003",
+          "index": [
+            "mute",
+            "0"
+          ]
+        },
+        {
+          "action": "0a0c5b226d757465222c2231225d12060801220208011a002003",
+          "index": [
+            "mute",
+            "1"
+          ]
+        },
+        {
+          "action": "0a0c5b226d757465222c2232225d12060802220208011a002003",
+          "index": [
+            "mute",
+            "2"
+          ]
+        }
+      ],
+      "downloads": [],
+      "blocked": []
+    }
+  },
+  {
+    "name": "firstPatchMac",
+    "validate": false,
+    "names": [
+      "regular"
+    ],
+    "keyMode": "good",
+    "initial": {},
+    "pages": [
+      {
+        "regular": {
+          "patches": [
+            "0a0208011283010800127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a0301020322204642943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade37482a20f6921e4f42e47da640e978f662ac111f7c83ded6a1784eacf58e3db63a10115f32050a03010203",
+            "0a0208021283010800127f0a220a20abccf1f1c0777feab64d7c920c4dc750249ae4bb66706aa5682ee1b8c638f4fb12520a50000102030405060708090a0b0c0d0e0fed9ef11b8e6d948952dc8de0d02e23a6794cf6bacf7392d19a44b85645a8286e5a429960a86e19eda1e4057d423de72a665521058ff704723a4eb941597a8b301a050a030102032220dce6a8396ece6cca5915f39aee7e79719a4e76ed2899d99f8e02c8af9b14bceb2a20a491d683b70fac19286f5fdf1d1a29d050a10b6d340b428fe22639537fba190532050a03010203",
+            "0a0208031283010800127f0a220a200a4dc3c120ccc96cd9d934ad87db920f53bb91865c9ae0ac63d1b4fefebbcfb812520a50000102030405060708090a0b0c0d0e0f7eada289c8977f8e8c87125742d1073171a567b7a27f7745fb6e91598d944fbcad4504fe28e50710a017e8af41ebe69cbc6c81cd32ad38dbdd6f7fd50513e4a11a050a030102032220e54e9dc7b095ee4daa79f34a8be8725d530b3238d402d6be70c4f068f33c3d912a20d8ce5ee52193097510f996aa8f32e45abea95529ca811412d968e030033efa3532050a03010203"
+          ],
+          "hasMorePatches": false,
+          "snapshot": null
+        }
+      }
+    ],
+    "expected": {
+      "requests": [
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ]
+      ],
+      "calls": [
+        "AQID"
+      ],
+      "writes": [
+        "regular"
+      ],
+      "states": {
+        "regular": {
+          "version": 3,
+          "hash": "3ea7490d1a86d61bc2c65ef6b4f48bcac899b068c0bbe0a6cce23677f239bfd68508b61fbc2ab843c68d06b91a8da63d7239186b8cf02ec749918060ce328f2e72908bc1a2e8feb120d83f6a559d44995ee1c9e5e4de616d1e1346e8487399326b9faa7c920e90c5e73de1e785db1cde1848d5e11afb521b7054b01abfca36a7",
+          "map": {
+            "G5WdbdBWGfLSX4kka32M/1apuMFVphjDnKMF4ZKIJDg=": "1498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a9",
+            "q8zx8cB3f+q2TXySDE3HUCSa5LtmcGqlaC7huMY49Ps=": "5a429960a86e19eda1e4057d423de72a665521058ff704723a4eb941597a8b30",
+            "Ck3DwSDMyWzZ2TSth9uSD1O7kYZcmuCsY9G0/v67z7g=": "ad4504fe28e50710a017e8af41ebe69cbc6c81cd32ad38dbdd6f7fd50513e4a1"
+          }
+        }
+      },
+      "mutations": [
+        {
+          "action": "0a0c5b226d757465222c2230225d12060800220208011a002003",
+          "index": [
+            "mute",
+            "0"
+          ]
+        },
+        {
+          "action": "0a0c5b226d757465222c2231225d12060801220208011a002003",
+          "index": [
+            "mute",
+            "1"
+          ]
+        },
+        {
+          "action": "0a0c5b226d757465222c2232225d12060802220208011a002003",
+          "index": [
+            "mute",
+            "2"
+          ]
+        }
+      ],
+      "downloads": [],
+      "blocked": []
+    }
+  },
+  {
+    "name": "middleIndex",
+    "validate": false,
+    "names": [
+      "regular"
+    ],
+    "keyMode": "good",
+    "initial": {},
+    "pages": [
+      {
+        "regular": {
+          "patches": [
+            "0a0208011283010800127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a0301020322204642943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade37482a20f7921e4f42e47da640e978f662ac111f7c83ded6a1784eacf58e3db63a10115f32050a03010203",
+            "0a0208021283010800127f0a220a20aaccf1f1c0777feab64d7c920c4dc750249ae4bb66706aa5682ee1b8c638f4fb12520a50000102030405060708090a0b0c0d0e0fed9ef11b8e6d948952dc8de0d02e23a6794cf6bacf7392d19a44b85645a8286e5a429960a86e19eda1e4057d423de72a665521058ff704723a4eb941597a8b301a050a030102032220dce6a8396ece6cca5915f39aee7e79719a4e76ed2899d99f8e02c8af9b14bceb2a20a491d683b70fac19286f5fdf1d1a29d050a10b6d340b428fe22639537fba190532050a03010203",
+            "0a0208031283010800127f0a220a200a4dc3c120ccc96cd9d934ad87db920f53bb91865c9ae0ac63d1b4fefebbcfb812520a50000102030405060708090a0b0c0d0e0f7eada289c8977f8e8c87125742d1073171a567b7a27f7745fb6e91598d944fbcad4504fe28e50710a017e8af41ebe69cbc6c81cd32ad38dbdd6f7fd50513e4a11a050a030102032220e54e9dc7b095ee4daa79f34a8be8725d530b3238d402d6be70c4f068f33c3d912a20d8ce5ee52193097510f996aa8f32e45abea95529ca811412d968e030033efa3532050a03010203"
+          ],
+          "hasMorePatches": false,
+          "snapshot": null
+        }
+      }
+    ],
+    "expected": {
+      "requests": [
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ]
+      ],
+      "calls": [
+        "AQID"
+      ],
+      "writes": [
+        "regular"
+      ],
+      "states": {
+        "regular": {
+          "version": 3,
+          "hash": "3ea7490d1a86d61bc2c65ef6b4f48bcac899b068c0bbe0a6cce23677f239bfd68508b61fbc2ab843c68d06b91a8da63d7239186b8cf02ec749918060ce328f2e72908bc1a2e8feb120d83f6a559d44995ee1c9e5e4de616d1e1346e8487399326b9faa7c920e90c5e73de1e785db1cde1848d5e11afb521b7054b01abfca36a7",
+          "map": {
+            "G5WdbdBWGfLSX4kka32M/1apuMFVphjDnKMF4ZKIJDg=": "1498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a9",
+            "qszx8cB3f+q2TXySDE3HUCSa5LtmcGqlaC7huMY49Ps=": "5a429960a86e19eda1e4057d423de72a665521058ff704723a4eb941597a8b30",
+            "Ck3DwSDMyWzZ2TSth9uSD1O7kYZcmuCsY9G0/v67z7g=": "ad4504fe28e50710a017e8af41ebe69cbc6c81cd32ad38dbdd6f7fd50513e4a1"
+          }
+        }
+      },
+      "mutations": [
+        {
+          "action": "0a0c5b226d757465222c2230225d12060800220208011a002003",
+          "index": [
+            "mute",
+            "0"
+          ]
+        },
+        {
+          "action": "0a0c5b226d757465222c2231225d12060801220208011a002003",
+          "index": [
+            "mute",
+            "1"
+          ]
+        },
+        {
+          "action": "0a0c5b226d757465222c2232225d12060802220208011a002003",
+          "index": [
+            "mute",
+            "2"
+          ]
+        }
+      ],
+      "downloads": [],
+      "blocked": []
+    }
+  },
+  {
+    "name": "empty",
+    "validate": true,
+    "names": [],
+    "keyMode": "good",
+    "initial": {},
+    "pages": [],
+    "expected": {
+      "requests": [],
+      "calls": [],
+      "writes": [],
+      "states": {},
+      "mutations": [],
+      "downloads": [],
+      "blocked": []
+    }
+  },
+  {
+    "name": "pagination",
+    "validate": true,
+    "names": [
+      "regular"
+    ],
+    "keyMode": "good",
+    "initial": {},
+    "pages": [
+      {
+        "regular": {
+          "patches": [
+            "0a0208011283010800127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a0301020322204642943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade37482a20f7921e4f42e47da640e978f662ac111f7c83ded6a1784eacf58e3db63a10115f32050a03010203"
+          ],
+          "hasMorePatches": true,
+          "snapshot": null
+        }
+      },
+      {
+        "regular": {
+          "patches": [
+            "0a0208021283010800127f0a220a20abccf1f1c0777feab64d7c920c4dc750249ae4bb66706aa5682ee1b8c638f4fb12520a50000102030405060708090a0b0c0d0e0fed9ef11b8e6d948952dc8de0d02e23a6794cf6bacf7392d19a44b85645a8286e5a429960a86e19eda1e4057d423de72a665521058ff704723a4eb941597a8b301a050a030102032220dce6a8396ece6cca5915f39aee7e79719a4e76ed2899d99f8e02c8af9b14bceb2a20a491d683b70fac19286f5fdf1d1a29d050a10b6d340b428fe22639537fba190532050a03010203"
+          ],
+          "hasMorePatches": true,
+          "snapshot": null
+        }
+      },
+      {
+        "regular": {
+          "patches": [
+            "0a0208031283010800127f0a220a200a4dc3c120ccc96cd9d934ad87db920f53bb91865c9ae0ac63d1b4fefebbcfb812520a50000102030405060708090a0b0c0d0e0f7eada289c8977f8e8c87125742d1073171a567b7a27f7745fb6e91598d944fbcad4504fe28e50710a017e8af41ebe69cbc6c81cd32ad38dbdd6f7fd50513e4a11a050a030102032220e54e9dc7b095ee4daa79f34a8be8725d530b3238d402d6be70c4f068f33c3d912a20d8ce5ee52193097510f996aa8f32e45abea95529ca811412d968e030033efa3532050a03010203"
+          ],
+          "hasMorePatches": false,
+          "snapshot": null
+        }
+      }
+    ],
+    "expected": {
+      "requests": [
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ],
+        [
+          {
+            "name": "regular",
+            "version": "1",
+            "return_snapshot": "false"
+          }
+        ],
+        [
+          {
+            "name": "regular",
+            "version": "2",
+            "return_snapshot": "false"
+          }
+        ]
+      ],
+      "calls": [
+        "AQID"
+      ],
+      "writes": [
+        "regular",
+        "regular",
+        "regular"
+      ],
+      "states": {
+        "regular": {
+          "version": 3,
+          "hash": "3ea7490d1a86d61bc2c65ef6b4f48bcac899b068c0bbe0a6cce23677f239bfd68508b61fbc2ab843c68d06b91a8da63d7239186b8cf02ec749918060ce328f2e72908bc1a2e8feb120d83f6a559d44995ee1c9e5e4de616d1e1346e8487399326b9faa7c920e90c5e73de1e785db1cde1848d5e11afb521b7054b01abfca36a7",
+          "map": {
+            "G5WdbdBWGfLSX4kka32M/1apuMFVphjDnKMF4ZKIJDg=": "1498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a9",
+            "q8zx8cB3f+q2TXySDE3HUCSa5LtmcGqlaC7huMY49Ps=": "5a429960a86e19eda1e4057d423de72a665521058ff704723a4eb941597a8b30",
+            "Ck3DwSDMyWzZ2TSth9uSD1O7kYZcmuCsY9G0/v67z7g=": "ad4504fe28e50710a017e8af41ebe69cbc6c81cd32ad38dbdd6f7fd50513e4a1"
+          }
+        }
+      },
+      "mutations": [
+        {
+          "action": "0a0c5b226d757465222c2230225d12060800220208011a002003",
+          "index": [
+            "mute",
+            "0"
+          ]
+        },
+        {
+          "action": "0a0c5b226d757465222c2231225d12060801220208011a002003",
+          "index": [
+            "mute",
+            "1"
+          ]
+        },
+        {
+          "action": "0a0c5b226d757465222c2232225d12060802220208011a002003",
+          "index": [
+            "mute",
+            "2"
+          ]
+        }
+      ],
+      "downloads": [],
+      "blocked": []
+    }
+  },
+  {
+    "name": "snapshot",
+    "validate": true,
+    "names": [
+      "regular"
+    ],
+    "keyMode": "good",
+    "initial": {},
+    "pages": [
+      {
+        "regular": {
+          "patches": [],
+          "hasMorePatches": false,
+          "snapshot": "0a020801127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a030102031a204642943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade374822050a03010203"
+        }
+      }
+    ],
+    "expected": {
+      "requests": [
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ]
+      ],
+      "calls": [
+        "AQID"
+      ],
+      "writes": [
+        "regular"
+      ],
+      "states": {
+        "regular": {
+          "version": 1,
+          "hash": "61edd6b70ca331d05a2c94c91072c4c9aa52231eacb50277ba17e05f396fd1fde1aba983e1dc7d3d6b25a8b2116e620142a8e936064d6ba05fd68a59115e303d4f72354062bdf1f672b034a2952717f45ce77851dad3126cfbff3e8fe24c2faa211a068d22c0dfcb2f2f740b2d550766c8d452d57de554f5d9f22c313afcb15d",
+          "map": {
+            "G5WdbdBWGfLSX4kka32M/1apuMFVphjDnKMF4ZKIJDg=": "1498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a9"
+          }
+        }
+      },
+      "mutations": [
+        {
+          "action": "0a0c5b226d757465222c2230225d12060800220208011a002003",
+          "index": [
+            "mute",
+            "0"
+          ]
+        }
+      ],
+      "downloads": [],
+      "blocked": []
+    }
+  },
+  {
+    "name": "badSnapshotMac",
+    "validate": true,
+    "names": [
+      "regular"
+    ],
+    "keyMode": "good",
+    "initial": {},
+    "pages": [
+      {
+        "regular": {
+          "patches": [],
+          "hasMorePatches": false,
+          "snapshot": "0a020801127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a030102031a204742943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade374822050a03010203"
+        }
+      }
+    ],
+    "expected": {
+      "requests": [
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ]
+      ],
+      "calls": [
+        "AQID"
+      ],
+      "writes": [
+        "regular"
+      ],
+      "states": {
+        "regular": {
+          "version": 1,
+          "hash": "61edd6b70ca331d05a2c94c91072c4c9aa52231eacb50277ba17e05f396fd1fde1aba983e1dc7d3d6b25a8b2116e620142a8e936064d6ba05fd68a59115e303d4f72354062bdf1f672b034a2952717f45ce77851dad3126cfbff3e8fe24c2faa211a068d22c0dfcb2f2f740b2d550766c8d452d57de554f5d9f22c313afcb15d",
+          "map": {
+            "G5WdbdBWGfLSX4kka32M/1apuMFVphjDnKMF4ZKIJDg=": "1498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a9"
+          }
+        }
+      },
+      "mutations": [
+        {
+          "action": "0a0c5b226d757465222c2230225d12060800220208011a002003",
+          "index": [
+            "mute",
+            "0"
+          ]
+        }
+      ],
+      "downloads": [],
+      "blocked": []
+    }
+  },
+  {
+    "name": "savedVersion",
+    "validate": true,
+    "names": [
+      "regular"
+    ],
+    "keyMode": "good",
+    "initial": {
+      "regular": {
+        "version": 1,
+        "hash": "61edd6b70ca331d05a2c94c91072c4c9aa52231eacb50277ba17e05f396fd1fde1aba983e1dc7d3d6b25a8b2116e620142a8e936064d6ba05fd68a59115e303d4f72354062bdf1f672b034a2952717f45ce77851dad3126cfbff3e8fe24c2faa211a068d22c0dfcb2f2f740b2d550766c8d452d57de554f5d9f22c313afcb15d",
+        "map": {
+          "G5WdbdBWGfLSX4kka32M/1apuMFVphjDnKMF4ZKIJDg=": "1498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a9"
+        }
+      }
+    },
+    "pages": [
+      {
+        "regular": {
+          "patches": [
+            "0a0208011283010800127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a0301020322204642943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade37482a20f7921e4f42e47da640e978f662ac111f7c83ded6a1784eacf58e3db63a10115f32050a03010203",
+            "0a0208021283010800127f0a220a20abccf1f1c0777feab64d7c920c4dc750249ae4bb66706aa5682ee1b8c638f4fb12520a50000102030405060708090a0b0c0d0e0fed9ef11b8e6d948952dc8de0d02e23a6794cf6bacf7392d19a44b85645a8286e5a429960a86e19eda1e4057d423de72a665521058ff704723a4eb941597a8b301a050a030102032220dce6a8396ece6cca5915f39aee7e79719a4e76ed2899d99f8e02c8af9b14bceb2a20a491d683b70fac19286f5fdf1d1a29d050a10b6d340b428fe22639537fba190532050a03010203",
+            "0a0208031283010800127f0a220a200a4dc3c120ccc96cd9d934ad87db920f53bb91865c9ae0ac63d1b4fefebbcfb812520a50000102030405060708090a0b0c0d0e0f7eada289c8977f8e8c87125742d1073171a567b7a27f7745fb6e91598d944fbcad4504fe28e50710a017e8af41ebe69cbc6c81cd32ad38dbdd6f7fd50513e4a11a050a030102032220e54e9dc7b095ee4daa79f34a8be8725d530b3238d402d6be70c4f068f33c3d912a20d8ce5ee52193097510f996aa8f32e45abea95529ca811412d968e030033efa3532050a03010203"
+          ],
+          "hasMorePatches": false,
+          "snapshot": null
+        }
+      }
+    ],
+    "expected": {
+      "requests": [
+        [
+          {
+            "name": "regular",
+            "version": "1",
+            "return_snapshot": "false"
+          }
+        ]
+      ],
+      "calls": [
+        "AQID"
+      ],
+      "writes": [
+        "regular"
+      ],
+      "states": {
+        "regular": {
+          "version": 3,
+          "hash": "3ea7490d1a86d61bc2c65ef6b4f48bcac899b068c0bbe0a6cce23677f239bfd68508b61fbc2ab843c68d06b91a8da63d7239186b8cf02ec749918060ce328f2e72908bc1a2e8feb120d83f6a559d44995ee1c9e5e4de616d1e1346e8487399326b9faa7c920e90c5e73de1e785db1cde1848d5e11afb521b7054b01abfca36a7",
+          "map": {
+            "G5WdbdBWGfLSX4kka32M/1apuMFVphjDnKMF4ZKIJDg=": "1498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a9",
+            "q8zx8cB3f+q2TXySDE3HUCSa5LtmcGqlaC7huMY49Ps=": "5a429960a86e19eda1e4057d423de72a665521058ff704723a4eb941597a8b30",
+            "Ck3DwSDMyWzZ2TSth9uSD1O7kYZcmuCsY9G0/v67z7g=": "ad4504fe28e50710a017e8af41ebe69cbc6c81cd32ad38dbdd6f7fd50513e4a1"
+          }
+        }
+      },
+      "mutations": [
+        {
+          "action": "0a0c5b226d757465222c2231225d12060801220208011a002003",
+          "index": [
+            "mute",
+            "1"
+          ]
+        },
+        {
+          "action": "0a0c5b226d757465222c2232225d12060802220208011a002003",
+          "index": [
+            "mute",
+            "2"
+          ]
+        }
+      ],
+      "downloads": [],
+      "blocked": []
+    }
+  },
+  {
+    "name": "deduplicated",
+    "validate": true,
+    "names": [
+      "regular",
+      "regular"
+    ],
+    "keyMode": "good",
+    "initial": {},
+    "pages": [
+      {
+        "regular": {
+          "patches": [
+            "0a0208011283010800127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a0301020322204642943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade37482a20f7921e4f42e47da640e978f662ac111f7c83ded6a1784eacf58e3db63a10115f32050a03010203"
+          ],
+          "hasMorePatches": false,
+          "snapshot": null
+        }
+      }
+    ],
+    "expected": {
+      "requests": [
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ]
+      ],
+      "calls": [
+        "AQID"
+      ],
+      "writes": [
+        "regular"
+      ],
+      "states": {
+        "regular": {
+          "version": 1,
+          "hash": "61edd6b70ca331d05a2c94c91072c4c9aa52231eacb50277ba17e05f396fd1fde1aba983e1dc7d3d6b25a8b2116e620142a8e936064d6ba05fd68a59115e303d4f72354062bdf1f672b034a2952717f45ce77851dad3126cfbff3e8fe24c2faa211a068d22c0dfcb2f2f740b2d550766c8d452d57de554f5d9f22c313afcb15d",
+          "map": {
+            "G5WdbdBWGfLSX4kka32M/1apuMFVphjDnKMF4ZKIJDg=": "1498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a9"
+          }
+        }
+      },
+      "mutations": [
+        {
+          "action": "0a0c5b226d757465222c2230225d12060800220208011a002003",
+          "index": [
+            "mute",
+            "0"
+          ]
+        }
+      ],
+      "downloads": [],
+      "blocked": []
+    }
+  },
+  {
+    "name": "missingResponse",
+    "validate": true,
+    "names": [
+      "regular"
+    ],
+    "keyMode": "good",
+    "initial": {},
+    "pages": [
+      {},
+      {
+        "regular": {
+          "patches": [
+            "0a0208011283010800127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a0301020322204642943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade37482a20f7921e4f42e47da640e978f662ac111f7c83ded6a1784eacf58e3db63a10115f32050a03010203"
+          ],
+          "hasMorePatches": false,
+          "snapshot": null
+        }
+      }
+    ],
+    "expected": {
+      "requests": [
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ],
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ]
+      ],
+      "calls": [
+        "AQID"
+      ],
+      "writes": [
+        "regular"
+      ],
+      "states": {
+        "regular": {
+          "version": 1,
+          "hash": "61edd6b70ca331d05a2c94c91072c4c9aa52231eacb50277ba17e05f396fd1fde1aba983e1dc7d3d6b25a8b2116e620142a8e936064d6ba05fd68a59115e303d4f72354062bdf1f672b034a2952717f45ce77851dad3126cfbff3e8fe24c2faa211a068d22c0dfcb2f2f740b2d550766c8d452d57de554f5d9f22c313afcb15d",
+          "map": {
+            "G5WdbdBWGfLSX4kka32M/1apuMFVphjDnKMF4ZKIJDg=": "1498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a9"
+          }
+        }
+      },
+      "mutations": [
+        {
+          "action": "0a0c5b226d757465222c2230225d12060800220208011a002003",
+          "index": [
+            "mute",
+            "0"
+          ]
+        }
+      ],
+      "downloads": [],
+      "blocked": []
+    }
+  },
+  {
+    "name": "missingKeys",
+    "validate": true,
+    "names": [
+      "regular"
+    ],
+    "keyMode": "missing",
+    "initial": {},
+    "pages": [
+      {
+        "regular": {
+          "patches": [
+            "0a0208011283010800127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a0301020322204642943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade37482a20f7921e4f42e47da640e978f662ac111f7c83ded6a1784eacf58e3db63a10115f32050a03010203"
+          ],
+          "hasMorePatches": false,
+          "snapshot": null
+        }
+      },
+      {
+        "regular": {
+          "patches": [
+            "0a0208011283010800127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a0301020322204642943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade37482a20f7921e4f42e47da640e978f662ac111f7c83ded6a1784eacf58e3db63a10115f32050a03010203"
+          ],
+          "hasMorePatches": false,
+          "snapshot": null
+        }
+      }
+    ],
+    "expected": {
+      "requests": [
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ],
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ]
+      ],
+      "calls": [
+        "AQID"
+      ],
+      "writes": [],
+      "states": {},
+      "mutations": [],
+      "downloads": [],
+      "blocked": [
+        "regular"
+      ]
+    }
+  },
+  {
+    "name": "snapshotRecovery",
+    "validate": true,
+    "names": [
+      "regular"
+    ],
+    "keyMode": "good",
+    "initial": {},
+    "pages": [
+      {
+        "regular": {
+          "patches": [
+            "0a0208011283010800127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a0301020322204642943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade37482a20f7921e4f42e47da640e978f662ac111f7c83ded6a1784eacf58e3db63a10115f32030a0109"
+          ],
+          "hasMorePatches": false,
+          "snapshot": null
+        }
+      },
+      {
+        "regular": {
+          "patches": [
+            "0a0208021283010800127f0a220a20abccf1f1c0777feab64d7c920c4dc750249ae4bb66706aa5682ee1b8c638f4fb12520a50000102030405060708090a0b0c0d0e0fed9ef11b8e6d948952dc8de0d02e23a6794cf6bacf7392d19a44b85645a8286e5a429960a86e19eda1e4057d423de72a665521058ff704723a4eb941597a8b301a050a030102032220dce6a8396ece6cca5915f39aee7e79719a4e76ed2899d99f8e02c8af9b14bceb2a20a491d683b70fac19286f5fdf1d1a29d050a10b6d340b428fe22639537fba190532050a03010203"
+          ],
+          "hasMorePatches": false,
+          "snapshot": "0a020801127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a030102031a204642943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade374822050a03010203"
+        }
+      }
+    ],
+    "expected": {
+      "requests": [
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ],
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ]
+      ],
+      "calls": [
+        "CQ==",
+        "AQID"
+      ],
+      "writes": [
+        "regular",
+        "regular"
+      ],
+      "states": {
+        "regular": {
+          "version": 2,
+          "hash": "82162b8287c95c3bdf0ee35830b5bc1d752bb153cafe42cd6752f3a44aa0aaee621f72feae568f105ce3904237a46ac4815128558bc48916af18a0914b84cfec00b4e87bf092f0ca2ba8788e7a200050def8ced7956fa4356f9391b04fbc1850aaac248eae07586ab1197cc7ee5d37f80026a8b608d21b920d8f8b2b630b03b7",
+          "map": {
+            "G5WdbdBWGfLSX4kka32M/1apuMFVphjDnKMF4ZKIJDg=": "1498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a9",
+            "q8zx8cB3f+q2TXySDE3HUCSa5LtmcGqlaC7huMY49Ps=": "5a429960a86e19eda1e4057d423de72a665521058ff704723a4eb941597a8b30"
+          }
+        }
+      },
+      "mutations": [
+        {
+          "action": "0a0c5b226d757465222c2230225d12060800220208011a002003",
+          "index": [
+            "mute",
+            "0"
+          ]
+        },
+        {
+          "action": "0a0c5b226d757465222c2231225d12060801220208011a002003",
+          "index": [
+            "mute",
+            "1"
+          ]
+        }
+      ],
+      "downloads": [],
+      "blocked": []
+    }
+  },
+  {
+    "name": "snapshotBeforeBlocked",
+    "validate": true,
+    "names": [
+      "regular"
+    ],
+    "keyMode": "good",
+    "initial": {},
+    "pages": [
+      {
+        "regular": {
+          "patches": [
+            "0a0208011283010800127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a0301020322204642943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade37482a20f7921e4f42e47da640e978f662ac111f7c83ded6a1784eacf58e3db63a10115f32030a0109"
+          ],
+          "hasMorePatches": false,
+          "snapshot": "0a020801127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a030102031a204642943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade374822050a03010203"
+        }
+      },
+      {
+        "regular": {
+          "patches": [
+            "0a0208011283010800127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a0301020322204642943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade37482a20f7921e4f42e47da640e978f662ac111f7c83ded6a1784eacf58e3db63a10115f32030a0109"
+          ],
+          "hasMorePatches": false,
+          "snapshot": null
+        }
+      }
+    ],
+    "expected": {
+      "requests": [
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ],
+        [
+          {
+            "name": "regular",
+            "version": "1",
+            "return_snapshot": "true"
+          }
+        ]
+      ],
+      "calls": [
+        "AQID",
+        "CQ=="
+      ],
+      "writes": [
+        "regular"
+      ],
+      "states": {
+        "regular": {
+          "version": 1,
+          "hash": "61edd6b70ca331d05a2c94c91072c4c9aa52231eacb50277ba17e05f396fd1fde1aba983e1dc7d3d6b25a8b2116e620142a8e936064d6ba05fd68a59115e303d4f72354062bdf1f672b034a2952717f45ce77851dad3126cfbff3e8fe24c2faa211a068d22c0dfcb2f2f740b2d550766c8d452d57de554f5d9f22c313afcb15d",
+          "map": {
+            "G5WdbdBWGfLSX4kka32M/1apuMFVphjDnKMF4ZKIJDg=": "1498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a9"
+          }
+        }
+      },
+      "mutations": [
+        {
+          "action": "0a0c5b226d757465222c2230225d12060800220208011a002003",
+          "index": [
+            "mute",
+            "0"
+          ]
+        }
+      ],
+      "downloads": [],
+      "blocked": [
+        "regular"
+      ]
+    }
+  },
+  {
+    "name": "queryRollback",
+    "validate": true,
+    "names": [
+      "regular"
+    ],
+    "keyMode": "good",
+    "initial": {},
+    "pages": [
+      {
+        "regular": {
+          "patches": [
+            "0a0208011283010800127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a0301020322204642943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade37482a20f7921e4f42e47da640e978f662ac111f7c83ded6a1784eacf58e3db63a10115f32050a03010203"
+          ],
+          "hasMorePatches": true,
+          "snapshot": null
+        }
+      },
+      {
+        "error": true
+      }
+    ],
+    "expected": {
+      "requests": [
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ],
+        [
+          {
+            "name": "regular",
+            "version": "1",
+            "return_snapshot": "false"
+          }
+        ]
+      ],
+      "calls": [
+        "AQID"
+      ],
+      "writes": [
+        "regular"
+      ],
+      "states": {},
+      "mutations": [],
+      "downloads": [],
+      "blocked": [],
+      "error": "query failed"
+    }
+  },
+  {
+    "name": "fatalInput",
+    "validate": true,
+    "names": [
+      "regular"
+    ],
+    "keyMode": "good",
+    "initial": {},
+    "pages": [
+      {
+        "regular": {
+          "patches": [],
+          "hasMorePatches": false,
+          "snapshot": "0a020801122b0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e1928824381a050a030102031a204642943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade374822050a03010203"
+        }
+      }
+    ],
+    "expected": {
+      "requests": [
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ]
+      ],
+      "calls": [
+        "AQID"
+      ],
+      "writes": [],
+      "states": {},
+      "mutations": [],
+      "downloads": [],
+      "blocked": []
+    }
+  },
+  {
+    "name": "downloadRetry",
+    "validate": true,
+    "names": [
+      "regular"
+    ],
+    "keyMode": "good",
+    "initial": {},
+    "pages": [
+      {
+        "regular": {
+          "patches": [
+            "0a0208011283010800127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a030102031a0712052f6661696c22204642943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade37482a20f7921e4f42e47da640e978f662ac111f7c83ded6a1784eacf58e3db63a10115f32050a03010203"
+          ],
+          "hasMorePatches": false,
+          "snapshot": null
+        }
+      },
+      {
+        "regular": {
+          "patches": [
+            "0a0208011283010800127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a030102031a0712052f6661696c22204642943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade37482a20f7921e4f42e47da640e978f662ac111f7c83ded6a1784eacf58e3db63a10115f32050a03010203"
+          ],
+          "hasMorePatches": false,
+          "snapshot": null
+        }
+      }
+    ],
+    "expected": {
+      "requests": [
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ],
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ]
+      ],
+      "calls": [],
+      "writes": [],
+      "states": {},
+      "mutations": [],
+      "downloads": [
+        "/fail",
+        "/fail"
+      ],
+      "blocked": []
+    }
+  },
+  {
+    "name": "unsolicitedPatch",
+    "validate": true,
+    "names": [
+      "regular"
+    ],
+    "keyMode": "good",
+    "initial": {},
+    "pages": [
+      {
+        "regular_high": {
+          "patches": [
+            "0a0208011294010800128f010a220a2003b7feb63e346d73f88b12493ec0bc26eefcb7ab3f2d36cd0b62c2f9effa8c5a12620a60000102030405060708090a0b0c0d0e0f4572f619a64bd0735d122b4a703bbd65d74be81b397040996a6d7d402858feb678886a9970bb45d3e88fdb79c28869c7293672a555b637bb38f11bd465b57b70ef696fee05bb337a26e1ced3cb4022781a050a030102032220f2c40cd2a7427c9233a98ebf3764c3b1f1c8c6d7186b8abee65c213b38a918662a20f14eb92c49c0a7319acbc2fc3f313ac67d53ab5a96d2443c0b0c9b70f57c693432050a03010203"
+          ],
+          "hasMorePatches": false,
+          "snapshot": null
+        }
+      }
+    ],
+    "expected": {
+      "requests": [
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ]
+      ],
+      "calls": [],
+      "writes": [],
+      "states": {},
+      "mutations": [],
+      "downloads": [],
+      "blocked": [],
+      "error": "Cannot read properties of undefined (reading 'version')"
+    }
+  },
+  {
+    "name": "multipleCollections",
+    "validate": true,
+    "names": [
+      "regular",
+      "regular_high"
+    ],
+    "keyMode": "good",
+    "initial": {},
+    "pages": [
+      {
+        "regular": {
+          "patches": [
+            "0a0208011283010800127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a0301020322204642943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade37482a20f7921e4f42e47da640e978f662ac111f7c83ded6a1784eacf58e3db63a10115f32050a03010203"
+          ],
+          "hasMorePatches": true,
+          "snapshot": null
+        },
+        "regular_high": {
+          "patches": [
+            "0a0208011294010800128f010a220a2003b7feb63e346d73f88b12493ec0bc26eefcb7ab3f2d36cd0b62c2f9effa8c5a12620a60000102030405060708090a0b0c0d0e0f4572f619a64bd0735d122b4a703bbd65d74be81b397040996a6d7d402858feb678886a9970bb45d3e88fdb79c28869c7293672a555b637bb38f11bd465b57b70ef696fee05bb337a26e1ced3cb4022781a050a030102032220f2c40cd2a7427c9233a98ebf3764c3b1f1c8c6d7186b8abee65c213b38a918662a20f14eb92c49c0a7319acbc2fc3f313ac67d53ab5a96d2443c0b0c9b70f57c693432050a03010203"
+          ],
+          "hasMorePatches": false,
+          "snapshot": null
+        }
+      },
+      {
+        "regular": {
+          "patches": [
+            "0a0208021283010800127f0a220a20abccf1f1c0777feab64d7c920c4dc750249ae4bb66706aa5682ee1b8c638f4fb12520a50000102030405060708090a0b0c0d0e0fed9ef11b8e6d948952dc8de0d02e23a6794cf6bacf7392d19a44b85645a8286e5a429960a86e19eda1e4057d423de72a665521058ff704723a4eb941597a8b301a050a030102032220dce6a8396ece6cca5915f39aee7e79719a4e76ed2899d99f8e02c8af9b14bceb2a20a491d683b70fac19286f5fdf1d1a29d050a10b6d340b428fe22639537fba190532050a03010203"
+          ],
+          "hasMorePatches": false,
+          "snapshot": null
+        }
+      }
+    ],
+    "expected": {
+      "requests": [
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          },
+          {
+            "name": "regular_high",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ],
+        [
+          {
+            "name": "regular",
+            "version": "1",
+            "return_snapshot": "false"
+          }
+        ]
+      ],
+      "calls": [
+        "AQID"
+      ],
+      "writes": [
+        "regular",
+        "regular_high",
+        "regular"
+      ],
+      "states": {
+        "regular": {
+          "version": 2,
+          "hash": "82162b8287c95c3bdf0ee35830b5bc1d752bb153cafe42cd6752f3a44aa0aaee621f72feae568f105ce3904237a46ac4815128558bc48916af18a0914b84cfec00b4e87bf092f0ca2ba8788e7a200050def8ced7956fa4356f9391b04fbc1850aaac248eae07586ab1197cc7ee5d37f80026a8b608d21b920d8f8b2b630b03b7",
+          "map": {
+            "G5WdbdBWGfLSX4kka32M/1apuMFVphjDnKMF4ZKIJDg=": "1498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a9",
+            "q8zx8cB3f+q2TXySDE3HUCSa5LtmcGqlaC7huMY49Ps=": "5a429960a86e19eda1e4057d423de72a665521058ff704723a4eb941597a8b30"
+          }
+        },
+        "regular_high": {
+          "version": 1,
+          "hash": "6260e74270e13f12ae9dc8d6c009a087606bd641f3ae87dd850c3907467e8025eeca497def8175e48a9d5a95b3ea0accdd0d11def779c1a4323d7df3c7f0438d3b63394eac9e4ebd863a53ccf3124bd8c1d4f974e5a97a33a57997529dae3dd195f0cd1c549c79dbe39c49513fca6bf65b88401eb1fdcedc445860fd899c03d4",
+          "map": {
+            "A7f+tj40bXP4ixJJPsC8Ju78t6s/LTbNC2LC+e/6jFo=": "293672a555b637bb38f11bd465b57b70ef696fee05bb337a26e1ced3cb402278"
+          }
+        }
+      },
+      "mutations": [
+        {
+          "action": "0a0c5b226d757465222c2230225d12060800220208011a002003",
+          "index": [
+            "mute",
+            "0"
+          ]
+        },
+        {
+          "action": "0a1d5b226d757465222c2233303040732e77686174736170702e6e6574225d12060800220208011a002003",
+          "index": [
+            "mute",
+            "300@s.whatsapp.net"
+          ]
+        },
+        {
+          "action": "0a0c5b226d757465222c2231225d12060801220208011a002003",
+          "index": [
+            "mute",
+            "1"
+          ]
+        }
+      ],
+      "downloads": [],
+      "blocked": []
+    }
+  },
+  {
+    "name": "oneBlockedCollection",
+    "validate": true,
+    "names": [
+      "regular",
+      "regular_high"
+    ],
+    "keyMode": "good",
+    "initial": {},
+    "pages": [
+      {
+        "regular": {
+          "patches": [
+            "0a0208011283010800127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a0301020322204642943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade37482a20f7921e4f42e47da640e978f662ac111f7c83ded6a1784eacf58e3db63a10115f32050a03010203"
+          ],
+          "hasMorePatches": false,
+          "snapshot": null
+        },
+        "regular_high": {
+          "patches": [
+            "0a0208011294010800128f010a220a2003b7feb63e346d73f88b12493ec0bc26eefcb7ab3f2d36cd0b62c2f9effa8c5a12620a60000102030405060708090a0b0c0d0e0f4572f619a64bd0735d122b4a703bbd65d74be81b397040996a6d7d402858feb678886a9970bb45d3e88fdb79c28869c7293672a555b637bb38f11bd465b57b70ef696fee05bb337a26e1ced3cb4022781a050a030102032220f2c40cd2a7427c9233a98ebf3764c3b1f1c8c6d7186b8abee65c213b38a918662a20f14eb92c49c0a7319acbc2fc3f313ac67d53ab5a96d2443c0b0c9b70f57c693432030a0109"
+          ],
+          "hasMorePatches": false,
+          "snapshot": null
+        }
+      },
+      {
+        "regular_high": {
+          "patches": [
+            "0a0208011294010800128f010a220a2003b7feb63e346d73f88b12493ec0bc26eefcb7ab3f2d36cd0b62c2f9effa8c5a12620a60000102030405060708090a0b0c0d0e0f4572f619a64bd0735d122b4a703bbd65d74be81b397040996a6d7d402858feb678886a9970bb45d3e88fdb79c28869c7293672a555b637bb38f11bd465b57b70ef696fee05bb337a26e1ced3cb4022781a050a030102032220f2c40cd2a7427c9233a98ebf3764c3b1f1c8c6d7186b8abee65c213b38a918662a20f14eb92c49c0a7319acbc2fc3f313ac67d53ab5a96d2443c0b0c9b70f57c693432030a0109"
+          ],
+          "hasMorePatches": false,
+          "snapshot": null
+        }
+      }
+    ],
+    "expected": {
+      "requests": [
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          },
+          {
+            "name": "regular_high",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ],
+        [
+          {
+            "name": "regular_high",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ]
+      ],
+      "calls": [
+        "AQID",
+        "CQ=="
+      ],
+      "writes": [
+        "regular"
+      ],
+      "states": {
+        "regular": {
+          "version": 1,
+          "hash": "61edd6b70ca331d05a2c94c91072c4c9aa52231eacb50277ba17e05f396fd1fde1aba983e1dc7d3d6b25a8b2116e620142a8e936064d6ba05fd68a59115e303d4f72354062bdf1f672b034a2952717f45ce77851dad3126cfbff3e8fe24c2faa211a068d22c0dfcb2f2f740b2d550766c8d452d57de554f5d9f22c313afcb15d",
+          "map": {
+            "G5WdbdBWGfLSX4kka32M/1apuMFVphjDnKMF4ZKIJDg=": "1498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a9"
+          }
+        }
+      },
+      "mutations": [
+        {
+          "action": "0a0c5b226d757465222c2230225d12060800220208011a002003",
+          "index": [
+            "mute",
+            "0"
+          ]
+        }
+      ],
+      "downloads": [],
+      "blocked": [
+        "regular_high"
+      ]
+    }
+  },
+  {
+    "name": "firstAggregate",
+    "validate": true,
+    "names": [
+      "regular"
+    ],
+    "keyMode": "good",
+    "initial": {},
+    "pages": [
+      {
+        "regular": {
+          "patches": [
+            "0a0208011283010800127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a0301020322204742943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade37482a20131104f183d0ddb9b35e99fd3a09d13a6c3705c7c6fed203e2e426ea1d73ccb932050a03010203",
+            "0a0208021283010800127f0a220a20abccf1f1c0777feab64d7c920c4dc750249ae4bb66706aa5682ee1b8c638f4fb12520a50000102030405060708090a0b0c0d0e0fed9ef11b8e6d948952dc8de0d02e23a6794cf6bacf7392d19a44b85645a8286e5a429960a86e19eda1e4057d423de72a665521058ff704723a4eb941597a8b301a050a030102032220dce6a8396ece6cca5915f39aee7e79719a4e76ed2899d99f8e02c8af9b14bceb2a20a491d683b70fac19286f5fdf1d1a29d050a10b6d340b428fe22639537fba190532050a03010203",
+            "0a0208031283010800127f0a220a200a4dc3c120ccc96cd9d934ad87db920f53bb91865c9ae0ac63d1b4fefebbcfb812520a50000102030405060708090a0b0c0d0e0f7eada289c8977f8e8c87125742d1073171a567b7a27f7745fb6e91598d944fbcad4504fe28e50710a017e8af41ebe69cbc6c81cd32ad38dbdd6f7fd50513e4a11a050a030102032220e54e9dc7b095ee4daa79f34a8be8725d530b3238d402d6be70c4f068f33c3d912a20d8ce5ee52193097510f996aa8f32e45abea95529ca811412d968e030033efa3532050a03010203"
+          ],
+          "hasMorePatches": false,
+          "snapshot": null
+        }
+      }
+    ],
+    "expected": {
+      "requests": [
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ]
+      ],
+      "calls": [
+        "AQID"
+      ],
+      "writes": [
+        "regular"
+      ],
+      "states": {
+        "regular": {
+          "version": 1,
+          "hash": "61edd6b70ca331d05a2c94c91072c4c9aa52231eacb50277ba17e05f396fd1fde1aba983e1dc7d3d6b25a8b2116e620142a8e936064d6ba05fd68a59115e303d4f72354062bdf1f672b034a2952717f45ce77851dad3126cfbff3e8fe24c2faa211a068d22c0dfcb2f2f740b2d550766c8d452d57de554f5d9f22c313afcb15d",
+          "map": {
+            "G5WdbdBWGfLSX4kka32M/1apuMFVphjDnKMF4ZKIJDg=": "1498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a9"
+          }
+        }
+      },
+      "mutations": [
+        {
+          "action": "0a0c5b226d757465222c2230225d12060800220208011a002003",
+          "index": [
+            "mute",
+            "0"
+          ]
+        }
+      ],
+      "downloads": [],
+      "blocked": []
+    }
+  },
+  {
+    "name": "firstPatchMac",
+    "validate": true,
+    "names": [
+      "regular"
+    ],
+    "keyMode": "good",
+    "initial": {},
+    "pages": [
+      {
+        "regular": {
+          "patches": [
+            "0a0208011283010800127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a0301020322204642943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade37482a20f6921e4f42e47da640e978f662ac111f7c83ded6a1784eacf58e3db63a10115f32050a03010203",
+            "0a0208021283010800127f0a220a20abccf1f1c0777feab64d7c920c4dc750249ae4bb66706aa5682ee1b8c638f4fb12520a50000102030405060708090a0b0c0d0e0fed9ef11b8e6d948952dc8de0d02e23a6794cf6bacf7392d19a44b85645a8286e5a429960a86e19eda1e4057d423de72a665521058ff704723a4eb941597a8b301a050a030102032220dce6a8396ece6cca5915f39aee7e79719a4e76ed2899d99f8e02c8af9b14bceb2a20a491d683b70fac19286f5fdf1d1a29d050a10b6d340b428fe22639537fba190532050a03010203",
+            "0a0208031283010800127f0a220a200a4dc3c120ccc96cd9d934ad87db920f53bb91865c9ae0ac63d1b4fefebbcfb812520a50000102030405060708090a0b0c0d0e0f7eada289c8977f8e8c87125742d1073171a567b7a27f7745fb6e91598d944fbcad4504fe28e50710a017e8af41ebe69cbc6c81cd32ad38dbdd6f7fd50513e4a11a050a030102032220e54e9dc7b095ee4daa79f34a8be8725d530b3238d402d6be70c4f068f33c3d912a20d8ce5ee52193097510f996aa8f32e45abea95529ca811412d968e030033efa3532050a03010203"
+          ],
+          "hasMorePatches": false,
+          "snapshot": null
+        }
+      }
+    ],
+    "expected": {
+      "requests": [
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ]
+      ],
+      "calls": [
+        "AQID"
+      ],
+      "writes": [
+        "regular"
+      ],
+      "states": {
+        "regular": {
+          "version": 2,
+          "hash": "212955ca7b262b6b85e24f8f2043f853cbd88e351e494056ad3a13451131d9f08173c97acd7912d3f1bde88f263608c33fa93f1e85771e76504216383a269fafb141b33b8ed5ffd3b9f744ece5f8e95b82115686bb9b92c9749353216d6fe9a589921e018c47799e82ea08bcc1083092385156e18becc79c349c5ffa290f5259",
+          "map": {
+            "q8zx8cB3f+q2TXySDE3HUCSa5LtmcGqlaC7huMY49Ps=": "5a429960a86e19eda1e4057d423de72a665521058ff704723a4eb941597a8b30"
+          }
+        }
+      },
+      "mutations": [
+        {
+          "action": "0a0c5b226d757465222c2231225d12060801220208011a002003",
+          "index": [
+            "mute",
+            "1"
+          ]
+        }
+      ],
+      "downloads": [],
+      "blocked": []
+    }
+  },
+  {
+    "name": "middleIndex",
+    "validate": true,
+    "names": [
+      "regular"
+    ],
+    "keyMode": "good",
+    "initial": {},
+    "pages": [
+      {
+        "regular": {
+          "patches": [
+            "0a0208011283010800127f0a220a201b959d6dd05619f2d25f89246b7d8cff56a9b8c155a618c39ca305e19288243812520a50000102030405060708090a0b0c0d0e0ff53125cf752fa5663492d7d7fb28aee701c1c7147e8cf251db18d6d0da61eb671498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a91a050a0301020322204642943e839bef6cb0f858e76822cfbbdfe2793e341746b0506522d04ade37482a20f7921e4f42e47da640e978f662ac111f7c83ded6a1784eacf58e3db63a10115f32050a03010203",
+            "0a0208021283010800127f0a220a20aaccf1f1c0777feab64d7c920c4dc750249ae4bb66706aa5682ee1b8c638f4fb12520a50000102030405060708090a0b0c0d0e0fed9ef11b8e6d948952dc8de0d02e23a6794cf6bacf7392d19a44b85645a8286e5a429960a86e19eda1e4057d423de72a665521058ff704723a4eb941597a8b301a050a030102032220dce6a8396ece6cca5915f39aee7e79719a4e76ed2899d99f8e02c8af9b14bceb2a20a491d683b70fac19286f5fdf1d1a29d050a10b6d340b428fe22639537fba190532050a03010203",
+            "0a0208031283010800127f0a220a200a4dc3c120ccc96cd9d934ad87db920f53bb91865c9ae0ac63d1b4fefebbcfb812520a50000102030405060708090a0b0c0d0e0f7eada289c8977f8e8c87125742d1073171a567b7a27f7745fb6e91598d944fbcad4504fe28e50710a017e8af41ebe69cbc6c81cd32ad38dbdd6f7fd50513e4a11a050a030102032220e54e9dc7b095ee4daa79f34a8be8725d530b3238d402d6be70c4f068f33c3d912a20d8ce5ee52193097510f996aa8f32e45abea95529ca811412d968e030033efa3532050a03010203"
+          ],
+          "hasMorePatches": false,
+          "snapshot": null
+        }
+      }
+    ],
+    "expected": {
+      "requests": [
+        [
+          {
+            "name": "regular",
+            "version": "0",
+            "return_snapshot": "true"
+          }
+        ]
+      ],
+      "calls": [
+        "AQID"
+      ],
+      "writes": [
+        "regular"
+      ],
+      "states": {
+        "regular": {
+          "version": 3,
+          "hash": "1d7ef4429f5fabb03de40f6794b19376fdc02233a272a0501fa82332e108e6e50495eda4efb0a670d5cf1e29f4569e7a3390d94c07791051f94e6a28940cf07ec14ed8851413ffdd67e0fb7d70a45b3ddccf735f2943cfa3aa7ff3c6db03b08ce20c8c7b06c717276553d92bc4d2ec4be0f67f008f0e8b7e3cb8512096bbe44d",
+          "map": {
+            "G5WdbdBWGfLSX4kka32M/1apuMFVphjDnKMF4ZKIJDg=": "1498b26ee69a1d3878b9ac54e49906dde895d45234a370b14c79c77651ca56a9",
+            "Ck3DwSDMyWzZ2TSth9uSD1O7kYZcmuCsY9G0/v67z7g=": "ad4504fe28e50710a017e8af41ebe69cbc6c81cd32ad38dbdd6f7fd50513e4a1"
+          }
+        }
+      },
+      "mutations": [
+        {
+          "action": "0a0c5b226d757465222c2230225d12060800220208011a002003",
+          "index": [
+            "mute",
+            "0"
+          ]
+        },
+        {
+          "action": "0a0c5b226d757465222c2232225d12060802220208011a002003",
+          "index": [
+            "mute",
+            "2"
+          ]
+        }
+      ],
+      "downloads": [],
+      "blocked": []
+    }
+  }
+]

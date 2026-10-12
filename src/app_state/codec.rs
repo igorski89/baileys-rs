@@ -206,11 +206,11 @@ pub enum Record<'a> {
     Snapshot(&'a proto::SyncdRecord),
     Mutation(&'a proto::SyncdMutation),
 }
-pub async fn decode_mutations(
+pub async fn decode_mutations<F: FnMut(ChatMutation) -> Result<(), Error> + ?Sized>(
     records: &[Record<'_>],
     initial: &LtHashState,
     provider: &KeyProvider,
-    on_mutation: &mut dyn FnMut(ChatMutation) -> Result<(), Error>,
+    on_mutation: &mut F,
     validate: bool,
 ) -> Result<LtHashState, Error> {
     let mut generator = LtHashGenerator::new(initial)?;
@@ -293,12 +293,12 @@ pub async fn decode_mutations(
     }
     generator.finish()
 }
-pub async fn decode_patch(
+pub async fn decode_patch<F: FnMut(ChatMutation) -> Result<(), Error> + ?Sized>(
     patch: &proto::SyncdPatch,
     name: &str,
     initial: &LtHashState,
     provider: &KeyProvider,
-    on_mutation: &mut dyn FnMut(ChatMutation) -> Result<(), Error>,
+    on_mutation: &mut F,
     validate: bool,
 ) -> Result<LtHashState, Error> {
     if validate {

@@ -1,6 +1,7 @@
 //! App-state mutation integrity and snapshot/patch codecs.
 mod codec;
 mod network;
+mod sync;
 use crate::{
     auth::{LtHashState, ValueMac},
     crypto, proto,
@@ -9,6 +10,7 @@ use base64::{Engine, engine::general_purpose::STANDARD};
 pub use codec::*;
 pub use network::*;
 use std::collections::BTreeMap;
+pub use sync::*;
 use zeroize::Zeroizing;
 pub const HASH_SIZE: usize = 128;
 #[derive(Debug, thiserror::Error)]
@@ -35,6 +37,11 @@ pub enum Error {
     Mac(&'static str),
     #[error("app-state key lookup failed: {0}")]
     Lookup(String),
+    #[error("app-state transport failed: {message}")]
+    Transport {
+        message: String,
+        status_code: Option<u16>,
+    },
     #[error("app-state key worker failed")]
     Task,
 }
