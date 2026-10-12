@@ -171,7 +171,19 @@ async fn automatic_signal_decryption_orders_receipts_keys_upserts_and_chat_effec
         });
         let (socket, mut events) = Socket::connect(config, auth).await.unwrap();
         socket.wait_for_open(Duration::from_secs(2)).await.unwrap();
-        let first = upsert(&mut events).await;
+        // Online stanzas are buffered, so consolidation publishes the chat update
+        // before the upsert that caused it.
+        let mut unread = false;
+        let first = loop {
+            match events.recv().await.unwrap() {
+                Event::ChatsUpdated(values) => {
+                    assert_eq!(values[0].unread_count, Some(1));
+                    unread = true;
+                }
+                Event::MessagesUpserted(value) => break value,
+                _ => {}
+            }
+        };
         assert_eq!(first.kind, messages::own::UpsertKind::Notify);
         assert_eq!(first.messages[0].message.as_ref(), Some(&text));
         assert_eq!(
@@ -184,7 +196,6 @@ async fn automatic_signal_decryption_orders_receipts_keys_upserts_and_chat_effec
             Some("200@s.whatsapp.net")
         );
         let mut contacts = false;
-        let mut unread = false;
         let mut second = None;
         let mut reactions = None;
         while !(contacts && unread && second.is_some() && reactions.is_some()) {

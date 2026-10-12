@@ -200,6 +200,11 @@ impl Emitter {
             .buffer(self.0.origin.elapsed());
         self.0.changed.notify_one();
     }
+    /// Online stanza admission releases the shared buffer immediately when its handler ends.
+    pub fn node_scope(&self) -> NodeScope {
+        self.buffer();
+        NodeScope(Some(self.clone()))
+    }
     pub fn set_counter_command(&self, command: tokio::sync::mpsc::WeakSender<super::Command>) {
         *self
             .0
@@ -288,6 +293,24 @@ impl Emitter {
         result.map(|_| flushed)
     }
 }
+/// Unlike createBufferedFunction, processNodeWithBuffer calls flush immediately.
+/// Native cancellation also releases the buffer through this guard.
+pub(super) struct NodeScope(Option<Emitter>);
+impl NodeScope {
+    pub fn finish(mut self) -> Result<bool, Error> {
+        self.0.take().expect("online node scope").flush()
+    }
+}
+impl Drop for NodeScope {
+    fn drop(&mut self) {
+        if let Some(emitter) = self.0.take()
+            && let Err(error) = emitter.flush()
+        {
+            tracing::warn!(?error, "online node buffer release failed");
+        }
+    }
+}
+
 /// A cancelled buffered operation follows the source's error/finally path.
 pub(super) struct Scope(pub Option<Emitter>);
 impl Scope {

@@ -4,6 +4,7 @@ import {readFile,writeFile,mkdtemp,rm} from 'node:fs/promises'
 import {resolve,join} from 'node:path'
 import {tmpdir} from 'node:os'
 import {pathToFileURL} from 'node:url'
+import {writeEventBuffer} from './lib/event-buffer.mjs'
 const upstream=resolve(process.argv[2]??'../Baileys'),require=createRequire(resolve('.cache/fixture-tools/package.json')),temp=await mkdtemp(join(tmpdir(),'baileys-incoming-receipts-'))
 try{
  for(const name of ['constants','jid-utils']){let s=await readFile(join(upstream,`src/WABinary/${name}.ts`),'utf8');s=s.replace(/export enum WAJIDDomains \{([^}]+)\}/,(_,b)=>'export const WAJIDDomains = {'+b.replaceAll('=',':')+'}');await writeFile(join(temp,`${name}.mjs`),stripTypeScriptTypes(s).replaceAll("'./constants'","'./constants.mjs'"))}
@@ -15,14 +16,17 @@ try{
  const handle=recv.slice(recv.indexOf('const handleReceipt ='),recv.indexOf('const handleNotification ='))
  await writeFile(join(temp,'handler.mjs'),`import {proto} from './proto.mjs';import {areJidsSameUser,isJidGroup,isJidStatusBroadcast,jidNormalizedUser} from './jid-utils.mjs';`+stripTypeScriptTypes(status+number+children)+stripTypeScriptTypes(`export function make(){const events=[],resends=[],acks=[],counts=new Map();const authState={creds:{me:{id:'100:7@s.whatsapp.net',lid:'900:7@lid'}}};const ev={emit(name,data){events.push({name,data})}},receiptMutex={mutex:fn=>fn()},logger={debug(){},error(){},info(){}};const willSendMessageAgain=async(id,p)=>(counts.get(id+':'+p)||0)<3;const updateSendMessageAgainCount=async(id,p)=>counts.set(id+':'+p,(counts.get(id+':'+p)||0)+1);const sendMessagesAgain=async(key,ids,retry)=>resends.push({key,ids,count:retry?.attrs.count??null});const sendMessageAck=async node=>acks.push(node.attrs.id);`+handle+`return {handleReceipt,events,resends,acks}}`))
  const {make}=await import(pathToFileURL(join(temp,'handler.mjs')))
+ // Online receipts run inside processNodeWithBuffer: replay each emission through the original buffer.
+ const {makeEventBuffer}=await writeEventBuffer(upstream,temp),logger={warn(){},debug(){},trace(){},info(){},error(){}}
+ const buffered=events=>{const out=[],ev=makeEventBuffer(logger);ev.process(map=>{for(const [name,data] of Object.entries(map))out.push({name,data})});ev.buffer();for(const {name,data} of structuredClone(events))ev.emit(name,data);ev.flush();return out}
  const cases=[]
  for(const from of ['200:1@s.whatsapp.net','100:2@s.whatsapp.net','800:1@lid','900:2@lid','group@g.us','status@broadcast'])for(const type of [undefined,'sender','read','read-self','played','inactive','retry']){
   const attrs={id:'A',from,t:'1700000000',...(type?{type}:{}),...((from.includes('g.us')||from==='status@broadcast')?{participant:'800:1@lid'}:{})}
   const node={tag:'receipt',attrs,content:[{tag:'list',attrs:{},content:[{tag:'item',attrs:{id:'B'}},{tag:'item',attrs:{id:'B'}}]},...(type==='retry'?[{tag:'retry',attrs:{count:'2'}}]:[])]}
-  const h=make();await h.handleReceipt(node);cases.push({node,events:h.events,resends:h.resends,acks:h.acks})
+  const h=make();await h.handleReceipt(node);cases.push({node,events:h.events,bufferedEvents:buffered(h.events),resends:h.resends,acks:h.acks})
  }
  for(const attrs of [{id:'A',from:'100:2@s.whatsapp.net',recipient:'200@s.whatsapp.net',type:'read',t:'bad'},{id:'A',from:'group@g.us',type:'read'},{id:'A',from:'group@g.us',participant:'800:1@lid',type:'played',t:'-5.25'},{id:'A',from:'status@broadcast',participant:'900@lid',type:'sender',t:'Infinity'},{id:'A',from:'200@lid',t:''},{id:'A',from:'200@lid',type:'unknown',t:'0x10'}]){
-  const node={tag:'receipt',attrs};const h=make();await h.handleReceipt(node);cases.push({node,events:h.events,resends:h.resends,acks:h.acks})
+  const node={tag:'receipt',attrs};const h=make();await h.handleReceipt(node);cases.push({node,events:h.events,bufferedEvents:buffered(h.events),resends:h.resends,acks:h.acks})
  }
  await writeFile('tests/fixtures/incoming_receipts.json',JSON.stringify({me:'100:7@s.whatsapp.net',lid:'900:7@lid',cases},null,2)+'\n');console.log(`Generated ${cases.length} incoming receipt cases from upstream`)
 }finally{await rm(temp,{recursive:true,force:true})}

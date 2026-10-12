@@ -28,12 +28,12 @@ struct Pending {
     deadline: Instant,
 }
 struct Actor<'a> {
-    calls: Option<mpsc::UnboundedSender<BinaryNode>>,
+    calls: Option<mpsc::UnboundedSender<super::dispatch::OnlineNode>>,
     socket_inner: std::sync::Weak<super::Inner>,
     offline: mpsc::UnboundedSender<BinaryNode>,
-    notifications: Option<mpsc::UnboundedSender<BinaryNode>>,
-    receipts: Option<mpsc::UnboundedSender<BinaryNode>>,
-    messages: Option<mpsc::UnboundedSender<BinaryNode>>,
+    notifications: Option<mpsc::UnboundedSender<super::dispatch::OnlineNode>>,
+    receipts: Option<mpsc::UnboundedSender<super::dispatch::OnlineNode>>,
+    messages: Option<mpsc::UnboundedSender<super::dispatch::OnlineNode>>,
     ws: &'a mut WebSocket,
     noise: &'a mut NoiseHandler,
     config: Config,
@@ -67,11 +67,11 @@ pub(super) async fn run(
     state: watch::Sender<ConnectionState>,
     retry_manager: Option<crate::retry::Manager>,
     retry_requests: Arc<super::retries::RetryRequests>,
-    receipts: Option<mpsc::UnboundedSender<BinaryNode>>,
-    messages: Option<mpsc::UnboundedSender<BinaryNode>>,
-    notifications: Option<mpsc::UnboundedSender<BinaryNode>>,
+    receipts: Option<mpsc::UnboundedSender<super::dispatch::OnlineNode>>,
+    messages: Option<mpsc::UnboundedSender<super::dispatch::OnlineNode>>,
+    notifications: Option<mpsc::UnboundedSender<super::dispatch::OnlineNode>>,
     offline: mpsc::UnboundedSender<BinaryNode>,
-    calls: Option<mpsc::UnboundedSender<BinaryNode>>,
+    calls: Option<mpsc::UnboundedSender<super::dispatch::OnlineNode>>,
     socket_inner: std::sync::Weak<super::Inner>,
 ) {
     let mut actor = Actor {
@@ -535,21 +535,30 @@ impl Actor<'_> {
             && node.tag == "receipt"
             && let Some(sender) = &self.receipts
         {
-            let _ = sender.send(node.clone());
+            let _ = sender.send(super::dispatch::OnlineNode {
+                node: node.clone(),
+                scope: self.events.node_scope(),
+            });
         }
         if !ignored
             && !queued
             && node.tag == "message"
             && let Some(sender) = &self.messages
         {
-            let _ = sender.send(node.clone());
+            let _ = sender.send(super::dispatch::OnlineNode {
+                node: node.clone(),
+                scope: self.events.node_scope(),
+            });
         }
         if !ignored
             && !queued
             && node.tag == "call"
             && let Some(sender) = &self.calls
         {
-            let _ = sender.send(node.clone());
+            let _ = sender.send(super::dispatch::OnlineNode {
+                node: node.clone(),
+                scope: self.events.node_scope(),
+            });
         }
         match node.tag.as_str() {
             _ if ignored || queued => (),
@@ -679,13 +688,17 @@ impl Actor<'_> {
             }
             "notification" if node.attrs.get("type").is_some_and(|t| t == "server_sync") => {
                 if let Some(sender) = &self.notifications {
-                    let _ = sender.send(node.clone());
+                    let _ = sender.send(super::dispatch::OnlineNode {
+                        node: node.clone(),
+                        scope: self.events.node_scope(),
+                    });
                 }
             }
             "notification"
                 if node.attrs.get("type").is_some_and(|s| s == "mediaretry")
                     && self.config.process_media_notifications =>
             {
+                let _scope = self.events.node_scope();
                 match crate::media::decode_retry(&node) {
                     Ok(event) => self.emit(Event::MediaUpdated(vec![event])),
                     Err(error) => tracing::debug!(?error, "media notification decode failed"),
@@ -694,6 +707,8 @@ impl Actor<'_> {
                 self.send(&ack).await?;
             }
             "notification" if node.child("link_code_companion_reg").is_some() => {
+                let _scope = (admission == super::dispatch::Admission::Online)
+                    .then(|| self.events.node_scope());
                 let credentials = self.credentials.clone();
                 let notification = node.clone();
                 let id = self.tag()?;

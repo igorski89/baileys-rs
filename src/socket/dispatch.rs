@@ -4,6 +4,11 @@ use crate::{auth::Contact, binary::BinaryNode, jid, offline};
 use std::{collections::HashMap, sync::Arc};
 use tokio::sync::mpsc;
 
+pub(super) struct OnlineNode {
+    pub node: BinaryNode,
+    pub scope: super::events::NodeScope,
+}
+
 // Receipt ownership follows jidDecode's user component even for malformed devices.
 // Filtering must precede address validation and cryptographic work.
 fn user(jid: Option<&str>) -> Option<&str> {

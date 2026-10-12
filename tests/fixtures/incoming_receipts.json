@@ -71,6 +71,35 @@
           ]
         }
       ],
+      "bufferedEvents": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "200:1@s.whatsapp.net",
+                "id": "A",
+                "fromMe": true
+              },
+              "update": {
+                "status": 3,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "200:1@s.whatsapp.net",
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 3,
+                "messageTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
       "resends": [],
       "acks": [
         "A"
@@ -125,6 +154,35 @@
               "key": {
                 "remoteJid": "200:1@s.whatsapp.net",
                 "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 2,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "200:1@s.whatsapp.net",
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 2,
+                "messageTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "bufferedEvents": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "200:1@s.whatsapp.net",
+                "id": "A",
                 "fromMe": true
               },
               "update": {
@@ -221,6 +279,35 @@
           ]
         }
       ],
+      "bufferedEvents": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "200:1@s.whatsapp.net",
+                "id": "A",
+                "fromMe": true
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "200:1@s.whatsapp.net",
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
       "resends": [],
       "acks": [
         "A"
@@ -275,6 +362,35 @@
               "key": {
                 "remoteJid": "200:1@s.whatsapp.net",
                 "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "200:1@s.whatsapp.net",
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "bufferedEvents": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "200:1@s.whatsapp.net",
+                "id": "A",
                 "fromMe": true
               },
               "update": {
@@ -371,6 +487,35 @@
           ]
         }
       ],
+      "bufferedEvents": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "200:1@s.whatsapp.net",
+                "id": "A",
+                "fromMe": true
+              },
+              "update": {
+                "status": 5,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "200:1@s.whatsapp.net",
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 5,
+                "messageTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
       "resends": [],
       "acks": [
         "A"
@@ -407,6 +552,7 @@
         ]
       },
       "events": [],
+      "bufferedEvents": [],
       "resends": [],
       "acks": [
         "A"
@@ -449,6 +595,7 @@
         ]
       },
       "events": [],
+      "bufferedEvents": [],
       "resends": [
         {
           "key": {
@@ -535,6 +682,33 @@
           ]
         }
       ],
+      "bufferedEvents": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "id": "A",
+                "fromMe": true
+              },
+              "update": {
+                "status": 3,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 3,
+                "messageTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
       "resends": [],
       "acks": [
         "A"
@@ -587,6 +761,33 @@
             {
               "key": {
                 "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 2,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 2,
+                "messageTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "bufferedEvents": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "id": "A",
                 "fromMe": true
               },
               "update": {
@@ -679,6 +880,33 @@
           ]
         }
       ],
+      "bufferedEvents": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "id": "A",
+                "fromMe": true
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
       "resends": [],
       "acks": [
         "A"
@@ -731,6 +959,33 @@
             {
               "key": {
                 "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "bufferedEvents": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "id": "A",
                 "fromMe": true
               },
               "update": {
@@ -823,6 +1078,33 @@
           ]
         }
       ],
+      "bufferedEvents": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "id": "A",
+                "fromMe": true
+              },
+              "update": {
+                "status": 5,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 5,
+                "messageTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
       "resends": [],
       "acks": [
         "A"
@@ -859,6 +1141,7 @@
         ]
       },
       "events": [],
+      "bufferedEvents": [],
       "resends": [],
       "acks": [
         "A"
@@ -901,6 +1184,7 @@
         ]
       },
       "events": [],
+      "bufferedEvents": [],
       "resends": [
         {
           "key": {
@@ -989,6 +1273,35 @@
           ]
         }
       ],
+      "bufferedEvents": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "800:1@lid",
+                "id": "A",
+                "fromMe": true
+              },
+              "update": {
+                "status": 3,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "800:1@lid",
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 3,
+                "messageTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
       "resends": [],
       "acks": [
         "A"
@@ -1043,6 +1356,35 @@
               "key": {
                 "remoteJid": "800:1@lid",
                 "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 2,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "800:1@lid",
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 2,
+                "messageTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "bufferedEvents": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "800:1@lid",
+                "id": "A",
                 "fromMe": true
               },
               "update": {
@@ -1139,6 +1481,35 @@
           ]
         }
       ],
+      "bufferedEvents": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "800:1@lid",
+                "id": "A",
+                "fromMe": true
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "800:1@lid",
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
       "resends": [],
       "acks": [
         "A"
@@ -1193,6 +1564,35 @@
               "key": {
                 "remoteJid": "800:1@lid",
                 "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "800:1@lid",
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "bufferedEvents": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "800:1@lid",
+                "id": "A",
                 "fromMe": true
               },
               "update": {
@@ -1289,6 +1689,35 @@
           ]
         }
       ],
+      "bufferedEvents": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "800:1@lid",
+                "id": "A",
+                "fromMe": true
+              },
+              "update": {
+                "status": 5,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "800:1@lid",
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 5,
+                "messageTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
       "resends": [],
       "acks": [
         "A"
@@ -1325,6 +1754,7 @@
         ]
       },
       "events": [],
+      "bufferedEvents": [],
       "resends": [],
       "acks": [
         "A"
@@ -1367,6 +1797,7 @@
         ]
       },
       "events": [],
+      "bufferedEvents": [],
       "resends": [
         {
           "key": {
@@ -1453,6 +1884,33 @@
           ]
         }
       ],
+      "bufferedEvents": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "id": "A",
+                "fromMe": true
+              },
+              "update": {
+                "status": 3,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 3,
+                "messageTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
       "resends": [],
       "acks": [
         "A"
@@ -1505,6 +1963,33 @@
             {
               "key": {
                 "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 2,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 2,
+                "messageTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "bufferedEvents": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "id": "A",
                 "fromMe": true
               },
               "update": {
@@ -1597,6 +2082,33 @@
           ]
         }
       ],
+      "bufferedEvents": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "id": "A",
+                "fromMe": true
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
       "resends": [],
       "acks": [
         "A"
@@ -1649,6 +2161,33 @@
             {
               "key": {
                 "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "bufferedEvents": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "id": "A",
                 "fromMe": true
               },
               "update": {
@@ -1741,6 +2280,33 @@
           ]
         }
       ],
+      "bufferedEvents": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "id": "A",
+                "fromMe": true
+              },
+              "update": {
+                "status": 5,
+                "messageTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "id": "B",
+                "fromMe": true
+              },
+              "update": {
+                "status": 5,
+                "messageTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
       "resends": [],
       "acks": [
         "A"
@@ -1777,6 +2343,7 @@
         ]
       },
       "events": [],
+      "bufferedEvents": [],
       "resends": [],
       "acks": [
         "A"
@@ -1819,6 +2386,7 @@
         ]
       },
       "events": [],
+      "bufferedEvents": [],
       "resends": [
         {
           "key": {
@@ -1888,6 +2456,37 @@
               "key": {
                 "remoteJid": "group@g.us",
                 "id": "B",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "receiptTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "group@g.us",
+                "id": "B",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "receiptTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "bufferedEvents": [
+        {
+          "name": "message-receipt.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "group@g.us",
+                "id": "A",
                 "fromMe": true,
                 "participant": "800:1@lid"
               },
@@ -1990,6 +2589,37 @@
           ]
         }
       ],
+      "bufferedEvents": [
+        {
+          "name": "message-receipt.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "group@g.us",
+                "id": "A",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "group@g.us",
+                "id": "B",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
       "resends": [],
       "acks": [
         "A"
@@ -2046,6 +2676,37 @@
               "key": {
                 "remoteJid": "group@g.us",
                 "id": "B",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "group@g.us",
+                "id": "B",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "bufferedEvents": [
+        {
+          "name": "message-receipt.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "group@g.us",
+                "id": "A",
                 "fromMe": true,
                 "participant": "800:1@lid"
               },
@@ -2148,6 +2809,37 @@
           ]
         }
       ],
+      "bufferedEvents": [
+        {
+          "name": "message-receipt.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "group@g.us",
+                "id": "A",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "group@g.us",
+                "id": "B",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
       "resends": [],
       "acks": [
         "A"
@@ -2227,6 +2919,37 @@
           ]
         }
       ],
+      "bufferedEvents": [
+        {
+          "name": "message-receipt.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "group@g.us",
+                "id": "A",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "group@g.us",
+                "id": "B",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
       "resends": [],
       "acks": [
         "A"
@@ -2264,6 +2987,7 @@
         ]
       },
       "events": [],
+      "bufferedEvents": [],
       "resends": [],
       "acks": [
         "A"
@@ -2307,6 +3031,7 @@
         ]
       },
       "events": [],
+      "bufferedEvents": [],
       "resends": [
         {
           "key": {
@@ -2400,6 +3125,37 @@
           ]
         }
       ],
+      "bufferedEvents": [
+        {
+          "name": "message-receipt.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "status@broadcast",
+                "id": "A",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "receiptTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "status@broadcast",
+                "id": "B",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "receiptTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
       "resends": [],
       "acks": [
         "A"
@@ -2479,6 +3235,37 @@
           ]
         }
       ],
+      "bufferedEvents": [
+        {
+          "name": "message-receipt.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "status@broadcast",
+                "id": "A",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "status@broadcast",
+                "id": "B",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
       "resends": [],
       "acks": [
         "A"
@@ -2535,6 +3322,37 @@
               "key": {
                 "remoteJid": "status@broadcast",
                 "id": "B",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "status@broadcast",
+                "id": "B",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "bufferedEvents": [
+        {
+          "name": "message-receipt.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "status@broadcast",
+                "id": "A",
                 "fromMe": true,
                 "participant": "800:1@lid"
               },
@@ -2637,6 +3455,37 @@
           ]
         }
       ],
+      "bufferedEvents": [
+        {
+          "name": "message-receipt.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "status@broadcast",
+                "id": "A",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "status@broadcast",
+                "id": "B",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
       "resends": [],
       "acks": [
         "A"
@@ -2693,6 +3542,37 @@
               "key": {
                 "remoteJid": "status@broadcast",
                 "id": "B",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": 1700000000
+              }
+            },
+            {
+              "key": {
+                "remoteJid": "status@broadcast",
+                "id": "B",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": 1700000000
+              }
+            }
+          ]
+        }
+      ],
+      "bufferedEvents": [
+        {
+          "name": "message-receipt.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "status@broadcast",
+                "id": "A",
                 "fromMe": true,
                 "participant": "800:1@lid"
               },
@@ -2753,6 +3633,7 @@
         ]
       },
       "events": [],
+      "bufferedEvents": [],
       "resends": [],
       "acks": [
         "A"
@@ -2796,6 +3677,7 @@
         ]
       },
       "events": [],
+      "bufferedEvents": [],
       "resends": [
         {
           "key": {
@@ -2845,6 +3727,24 @@
           ]
         }
       ],
+      "bufferedEvents": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "200@s.whatsapp.net",
+                "id": "A",
+                "fromMe": false
+              },
+              "update": {
+                "status": 4,
+                "messageTimestamp": 0
+              }
+            }
+          ]
+        }
+      ],
       "resends": [],
       "acks": [
         "A"
@@ -2860,6 +3760,7 @@
         }
       },
       "events": [],
+      "bufferedEvents": [],
       "resends": [],
       "acks": [
         "A"
@@ -2877,6 +3778,25 @@
         }
       },
       "events": [
+        {
+          "name": "message-receipt.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "group@g.us",
+                "id": "A",
+                "fromMe": true,
+                "participant": "800:1@lid"
+              },
+              "receipt": {
+                "userJid": "800@lid",
+                "readTimestamp": -5.25
+              }
+            }
+          ]
+        }
+      ],
+      "bufferedEvents": [
         {
           "name": "message-receipt.update",
           "data": [
@@ -2930,6 +3850,25 @@
           ]
         }
       ],
+      "bufferedEvents": [
+        {
+          "name": "message-receipt.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "status@broadcast",
+                "id": "A",
+                "fromMe": true,
+                "participant": "900@lid"
+              },
+              "receipt": {
+                "userJid": "900@lid",
+                "readTimestamp": null
+              }
+            }
+          ]
+        }
+      ],
       "resends": [],
       "acks": [
         "A"
@@ -2945,6 +3884,24 @@
         }
       },
       "events": [
+        {
+          "name": "messages.update",
+          "data": [
+            {
+              "key": {
+                "remoteJid": "200@lid",
+                "id": "A",
+                "fromMe": true
+              },
+              "update": {
+                "status": 3,
+                "messageTimestamp": 0
+              }
+            }
+          ]
+        }
+      ],
+      "bufferedEvents": [
         {
           "name": "messages.update",
           "data": [
@@ -2978,6 +3935,7 @@
         }
       },
       "events": [],
+      "bufferedEvents": [],
       "resends": [],
       "acks": [
         "A"

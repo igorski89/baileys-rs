@@ -240,10 +240,15 @@ impl Socket {
         .await
     }
 }
-pub(super) fn spawn_worker(inner: &Arc<Inner>, mut receiver: mpsc::UnboundedReceiver<BinaryNode>) {
+pub(super) fn spawn_worker(
+    inner: &Arc<Inner>,
+    mut receiver: mpsc::UnboundedReceiver<super::dispatch::OnlineNode>,
+) {
     let weak = Arc::downgrade(inner);
     tokio::spawn(async move {
-        while let Some(node) = receiver.recv().await {
+        while let Some(online) = receiver.recv().await {
+            let super::dispatch::OnlineNode { node, scope } = online;
+            let _scope = scope;
             let Some(inner) = weak.upgrade() else { break };
             if let Err(error) = (Socket { inner }).handle_message(&node).await {
                 tracing::debug!(?error, "incoming message handling failed");

@@ -69,7 +69,7 @@ async fn incoming_receipts_automatically_emit_status_and_user_updates_then_ack()
             .collect();
         let expected: Vec<_> = cases
             .iter()
-            .flat_map(|c| c["events"].as_array().unwrap().clone())
+            .flat_map(|c| c["bufferedEvents"].as_array().unwrap().clone())
             .collect();
         let (listener, config) = listener().await;
         let (done_tx, done_rx) = tokio::sync::oneshot::channel();
@@ -121,6 +121,26 @@ async fn incoming_receipts_automatically_emit_status_and_user_updates_then_ack()
                             assert_eq!(
                                 actual.message_timestamp,
                                 expected["update"]["messageTimestamp"].as_f64().unwrap()
+                            );
+                        }
+                        break;
+                    }
+                    // Online receipts are buffered and arrive as consolidated batches.
+                    Event::MessageUpdates(updates) => {
+                        assert_eq!(expected["name"], "messages.update");
+                        let data = expected["data"].as_array().unwrap();
+                        assert_eq!(updates.len(), data.len());
+                        for (actual, expected) in updates.iter().zip(data) {
+                            assert_eq!(actual.key.id.as_deref(), expected["key"]["id"].as_str());
+                            assert_eq!(
+                                actual.key.remote_jid.as_deref(),
+                                expected["key"]["remoteJid"].as_str()
+                            );
+                            let update = actual.update_value();
+                            assert_eq!(update["status"], expected["update"]["status"]);
+                            assert_eq!(
+                                update["messageTimestamp"].as_f64(),
+                                expected["update"]["messageTimestamp"].as_f64()
                             );
                         }
                         break;

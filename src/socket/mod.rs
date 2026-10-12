@@ -595,7 +595,8 @@ impl Socket {
         let actor_retry_manager = retry_manager.clone();
         let retry_requests = Arc::new(retries::RetryRequests::default());
         let actor_retry_requests = retry_requests.clone();
-        let (receipt_sender, mut receipt_receiver) = mpsc::unbounded_channel::<BinaryNode>();
+        let (receipt_sender, mut receipt_receiver) =
+            mpsc::unbounded_channel::<dispatch::OnlineNode>();
         let receipt_sender = config.process_receipts.then_some(receipt_sender);
         let (message_sender, message_receiver) = mpsc::unbounded_channel();
         let message_sender = config.process_messages.then_some(message_sender);
@@ -652,7 +653,9 @@ impl Socket {
         notifications::spawn_worker(&inner, notification_receiver);
         let receipt_inner = Arc::downgrade(&inner);
         tokio::spawn(async move {
-            while let Some(node) = receipt_receiver.recv().await {
+            while let Some(online) = receipt_receiver.recv().await {
+                let dispatch::OnlineNode { node, scope } = online;
+                let _scope = scope;
                 let Some(inner) = receipt_inner.upgrade() else {
                     break;
                 };
@@ -720,6 +723,18 @@ impl Socket {
         let scope = events::Scope(Some(self.inner.events.clone()));
         let result = operation.await;
         scope.finish(result.is_ok());
+        result
+    }
+    /// Buffer an explicitly dispatched online stanza and flush when it ends.
+    /// This releases the shared buffer even if other operations are still running,
+    /// matching processNodeWithBuffer. Dropping the future also releases it.
+    pub async fn with_node_events<T>(
+        &self,
+        operation: impl std::future::Future<Output = Result<T, Error>>,
+    ) -> Result<T, Error> {
+        let scope = self.inner.events.node_scope();
+        let result = operation.await;
+        scope.finish()?;
         result
     }
     pub fn state(&self) -> ConnectionState {

@@ -49,15 +49,20 @@ impl Socket {
         Ok(true)
     }
 }
-pub(super) fn spawn_worker(inner: &Arc<Inner>, mut receiver: mpsc::UnboundedReceiver<BinaryNode>) {
+pub(super) fn spawn_worker(
+    inner: &Arc<Inner>,
+    mut receiver: mpsc::UnboundedReceiver<super::dispatch::OnlineNode>,
+) {
     let weak = Arc::downgrade(inner);
     tokio::spawn(async move {
-        while let Some(node) = receiver.recv().await {
+        while let Some(online) = receiver.recv().await {
+            let super::dispatch::OnlineNode { node, scope } = online;
             let Some(inner) = weak.upgrade() else { break };
             // Acquire in arrival order, but release before ACK completion so
             // queued processing can continue as in upstream's finally block.
             let guard = inner.notification_lock.clone().lock_owned().await;
             tokio::spawn(async move {
+                let _scope = scope;
                 let socket = Socket { inner };
                 let result = socket.process_app_state_notification(&node).await;
                 drop(guard);
