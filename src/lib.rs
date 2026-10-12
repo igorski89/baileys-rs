@@ -7,6 +7,7 @@ pub mod connection;
 pub mod crypto;
 pub mod defaults;
 pub mod devices;
+pub mod event_buffer;
 pub mod groups;
 pub mod history;
 pub mod jid;
