@@ -28,6 +28,7 @@ struct Pending {
     deadline: Instant,
 }
 struct Actor<'a> {
+    notifications: Option<mpsc::UnboundedSender<BinaryNode>>,
     receipts: Option<mpsc::UnboundedSender<BinaryNode>>,
     messages: Option<mpsc::UnboundedSender<BinaryNode>>,
     ws: &'a mut WebSocket,
@@ -65,8 +66,10 @@ pub(super) async fn run(
     retry_requests: Arc<super::retries::RetryRequests>,
     receipts: Option<mpsc::UnboundedSender<BinaryNode>>,
     messages: Option<mpsc::UnboundedSender<BinaryNode>>,
+    notifications: Option<mpsc::UnboundedSender<BinaryNode>>,
 ) {
     let mut actor = Actor {
+        notifications,
         receipts,
         messages,
         ws,
@@ -574,6 +577,11 @@ impl Actor<'_> {
                 self.emit(Event::PairingComplete);
                 self.send(&pairing.reply).await?;
                 self.unified_session().await?;
+            }
+            "notification" if node.attrs.get("type").is_some_and(|t| t == "server_sync") => {
+                if let Some(sender) = &self.notifications {
+                    let _ = sender.send(node.clone());
+                }
             }
             "notification"
                 if node.attrs.get("type").is_some_and(|s| s == "mediaretry")

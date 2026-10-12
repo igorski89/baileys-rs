@@ -1,0 +1,1858 @@
+[
+  {
+    "shape": "absent",
+    "fail": false,
+    "ackFail": false,
+    "node": {
+      "tag": "notification",
+      "attrs": {
+        "id": "NOTIFICATION",
+        "from": "s.whatsapp.net",
+        "type": "server_sync"
+      },
+      "content": null
+    },
+    "expected": {
+      "trace": [
+        {
+          "operation": "ack",
+          "node": {
+            "tag": "ack",
+            "attrs": {
+              "id": "NOTIFICATION",
+              "to": "s.whatsapp.net",
+              "class": "notification",
+              "type": "server_sync"
+            },
+            "content": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "shape": "absent",
+    "fail": false,
+    "ackFail": false,
+    "node": {
+      "tag": "notification",
+      "attrs": {
+        "id": "NOTIFICATION",
+        "from": "s.whatsapp.net",
+        "type": "server_sync",
+        "participant": "100:2@s.whatsapp.net",
+        "recipient": "100@lid",
+        "offline": "true"
+      },
+      "content": null
+    },
+    "expected": {
+      "trace": [
+        {
+          "operation": "ack",
+          "node": {
+            "tag": "ack",
+            "attrs": {
+              "id": "NOTIFICATION",
+              "to": "s.whatsapp.net",
+              "class": "notification",
+              "participant": "100:2@s.whatsapp.net",
+              "recipient": "100@lid",
+              "type": "server_sync"
+            },
+            "content": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "shape": "absent",
+    "fail": false,
+    "ackFail": true,
+    "node": {
+      "tag": "notification",
+      "attrs": {
+        "id": "NOTIFICATION",
+        "from": "s.whatsapp.net",
+        "type": "server_sync"
+      },
+      "content": null
+    },
+    "expected": {
+      "trace": [
+        {
+          "operation": "ack",
+          "node": {
+            "tag": "ack",
+            "attrs": {
+              "id": "NOTIFICATION",
+              "to": "s.whatsapp.net",
+              "class": "notification",
+              "type": "server_sync"
+            },
+            "content": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "shape": "absent",
+    "fail": false,
+    "ackFail": true,
+    "node": {
+      "tag": "notification",
+      "attrs": {
+        "id": "NOTIFICATION",
+        "from": "s.whatsapp.net",
+        "type": "server_sync",
+        "participant": "100:2@s.whatsapp.net",
+        "recipient": "100@lid",
+        "offline": "true"
+      },
+      "content": null
+    },
+    "expected": {
+      "trace": [
+        {
+          "operation": "ack",
+          "node": {
+            "tag": "ack",
+            "attrs": {
+              "id": "NOTIFICATION",
+              "to": "s.whatsapp.net",
+              "class": "notification",
+              "participant": "100:2@s.whatsapp.net",
+              "recipient": "100@lid",
+              "type": "server_sync"
+            },
+            "content": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "shape": "absent",
+    "fail": true,
+    "ackFail": false,
+    "node": {
+      "tag": "notification",
+      "attrs": {
+        "id": "NOTIFICATION",
+        "from": "s.whatsapp.net",
+        "type": "server_sync"
+      },
+      "content": null
+    },
+    "expected": {
+      "trace": [
+        {
+          "operation": "ack",
+          "node": {
+            "tag": "ack",
+            "attrs": {
+              "id": "NOTIFICATION",
+              "to": "s.whatsapp.net",
+              "class": "notification",
+              "type": "server_sync"
+            },
+            "content": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "shape": "absent",
+    "fail": true,
+    "ackFail": false,
+    "node": {
+      "tag": "notification",
+      "attrs": {
+        "id": "NOTIFICATION",
+        "from": "s.whatsapp.net",
+        "type": "server_sync",
+        "participant": "100:2@s.whatsapp.net",
+        "recipient": "100@lid",
+        "offline": "true"
+      },
+      "content": null
+    },
+    "expected": {
+      "trace": [
+        {
+          "operation": "ack",
+          "node": {
+            "tag": "ack",
+            "attrs": {
+              "id": "NOTIFICATION",
+              "to": "s.whatsapp.net",
+              "class": "notification",
+              "participant": "100:2@s.whatsapp.net",
+              "recipient": "100@lid",
+              "type": "server_sync"
+            },
+            "content": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "shape": "absent",
+    "fail": true,
+    "ackFail": true,
+    "node": {
+      "tag": "notification",
+      "attrs": {
+        "id": "NOTIFICATION",
+        "from": "s.whatsapp.net",
+        "type": "server_sync"
+      },
+      "content": null
+    },
+    "expected": {
+      "trace": [
+        {
+          "operation": "ack",
+          "node": {
+            "tag": "ack",
+            "attrs": {
+              "id": "NOTIFICATION",
+              "to": "s.whatsapp.net",
+              "class": "notification",
+              "type": "server_sync"
+            },
+            "content": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "shape": "absent",
+    "fail": true,
+    "ackFail": true,
+    "node": {
+      "tag": "notification",
+      "attrs": {
+        "id": "NOTIFICATION",
+        "from": "s.whatsapp.net",
+        "type": "server_sync",
+        "participant": "100:2@s.whatsapp.net",
+        "recipient": "100@lid",
+        "offline": "true"
+      },
+      "content": null
+    },
+    "expected": {
+      "trace": [
+        {
+          "operation": "ack",
+          "node": {
+            "tag": "ack",
+            "attrs": {
+              "id": "NOTIFICATION",
+              "to": "s.whatsapp.net",
+              "class": "notification",
+              "participant": "100:2@s.whatsapp.net",
+              "recipient": "100@lid",
+              "type": "server_sync"
+            },
+            "content": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "shape": "text",
+    "fail": false,
+    "ackFail": false,
+    "node": {
+      "tag": "notification",
+      "attrs": {
+        "id": "NOTIFICATION",
+        "from": "s.whatsapp.net",
+        "type": "server_sync"
+      },
+      "content": {
+        "Text": "text"
+      }
+    },
+    "expected": {
+      "trace": [
+        {
+          "operation": "ack",
+          "node": {
+            "tag": "ack",
+            "attrs": {
+              "id": "NOTIFICATION",
+              "to": "s.whatsapp.net",
+              "class": "notification",
+              "type": "server_sync"
+            },
+            "content": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "shape": "text",
+    "fail": false,
+    "ackFail": false,
+    "node": {
+      "tag": "notification",
+      "attrs": {
+        "id": "NOTIFICATION",
+        "from": "s.whatsapp.net",
+        "type": "server_sync",
+        "participant": "100:2@s.whatsapp.net",
+        "recipient": "100@lid",
+        "offline": "true"
+      },
+      "content": {
+        "Text": "text"
+      }
+    },
+    "expected": {
+      "trace": [
+        {
+          "operation": "ack",
+          "node": {
+            "tag": "ack",
+            "attrs": {
+              "id": "NOTIFICATION",
+              "to": "s.whatsapp.net",
+              "class": "notification",
+              "participant": "100:2@s.whatsapp.net",
+              "recipient": "100@lid",
+              "type": "server_sync"
+            },
+            "content": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "shape": "text",
+    "fail": false,
+    "ackFail": true,
+    "node": {
+      "tag": "notification",
+      "attrs": {
+        "id": "NOTIFICATION",
+        "from": "s.whatsapp.net",
+        "type": "server_sync"
+      },
+      "content": {
+        "Text": "text"
+      }
+    },
+    "expected": {
+      "trace": [
+        {
+          "operation": "ack",
+          "node": {
+            "tag": "ack",
+            "attrs": {
+              "id": "NOTIFICATION",
+              "to": "s.whatsapp.net",
+              "class": "notification",
+              "type": "server_sync"
+            },
+            "content": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "shape": "text",
+    "fail": false,
+    "ackFail": true,
+    "node": {
+      "tag": "notification",
+      "attrs": {
+        "id": "NOTIFICATION",
+        "from": "s.whatsapp.net",
+        "type": "server_sync",
+        "participant": "100:2@s.whatsapp.net",
+        "recipient": "100@lid",
+        "offline": "true"
+      },
+      "content": {
+        "Text": "text"
+      }
+    },
+    "expected": {
+      "trace": [
+        {
+          "operation": "ack",
+          "node": {
+            "tag": "ack",
+            "attrs": {
+              "id": "NOTIFICATION",
+              "to": "s.whatsapp.net",
+              "class": "notification",
+              "participant": "100:2@s.whatsapp.net",
+              "recipient": "100@lid",
+              "type": "server_sync"
+            },
+            "content": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "shape": "text",
+    "fail": true,
+    "ackFail": false,
+    "node": {
+      "tag": "notification",
+      "attrs": {
+        "id": "NOTIFICATION",
+        "from": "s.whatsapp.net",
+        "type": "server_sync"
+      },
+      "content": {
+        "Text": "text"
+      }
+    },
+    "expected": {
+      "trace": [
+        {
+          "operation": "ack",
+          "node": {
+            "tag": "ack",
+            "attrs": {
+              "id": "NOTIFICATION",
+              "to": "s.whatsapp.net",
+              "class": "notification",
+              "type": "server_sync"
+            },
+            "content": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "shape": "text",
+    "fail": true,
+    "ackFail": false,
+    "node": {
+      "tag": "notification",
+      "attrs": {
+        "id": "NOTIFICATION",
+        "from": "s.whatsapp.net",
+        "type": "server_sync",
+        "participant": "100:2@s.whatsapp.net",
+        "recipient": "100@lid",
+        "offline": "true"
+      },
+      "content": {
+        "Text": "text"
+      }
+    },
+    "expected": {
+      "trace": [
+        {
+          "operation": "ack",
+          "node": {
+            "tag": "ack",
+            "attrs": {
+              "id": "NOTIFICATION",
+              "to": "s.whatsapp.net",
+              "class": "notification",
+              "participant": "100:2@s.whatsapp.net",
+              "recipient": "100@lid",
+              "type": "server_sync"
+            },
+            "content": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "shape": "text",
+    "fail": true,
+    "ackFail": true,
+    "node": {
+      "tag": "notification",
+      "attrs": {
+        "id": "NOTIFICATION",
+        "from": "s.whatsapp.net",
+        "type": "server_sync"
+      },
+      "content": {
+        "Text": "text"
+      }
+    },
+    "expected": {
+      "trace": [
+        {
+          "operation": "ack",
+          "node": {
+            "tag": "ack",
+            "attrs": {
+              "id": "NOTIFICATION",
+              "to": "s.whatsapp.net",
+              "class": "notification",
+              "type": "server_sync"
+            },
+            "content": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "shape": "text",
+    "fail": true,
+    "ackFail": true,
+    "node": {
+      "tag": "notification",
+      "attrs": {
+        "id": "NOTIFICATION",
+        "from": "s.whatsapp.net",
+        "type": "server_sync",
+        "participant": "100:2@s.whatsapp.net",
+        "recipient": "100@lid",
+        "offline": "true"
+      },
+      "content": {
+        "Text": "text"
+      }
+    },
+    "expected": {
+      "trace": [
+        {
+          "operation": "ack",
+          "node": {
+            "tag": "ack",
+            "attrs": {
+              "id": "NOTIFICATION",
+              "to": "s.whatsapp.net",
+              "class": "notification",
+              "participant": "100:2@s.whatsapp.net",
+              "recipient": "100@lid",
+              "type": "server_sync"
+            },
+            "content": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "shape": "single",
+    "fail": false,
+    "ackFail": false,
+    "node": {
+      "tag": "notification",
+      "attrs": {
+        "id": "NOTIFICATION",
+        "from": "s.whatsapp.net",
+        "type": "server_sync"
+      },
+      "content": {
+        "Children": [
+          {
+            "tag": "collection",
+            "attrs": {
+              "name": "regular",
+              "version": "999"
+            },
+            "content": null
+          }
+        ]
+      }
+    },
+    "expected": {
+      "trace": [
+        {
+          "operation": "sync",
+          "names": [
+            "regular"
+          ],
+          "initial": false
+        },
+        {
+          "operation": "ack",
+          "node": {
+            "tag": "ack",
+            "attrs": {
+              "id": "NOTIFICATION",
+              "to": "s.whatsapp.net",
+              "class": "notification",
+              "type": "server_sync"
+            },
+            "content": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "shape": "single",
+    "fail": false,
+    "ackFail": false,
+    "node": {
+      "tag": "notification",
+      "attrs": {
+        "id": "NOTIFICATION",
+        "from": "s.whatsapp.net",
+        "type": "server_sync",
+        "participant": "100:2@s.whatsapp.net",
+        "recipient": "100@lid",
+        "offline": "true"
+      },
+      "content": {
+        "Children": [
+          {
+            "tag": "collection",
+            "attrs": {
+              "name": "regular",
+              "version": "999"
+            },
+            "content": null
+          }
+        ]
+      }
+    },
+    "expected": {
+      "trace": [
+        {
+          "operation": "sync",
+          "names": [
+            "regular"
+          ],
+          "initial": false
+        },
+        {
+          "operation": "ack",
+          "node": {
+            "tag": "ack",
+            "attrs": {
+              "id": "NOTIFICATION",
+              "to": "s.whatsapp.net",
+              "class": "notification",
+              "participant": "100:2@s.whatsapp.net",
+              "recipient": "100@lid",
+              "type": "server_sync"
+            },
+            "content": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "shape": "single",
+    "fail": false,
+    "ackFail": true,
+    "node": {
+      "tag": "notification",
+      "attrs": {
+        "id": "NOTIFICATION",
+        "from": "s.whatsapp.net",
+        "type": "server_sync"
+      },
+      "content": {
+        "Children": [
+          {
+            "tag": "collection",
+            "attrs": {
+              "name": "regular",
+              "version": "999"
+            },
+            "content": null
+          }
+        ]
+      }
+    },
+    "expected": {
+      "trace": [
+        {
+          "operation": "sync",
+          "names": [
+            "regular"
+          ],
+          "initial": false
+        },
+        {
+          "operation": "ack",
+          "node": {
+            "tag": "ack",
+            "attrs": {
+              "id": "NOTIFICATION",
+              "to": "s.whatsapp.net",
+              "class": "notification",
+              "type": "server_sync"
+            },
+            "content": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "shape": "single",
+    "fail": false,
+    "ackFail": true,
+    "node": {
+      "tag": "notification",
+      "attrs": {
+        "id": "NOTIFICATION",
+        "from": "s.whatsapp.net",
+        "type": "server_sync",
+        "participant": "100:2@s.whatsapp.net",
+        "recipient": "100@lid",
+        "offline": "true"
+      },
+      "content": {
+        "Children": [
+          {
+            "tag": "collection",
+            "attrs": {
+              "name": "regular",
+              "version": "999"
+            },
+            "content": null
+          }
+        ]
+      }
+    },
+    "expected": {
+      "trace": [
+        {
+          "operation": "sync",
+          "names": [
+            "regular"
+          ],
+          "initial": false
+        },
+        {
+          "operation": "ack",
+          "node": {
+            "tag": "ack",
+            "attrs": {
+              "id": "NOTIFICATION",
+              "to": "s.whatsapp.net",
+              "class": "notification",
+              "participant": "100:2@s.whatsapp.net",
+              "recipient": "100@lid",
+              "type": "server_sync"
+            },
+            "content": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "shape": "single",
+    "fail": true,
+    "ackFail": false,
+    "node": {
+      "tag": "notification",
+      "attrs": {
+        "id": "NOTIFICATION",
+        "from": "s.whatsapp.net",
+        "type": "server_sync"
+      },
+      "content": {
+        "Children": [
+          {
+            "tag": "collection",
+            "attrs": {
+              "name": "regular",
+              "version": "999"
+            },
+            "content": null
+          }
+        ]
+      }
+    },
+    "expected": {
+      "error": "sync failed",
+      "trace": [
+        {
+          "operation": "sync",
+          "names": [
+            "regular"
+          ],
+          "initial": false
+        },
+        {
+          "operation": "ack",
+          "node": {
+            "tag": "ack",
+            "attrs": {
+              "id": "NOTIFICATION",
+              "to": "s.whatsapp.net",
+              "class": "notification",
+              "type": "server_sync"
+            },
+            "content": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "shape": "single",
+    "fail": true,
+    "ackFail": false,
+    "node": {
+      "tag": "notification",
+      "attrs": {
+        "id": "NOTIFICATION",
+        "from": "s.whatsapp.net",
+        "type": "server_sync",
+        "participant": "100:2@s.whatsapp.net",
+        "recipient": "100@lid",
+        "offline": "true"
+      },
+      "content": {
+        "Children": [
+          {
+            "tag": "collection",
+            "attrs": {
+              "name": "regular",
+              "version": "999"
+            },
+            "content": null
+          }
+        ]
+      }
+    },
+    "expected": {
+      "error": "sync failed",
+      "trace": [
+        {
+          "operation": "sync",
+          "names": [
+            "regular"
+          ],
+          "initial": false
+        },
+        {
+          "operation": "ack",
+          "node": {
+            "tag": "ack",
+            "attrs": {
+              "id": "NOTIFICATION",
+              "to": "s.whatsapp.net",
+              "class": "notification",
+              "participant": "100:2@s.whatsapp.net",
+              "recipient": "100@lid",
+              "type": "server_sync"
+            },
+            "content": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "shape": "single",
+    "fail": true,
+    "ackFail": true,
+    "node": {
+      "tag": "notification",
+      "attrs": {
+        "id": "NOTIFICATION",
+        "from": "s.whatsapp.net",
+        "type": "server_sync"
+      },
+      "content": {
+        "Children": [
+          {
+            "tag": "collection",
+            "attrs": {
+              "name": "regular",
+              "version": "999"
+            },
+            "content": null
+          }
+        ]
+      }
+    },
+    "expected": {
+      "error": "sync failed",
+      "trace": [
+        {
+          "operation": "sync",
+          "names": [
+            "regular"
+          ],
+          "initial": false
+        },
+        {
+          "operation": "ack",
+          "node": {
+            "tag": "ack",
+            "attrs": {
+              "id": "NOTIFICATION",
+              "to": "s.whatsapp.net",
+              "class": "notification",
+              "type": "server_sync"
+            },
+            "content": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "shape": "single",
+    "fail": true,
+    "ackFail": true,
+    "node": {
+      "tag": "notification",
+      "attrs": {
+        "id": "NOTIFICATION",
+        "from": "s.whatsapp.net",
+        "type": "server_sync",
+        "participant": "100:2@s.whatsapp.net",
+        "recipient": "100@lid",
+        "offline": "true"
+      },
+      "content": {
+        "Children": [
+          {
+            "tag": "collection",
+            "attrs": {
+              "name": "regular",
+              "version": "999"
+            },
+            "content": null
+          }
+        ]
+      }
+    },
+    "expected": {
+      "error": "sync failed",
+      "trace": [
+        {
+          "operation": "sync",
+          "names": [
+            "regular"
+          ],
+          "initial": false
+        },
+        {
+          "operation": "ack",
+          "node": {
+            "tag": "ack",
+            "attrs": {
+              "id": "NOTIFICATION",
+              "to": "s.whatsapp.net",
+              "class": "notification",
+              "participant": "100:2@s.whatsapp.net",
+              "recipient": "100@lid",
+              "type": "server_sync"
+            },
+            "content": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "shape": "multiple",
+    "fail": false,
+    "ackFail": false,
+    "node": {
+      "tag": "notification",
+      "attrs": {
+        "id": "NOTIFICATION",
+        "from": "s.whatsapp.net",
+        "type": "server_sync"
+      },
+      "content": {
+        "Children": [
+          {
+            "tag": "collection",
+            "attrs": {
+              "name": "regular",
+              "version": "999"
+            },
+            "content": null
+          },
+          {
+            "tag": "collection",
+            "attrs": {
+              "name": "ignored"
+            },
+            "content": null
+          }
+        ]
+      }
+    },
+    "expected": {
+      "trace": [
+        {
+          "operation": "sync",
+          "names": [
+            "regular"
+          ],
+          "initial": false
+        },
+        {
+          "operation": "ack",
+          "node": {
+            "tag": "ack",
+            "attrs": {
+              "id": "NOTIFICATION",
+              "to": "s.whatsapp.net",
+              "class": "notification",
+              "type": "server_sync"
+            },
+            "content": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "shape": "multiple",
+    "fail": false,
+    "ackFail": false,
+    "node": {
+      "tag": "notification",
+      "attrs": {
+        "id": "NOTIFICATION",
+        "from": "s.whatsapp.net",
+        "type": "server_sync",
+        "participant": "100:2@s.whatsapp.net",
+        "recipient": "100@lid",
+        "offline": "true"
+      },
+      "content": {
+        "Children": [
+          {
+            "tag": "collection",
+            "attrs": {
+              "name": "regular",
+              "version": "999"
+            },
+            "content": null
+          },
+          {
+            "tag": "collection",
+            "attrs": {
+              "name": "ignored"
+            },
+            "content": null
+          }
+        ]
+      }
+    },
+    "expected": {
+      "trace": [
+        {
+          "operation": "sync",
+          "names": [
+            "regular"
+          ],
+          "initial": false
+        },
+        {
+          "operation": "ack",
+          "node": {
+            "tag": "ack",
+            "attrs": {
+              "id": "NOTIFICATION",
+              "to": "s.whatsapp.net",
+              "class": "notification",
+              "participant": "100:2@s.whatsapp.net",
+              "recipient": "100@lid",
+              "type": "server_sync"
+            },
+            "content": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "shape": "multiple",
+    "fail": false,
+    "ackFail": true,
+    "node": {
+      "tag": "notification",
+      "attrs": {
+        "id": "NOTIFICATION",
+        "from": "s.whatsapp.net",
+        "type": "server_sync"
+      },
+      "content": {
+        "Children": [
+          {
+            "tag": "collection",
+            "attrs": {
+              "name": "regular",
+              "version": "999"
+            },
+            "content": null
+          },
+          {
+            "tag": "collection",
+            "attrs": {
+              "name": "ignored"
+            },
+            "content": null
+          }
+        ]
+      }
+    },
+    "expected": {
+      "trace": [
+        {
+          "operation": "sync",
+          "names": [
+            "regular"
+          ],
+          "initial": false
+        },
+        {
+          "operation": "ack",
+          "node": {
+            "tag": "ack",
+            "attrs": {
+              "id": "NOTIFICATION",
+              "to": "s.whatsapp.net",
+              "class": "notification",
+              "type": "server_sync"
+            },
+            "content": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "shape": "multiple",
+    "fail": false,
+    "ackFail": true,
+    "node": {
+      "tag": "notification",
+      "attrs": {
+        "id": "NOTIFICATION",
+        "from": "s.whatsapp.net",
+        "type": "server_sync",
+        "participant": "100:2@s.whatsapp.net",
+        "recipient": "100@lid",
+        "offline": "true"
+      },
+      "content": {
+        "Children": [
+          {
+            "tag": "collection",
+            "attrs": {
+              "name": "regular",
+              "version": "999"
+            },
+            "content": null
+          },
+          {
+            "tag": "collection",
+            "attrs": {
+              "name": "ignored"
+            },
+            "content": null
+          }
+        ]
+      }
+    },
+    "expected": {
+      "trace": [
+        {
+          "operation": "sync",
+          "names": [
+            "regular"
+          ],
+          "initial": false
+        },
+        {
+          "operation": "ack",
+          "node": {
+            "tag": "ack",
+            "attrs": {
+              "id": "NOTIFICATION",
+              "to": "s.whatsapp.net",
+              "class": "notification",
+              "participant": "100:2@s.whatsapp.net",
+              "recipient": "100@lid",
+              "type": "server_sync"
+            },
+            "content": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "shape": "multiple",
+    "fail": true,
+    "ackFail": false,
+    "node": {
+      "tag": "notification",
+      "attrs": {
+        "id": "NOTIFICATION",
+        "from": "s.whatsapp.net",
+        "type": "server_sync"
+      },
+      "content": {
+        "Children": [
+          {
+            "tag": "collection",
+            "attrs": {
+              "name": "regular",
+              "version": "999"
+            },
+            "content": null
+          },
+          {
+            "tag": "collection",
+            "attrs": {
+              "name": "ignored"
+            },
+            "content": null
+          }
+        ]
+      }
+    },
+    "expected": {
+      "error": "sync failed",
+      "trace": [
+        {
+          "operation": "sync",
+          "names": [
+            "regular"
+          ],
+          "initial": false
+        },
+        {
+          "operation": "ack",
+          "node": {
+            "tag": "ack",
+            "attrs": {
+              "id": "NOTIFICATION",
+              "to": "s.whatsapp.net",
+              "class": "notification",
+              "type": "server_sync"
+            },
+            "content": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "shape": "multiple",
+    "fail": true,
+    "ackFail": false,
+    "node": {
+      "tag": "notification",
+      "attrs": {
+        "id": "NOTIFICATION",
+        "from": "s.whatsapp.net",
+        "type": "server_sync",
+        "participant": "100:2@s.whatsapp.net",
+        "recipient": "100@lid",
+        "offline": "true"
+      },
+      "content": {
+        "Children": [
+          {
+            "tag": "collection",
+            "attrs": {
+              "name": "regular",
+              "version": "999"
+            },
+            "content": null
+          },
+          {
+            "tag": "collection",
+            "attrs": {
+              "name": "ignored"
+            },
+            "content": null
+          }
+        ]
+      }
+    },
+    "expected": {
+      "error": "sync failed",
+      "trace": [
+        {
+          "operation": "sync",
+          "names": [
+            "regular"
+          ],
+          "initial": false
+        },
+        {
+          "operation": "ack",
+          "node": {
+            "tag": "ack",
+            "attrs": {
+              "id": "NOTIFICATION",
+              "to": "s.whatsapp.net",
+              "class": "notification",
+              "participant": "100:2@s.whatsapp.net",
+              "recipient": "100@lid",
+              "type": "server_sync"
+            },
+            "content": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "shape": "multiple",
+    "fail": true,
+    "ackFail": true,
+    "node": {
+      "tag": "notification",
+      "attrs": {
+        "id": "NOTIFICATION",
+        "from": "s.whatsapp.net",
+        "type": "server_sync"
+      },
+      "content": {
+        "Children": [
+          {
+            "tag": "collection",
+            "attrs": {
+              "name": "regular",
+              "version": "999"
+            },
+            "content": null
+          },
+          {
+            "tag": "collection",
+            "attrs": {
+              "name": "ignored"
+            },
+            "content": null
+          }
+        ]
+      }
+    },
+    "expected": {
+      "error": "sync failed",
+      "trace": [
+        {
+          "operation": "sync",
+          "names": [
+            "regular"
+          ],
+          "initial": false
+        },
+        {
+          "operation": "ack",
+          "node": {
+            "tag": "ack",
+            "attrs": {
+              "id": "NOTIFICATION",
+              "to": "s.whatsapp.net",
+              "class": "notification",
+              "type": "server_sync"
+            },
+            "content": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "shape": "multiple",
+    "fail": true,
+    "ackFail": true,
+    "node": {
+      "tag": "notification",
+      "attrs": {
+        "id": "NOTIFICATION",
+        "from": "s.whatsapp.net",
+        "type": "server_sync",
+        "participant": "100:2@s.whatsapp.net",
+        "recipient": "100@lid",
+        "offline": "true"
+      },
+      "content": {
+        "Children": [
+          {
+            "tag": "collection",
+            "attrs": {
+              "name": "regular",
+              "version": "999"
+            },
+            "content": null
+          },
+          {
+            "tag": "collection",
+            "attrs": {
+              "name": "ignored"
+            },
+            "content": null
+          }
+        ]
+      }
+    },
+    "expected": {
+      "error": "sync failed",
+      "trace": [
+        {
+          "operation": "sync",
+          "names": [
+            "regular"
+          ],
+          "initial": false
+        },
+        {
+          "operation": "ack",
+          "node": {
+            "tag": "ack",
+            "attrs": {
+              "id": "NOTIFICATION",
+              "to": "s.whatsapp.net",
+              "class": "notification",
+              "participant": "100:2@s.whatsapp.net",
+              "recipient": "100@lid",
+              "type": "server_sync"
+            },
+            "content": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "shape": "emptyName",
+    "fail": false,
+    "ackFail": false,
+    "node": {
+      "tag": "notification",
+      "attrs": {
+        "id": "NOTIFICATION",
+        "from": "s.whatsapp.net",
+        "type": "server_sync"
+      },
+      "content": {
+        "Children": [
+          {
+            "tag": "collection",
+            "attrs": {
+              "name": "",
+              "version": "999"
+            },
+            "content": null
+          }
+        ]
+      }
+    },
+    "expected": {
+      "trace": [
+        {
+          "operation": "sync",
+          "names": [
+            ""
+          ],
+          "initial": false
+        },
+        {
+          "operation": "ack",
+          "node": {
+            "tag": "ack",
+            "attrs": {
+              "id": "NOTIFICATION",
+              "to": "s.whatsapp.net",
+              "class": "notification",
+              "type": "server_sync"
+            },
+            "content": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "shape": "emptyName",
+    "fail": false,
+    "ackFail": false,
+    "node": {
+      "tag": "notification",
+      "attrs": {
+        "id": "NOTIFICATION",
+        "from": "s.whatsapp.net",
+        "type": "server_sync",
+        "participant": "100:2@s.whatsapp.net",
+        "recipient": "100@lid",
+        "offline": "true"
+      },
+      "content": {
+        "Children": [
+          {
+            "tag": "collection",
+            "attrs": {
+              "name": "",
+              "version": "999"
+            },
+            "content": null
+          }
+        ]
+      }
+    },
+    "expected": {
+      "trace": [
+        {
+          "operation": "sync",
+          "names": [
+            ""
+          ],
+          "initial": false
+        },
+        {
+          "operation": "ack",
+          "node": {
+            "tag": "ack",
+            "attrs": {
+              "id": "NOTIFICATION",
+              "to": "s.whatsapp.net",
+              "class": "notification",
+              "participant": "100:2@s.whatsapp.net",
+              "recipient": "100@lid",
+              "type": "server_sync"
+            },
+            "content": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "shape": "emptyName",
+    "fail": false,
+    "ackFail": true,
+    "node": {
+      "tag": "notification",
+      "attrs": {
+        "id": "NOTIFICATION",
+        "from": "s.whatsapp.net",
+        "type": "server_sync"
+      },
+      "content": {
+        "Children": [
+          {
+            "tag": "collection",
+            "attrs": {
+              "name": "",
+              "version": "999"
+            },
+            "content": null
+          }
+        ]
+      }
+    },
+    "expected": {
+      "trace": [
+        {
+          "operation": "sync",
+          "names": [
+            ""
+          ],
+          "initial": false
+        },
+        {
+          "operation": "ack",
+          "node": {
+            "tag": "ack",
+            "attrs": {
+              "id": "NOTIFICATION",
+              "to": "s.whatsapp.net",
+              "class": "notification",
+              "type": "server_sync"
+            },
+            "content": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "shape": "emptyName",
+    "fail": false,
+    "ackFail": true,
+    "node": {
+      "tag": "notification",
+      "attrs": {
+        "id": "NOTIFICATION",
+        "from": "s.whatsapp.net",
+        "type": "server_sync",
+        "participant": "100:2@s.whatsapp.net",
+        "recipient": "100@lid",
+        "offline": "true"
+      },
+      "content": {
+        "Children": [
+          {
+            "tag": "collection",
+            "attrs": {
+              "name": "",
+              "version": "999"
+            },
+            "content": null
+          }
+        ]
+      }
+    },
+    "expected": {
+      "trace": [
+        {
+          "operation": "sync",
+          "names": [
+            ""
+          ],
+          "initial": false
+        },
+        {
+          "operation": "ack",
+          "node": {
+            "tag": "ack",
+            "attrs": {
+              "id": "NOTIFICATION",
+              "to": "s.whatsapp.net",
+              "class": "notification",
+              "participant": "100:2@s.whatsapp.net",
+              "recipient": "100@lid",
+              "type": "server_sync"
+            },
+            "content": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "shape": "emptyName",
+    "fail": true,
+    "ackFail": false,
+    "node": {
+      "tag": "notification",
+      "attrs": {
+        "id": "NOTIFICATION",
+        "from": "s.whatsapp.net",
+        "type": "server_sync"
+      },
+      "content": {
+        "Children": [
+          {
+            "tag": "collection",
+            "attrs": {
+              "name": "",
+              "version": "999"
+            },
+            "content": null
+          }
+        ]
+      }
+    },
+    "expected": {
+      "error": "sync failed",
+      "trace": [
+        {
+          "operation": "sync",
+          "names": [
+            ""
+          ],
+          "initial": false
+        },
+        {
+          "operation": "ack",
+          "node": {
+            "tag": "ack",
+            "attrs": {
+              "id": "NOTIFICATION",
+              "to": "s.whatsapp.net",
+              "class": "notification",
+              "type": "server_sync"
+            },
+            "content": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "shape": "emptyName",
+    "fail": true,
+    "ackFail": false,
+    "node": {
+      "tag": "notification",
+      "attrs": {
+        "id": "NOTIFICATION",
+        "from": "s.whatsapp.net",
+        "type": "server_sync",
+        "participant": "100:2@s.whatsapp.net",
+        "recipient": "100@lid",
+        "offline": "true"
+      },
+      "content": {
+        "Children": [
+          {
+            "tag": "collection",
+            "attrs": {
+              "name": "",
+              "version": "999"
+            },
+            "content": null
+          }
+        ]
+      }
+    },
+    "expected": {
+      "error": "sync failed",
+      "trace": [
+        {
+          "operation": "sync",
+          "names": [
+            ""
+          ],
+          "initial": false
+        },
+        {
+          "operation": "ack",
+          "node": {
+            "tag": "ack",
+            "attrs": {
+              "id": "NOTIFICATION",
+              "to": "s.whatsapp.net",
+              "class": "notification",
+              "participant": "100:2@s.whatsapp.net",
+              "recipient": "100@lid",
+              "type": "server_sync"
+            },
+            "content": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "shape": "emptyName",
+    "fail": true,
+    "ackFail": true,
+    "node": {
+      "tag": "notification",
+      "attrs": {
+        "id": "NOTIFICATION",
+        "from": "s.whatsapp.net",
+        "type": "server_sync"
+      },
+      "content": {
+        "Children": [
+          {
+            "tag": "collection",
+            "attrs": {
+              "name": "",
+              "version": "999"
+            },
+            "content": null
+          }
+        ]
+      }
+    },
+    "expected": {
+      "error": "sync failed",
+      "trace": [
+        {
+          "operation": "sync",
+          "names": [
+            ""
+          ],
+          "initial": false
+        },
+        {
+          "operation": "ack",
+          "node": {
+            "tag": "ack",
+            "attrs": {
+              "id": "NOTIFICATION",
+              "to": "s.whatsapp.net",
+              "class": "notification",
+              "type": "server_sync"
+            },
+            "content": null
+          }
+        }
+      ]
+    }
+  },
+  {
+    "shape": "emptyName",
+    "fail": true,
+    "ackFail": true,
+    "node": {
+      "tag": "notification",
+      "attrs": {
+        "id": "NOTIFICATION",
+        "from": "s.whatsapp.net",
+        "type": "server_sync",
+        "participant": "100:2@s.whatsapp.net",
+        "recipient": "100@lid",
+        "offline": "true"
+      },
+      "content": {
+        "Children": [
+          {
+            "tag": "collection",
+            "attrs": {
+              "name": "",
+              "version": "999"
+            },
+            "content": null
+          }
+        ]
+      }
+    },
+    "expected": {
+      "error": "sync failed",
+      "trace": [
+        {
+          "operation": "sync",
+          "names": [
+            ""
+          ],
+          "initial": false
+        },
+        {
+          "operation": "ack",
+          "node": {
+            "tag": "ack",
+            "attrs": {
+              "id": "NOTIFICATION",
+              "to": "s.whatsapp.net",
+              "class": "notification",
+              "participant": "100:2@s.whatsapp.net",
+              "recipient": "100@lid",
+              "type": "server_sync"
+            },
+            "content": null
+          }
+        }
+      ]
+    }
+  }
+]

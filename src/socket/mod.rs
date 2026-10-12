@@ -7,6 +7,7 @@ mod groups;
 mod incoming_messages;
 mod incoming_receipts;
 mod media;
+mod notifications;
 mod protocol_messages;
 mod receipts;
 mod relay;
@@ -149,6 +150,7 @@ pub struct Config {
     pub send_active_receipts: bool,
     pub retry_request_delay: Duration,
     pub process_media_notifications: bool,
+    pub process_app_state_notifications: bool,
     pub get_message: crate::relay::MessageLookup,
     pub generation_hooks: crate::messages::generation::GenerationHooks,
     pub emit_own_events: bool,
@@ -182,6 +184,7 @@ impl Default for Config {
             send_active_receipts: false,
             retry_request_delay: Duration::from_millis(250),
             process_media_notifications: true,
+            process_app_state_notifications: true,
             get_message: Default::default(),
             generation_hooks: Default::default(),
             emit_own_events: true,
@@ -311,6 +314,7 @@ impl std::fmt::Debug for Event {
     }
 }
 struct Inner {
+    notification_lock: Arc<tokio::sync::Mutex<()>>,
     message_lock: tokio::sync::Mutex<()>,
     active_receipts: std::sync::atomic::AtomicBool,
     retry_request_delay: Duration,
@@ -521,8 +525,13 @@ impl Socket {
         let receipt_sender = config.process_receipts.then_some(receipt_sender);
         let (message_sender, message_receiver) = mpsc::unbounded_channel();
         let message_sender = config.process_messages.then_some(message_sender);
+        let (notification_sender, notification_receiver) = mpsc::unbounded_channel();
+        let notification_sender = config
+            .process_app_state_notifications
+            .then_some(notification_sender);
         let (own_sender, own_receiver) = mpsc::unbounded_channel();
         let inner = Arc::new(Inner {
+            notification_lock: Arc::new(tokio::sync::Mutex::new(())),
             message_lock: tokio::sync::Mutex::new(()),
             active_receipts: std::sync::atomic::AtomicBool::new(config.send_active_receipts),
             retry_request_delay: config.retry_request_delay,
@@ -559,6 +568,7 @@ impl Socket {
         });
         send::spawn_own_worker(&inner, own_receiver);
         incoming_messages::spawn_worker(&inner, message_receiver);
+        notifications::spawn_worker(&inner, notification_receiver);
         let receipt_inner = Arc::downgrade(&inner);
         tokio::spawn(async move {
             while let Some(node) = receipt_receiver.recv().await {
@@ -586,6 +596,7 @@ impl Socket {
                 actor_retry_requests,
                 receipt_sender,
                 message_sender,
+                notification_sender,
             )
             .await;
         });
