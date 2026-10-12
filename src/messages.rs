@@ -1,4 +1,6 @@
 //! Message envelopes and protobuf payloads, independent of socket receipt processing.
+pub mod encrypted;
+pub use encrypted::*;
 pub mod generation;
 pub mod incoming;
 pub mod own;

@@ -175,6 +175,11 @@ pub(super) fn spawn_own_worker(
                 if let Some(update) = effects.reaction {
                     let _ = inner.events.send(Event::MessageReactions(vec![update]));
                 }
+                (Socket {
+                    inner: inner.clone(),
+                })
+                .process_event_response(&message, None, &credentials)
+                .await?;
                 if let Some(update) = effects.chat {
                     let _ = inner.events.send(Event::ChatsUpdated(vec![update]));
                 }

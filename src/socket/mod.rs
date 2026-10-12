@@ -1,5 +1,6 @@
 //! Async WhatsApp WebSocket connection with exclusive Noise ownership and IQ routing.
 mod actor;
+mod event_responses;
 mod groups;
 mod incoming_messages;
 mod incoming_receipts;
@@ -202,10 +203,15 @@ pub enum Event {
     MessageMutations(Vec<crate::messages::own::Mutation>),
     MessageReactions(Vec<crate::messages::own::ReactionUpdate>),
     ChatsUpdated(Vec<crate::messages::own::ChatUpdate>),
+    EventResponsesUpdated(Vec<crate::messages::EventResponseUpdate>),
 }
 impl std::fmt::Debug for Event {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
+            Self::EventResponsesUpdated(updates) => f
+                .debug_tuple("EventResponsesUpdated")
+                .field(&updates.len())
+                .finish(),
             Self::ContactsUpdated(updates) => f
                 .debug_tuple("ContactsUpdated")
                 .field(&updates.len())

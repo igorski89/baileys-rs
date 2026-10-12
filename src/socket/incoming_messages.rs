@@ -281,6 +281,8 @@ impl Socket {
                 .events
                 .send(Event::MessageReactions(vec![update]));
         }
+        self.process_event_response(message, Some(&envelope.key_metadata), &credentials)
+            .await?;
         if let Some(update) = effects.chat {
             let _ = self.inner.events.send(Event::ChatsUpdated(vec![update]));
         }
