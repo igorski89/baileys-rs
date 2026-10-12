@@ -34,6 +34,9 @@ pub struct ReactionUpdate {
 #[derive(Debug, Default, Clone, PartialEq)]
 pub struct ChatUpdate {
     pub id: String,
+    /// Some(None) represents a source-assigned undefined name/description.
+    pub name: Option<Option<String>>,
+    pub description: Option<Option<String>>,
     pub messages: Option<Vec<proto::WebMessageInfo>>,
     pub conversation_timestamp: Option<f64>,
     /// An unread-count delta, matching the upstream buffered chat update.

@@ -1,4 +1,4 @@
-use super::{Error, Event, Inner, RelayOptions, Socket, load_credentials};
+use super::{Error, Inner, RelayOptions, Socket, load_credentials};
 use crate::{
     binary::BinaryNode,
     messages::{self, generation, own},
@@ -160,37 +160,9 @@ pub(super) fn spawn_own_worker(
     tokio::spawn(async move {
         while let Some(message) = receiver.recv().await {
             let Some(inner) = weak.upgrade() else { break };
-            let _ = inner.events.send(Event::MessagesUpserted(own::Upsert {
-                messages: vec![message.clone()],
-                kind: own::UpsertKind::Append,
-                request_id: None,
-                metadata: vec![],
-            }));
-            let result = async {
-                let credentials = load_credentials(inner.store.clone()).await?;
-                let effects = own::effects(&message, credentials.account_settings.unarchive_chats)?;
-                if let Some(update) = effects.mutation {
-                    let _ = inner.events.send(Event::MessageMutations(vec![update]));
-                }
-                if let Some(update) = effects.reaction {
-                    let _ = inner.events.send(Event::MessageReactions(vec![update]));
-                }
-                (Socket {
-                    inner: inner.clone(),
-                })
-                .process_phone_protocol(&message)
-                .await?;
-                (Socket {
-                    inner: inner.clone(),
-                })
-                .process_event_response(&message, None, &credentials)
-                .await?;
-                if let Some(update) = effects.chat {
-                    let _ = inner.events.send(Event::ChatsUpdated(vec![update]));
-                }
-                Ok::<_, Error>(())
-            }
-            .await;
+            let result = (Socket { inner })
+                .publish_message(&message, None, own::UpsertKind::Append)
+                .await;
             if let Err(error) = result {
                 tracing::debug!(?error, "own message processing failed");
             }

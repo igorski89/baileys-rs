@@ -2,6 +2,7 @@
 pub mod encrypted;
 pub use encrypted::*;
 pub mod generation;
+pub mod group_effects;
 pub mod incoming;
 pub mod own;
 pub mod protocol;
@@ -19,6 +20,8 @@ use std::time::{SystemTime, UNIX_EPOCH};
 pub enum Error {
     #[error("invalid message stanza: {0}")]
     Envelope(&'static str),
+    #[error(transparent)]
+    Json(#[from] serde_json::Error),
     #[error("invalid message padding")]
     Padding,
     #[error("invalid message ID input")]

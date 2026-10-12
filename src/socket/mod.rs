@@ -1,6 +1,7 @@
 //! Async WhatsApp WebSocket connection with exclusive Noise ownership and IQ routing.
 mod actor;
 mod event_responses;
+mod group_effects;
 mod groups;
 mod incoming_messages;
 mod incoming_receipts;
@@ -198,6 +199,7 @@ pub enum Event {
     MessageStubsUpdated(Vec<crate::messages::incoming::StubUpdate>),
     MessageContentsUpdated(Vec<crate::media::ContentUpdate>),
     GroupsUpdated(Vec<crate::groups::Metadata>),
+    GroupEffects(Vec<crate::messages::group_effects::GroupEvent>),
     MessagesUpdated(Vec<crate::receipts::MessageUpdate>),
     MessageReceiptsUpdated(Vec<crate::receipts::UserUpdate>),
     MessagesUpserted(crate::messages::own::Upsert),
@@ -213,6 +215,9 @@ impl std::fmt::Debug for Event {
                 .debug_tuple("EventResponsesUpdated")
                 .field(&updates.len())
                 .finish(),
+            Self::GroupEffects(updates) => {
+                f.debug_tuple("GroupEffects").field(&updates.len()).finish()
+            }
             Self::ContactsUpdated(updates) => f
                 .debug_tuple("ContactsUpdated")
                 .field(&updates.len())

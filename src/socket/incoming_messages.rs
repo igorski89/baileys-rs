@@ -1,6 +1,5 @@
-use super::{Command, Error, Event, Inner, Socket, load_credentials};
+use super::{Error, Event, Inner, Socket, load_credentials};
 use crate::{
-    auth::Contact,
     binary::BinaryNode,
     jid,
     messages::{
@@ -13,7 +12,7 @@ use std::{
     sync::{Arc, atomic::Ordering},
     time::{SystemTime, UNIX_EPOCH},
 };
-use tokio::sync::{mpsc, oneshot};
+use tokio::sync::mpsc;
 impl Socket {
     /// Update delivery receipt activity (matching upstream's connection isOnline state).
     pub fn set_active_receipts(&self, active: bool) {
@@ -229,65 +228,16 @@ impl Socket {
             manager.update_recent_message(remote, id, content.clone())?;
         }
         cleaned?;
-        let message = &envelope.message;
-        let _ = self.inner.events.send(Event::MessagesUpserted(own::Upsert {
-            messages: vec![message.clone()],
-            kind: if node.attrs.get("offline").is_some_and(|s| !s.is_empty()) {
+        self.publish_message(
+            &envelope.message,
+            Some(messages::EnvelopeMetadata::from(&*envelope)),
+            if node.attrs.get("offline").is_some_and(|s| !s.is_empty()) {
                 own::UpsertKind::Append
             } else {
                 own::UpsertKind::Notify
             },
-            request_id: None,
-            metadata: vec![messages::EnvelopeMetadata::from(&*envelope)],
-        }));
-        if let Some(name) = message.push_name.as_ref().filter(|s| !s.is_empty()) {
-            let key = message.key.as_ref().unwrap();
-            if key.from_me != Some(true) {
-                let target = key
-                    .participant
-                    .as_deref()
-                    .filter(|s| !s.is_empty())
-                    .or(key.remote_jid.as_deref())
-                    .unwrap_or("");
-                let _ = self.inner.events.send(Event::ContactsUpdated(vec![Contact {
-                    id: jid::normalized_user(target),
-                    notify: Some(name.clone()),
-                    verified_name: message.verified_biz_name.clone(),
-                    ..Default::default()
-                }]));
-            } else {
-                let (reply, response) = oneshot::channel();
-                self.inner
-                    .commands
-                    .send(Command::PushName {
-                        name: name.clone(),
-                        reply,
-                    })
-                    .await
-                    .map_err(|_| Error::Closed(428))?;
-                response.await.map_err(|_| Error::Closed(428))??;
-            }
-        }
-        let effects = own::effects_received(message, credentials.account_settings.unarchive_chats)?;
-        if let Some(update) = effects.mutation {
-            let _ = self
-                .inner
-                .events
-                .send(Event::MessageMutations(vec![update]));
-        }
-        if let Some(update) = effects.reaction {
-            let _ = self
-                .inner
-                .events
-                .send(Event::MessageReactions(vec![update]));
-        }
-        self.process_phone_protocol(message).await?;
-        self.process_event_response(message, Some(&envelope.key_metadata), &credentials)
-            .await?;
-        if let Some(update) = effects.chat {
-            let _ = self.inner.events.send(Event::ChatsUpdated(vec![update]));
-        }
-        Ok(())
+        )
+        .await
     }
 }
 pub(super) fn spawn_worker(inner: &Arc<Inner>, mut receiver: mpsc::UnboundedReceiver<BinaryNode>) {
