@@ -1,5 +1,6 @@
 //! Rust implementation of the Baileys WhatsApp Web protocol.
 //! See PORT_STATUS.md for implemented and remaining components.
+pub mod app_state;
 pub mod auth;
 pub mod binary;
 pub mod connection;
