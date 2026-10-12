@@ -1,9 +1,11 @@
-//! App-state mutation keys, MACs and the incremental LT-hash foundation.
+//! App-state mutation integrity and snapshot/patch codecs.
+mod codec;
 use crate::{
     auth::{LtHashState, ValueMac},
     crypto, proto,
 };
 use base64::{Engine, engine::general_purpose::STANDARD};
+pub use codec::*;
 use std::collections::BTreeMap;
 use zeroize::Zeroizing;
 pub const HASH_SIZE: usize = 128;
@@ -15,6 +17,22 @@ pub enum Error {
     Version,
     #[error(transparent)]
     Crypto(#[from] crypto::Error),
+    #[error(transparent)]
+    Auth(#[from] crate::auth::Error),
+    #[error(transparent)]
+    Protobuf(#[from] prost::DecodeError),
+    #[error(transparent)]
+    Json(#[from] serde_json::Error),
+    #[error("missing app-state key {0}")]
+    MissingKey(String),
+    #[error("invalid app-state {0}")]
+    Input(&'static str),
+    #[error("app-state {0} MAC verification failed")]
+    Mac(&'static str),
+    #[error("app-state key lookup failed: {0}")]
+    Lookup(String),
+    #[error("app-state key worker failed")]
+    Task,
 }
 #[derive(Clone)]
 pub struct MutationKeys {
@@ -170,4 +188,10 @@ pub fn patch_mac(
     input.extend_from_slice(&version_bytes(version)?);
     input.extend_from_slice(name.as_bytes());
     Ok(crypto::hmac_sha256(&input, key))
+}
+
+impl Error {
+    pub fn is_missing_key(&self) -> bool {
+        matches!(self, Self::MissingKey(_))
+    }
 }

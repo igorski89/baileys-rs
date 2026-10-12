@@ -29,6 +29,7 @@ hmac = "0.12"
 md-5 = "0.10"
 pbkdf2 = "0.12"
 sha2 = "0.10"
+subtle = "2"
 x25519-dalek = { version = "2", features = ["static_secrets"] }
 zeroize = { version = "1", features = ["derive"] }
 flate2 = "1"
