@@ -1,0 +1,7631 @@
+{
+ "now": 1700000000123,
+ "cases": [
+  {
+   "mod": {
+    "mute": null
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "mute",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc3122020800"
+   }
+  },
+  {
+   "mod": {
+    "mute": 0
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "mute",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc3122020800"
+   }
+  },
+  {
+   "mod": {
+    "mute": 1700003600000
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "mute",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc31220908011080adf180bd31"
+   }
+  },
+  {
+   "mod": {
+    "mute": 8640000000000
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "mute",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc31220a080110808086c1bafb01"
+   }
+  },
+  {
+   "mod": {
+    "archive": true
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a01020801"
+   }
+  },
+  {
+   "mod": {
+    "archive": false
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a01020800"
+   }
+  },
+  {
+   "mod": {
+    "markRead": true
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a201020801"
+   }
+  },
+  {
+   "mod": {
+    "markRead": false
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a201020800"
+   }
+  },
+  {
+   "mod": {
+    "clear": true
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "clearChat",
+     "200@s.whatsapp.net",
+     "1",
+     "0"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31aa0100"
+   }
+  },
+  {
+   "mod": {
+    "delete": true
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteChat",
+     "200@s.whatsapp.net",
+     "1"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31b20100"
+   }
+  },
+  {
+   "mod": {
+    "archive": true,
+    "lastMessages": []
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a010408011200"
+   }
+  },
+  {
+   "mod": {
+    "archive": false,
+    "lastMessages": []
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a010408001200"
+   }
+  },
+  {
+   "mod": {
+    "markRead": true,
+    "lastMessages": []
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a2010408011200"
+   }
+  },
+  {
+   "mod": {
+    "markRead": false,
+    "lastMessages": []
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a2010408001200"
+   }
+  },
+  {
+   "mod": {
+    "clear": true,
+    "lastMessages": []
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "clearChat",
+     "200@s.whatsapp.net",
+     "1",
+     "0"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31aa01020a00"
+   }
+  },
+  {
+   "mod": {
+    "delete": true,
+    "lastMessages": []
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteChat",
+     "200@s.whatsapp.net",
+     "1"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31b201020a00"
+   }
+  },
+  {
+   "mod": {
+    "archive": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000000
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a0127080112230880e2cfaa061a1b0a190a1232303040732e77686174736170702e6e657410001a0141"
+   }
+  },
+  {
+   "mod": {
+    "archive": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000000
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a0127080012230880e2cfaa061a1b0a190a1232303040732e77686174736170702e6e657410001a0141"
+   }
+  },
+  {
+   "mod": {
+    "markRead": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000000
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a20127080112230880e2cfaa061a1b0a190a1232303040732e77686174736170702e6e657410001a0141"
+   }
+  },
+  {
+   "mod": {
+    "markRead": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000000
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a20127080012230880e2cfaa061a1b0a190a1232303040732e77686174736170702e6e657410001a0141"
+   }
+  },
+  {
+   "mod": {
+    "clear": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000000
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "clearChat",
+     "200@s.whatsapp.net",
+     "1",
+     "0"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31aa01250a230880e2cfaa061a1b0a190a1232303040732e77686174736170702e6e657410001a0141"
+   }
+  },
+  {
+   "mod": {
+    "delete": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000000
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteChat",
+     "200@s.whatsapp.net",
+     "1"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31b201250a230880e2cfaa061a1b0a190a1232303040732e77686174736170702e6e657410001a0141"
+   }
+  },
+  {
+   "mod": {
+    "archive": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": true
+      },
+      "messageTimestamp": 1699999990
+     },
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "B",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000001
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a0144080112400881e2cfaa061a1b0a190a1232303040732e77686174736170702e6e657410011a01411a1b0a190a1232303040732e77686174736170702e6e657410001a0142"
+   }
+  },
+  {
+   "mod": {
+    "archive": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": true
+      },
+      "messageTimestamp": 1699999990
+     },
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "B",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000001
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a0144080012400881e2cfaa061a1b0a190a1232303040732e77686174736170702e6e657410011a01411a1b0a190a1232303040732e77686174736170702e6e657410001a0142"
+   }
+  },
+  {
+   "mod": {
+    "markRead": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": true
+      },
+      "messageTimestamp": 1699999990
+     },
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "B",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000001
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a20144080112400881e2cfaa061a1b0a190a1232303040732e77686174736170702e6e657410011a01411a1b0a190a1232303040732e77686174736170702e6e657410001a0142"
+   }
+  },
+  {
+   "mod": {
+    "markRead": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": true
+      },
+      "messageTimestamp": 1699999990
+     },
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "B",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000001
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a20144080012400881e2cfaa061a1b0a190a1232303040732e77686174736170702e6e657410011a01411a1b0a190a1232303040732e77686174736170702e6e657410001a0142"
+   }
+  },
+  {
+   "mod": {
+    "clear": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": true
+      },
+      "messageTimestamp": 1699999990
+     },
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "B",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000001
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "clearChat",
+     "200@s.whatsapp.net",
+     "1",
+     "0"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31aa01420a400881e2cfaa061a1b0a190a1232303040732e77686174736170702e6e657410011a01411a1b0a190a1232303040732e77686174736170702e6e657410001a0142"
+   }
+  },
+  {
+   "mod": {
+    "delete": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": true
+      },
+      "messageTimestamp": 1699999990
+     },
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "B",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000001
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteChat",
+     "200@s.whatsapp.net",
+     "1"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31b201420a400881e2cfaa061a1b0a190a1232303040732e77686174736170702e6e657410011a01411a1b0a190a1232303040732e77686174736170702e6e657410001a0142"
+   }
+  },
+  {
+   "mod": {
+    "archive": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": false,
+       "participant": "300:4@s.whatsapp.net"
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a01330801122f0882e2cfaa061a270a250a0a67726f757040672e757310001a0147221233303040732e77686174736170702e6e6574"
+   }
+  },
+  {
+   "mod": {
+    "archive": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": false,
+       "participant": "300@s.whatsapp.net"
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a01330800122f0882e2cfaa061a270a250a0a67726f757040672e757310001a0147221233303040732e77686174736170702e6e6574"
+   }
+  },
+  {
+   "mod": {
+    "markRead": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": false,
+       "participant": "300@s.whatsapp.net"
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a201330801122f0882e2cfaa061a270a250a0a67726f757040672e757310001a0147221233303040732e77686174736170702e6e6574"
+   }
+  },
+  {
+   "mod": {
+    "markRead": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": false,
+       "participant": "300@s.whatsapp.net"
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a201330800122f0882e2cfaa061a270a250a0a67726f757040672e757310001a0147221233303040732e77686174736170702e6e6574"
+   }
+  },
+  {
+   "mod": {
+    "clear": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": false,
+       "participant": "300@s.whatsapp.net"
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "clearChat",
+     "200@s.whatsapp.net",
+     "1",
+     "0"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31aa01310a2f0882e2cfaa061a270a250a0a67726f757040672e757310001a0147221233303040732e77686174736170702e6e6574"
+   }
+  },
+  {
+   "mod": {
+    "delete": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": false,
+       "participant": "300@s.whatsapp.net"
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteChat",
+     "200@s.whatsapp.net",
+     "1"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31b201310a2f0882e2cfaa061a270a250a0a67726f757040672e757310001a0147221233303040732e77686174736170702e6e6574"
+   }
+  },
+  {
+   "mod": {
+    "archive": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": true
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a011f0801121b0882e2cfaa061a130a110a0a67726f757040672e757310011a0147"
+   }
+  },
+  {
+   "mod": {
+    "archive": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": true
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a011f0800121b0882e2cfaa061a130a110a0a67726f757040672e757310011a0147"
+   }
+  },
+  {
+   "mod": {
+    "markRead": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": true
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a2011f0801121b0882e2cfaa061a130a110a0a67726f757040672e757310011a0147"
+   }
+  },
+  {
+   "mod": {
+    "markRead": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": true
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a2011f0800121b0882e2cfaa061a130a110a0a67726f757040672e757310011a0147"
+   }
+  },
+  {
+   "mod": {
+    "clear": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": true
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "clearChat",
+     "200@s.whatsapp.net",
+     "1",
+     "0"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31aa011d0a1b0882e2cfaa061a130a110a0a67726f757040672e757310011a0147"
+   }
+  },
+  {
+   "mod": {
+    "delete": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": true
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteChat",
+     "200@s.whatsapp.net",
+     "1"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31b2011d0a1b0882e2cfaa061a130a110a0a67726f757040672e757310011a0147"
+   }
+  },
+  {
+   "mod": {
+    "archive": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "error": {
+    "message": "Expected not from me message to have participant",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "archive": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "error": {
+    "message": "Expected not from me message to have participant",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "markRead": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "error": {
+    "message": "Expected not from me message to have participant",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "markRead": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "error": {
+    "message": "Expected not from me message to have participant",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "clear": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "error": {
+    "message": "Expected not from me message to have participant",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "delete": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "error": {
+    "message": "Expected not from me message to have participant",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "archive": true,
+    "lastMessages": [
+     {
+      "key": {
+       "id": "NOJID"
+      },
+      "messageTimestamp": 5
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "error": {
+    "message": "Incomplete key",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "archive": false,
+    "lastMessages": [
+     {
+      "key": {
+       "id": "NOJID"
+      },
+      "messageTimestamp": 5
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "error": {
+    "message": "Incomplete key",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "markRead": true,
+    "lastMessages": [
+     {
+      "key": {
+       "id": "NOJID"
+      },
+      "messageTimestamp": 5
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "error": {
+    "message": "Incomplete key",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "markRead": false,
+    "lastMessages": [
+     {
+      "key": {
+       "id": "NOJID"
+      },
+      "messageTimestamp": 5
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "error": {
+    "message": "Incomplete key",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "clear": true,
+    "lastMessages": [
+     {
+      "key": {
+       "id": "NOJID"
+      },
+      "messageTimestamp": 5
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "error": {
+    "message": "Incomplete key",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "delete": true,
+    "lastMessages": [
+     {
+      "key": {
+       "id": "NOJID"
+      },
+      "messageTimestamp": 5
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "error": {
+    "message": "Incomplete key",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "archive": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net"
+      },
+      "messageTimestamp": 5
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "error": {
+    "message": "Incomplete key",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "archive": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net"
+      },
+      "messageTimestamp": 5
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "error": {
+    "message": "Incomplete key",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "markRead": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net"
+      },
+      "messageTimestamp": 5
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "error": {
+    "message": "Incomplete key",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "markRead": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net"
+      },
+      "messageTimestamp": 5
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "error": {
+    "message": "Incomplete key",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "clear": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net"
+      },
+      "messageTimestamp": 5
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "error": {
+    "message": "Incomplete key",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "delete": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net"
+      },
+      "messageTimestamp": 5
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "error": {
+    "message": "Incomplete key",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "archive": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": false
+      },
+      "messageTimestamp": 0
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "error": {
+    "message": "Missing timestamp in last message list",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "archive": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": false
+      },
+      "messageTimestamp": 0
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "error": {
+    "message": "Missing timestamp in last message list",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "markRead": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": false
+      },
+      "messageTimestamp": 0
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "error": {
+    "message": "Missing timestamp in last message list",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "markRead": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": false
+      },
+      "messageTimestamp": 0
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "error": {
+    "message": "Missing timestamp in last message list",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "clear": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": false
+      },
+      "messageTimestamp": 0
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "error": {
+    "message": "Missing timestamp in last message list",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "delete": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": false
+      },
+      "messageTimestamp": 0
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "error": {
+    "message": "Missing timestamp in last message list",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "archive": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A"
+      }
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "error": {
+    "message": "Missing timestamp in last message list",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "archive": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A"
+      }
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "error": {
+    "message": "Missing timestamp in last message list",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "markRead": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A"
+      }
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "error": {
+    "message": "Missing timestamp in last message list",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "markRead": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A"
+      }
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "error": {
+    "message": "Missing timestamp in last message list",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "clear": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A"
+      }
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "error": {
+    "message": "Missing timestamp in last message list",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "delete": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A"
+      }
+     }
+    ]
+   },
+   "jid": "200@s.whatsapp.net",
+   "error": {
+    "message": "Missing timestamp in last message list",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "archive": true,
+    "lastMessages": {
+     "lastMessageTimestamp": 1700000003,
+     "lastSystemMessageTimestamp": 1700000004,
+     "messages": [
+      {
+       "key": {
+        "remoteJid": "200@s.whatsapp.net",
+        "id": "R",
+        "fromMe": true
+       },
+       "timestamp": 1700000003
+      }
+     ]
+    }
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a01330801122f0883e2cfaa061084e2cfaa061a210a190a1232303040732e77686174736170702e6e657410011a01521083e2cfaa06"
+   }
+  },
+  {
+   "mod": {
+    "archive": false,
+    "lastMessages": {
+     "lastMessageTimestamp": 1700000003,
+     "lastSystemMessageTimestamp": 1700000004,
+     "messages": [
+      {
+       "key": {
+        "remoteJid": "200@s.whatsapp.net",
+        "id": "R",
+        "fromMe": true
+       },
+       "timestamp": 1700000003
+      }
+     ]
+    }
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a01330800122f0883e2cfaa061084e2cfaa061a210a190a1232303040732e77686174736170702e6e657410011a01521083e2cfaa06"
+   }
+  },
+  {
+   "mod": {
+    "markRead": true,
+    "lastMessages": {
+     "lastMessageTimestamp": 1700000003,
+     "lastSystemMessageTimestamp": 1700000004,
+     "messages": [
+      {
+       "key": {
+        "remoteJid": "200@s.whatsapp.net",
+        "id": "R",
+        "fromMe": true
+       },
+       "timestamp": 1700000003
+      }
+     ]
+    }
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a201330801122f0883e2cfaa061084e2cfaa061a210a190a1232303040732e77686174736170702e6e657410011a01521083e2cfaa06"
+   }
+  },
+  {
+   "mod": {
+    "markRead": false,
+    "lastMessages": {
+     "lastMessageTimestamp": 1700000003,
+     "lastSystemMessageTimestamp": 1700000004,
+     "messages": [
+      {
+       "key": {
+        "remoteJid": "200@s.whatsapp.net",
+        "id": "R",
+        "fromMe": true
+       },
+       "timestamp": 1700000003
+      }
+     ]
+    }
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a201330800122f0883e2cfaa061084e2cfaa061a210a190a1232303040732e77686174736170702e6e657410011a01521083e2cfaa06"
+   }
+  },
+  {
+   "mod": {
+    "clear": true,
+    "lastMessages": {
+     "lastMessageTimestamp": 1700000003,
+     "lastSystemMessageTimestamp": 1700000004,
+     "messages": [
+      {
+       "key": {
+        "remoteJid": "200@s.whatsapp.net",
+        "id": "R",
+        "fromMe": true
+       },
+       "timestamp": 1700000003
+      }
+     ]
+    }
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "clearChat",
+     "200@s.whatsapp.net",
+     "1",
+     "0"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31aa01310a2f0883e2cfaa061084e2cfaa061a210a190a1232303040732e77686174736170702e6e657410011a01521083e2cfaa06"
+   }
+  },
+  {
+   "mod": {
+    "delete": true,
+    "lastMessages": {
+     "lastMessageTimestamp": 1700000003,
+     "lastSystemMessageTimestamp": 1700000004,
+     "messages": [
+      {
+       "key": {
+        "remoteJid": "200@s.whatsapp.net",
+        "id": "R",
+        "fromMe": true
+       },
+       "timestamp": 1700000003
+      }
+     ]
+    }
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteChat",
+     "200@s.whatsapp.net",
+     "1"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31b201310a2f0883e2cfaa061084e2cfaa061a210a190a1232303040732e77686174736170702e6e657410011a01521083e2cfaa06"
+   }
+  },
+  {
+   "mod": {
+    "archive": true,
+    "lastMessages": {}
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a010408011200"
+   }
+  },
+  {
+   "mod": {
+    "archive": false,
+    "lastMessages": {}
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a010408001200"
+   }
+  },
+  {
+   "mod": {
+    "markRead": true,
+    "lastMessages": {}
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a2010408011200"
+   }
+  },
+  {
+   "mod": {
+    "markRead": false,
+    "lastMessages": {}
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a2010408001200"
+   }
+  },
+  {
+   "mod": {
+    "clear": true,
+    "lastMessages": {}
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "clearChat",
+     "200@s.whatsapp.net",
+     "1",
+     "0"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31aa01020a00"
+   }
+  },
+  {
+   "mod": {
+    "delete": true,
+    "lastMessages": {}
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteChat",
+     "200@s.whatsapp.net",
+     "1"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31b201020a00"
+   }
+  },
+  {
+   "mod": {
+    "deleteForMe": {
+     "deleteMedia": true,
+     "key": {
+      "remoteJid": "200@s.whatsapp.net",
+      "id": "DEL",
+      "fromMe": true
+     },
+     "timestamp": 1700000005
+    }
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteMessageForMe",
+     "200@s.whatsapp.net",
+     "DEL",
+     "1",
+     "0"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc3192010808011085e2cfaa06"
+   }
+  },
+  {
+   "mod": {
+    "deleteForMe": {
+     "deleteMedia": true,
+     "key": {
+      "remoteJid": "200@s.whatsapp.net",
+      "id": "DEL",
+      "fromMe": false
+     },
+     "timestamp": 1700000005
+    }
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteMessageForMe",
+     "200@s.whatsapp.net",
+     "DEL",
+     "0",
+     "0"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc3192010808011085e2cfaa06"
+   }
+  },
+  {
+   "mod": {
+    "deleteForMe": {
+     "deleteMedia": true,
+     "key": {
+      "remoteJid": "200@s.whatsapp.net",
+      "id": "DEL"
+     },
+     "timestamp": 1700000005
+    }
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteMessageForMe",
+     "200@s.whatsapp.net",
+     "DEL",
+     "0",
+     "0"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc3192010808011085e2cfaa06"
+   }
+  },
+  {
+   "mod": {
+    "deleteForMe": {
+     "deleteMedia": false,
+     "key": {
+      "remoteJid": "200@s.whatsapp.net",
+      "id": "DEL",
+      "fromMe": true
+     },
+     "timestamp": 1700000005
+    }
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteMessageForMe",
+     "200@s.whatsapp.net",
+     "DEL",
+     "1",
+     "0"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc3192010808001085e2cfaa06"
+   }
+  },
+  {
+   "mod": {
+    "deleteForMe": {
+     "deleteMedia": false,
+     "key": {
+      "remoteJid": "200@s.whatsapp.net",
+      "id": "DEL",
+      "fromMe": false
+     },
+     "timestamp": 1700000005
+    }
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteMessageForMe",
+     "200@s.whatsapp.net",
+     "DEL",
+     "0",
+     "0"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc3192010808001085e2cfaa06"
+   }
+  },
+  {
+   "mod": {
+    "deleteForMe": {
+     "deleteMedia": false,
+     "key": {
+      "remoteJid": "200@s.whatsapp.net",
+      "id": "DEL"
+     },
+     "timestamp": 1700000005
+    }
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteMessageForMe",
+     "200@s.whatsapp.net",
+     "DEL",
+     "0",
+     "0"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc3192010808001085e2cfaa06"
+   }
+  },
+  {
+   "mod": {
+    "pin": true
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "pin_v1",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 5,
+    "operation": 0,
+    "action": "08fbd095ffbc312a020801"
+   }
+  },
+  {
+   "mod": {
+    "pin": false
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "pin_v1",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 5,
+    "operation": 0,
+    "action": "08fbd095ffbc312a020800"
+   }
+  },
+  {
+   "mod": {
+    "contact": null
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "critical_unblock_low",
+    "index": [
+     "contact",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 2,
+    "operation": 1,
+    "action": "08fbd095ffbc311a00"
+   }
+  },
+  {
+   "mod": {
+    "contact": {}
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "critical_unblock_low",
+    "index": [
+     "contact",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc311a00"
+   }
+  },
+  {
+   "mod": {
+    "contact": {
+     "fullName": "Alice ☕",
+     "firstName": "Alice",
+     "lidJid": "300@lid",
+     "saveOnPrimaryAddressbook": true
+    }
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "critical_unblock_low",
+    "index": [
+     "contact",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc311a1d0a09416c69636520e298951205416c6963651a07333030406c69642001"
+   }
+  },
+  {
+   "mod": {
+    "disableLinkPreviews": {
+     "isPreviewsDisabled": true
+    }
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "setting_disableLinkPreviews"
+    ],
+    "apiVersion": 8,
+    "operation": 0,
+    "action": "08fbd095ffbc31aa03020801"
+   }
+  },
+  {
+   "mod": {
+    "disableLinkPreviews": {
+     "isPreviewsDisabled": false
+    }
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "setting_disableLinkPreviews"
+    ],
+    "apiVersion": 8,
+    "operation": 0,
+    "action": "08fbd095ffbc31aa03020800"
+   }
+  },
+  {
+   "mod": {
+    "disableLinkPreviews": {}
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "setting_disableLinkPreviews"
+    ],
+    "apiVersion": 8,
+    "operation": 0,
+    "action": "08fbd095ffbc31aa0300"
+   }
+  },
+  {
+   "mod": {
+    "star": {
+     "messages": [
+      {
+       "id": "S1",
+       "fromMe": true
+      },
+      {
+       "id": "S2",
+       "fromMe": true
+      }
+     ],
+     "star": true
+    }
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "star",
+     "200@s.whatsapp.net",
+     "S1",
+     "1",
+     "0"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc3112020801"
+   }
+  },
+  {
+   "mod": {
+    "star": {
+     "messages": [
+      {
+       "id": "S1",
+       "fromMe": false
+      },
+      {
+       "id": "S2",
+       "fromMe": true
+      }
+     ],
+     "star": true
+    }
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "star",
+     "200@s.whatsapp.net",
+     "S1",
+     "0",
+     "0"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc3112020801"
+   }
+  },
+  {
+   "mod": {
+    "star": {
+     "messages": [
+      {
+       "id": "S1"
+      },
+      {
+       "id": "S2",
+       "fromMe": true
+      }
+     ],
+     "star": true
+    }
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "star",
+     "200@s.whatsapp.net",
+     "S1",
+     "0",
+     "0"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc3112020801"
+   }
+  },
+  {
+   "mod": {
+    "star": {
+     "messages": [
+      {
+       "id": "S1",
+       "fromMe": true
+      },
+      {
+       "id": "S2",
+       "fromMe": true
+      }
+     ],
+     "star": false
+    }
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "star",
+     "200@s.whatsapp.net",
+     "S1",
+     "1",
+     "0"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc3112020800"
+   }
+  },
+  {
+   "mod": {
+    "star": {
+     "messages": [
+      {
+       "id": "S1",
+       "fromMe": false
+      },
+      {
+       "id": "S2",
+       "fromMe": true
+      }
+     ],
+     "star": false
+    }
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "star",
+     "200@s.whatsapp.net",
+     "S1",
+     "0",
+     "0"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc3112020800"
+   }
+  },
+  {
+   "mod": {
+    "star": {
+     "messages": [
+      {
+       "id": "S1"
+      },
+      {
+       "id": "S2",
+       "fromMe": true
+      }
+     ],
+     "star": false
+    }
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "star",
+     "200@s.whatsapp.net",
+     "S1",
+     "0",
+     "0"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc3112020800"
+   }
+  },
+  {
+   "mod": {
+    "pushNameSetting": "Name ☕"
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "critical_block",
+    "index": [
+     "setting_pushName"
+    ],
+    "apiVersion": 1,
+    "operation": 0,
+    "action": "08fbd095ffbc313a0a0a084e616d6520e29895"
+   }
+  },
+  {
+   "mod": {
+    "pushNameSetting": ""
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "critical_block",
+    "index": [
+     "setting_pushName"
+    ],
+    "apiVersion": 1,
+    "operation": 0,
+    "action": "08fbd095ffbc313a020a00"
+   }
+  },
+  {
+   "mod": {
+    "quickReply": {
+     "shortcut": "hi",
+     "message": "Hello ☕",
+     "timestamp": "1699990000"
+    }
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "quick_reply",
+     "1699990000"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc3142130a026869120948656c6c6f20e2989520002800"
+   }
+  },
+  {
+   "mod": {
+    "quickReply": {
+     "shortcut": "hi",
+     "message": "Hello"
+    }
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "quick_reply",
+     "1700000000"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc31420f0a026869120548656c6c6f20002800"
+   }
+  },
+  {
+   "mod": {
+    "quickReply": {
+     "timestamp": "1699990000",
+     "deleted": true
+    }
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "quick_reply",
+     "1699990000"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc3142080a00120020002801"
+   }
+  },
+  {
+   "mod": {
+    "quickReply": {}
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "quick_reply",
+     "1700000000"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc3142080a00120020002800"
+   }
+  },
+  {
+   "mod": {
+    "addLabel": {
+     "id": "7",
+     "name": "Label ☕",
+     "color": 3,
+     "predefinedId": 2,
+     "deleted": false
+    }
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "label_edit",
+     "7"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc3172110a094c6162656c20e29895100318022000"
+   }
+  },
+  {
+   "mod": {
+    "addLabel": {
+     "id": "8",
+     "name": "Gone",
+     "deleted": true
+    }
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "label_edit",
+     "8"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc3172080a04476f6e652001"
+   }
+  },
+  {
+   "mod": {
+    "addLabel": {
+     "id": "9"
+    }
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "label_edit",
+     "9"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc317200"
+   }
+  },
+  {
+   "mod": {
+    "addChatLabel": {
+     "labelId": "7"
+    }
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "label_jid",
+     "7",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc317a020801"
+   }
+  },
+  {
+   "mod": {
+    "removeChatLabel": {
+     "labelId": "7"
+    }
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "label_jid",
+     "7",
+     "200@s.whatsapp.net"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc317a020800"
+   }
+  },
+  {
+   "mod": {
+    "addMessageLabel": {
+     "messageId": "M1",
+     "labelId": "7"
+    }
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "label_message",
+     "7",
+     "200@s.whatsapp.net",
+     "M1",
+     "0",
+     "0"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc317a020801"
+   }
+  },
+  {
+   "mod": {
+    "removeMessageLabel": {
+     "messageId": "M1",
+     "labelId": "7"
+    }
+   },
+   "jid": "200@s.whatsapp.net",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "label_message",
+     "7",
+     "200@s.whatsapp.net",
+     "M1",
+     "0",
+     "0"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc317a020800"
+   }
+  },
+  {
+   "mod": {
+    "mute": null
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "mute",
+     "group@g.us"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc3122020800"
+   }
+  },
+  {
+   "mod": {
+    "mute": 0
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "mute",
+     "group@g.us"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc3122020800"
+   }
+  },
+  {
+   "mod": {
+    "mute": 1700003600000
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "mute",
+     "group@g.us"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc31220908011080adf180bd31"
+   }
+  },
+  {
+   "mod": {
+    "mute": 8640000000000
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "mute",
+     "group@g.us"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc31220a080110808086c1bafb01"
+   }
+  },
+  {
+   "mod": {
+    "archive": true
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "group@g.us"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a01020801"
+   }
+  },
+  {
+   "mod": {
+    "archive": false
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "group@g.us"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a01020800"
+   }
+  },
+  {
+   "mod": {
+    "markRead": true
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "group@g.us"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a201020801"
+   }
+  },
+  {
+   "mod": {
+    "markRead": false
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "group@g.us"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a201020800"
+   }
+  },
+  {
+   "mod": {
+    "clear": true
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "clearChat",
+     "group@g.us",
+     "1",
+     "0"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31aa0100"
+   }
+  },
+  {
+   "mod": {
+    "delete": true
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteChat",
+     "group@g.us",
+     "1"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31b20100"
+   }
+  },
+  {
+   "mod": {
+    "archive": true,
+    "lastMessages": []
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "group@g.us"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a010408011200"
+   }
+  },
+  {
+   "mod": {
+    "archive": false,
+    "lastMessages": []
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "group@g.us"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a010408001200"
+   }
+  },
+  {
+   "mod": {
+    "markRead": true,
+    "lastMessages": []
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "group@g.us"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a2010408011200"
+   }
+  },
+  {
+   "mod": {
+    "markRead": false,
+    "lastMessages": []
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "group@g.us"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a2010408001200"
+   }
+  },
+  {
+   "mod": {
+    "clear": true,
+    "lastMessages": []
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "clearChat",
+     "group@g.us",
+     "1",
+     "0"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31aa01020a00"
+   }
+  },
+  {
+   "mod": {
+    "delete": true,
+    "lastMessages": []
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteChat",
+     "group@g.us",
+     "1"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31b201020a00"
+   }
+  },
+  {
+   "mod": {
+    "archive": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000000
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "group@g.us"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a0127080112230880e2cfaa061a1b0a190a1232303040732e77686174736170702e6e657410001a0141"
+   }
+  },
+  {
+   "mod": {
+    "archive": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000000
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "group@g.us"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a0127080012230880e2cfaa061a1b0a190a1232303040732e77686174736170702e6e657410001a0141"
+   }
+  },
+  {
+   "mod": {
+    "markRead": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000000
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "group@g.us"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a20127080112230880e2cfaa061a1b0a190a1232303040732e77686174736170702e6e657410001a0141"
+   }
+  },
+  {
+   "mod": {
+    "markRead": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000000
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "group@g.us"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a20127080012230880e2cfaa061a1b0a190a1232303040732e77686174736170702e6e657410001a0141"
+   }
+  },
+  {
+   "mod": {
+    "clear": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000000
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "clearChat",
+     "group@g.us",
+     "1",
+     "0"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31aa01250a230880e2cfaa061a1b0a190a1232303040732e77686174736170702e6e657410001a0141"
+   }
+  },
+  {
+   "mod": {
+    "delete": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000000
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteChat",
+     "group@g.us",
+     "1"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31b201250a230880e2cfaa061a1b0a190a1232303040732e77686174736170702e6e657410001a0141"
+   }
+  },
+  {
+   "mod": {
+    "archive": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": true
+      },
+      "messageTimestamp": 1699999990
+     },
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "B",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000001
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "group@g.us"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a0144080112400881e2cfaa061a1b0a190a1232303040732e77686174736170702e6e657410011a01411a1b0a190a1232303040732e77686174736170702e6e657410001a0142"
+   }
+  },
+  {
+   "mod": {
+    "archive": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": true
+      },
+      "messageTimestamp": 1699999990
+     },
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "B",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000001
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "group@g.us"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a0144080012400881e2cfaa061a1b0a190a1232303040732e77686174736170702e6e657410011a01411a1b0a190a1232303040732e77686174736170702e6e657410001a0142"
+   }
+  },
+  {
+   "mod": {
+    "markRead": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": true
+      },
+      "messageTimestamp": 1699999990
+     },
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "B",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000001
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "group@g.us"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a20144080112400881e2cfaa061a1b0a190a1232303040732e77686174736170702e6e657410011a01411a1b0a190a1232303040732e77686174736170702e6e657410001a0142"
+   }
+  },
+  {
+   "mod": {
+    "markRead": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": true
+      },
+      "messageTimestamp": 1699999990
+     },
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "B",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000001
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "group@g.us"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a20144080012400881e2cfaa061a1b0a190a1232303040732e77686174736170702e6e657410011a01411a1b0a190a1232303040732e77686174736170702e6e657410001a0142"
+   }
+  },
+  {
+   "mod": {
+    "clear": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": true
+      },
+      "messageTimestamp": 1699999990
+     },
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "B",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000001
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "clearChat",
+     "group@g.us",
+     "1",
+     "0"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31aa01420a400881e2cfaa061a1b0a190a1232303040732e77686174736170702e6e657410011a01411a1b0a190a1232303040732e77686174736170702e6e657410001a0142"
+   }
+  },
+  {
+   "mod": {
+    "delete": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": true
+      },
+      "messageTimestamp": 1699999990
+     },
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "B",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000001
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteChat",
+     "group@g.us",
+     "1"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31b201420a400881e2cfaa061a1b0a190a1232303040732e77686174736170702e6e657410011a01411a1b0a190a1232303040732e77686174736170702e6e657410001a0142"
+   }
+  },
+  {
+   "mod": {
+    "archive": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": false,
+       "participant": "300@s.whatsapp.net"
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "group@g.us"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a01330801122f0882e2cfaa061a270a250a0a67726f757040672e757310001a0147221233303040732e77686174736170702e6e6574"
+   }
+  },
+  {
+   "mod": {
+    "archive": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": false,
+       "participant": "300@s.whatsapp.net"
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "group@g.us"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a01330800122f0882e2cfaa061a270a250a0a67726f757040672e757310001a0147221233303040732e77686174736170702e6e6574"
+   }
+  },
+  {
+   "mod": {
+    "markRead": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": false,
+       "participant": "300@s.whatsapp.net"
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "group@g.us"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a201330801122f0882e2cfaa061a270a250a0a67726f757040672e757310001a0147221233303040732e77686174736170702e6e6574"
+   }
+  },
+  {
+   "mod": {
+    "markRead": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": false,
+       "participant": "300@s.whatsapp.net"
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "group@g.us"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a201330800122f0882e2cfaa061a270a250a0a67726f757040672e757310001a0147221233303040732e77686174736170702e6e6574"
+   }
+  },
+  {
+   "mod": {
+    "clear": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": false,
+       "participant": "300@s.whatsapp.net"
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "clearChat",
+     "group@g.us",
+     "1",
+     "0"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31aa01310a2f0882e2cfaa061a270a250a0a67726f757040672e757310001a0147221233303040732e77686174736170702e6e6574"
+   }
+  },
+  {
+   "mod": {
+    "delete": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": false,
+       "participant": "300@s.whatsapp.net"
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteChat",
+     "group@g.us",
+     "1"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31b201310a2f0882e2cfaa061a270a250a0a67726f757040672e757310001a0147221233303040732e77686174736170702e6e6574"
+   }
+  },
+  {
+   "mod": {
+    "archive": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": true
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "group@g.us"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a011f0801121b0882e2cfaa061a130a110a0a67726f757040672e757310011a0147"
+   }
+  },
+  {
+   "mod": {
+    "archive": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": true
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "group@g.us"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a011f0800121b0882e2cfaa061a130a110a0a67726f757040672e757310011a0147"
+   }
+  },
+  {
+   "mod": {
+    "markRead": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": true
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "group@g.us"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a2011f0801121b0882e2cfaa061a130a110a0a67726f757040672e757310011a0147"
+   }
+  },
+  {
+   "mod": {
+    "markRead": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": true
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "group@g.us"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a2011f0800121b0882e2cfaa061a130a110a0a67726f757040672e757310011a0147"
+   }
+  },
+  {
+   "mod": {
+    "clear": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": true
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "clearChat",
+     "group@g.us",
+     "1",
+     "0"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31aa011d0a1b0882e2cfaa061a130a110a0a67726f757040672e757310011a0147"
+   }
+  },
+  {
+   "mod": {
+    "delete": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": true
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteChat",
+     "group@g.us",
+     "1"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31b2011d0a1b0882e2cfaa061a130a110a0a67726f757040672e757310011a0147"
+   }
+  },
+  {
+   "mod": {
+    "archive": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "error": {
+    "message": "Expected not from me message to have participant",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "archive": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "error": {
+    "message": "Expected not from me message to have participant",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "markRead": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "error": {
+    "message": "Expected not from me message to have participant",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "markRead": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "error": {
+    "message": "Expected not from me message to have participant",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "clear": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "error": {
+    "message": "Expected not from me message to have participant",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "delete": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "error": {
+    "message": "Expected not from me message to have participant",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "archive": true,
+    "lastMessages": [
+     {
+      "key": {
+       "id": "NOJID"
+      },
+      "messageTimestamp": 5
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "error": {
+    "message": "Incomplete key",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "archive": false,
+    "lastMessages": [
+     {
+      "key": {
+       "id": "NOJID"
+      },
+      "messageTimestamp": 5
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "error": {
+    "message": "Incomplete key",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "markRead": true,
+    "lastMessages": [
+     {
+      "key": {
+       "id": "NOJID"
+      },
+      "messageTimestamp": 5
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "error": {
+    "message": "Incomplete key",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "markRead": false,
+    "lastMessages": [
+     {
+      "key": {
+       "id": "NOJID"
+      },
+      "messageTimestamp": 5
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "error": {
+    "message": "Incomplete key",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "clear": true,
+    "lastMessages": [
+     {
+      "key": {
+       "id": "NOJID"
+      },
+      "messageTimestamp": 5
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "error": {
+    "message": "Incomplete key",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "delete": true,
+    "lastMessages": [
+     {
+      "key": {
+       "id": "NOJID"
+      },
+      "messageTimestamp": 5
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "error": {
+    "message": "Incomplete key",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "archive": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net"
+      },
+      "messageTimestamp": 5
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "error": {
+    "message": "Incomplete key",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "archive": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net"
+      },
+      "messageTimestamp": 5
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "error": {
+    "message": "Incomplete key",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "markRead": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net"
+      },
+      "messageTimestamp": 5
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "error": {
+    "message": "Incomplete key",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "markRead": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net"
+      },
+      "messageTimestamp": 5
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "error": {
+    "message": "Incomplete key",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "clear": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net"
+      },
+      "messageTimestamp": 5
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "error": {
+    "message": "Incomplete key",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "delete": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net"
+      },
+      "messageTimestamp": 5
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "error": {
+    "message": "Incomplete key",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "archive": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": false
+      },
+      "messageTimestamp": 0
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "error": {
+    "message": "Missing timestamp in last message list",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "archive": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": false
+      },
+      "messageTimestamp": 0
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "error": {
+    "message": "Missing timestamp in last message list",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "markRead": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": false
+      },
+      "messageTimestamp": 0
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "error": {
+    "message": "Missing timestamp in last message list",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "markRead": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": false
+      },
+      "messageTimestamp": 0
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "error": {
+    "message": "Missing timestamp in last message list",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "clear": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": false
+      },
+      "messageTimestamp": 0
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "error": {
+    "message": "Missing timestamp in last message list",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "delete": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": false
+      },
+      "messageTimestamp": 0
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "error": {
+    "message": "Missing timestamp in last message list",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "archive": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A"
+      }
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "error": {
+    "message": "Missing timestamp in last message list",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "archive": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A"
+      }
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "error": {
+    "message": "Missing timestamp in last message list",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "markRead": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A"
+      }
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "error": {
+    "message": "Missing timestamp in last message list",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "markRead": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A"
+      }
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "error": {
+    "message": "Missing timestamp in last message list",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "clear": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A"
+      }
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "error": {
+    "message": "Missing timestamp in last message list",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "delete": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A"
+      }
+     }
+    ]
+   },
+   "jid": "group@g.us",
+   "error": {
+    "message": "Missing timestamp in last message list",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "archive": true,
+    "lastMessages": {
+     "lastMessageTimestamp": 1700000003,
+     "lastSystemMessageTimestamp": 1700000004,
+     "messages": [
+      {
+       "key": {
+        "remoteJid": "200@s.whatsapp.net",
+        "id": "R",
+        "fromMe": true
+       },
+       "timestamp": 1700000003
+      }
+     ]
+    }
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "group@g.us"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a01330801122f0883e2cfaa061084e2cfaa061a210a190a1232303040732e77686174736170702e6e657410011a01521083e2cfaa06"
+   }
+  },
+  {
+   "mod": {
+    "archive": false,
+    "lastMessages": {
+     "lastMessageTimestamp": 1700000003,
+     "lastSystemMessageTimestamp": 1700000004,
+     "messages": [
+      {
+       "key": {
+        "remoteJid": "200@s.whatsapp.net",
+        "id": "R",
+        "fromMe": true
+       },
+       "timestamp": 1700000003
+      }
+     ]
+    }
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "group@g.us"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a01330800122f0883e2cfaa061084e2cfaa061a210a190a1232303040732e77686174736170702e6e657410011a01521083e2cfaa06"
+   }
+  },
+  {
+   "mod": {
+    "markRead": true,
+    "lastMessages": {
+     "lastMessageTimestamp": 1700000003,
+     "lastSystemMessageTimestamp": 1700000004,
+     "messages": [
+      {
+       "key": {
+        "remoteJid": "200@s.whatsapp.net",
+        "id": "R",
+        "fromMe": true
+       },
+       "timestamp": 1700000003
+      }
+     ]
+    }
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "group@g.us"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a201330801122f0883e2cfaa061084e2cfaa061a210a190a1232303040732e77686174736170702e6e657410011a01521083e2cfaa06"
+   }
+  },
+  {
+   "mod": {
+    "markRead": false,
+    "lastMessages": {
+     "lastMessageTimestamp": 1700000003,
+     "lastSystemMessageTimestamp": 1700000004,
+     "messages": [
+      {
+       "key": {
+        "remoteJid": "200@s.whatsapp.net",
+        "id": "R",
+        "fromMe": true
+       },
+       "timestamp": 1700000003
+      }
+     ]
+    }
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "group@g.us"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a201330800122f0883e2cfaa061084e2cfaa061a210a190a1232303040732e77686174736170702e6e657410011a01521083e2cfaa06"
+   }
+  },
+  {
+   "mod": {
+    "clear": true,
+    "lastMessages": {
+     "lastMessageTimestamp": 1700000003,
+     "lastSystemMessageTimestamp": 1700000004,
+     "messages": [
+      {
+       "key": {
+        "remoteJid": "200@s.whatsapp.net",
+        "id": "R",
+        "fromMe": true
+       },
+       "timestamp": 1700000003
+      }
+     ]
+    }
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "clearChat",
+     "group@g.us",
+     "1",
+     "0"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31aa01310a2f0883e2cfaa061084e2cfaa061a210a190a1232303040732e77686174736170702e6e657410011a01521083e2cfaa06"
+   }
+  },
+  {
+   "mod": {
+    "delete": true,
+    "lastMessages": {
+     "lastMessageTimestamp": 1700000003,
+     "lastSystemMessageTimestamp": 1700000004,
+     "messages": [
+      {
+       "key": {
+        "remoteJid": "200@s.whatsapp.net",
+        "id": "R",
+        "fromMe": true
+       },
+       "timestamp": 1700000003
+      }
+     ]
+    }
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteChat",
+     "group@g.us",
+     "1"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31b201310a2f0883e2cfaa061084e2cfaa061a210a190a1232303040732e77686174736170702e6e657410011a01521083e2cfaa06"
+   }
+  },
+  {
+   "mod": {
+    "archive": true,
+    "lastMessages": {}
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "group@g.us"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a010408011200"
+   }
+  },
+  {
+   "mod": {
+    "archive": false,
+    "lastMessages": {}
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "group@g.us"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a010408001200"
+   }
+  },
+  {
+   "mod": {
+    "markRead": true,
+    "lastMessages": {}
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "group@g.us"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a2010408011200"
+   }
+  },
+  {
+   "mod": {
+    "markRead": false,
+    "lastMessages": {}
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "group@g.us"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a2010408001200"
+   }
+  },
+  {
+   "mod": {
+    "clear": true,
+    "lastMessages": {}
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "clearChat",
+     "group@g.us",
+     "1",
+     "0"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31aa01020a00"
+   }
+  },
+  {
+   "mod": {
+    "delete": true,
+    "lastMessages": {}
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteChat",
+     "group@g.us",
+     "1"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31b201020a00"
+   }
+  },
+  {
+   "mod": {
+    "deleteForMe": {
+     "deleteMedia": true,
+     "key": {
+      "remoteJid": "group@g.us",
+      "id": "DEL",
+      "fromMe": true
+     },
+     "timestamp": 1700000005
+    }
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteMessageForMe",
+     "group@g.us",
+     "DEL",
+     "1",
+     "0"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc3192010808011085e2cfaa06"
+   }
+  },
+  {
+   "mod": {
+    "deleteForMe": {
+     "deleteMedia": true,
+     "key": {
+      "remoteJid": "group@g.us",
+      "id": "DEL",
+      "fromMe": false
+     },
+     "timestamp": 1700000005
+    }
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteMessageForMe",
+     "group@g.us",
+     "DEL",
+     "0",
+     "0"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc3192010808011085e2cfaa06"
+   }
+  },
+  {
+   "mod": {
+    "deleteForMe": {
+     "deleteMedia": true,
+     "key": {
+      "remoteJid": "group@g.us",
+      "id": "DEL"
+     },
+     "timestamp": 1700000005
+    }
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteMessageForMe",
+     "group@g.us",
+     "DEL",
+     "0",
+     "0"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc3192010808011085e2cfaa06"
+   }
+  },
+  {
+   "mod": {
+    "deleteForMe": {
+     "deleteMedia": false,
+     "key": {
+      "remoteJid": "group@g.us",
+      "id": "DEL",
+      "fromMe": true
+     },
+     "timestamp": 1700000005
+    }
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteMessageForMe",
+     "group@g.us",
+     "DEL",
+     "1",
+     "0"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc3192010808001085e2cfaa06"
+   }
+  },
+  {
+   "mod": {
+    "deleteForMe": {
+     "deleteMedia": false,
+     "key": {
+      "remoteJid": "group@g.us",
+      "id": "DEL",
+      "fromMe": false
+     },
+     "timestamp": 1700000005
+    }
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteMessageForMe",
+     "group@g.us",
+     "DEL",
+     "0",
+     "0"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc3192010808001085e2cfaa06"
+   }
+  },
+  {
+   "mod": {
+    "deleteForMe": {
+     "deleteMedia": false,
+     "key": {
+      "remoteJid": "group@g.us",
+      "id": "DEL"
+     },
+     "timestamp": 1700000005
+    }
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteMessageForMe",
+     "group@g.us",
+     "DEL",
+     "0",
+     "0"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc3192010808001085e2cfaa06"
+   }
+  },
+  {
+   "mod": {
+    "pin": true
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "pin_v1",
+     "group@g.us"
+    ],
+    "apiVersion": 5,
+    "operation": 0,
+    "action": "08fbd095ffbc312a020801"
+   }
+  },
+  {
+   "mod": {
+    "pin": false
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "pin_v1",
+     "group@g.us"
+    ],
+    "apiVersion": 5,
+    "operation": 0,
+    "action": "08fbd095ffbc312a020800"
+   }
+  },
+  {
+   "mod": {
+    "contact": null
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "critical_unblock_low",
+    "index": [
+     "contact",
+     "group@g.us"
+    ],
+    "apiVersion": 2,
+    "operation": 1,
+    "action": "08fbd095ffbc311a00"
+   }
+  },
+  {
+   "mod": {
+    "contact": {}
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "critical_unblock_low",
+    "index": [
+     "contact",
+     "group@g.us"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc311a00"
+   }
+  },
+  {
+   "mod": {
+    "contact": {
+     "fullName": "Alice ☕",
+     "firstName": "Alice",
+     "lidJid": "300@lid",
+     "saveOnPrimaryAddressbook": true
+    }
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "critical_unblock_low",
+    "index": [
+     "contact",
+     "group@g.us"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc311a1d0a09416c69636520e298951205416c6963651a07333030406c69642001"
+   }
+  },
+  {
+   "mod": {
+    "disableLinkPreviews": {
+     "isPreviewsDisabled": true
+    }
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "setting_disableLinkPreviews"
+    ],
+    "apiVersion": 8,
+    "operation": 0,
+    "action": "08fbd095ffbc31aa03020801"
+   }
+  },
+  {
+   "mod": {
+    "disableLinkPreviews": {
+     "isPreviewsDisabled": false
+    }
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "setting_disableLinkPreviews"
+    ],
+    "apiVersion": 8,
+    "operation": 0,
+    "action": "08fbd095ffbc31aa03020800"
+   }
+  },
+  {
+   "mod": {
+    "disableLinkPreviews": {}
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "setting_disableLinkPreviews"
+    ],
+    "apiVersion": 8,
+    "operation": 0,
+    "action": "08fbd095ffbc31aa0300"
+   }
+  },
+  {
+   "mod": {
+    "star": {
+     "messages": [
+      {
+       "id": "S1",
+       "fromMe": true
+      },
+      {
+       "id": "S2",
+       "fromMe": true
+      }
+     ],
+     "star": true
+    }
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "star",
+     "group@g.us",
+     "S1",
+     "1",
+     "0"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc3112020801"
+   }
+  },
+  {
+   "mod": {
+    "star": {
+     "messages": [
+      {
+       "id": "S1",
+       "fromMe": false
+      },
+      {
+       "id": "S2",
+       "fromMe": true
+      }
+     ],
+     "star": true
+    }
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "star",
+     "group@g.us",
+     "S1",
+     "0",
+     "0"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc3112020801"
+   }
+  },
+  {
+   "mod": {
+    "star": {
+     "messages": [
+      {
+       "id": "S1"
+      },
+      {
+       "id": "S2",
+       "fromMe": true
+      }
+     ],
+     "star": true
+    }
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "star",
+     "group@g.us",
+     "S1",
+     "0",
+     "0"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc3112020801"
+   }
+  },
+  {
+   "mod": {
+    "star": {
+     "messages": [
+      {
+       "id": "S1",
+       "fromMe": true
+      },
+      {
+       "id": "S2",
+       "fromMe": true
+      }
+     ],
+     "star": false
+    }
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "star",
+     "group@g.us",
+     "S1",
+     "1",
+     "0"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc3112020800"
+   }
+  },
+  {
+   "mod": {
+    "star": {
+     "messages": [
+      {
+       "id": "S1",
+       "fromMe": false
+      },
+      {
+       "id": "S2",
+       "fromMe": true
+      }
+     ],
+     "star": false
+    }
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "star",
+     "group@g.us",
+     "S1",
+     "0",
+     "0"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc3112020800"
+   }
+  },
+  {
+   "mod": {
+    "star": {
+     "messages": [
+      {
+       "id": "S1"
+      },
+      {
+       "id": "S2",
+       "fromMe": true
+      }
+     ],
+     "star": false
+    }
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "star",
+     "group@g.us",
+     "S1",
+     "0",
+     "0"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc3112020800"
+   }
+  },
+  {
+   "mod": {
+    "pushNameSetting": "Name ☕"
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "critical_block",
+    "index": [
+     "setting_pushName"
+    ],
+    "apiVersion": 1,
+    "operation": 0,
+    "action": "08fbd095ffbc313a0a0a084e616d6520e29895"
+   }
+  },
+  {
+   "mod": {
+    "pushNameSetting": ""
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "critical_block",
+    "index": [
+     "setting_pushName"
+    ],
+    "apiVersion": 1,
+    "operation": 0,
+    "action": "08fbd095ffbc313a020a00"
+   }
+  },
+  {
+   "mod": {
+    "quickReply": {
+     "shortcut": "hi",
+     "message": "Hello ☕",
+     "timestamp": "1699990000"
+    }
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "quick_reply",
+     "1699990000"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc3142130a026869120948656c6c6f20e2989520002800"
+   }
+  },
+  {
+   "mod": {
+    "quickReply": {
+     "shortcut": "hi",
+     "message": "Hello"
+    }
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "quick_reply",
+     "1700000000"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc31420f0a026869120548656c6c6f20002800"
+   }
+  },
+  {
+   "mod": {
+    "quickReply": {
+     "timestamp": "1699990000",
+     "deleted": true
+    }
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "quick_reply",
+     "1699990000"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc3142080a00120020002801"
+   }
+  },
+  {
+   "mod": {
+    "quickReply": {}
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "quick_reply",
+     "1700000000"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc3142080a00120020002800"
+   }
+  },
+  {
+   "mod": {
+    "addLabel": {
+     "id": "7",
+     "name": "Label ☕",
+     "color": 3,
+     "predefinedId": 2,
+     "deleted": false
+    }
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "label_edit",
+     "7"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc3172110a094c6162656c20e29895100318022000"
+   }
+  },
+  {
+   "mod": {
+    "addLabel": {
+     "id": "8",
+     "name": "Gone",
+     "deleted": true
+    }
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "label_edit",
+     "8"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc3172080a04476f6e652001"
+   }
+  },
+  {
+   "mod": {
+    "addLabel": {
+     "id": "9"
+    }
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "label_edit",
+     "9"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc317200"
+   }
+  },
+  {
+   "mod": {
+    "addChatLabel": {
+     "labelId": "7"
+    }
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "label_jid",
+     "7",
+     "group@g.us"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc317a020801"
+   }
+  },
+  {
+   "mod": {
+    "removeChatLabel": {
+     "labelId": "7"
+    }
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "label_jid",
+     "7",
+     "group@g.us"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc317a020800"
+   }
+  },
+  {
+   "mod": {
+    "addMessageLabel": {
+     "messageId": "M1",
+     "labelId": "7"
+    }
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "label_message",
+     "7",
+     "group@g.us",
+     "M1",
+     "0",
+     "0"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc317a020801"
+   }
+  },
+  {
+   "mod": {
+    "removeMessageLabel": {
+     "messageId": "M1",
+     "labelId": "7"
+    }
+   },
+   "jid": "group@g.us",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "label_message",
+     "7",
+     "group@g.us",
+     "M1",
+     "0",
+     "0"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc317a020800"
+   }
+  },
+  {
+   "mod": {
+    "mute": null
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "mute",
+     "300@lid"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc3122020800"
+   }
+  },
+  {
+   "mod": {
+    "mute": 0
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "mute",
+     "300@lid"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc3122020800"
+   }
+  },
+  {
+   "mod": {
+    "mute": 1700003600000
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "mute",
+     "300@lid"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc31220908011080adf180bd31"
+   }
+  },
+  {
+   "mod": {
+    "mute": 8640000000000
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "mute",
+     "300@lid"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc31220a080110808086c1bafb01"
+   }
+  },
+  {
+   "mod": {
+    "archive": true
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "300@lid"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a01020801"
+   }
+  },
+  {
+   "mod": {
+    "archive": false
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "300@lid"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a01020800"
+   }
+  },
+  {
+   "mod": {
+    "markRead": true
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "300@lid"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a201020801"
+   }
+  },
+  {
+   "mod": {
+    "markRead": false
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "300@lid"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a201020800"
+   }
+  },
+  {
+   "mod": {
+    "clear": true
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "clearChat",
+     "300@lid",
+     "1",
+     "0"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31aa0100"
+   }
+  },
+  {
+   "mod": {
+    "delete": true
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteChat",
+     "300@lid",
+     "1"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31b20100"
+   }
+  },
+  {
+   "mod": {
+    "archive": true,
+    "lastMessages": []
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "300@lid"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a010408011200"
+   }
+  },
+  {
+   "mod": {
+    "archive": false,
+    "lastMessages": []
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "300@lid"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a010408001200"
+   }
+  },
+  {
+   "mod": {
+    "markRead": true,
+    "lastMessages": []
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "300@lid"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a2010408011200"
+   }
+  },
+  {
+   "mod": {
+    "markRead": false,
+    "lastMessages": []
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "300@lid"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a2010408001200"
+   }
+  },
+  {
+   "mod": {
+    "clear": true,
+    "lastMessages": []
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "clearChat",
+     "300@lid",
+     "1",
+     "0"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31aa01020a00"
+   }
+  },
+  {
+   "mod": {
+    "delete": true,
+    "lastMessages": []
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteChat",
+     "300@lid",
+     "1"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31b201020a00"
+   }
+  },
+  {
+   "mod": {
+    "archive": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000000
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "300@lid"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a0127080112230880e2cfaa061a1b0a190a1232303040732e77686174736170702e6e657410001a0141"
+   }
+  },
+  {
+   "mod": {
+    "archive": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000000
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "300@lid"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a0127080012230880e2cfaa061a1b0a190a1232303040732e77686174736170702e6e657410001a0141"
+   }
+  },
+  {
+   "mod": {
+    "markRead": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000000
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "300@lid"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a20127080112230880e2cfaa061a1b0a190a1232303040732e77686174736170702e6e657410001a0141"
+   }
+  },
+  {
+   "mod": {
+    "markRead": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000000
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "300@lid"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a20127080012230880e2cfaa061a1b0a190a1232303040732e77686174736170702e6e657410001a0141"
+   }
+  },
+  {
+   "mod": {
+    "clear": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000000
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "clearChat",
+     "300@lid",
+     "1",
+     "0"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31aa01250a230880e2cfaa061a1b0a190a1232303040732e77686174736170702e6e657410001a0141"
+   }
+  },
+  {
+   "mod": {
+    "delete": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000000
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteChat",
+     "300@lid",
+     "1"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31b201250a230880e2cfaa061a1b0a190a1232303040732e77686174736170702e6e657410001a0141"
+   }
+  },
+  {
+   "mod": {
+    "archive": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": true
+      },
+      "messageTimestamp": 1699999990
+     },
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "B",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000001
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "300@lid"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a0144080112400881e2cfaa061a1b0a190a1232303040732e77686174736170702e6e657410011a01411a1b0a190a1232303040732e77686174736170702e6e657410001a0142"
+   }
+  },
+  {
+   "mod": {
+    "archive": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": true
+      },
+      "messageTimestamp": 1699999990
+     },
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "B",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000001
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "300@lid"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a0144080012400881e2cfaa061a1b0a190a1232303040732e77686174736170702e6e657410011a01411a1b0a190a1232303040732e77686174736170702e6e657410001a0142"
+   }
+  },
+  {
+   "mod": {
+    "markRead": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": true
+      },
+      "messageTimestamp": 1699999990
+     },
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "B",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000001
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "300@lid"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a20144080112400881e2cfaa061a1b0a190a1232303040732e77686174736170702e6e657410011a01411a1b0a190a1232303040732e77686174736170702e6e657410001a0142"
+   }
+  },
+  {
+   "mod": {
+    "markRead": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": true
+      },
+      "messageTimestamp": 1699999990
+     },
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "B",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000001
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "300@lid"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a20144080012400881e2cfaa061a1b0a190a1232303040732e77686174736170702e6e657410011a01411a1b0a190a1232303040732e77686174736170702e6e657410001a0142"
+   }
+  },
+  {
+   "mod": {
+    "clear": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": true
+      },
+      "messageTimestamp": 1699999990
+     },
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "B",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000001
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "clearChat",
+     "300@lid",
+     "1",
+     "0"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31aa01420a400881e2cfaa061a1b0a190a1232303040732e77686174736170702e6e657410011a01411a1b0a190a1232303040732e77686174736170702e6e657410001a0142"
+   }
+  },
+  {
+   "mod": {
+    "delete": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": true
+      },
+      "messageTimestamp": 1699999990
+     },
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "B",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000001
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteChat",
+     "300@lid",
+     "1"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31b201420a400881e2cfaa061a1b0a190a1232303040732e77686174736170702e6e657410011a01411a1b0a190a1232303040732e77686174736170702e6e657410001a0142"
+   }
+  },
+  {
+   "mod": {
+    "archive": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": false,
+       "participant": "300@s.whatsapp.net"
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "300@lid"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a01330801122f0882e2cfaa061a270a250a0a67726f757040672e757310001a0147221233303040732e77686174736170702e6e6574"
+   }
+  },
+  {
+   "mod": {
+    "archive": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": false,
+       "participant": "300@s.whatsapp.net"
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "300@lid"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a01330800122f0882e2cfaa061a270a250a0a67726f757040672e757310001a0147221233303040732e77686174736170702e6e6574"
+   }
+  },
+  {
+   "mod": {
+    "markRead": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": false,
+       "participant": "300@s.whatsapp.net"
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "300@lid"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a201330801122f0882e2cfaa061a270a250a0a67726f757040672e757310001a0147221233303040732e77686174736170702e6e6574"
+   }
+  },
+  {
+   "mod": {
+    "markRead": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": false,
+       "participant": "300@s.whatsapp.net"
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "300@lid"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a201330800122f0882e2cfaa061a270a250a0a67726f757040672e757310001a0147221233303040732e77686174736170702e6e6574"
+   }
+  },
+  {
+   "mod": {
+    "clear": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": false,
+       "participant": "300@s.whatsapp.net"
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "clearChat",
+     "300@lid",
+     "1",
+     "0"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31aa01310a2f0882e2cfaa061a270a250a0a67726f757040672e757310001a0147221233303040732e77686174736170702e6e6574"
+   }
+  },
+  {
+   "mod": {
+    "delete": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": false,
+       "participant": "300@s.whatsapp.net"
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteChat",
+     "300@lid",
+     "1"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31b201310a2f0882e2cfaa061a270a250a0a67726f757040672e757310001a0147221233303040732e77686174736170702e6e6574"
+   }
+  },
+  {
+   "mod": {
+    "archive": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": true
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "300@lid"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a011f0801121b0882e2cfaa061a130a110a0a67726f757040672e757310011a0147"
+   }
+  },
+  {
+   "mod": {
+    "archive": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": true
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "300@lid"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a011f0800121b0882e2cfaa061a130a110a0a67726f757040672e757310011a0147"
+   }
+  },
+  {
+   "mod": {
+    "markRead": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": true
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "300@lid"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a2011f0801121b0882e2cfaa061a130a110a0a67726f757040672e757310011a0147"
+   }
+  },
+  {
+   "mod": {
+    "markRead": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": true
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "300@lid"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a2011f0800121b0882e2cfaa061a130a110a0a67726f757040672e757310011a0147"
+   }
+  },
+  {
+   "mod": {
+    "clear": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": true
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "clearChat",
+     "300@lid",
+     "1",
+     "0"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31aa011d0a1b0882e2cfaa061a130a110a0a67726f757040672e757310011a0147"
+   }
+  },
+  {
+   "mod": {
+    "delete": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": true
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteChat",
+     "300@lid",
+     "1"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31b2011d0a1b0882e2cfaa061a130a110a0a67726f757040672e757310011a0147"
+   }
+  },
+  {
+   "mod": {
+    "archive": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "error": {
+    "message": "Expected not from me message to have participant",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "archive": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "error": {
+    "message": "Expected not from me message to have participant",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "markRead": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "error": {
+    "message": "Expected not from me message to have participant",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "markRead": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "error": {
+    "message": "Expected not from me message to have participant",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "clear": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "error": {
+    "message": "Expected not from me message to have participant",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "delete": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "group@g.us",
+       "id": "G",
+       "fromMe": false
+      },
+      "messageTimestamp": 1700000002
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "error": {
+    "message": "Expected not from me message to have participant",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "archive": true,
+    "lastMessages": [
+     {
+      "key": {
+       "id": "NOJID"
+      },
+      "messageTimestamp": 5
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "error": {
+    "message": "Incomplete key",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "archive": false,
+    "lastMessages": [
+     {
+      "key": {
+       "id": "NOJID"
+      },
+      "messageTimestamp": 5
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "error": {
+    "message": "Incomplete key",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "markRead": true,
+    "lastMessages": [
+     {
+      "key": {
+       "id": "NOJID"
+      },
+      "messageTimestamp": 5
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "error": {
+    "message": "Incomplete key",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "markRead": false,
+    "lastMessages": [
+     {
+      "key": {
+       "id": "NOJID"
+      },
+      "messageTimestamp": 5
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "error": {
+    "message": "Incomplete key",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "clear": true,
+    "lastMessages": [
+     {
+      "key": {
+       "id": "NOJID"
+      },
+      "messageTimestamp": 5
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "error": {
+    "message": "Incomplete key",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "delete": true,
+    "lastMessages": [
+     {
+      "key": {
+       "id": "NOJID"
+      },
+      "messageTimestamp": 5
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "error": {
+    "message": "Incomplete key",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "archive": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net"
+      },
+      "messageTimestamp": 5
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "error": {
+    "message": "Incomplete key",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "archive": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net"
+      },
+      "messageTimestamp": 5
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "error": {
+    "message": "Incomplete key",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "markRead": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net"
+      },
+      "messageTimestamp": 5
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "error": {
+    "message": "Incomplete key",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "markRead": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net"
+      },
+      "messageTimestamp": 5
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "error": {
+    "message": "Incomplete key",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "clear": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net"
+      },
+      "messageTimestamp": 5
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "error": {
+    "message": "Incomplete key",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "delete": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net"
+      },
+      "messageTimestamp": 5
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "error": {
+    "message": "Incomplete key",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "archive": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": false
+      },
+      "messageTimestamp": 0
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "error": {
+    "message": "Missing timestamp in last message list",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "archive": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": false
+      },
+      "messageTimestamp": 0
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "error": {
+    "message": "Missing timestamp in last message list",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "markRead": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": false
+      },
+      "messageTimestamp": 0
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "error": {
+    "message": "Missing timestamp in last message list",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "markRead": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": false
+      },
+      "messageTimestamp": 0
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "error": {
+    "message": "Missing timestamp in last message list",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "clear": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": false
+      },
+      "messageTimestamp": 0
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "error": {
+    "message": "Missing timestamp in last message list",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "delete": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A",
+       "fromMe": false
+      },
+      "messageTimestamp": 0
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "error": {
+    "message": "Missing timestamp in last message list",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "archive": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A"
+      }
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "error": {
+    "message": "Missing timestamp in last message list",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "archive": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A"
+      }
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "error": {
+    "message": "Missing timestamp in last message list",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "markRead": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A"
+      }
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "error": {
+    "message": "Missing timestamp in last message list",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "markRead": false,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A"
+      }
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "error": {
+    "message": "Missing timestamp in last message list",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "clear": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A"
+      }
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "error": {
+    "message": "Missing timestamp in last message list",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "delete": true,
+    "lastMessages": [
+     {
+      "key": {
+       "remoteJid": "200@s.whatsapp.net",
+       "id": "A"
+      }
+     }
+    ]
+   },
+   "jid": "300@lid",
+   "error": {
+    "message": "Missing timestamp in last message list",
+    "status": 400
+   }
+  },
+  {
+   "mod": {
+    "archive": true,
+    "lastMessages": {
+     "lastMessageTimestamp": 1700000003,
+     "lastSystemMessageTimestamp": 1700000004,
+     "messages": [
+      {
+       "key": {
+        "remoteJid": "200@s.whatsapp.net",
+        "id": "R",
+        "fromMe": true
+       },
+       "timestamp": 1700000003
+      }
+     ]
+    }
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "300@lid"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a01330801122f0883e2cfaa061084e2cfaa061a210a190a1232303040732e77686174736170702e6e657410011a01521083e2cfaa06"
+   }
+  },
+  {
+   "mod": {
+    "archive": false,
+    "lastMessages": {
+     "lastMessageTimestamp": 1700000003,
+     "lastSystemMessageTimestamp": 1700000004,
+     "messages": [
+      {
+       "key": {
+        "remoteJid": "200@s.whatsapp.net",
+        "id": "R",
+        "fromMe": true
+       },
+       "timestamp": 1700000003
+      }
+     ]
+    }
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "300@lid"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a01330800122f0883e2cfaa061084e2cfaa061a210a190a1232303040732e77686174736170702e6e657410011a01521083e2cfaa06"
+   }
+  },
+  {
+   "mod": {
+    "markRead": true,
+    "lastMessages": {
+     "lastMessageTimestamp": 1700000003,
+     "lastSystemMessageTimestamp": 1700000004,
+     "messages": [
+      {
+       "key": {
+        "remoteJid": "200@s.whatsapp.net",
+        "id": "R",
+        "fromMe": true
+       },
+       "timestamp": 1700000003
+      }
+     ]
+    }
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "300@lid"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a201330801122f0883e2cfaa061084e2cfaa061a210a190a1232303040732e77686174736170702e6e657410011a01521083e2cfaa06"
+   }
+  },
+  {
+   "mod": {
+    "markRead": false,
+    "lastMessages": {
+     "lastMessageTimestamp": 1700000003,
+     "lastSystemMessageTimestamp": 1700000004,
+     "messages": [
+      {
+       "key": {
+        "remoteJid": "200@s.whatsapp.net",
+        "id": "R",
+        "fromMe": true
+       },
+       "timestamp": 1700000003
+      }
+     ]
+    }
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "300@lid"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a201330800122f0883e2cfaa061084e2cfaa061a210a190a1232303040732e77686174736170702e6e657410011a01521083e2cfaa06"
+   }
+  },
+  {
+   "mod": {
+    "clear": true,
+    "lastMessages": {
+     "lastMessageTimestamp": 1700000003,
+     "lastSystemMessageTimestamp": 1700000004,
+     "messages": [
+      {
+       "key": {
+        "remoteJid": "200@s.whatsapp.net",
+        "id": "R",
+        "fromMe": true
+       },
+       "timestamp": 1700000003
+      }
+     ]
+    }
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "clearChat",
+     "300@lid",
+     "1",
+     "0"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31aa01310a2f0883e2cfaa061084e2cfaa061a210a190a1232303040732e77686174736170702e6e657410011a01521083e2cfaa06"
+   }
+  },
+  {
+   "mod": {
+    "delete": true,
+    "lastMessages": {
+     "lastMessageTimestamp": 1700000003,
+     "lastSystemMessageTimestamp": 1700000004,
+     "messages": [
+      {
+       "key": {
+        "remoteJid": "200@s.whatsapp.net",
+        "id": "R",
+        "fromMe": true
+       },
+       "timestamp": 1700000003
+      }
+     ]
+    }
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteChat",
+     "300@lid",
+     "1"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31b201310a2f0883e2cfaa061084e2cfaa061a210a190a1232303040732e77686174736170702e6e657410011a01521083e2cfaa06"
+   }
+  },
+  {
+   "mod": {
+    "archive": true,
+    "lastMessages": {}
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "300@lid"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a010408011200"
+   }
+  },
+  {
+   "mod": {
+    "archive": false,
+    "lastMessages": {}
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "archive",
+     "300@lid"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc318a010408001200"
+   }
+  },
+  {
+   "mod": {
+    "markRead": true,
+    "lastMessages": {}
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "300@lid"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a2010408011200"
+   }
+  },
+  {
+   "mod": {
+    "markRead": false,
+    "lastMessages": {}
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "markChatAsRead",
+     "300@lid"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc31a2010408001200"
+   }
+  },
+  {
+   "mod": {
+    "clear": true,
+    "lastMessages": {}
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "clearChat",
+     "300@lid",
+     "1",
+     "0"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31aa01020a00"
+   }
+  },
+  {
+   "mod": {
+    "delete": true,
+    "lastMessages": {}
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteChat",
+     "300@lid",
+     "1"
+    ],
+    "apiVersion": 6,
+    "operation": 0,
+    "action": "08fbd095ffbc31b201020a00"
+   }
+  },
+  {
+   "mod": {
+    "deleteForMe": {
+     "deleteMedia": true,
+     "key": {
+      "remoteJid": "300@lid",
+      "id": "DEL",
+      "fromMe": true
+     },
+     "timestamp": 1700000005
+    }
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteMessageForMe",
+     "300@lid",
+     "DEL",
+     "1",
+     "0"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc3192010808011085e2cfaa06"
+   }
+  },
+  {
+   "mod": {
+    "deleteForMe": {
+     "deleteMedia": true,
+     "key": {
+      "remoteJid": "300@lid",
+      "id": "DEL",
+      "fromMe": false
+     },
+     "timestamp": 1700000005
+    }
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteMessageForMe",
+     "300@lid",
+     "DEL",
+     "0",
+     "0"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc3192010808011085e2cfaa06"
+   }
+  },
+  {
+   "mod": {
+    "deleteForMe": {
+     "deleteMedia": true,
+     "key": {
+      "remoteJid": "300@lid",
+      "id": "DEL"
+     },
+     "timestamp": 1700000005
+    }
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteMessageForMe",
+     "300@lid",
+     "DEL",
+     "0",
+     "0"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc3192010808011085e2cfaa06"
+   }
+  },
+  {
+   "mod": {
+    "deleteForMe": {
+     "deleteMedia": false,
+     "key": {
+      "remoteJid": "300@lid",
+      "id": "DEL",
+      "fromMe": true
+     },
+     "timestamp": 1700000005
+    }
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteMessageForMe",
+     "300@lid",
+     "DEL",
+     "1",
+     "0"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc3192010808001085e2cfaa06"
+   }
+  },
+  {
+   "mod": {
+    "deleteForMe": {
+     "deleteMedia": false,
+     "key": {
+      "remoteJid": "300@lid",
+      "id": "DEL",
+      "fromMe": false
+     },
+     "timestamp": 1700000005
+    }
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteMessageForMe",
+     "300@lid",
+     "DEL",
+     "0",
+     "0"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc3192010808001085e2cfaa06"
+   }
+  },
+  {
+   "mod": {
+    "deleteForMe": {
+     "deleteMedia": false,
+     "key": {
+      "remoteJid": "300@lid",
+      "id": "DEL"
+     },
+     "timestamp": 1700000005
+    }
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_high",
+    "index": [
+     "deleteMessageForMe",
+     "300@lid",
+     "DEL",
+     "0",
+     "0"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc3192010808001085e2cfaa06"
+   }
+  },
+  {
+   "mod": {
+    "pin": true
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "pin_v1",
+     "300@lid"
+    ],
+    "apiVersion": 5,
+    "operation": 0,
+    "action": "08fbd095ffbc312a020801"
+   }
+  },
+  {
+   "mod": {
+    "pin": false
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "pin_v1",
+     "300@lid"
+    ],
+    "apiVersion": 5,
+    "operation": 0,
+    "action": "08fbd095ffbc312a020800"
+   }
+  },
+  {
+   "mod": {
+    "contact": null
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "critical_unblock_low",
+    "index": [
+     "contact",
+     "300@lid"
+    ],
+    "apiVersion": 2,
+    "operation": 1,
+    "action": "08fbd095ffbc311a00"
+   }
+  },
+  {
+   "mod": {
+    "contact": {}
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "critical_unblock_low",
+    "index": [
+     "contact",
+     "300@lid"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc311a00"
+   }
+  },
+  {
+   "mod": {
+    "contact": {
+     "fullName": "Alice ☕",
+     "firstName": "Alice",
+     "lidJid": "300@lid",
+     "saveOnPrimaryAddressbook": true
+    }
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "critical_unblock_low",
+    "index": [
+     "contact",
+     "300@lid"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc311a1d0a09416c69636520e298951205416c6963651a07333030406c69642001"
+   }
+  },
+  {
+   "mod": {
+    "disableLinkPreviews": {
+     "isPreviewsDisabled": true
+    }
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "setting_disableLinkPreviews"
+    ],
+    "apiVersion": 8,
+    "operation": 0,
+    "action": "08fbd095ffbc31aa03020801"
+   }
+  },
+  {
+   "mod": {
+    "disableLinkPreviews": {
+     "isPreviewsDisabled": false
+    }
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "setting_disableLinkPreviews"
+    ],
+    "apiVersion": 8,
+    "operation": 0,
+    "action": "08fbd095ffbc31aa03020800"
+   }
+  },
+  {
+   "mod": {
+    "disableLinkPreviews": {}
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "setting_disableLinkPreviews"
+    ],
+    "apiVersion": 8,
+    "operation": 0,
+    "action": "08fbd095ffbc31aa0300"
+   }
+  },
+  {
+   "mod": {
+    "star": {
+     "messages": [
+      {
+       "id": "S1",
+       "fromMe": true
+      },
+      {
+       "id": "S2",
+       "fromMe": true
+      }
+     ],
+     "star": true
+    }
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "star",
+     "300@lid",
+     "S1",
+     "1",
+     "0"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc3112020801"
+   }
+  },
+  {
+   "mod": {
+    "star": {
+     "messages": [
+      {
+       "id": "S1",
+       "fromMe": false
+      },
+      {
+       "id": "S2",
+       "fromMe": true
+      }
+     ],
+     "star": true
+    }
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "star",
+     "300@lid",
+     "S1",
+     "0",
+     "0"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc3112020801"
+   }
+  },
+  {
+   "mod": {
+    "star": {
+     "messages": [
+      {
+       "id": "S1"
+      },
+      {
+       "id": "S2",
+       "fromMe": true
+      }
+     ],
+     "star": true
+    }
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "star",
+     "300@lid",
+     "S1",
+     "0",
+     "0"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc3112020801"
+   }
+  },
+  {
+   "mod": {
+    "star": {
+     "messages": [
+      {
+       "id": "S1",
+       "fromMe": true
+      },
+      {
+       "id": "S2",
+       "fromMe": true
+      }
+     ],
+     "star": false
+    }
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "star",
+     "300@lid",
+     "S1",
+     "1",
+     "0"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc3112020800"
+   }
+  },
+  {
+   "mod": {
+    "star": {
+     "messages": [
+      {
+       "id": "S1",
+       "fromMe": false
+      },
+      {
+       "id": "S2",
+       "fromMe": true
+      }
+     ],
+     "star": false
+    }
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "star",
+     "300@lid",
+     "S1",
+     "0",
+     "0"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc3112020800"
+   }
+  },
+  {
+   "mod": {
+    "star": {
+     "messages": [
+      {
+       "id": "S1"
+      },
+      {
+       "id": "S2",
+       "fromMe": true
+      }
+     ],
+     "star": false
+    }
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular_low",
+    "index": [
+     "star",
+     "300@lid",
+     "S1",
+     "0",
+     "0"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc3112020800"
+   }
+  },
+  {
+   "mod": {
+    "pushNameSetting": "Name ☕"
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "critical_block",
+    "index": [
+     "setting_pushName"
+    ],
+    "apiVersion": 1,
+    "operation": 0,
+    "action": "08fbd095ffbc313a0a0a084e616d6520e29895"
+   }
+  },
+  {
+   "mod": {
+    "pushNameSetting": ""
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "critical_block",
+    "index": [
+     "setting_pushName"
+    ],
+    "apiVersion": 1,
+    "operation": 0,
+    "action": "08fbd095ffbc313a020a00"
+   }
+  },
+  {
+   "mod": {
+    "quickReply": {
+     "shortcut": "hi",
+     "message": "Hello ☕",
+     "timestamp": "1699990000"
+    }
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "quick_reply",
+     "1699990000"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc3142130a026869120948656c6c6f20e2989520002800"
+   }
+  },
+  {
+   "mod": {
+    "quickReply": {
+     "shortcut": "hi",
+     "message": "Hello"
+    }
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "quick_reply",
+     "1700000000"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc31420f0a026869120548656c6c6f20002800"
+   }
+  },
+  {
+   "mod": {
+    "quickReply": {
+     "timestamp": "1699990000",
+     "deleted": true
+    }
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "quick_reply",
+     "1699990000"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc3142080a00120020002801"
+   }
+  },
+  {
+   "mod": {
+    "quickReply": {}
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "quick_reply",
+     "1700000000"
+    ],
+    "apiVersion": 2,
+    "operation": 0,
+    "action": "08fbd095ffbc3142080a00120020002800"
+   }
+  },
+  {
+   "mod": {
+    "addLabel": {
+     "id": "7",
+     "name": "Label ☕",
+     "color": 3,
+     "predefinedId": 2,
+     "deleted": false
+    }
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "label_edit",
+     "7"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc3172110a094c6162656c20e29895100318022000"
+   }
+  },
+  {
+   "mod": {
+    "addLabel": {
+     "id": "8",
+     "name": "Gone",
+     "deleted": true
+    }
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "label_edit",
+     "8"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc3172080a04476f6e652001"
+   }
+  },
+  {
+   "mod": {
+    "addLabel": {
+     "id": "9"
+    }
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "label_edit",
+     "9"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc317200"
+   }
+  },
+  {
+   "mod": {
+    "addChatLabel": {
+     "labelId": "7"
+    }
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "label_jid",
+     "7",
+     "300@lid"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc317a020801"
+   }
+  },
+  {
+   "mod": {
+    "removeChatLabel": {
+     "labelId": "7"
+    }
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "label_jid",
+     "7",
+     "300@lid"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc317a020800"
+   }
+  },
+  {
+   "mod": {
+    "addMessageLabel": {
+     "messageId": "M1",
+     "labelId": "7"
+    }
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "label_message",
+     "7",
+     "300@lid",
+     "M1",
+     "0",
+     "0"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc317a020801"
+   }
+  },
+  {
+   "mod": {
+    "removeMessageLabel": {
+     "messageId": "M1",
+     "labelId": "7"
+    }
+   },
+   "jid": "300@lid",
+   "expected": {
+    "type": "regular",
+    "index": [
+     "label_message",
+     "7",
+     "300@lid",
+     "M1",
+     "0",
+     "0"
+    ],
+    "apiVersion": 3,
+    "operation": 0,
+    "action": "08fbd095ffbc317a020800"
+   }
+  },
+  {
+   "mod": {},
+   "jid": "200@s.whatsapp.net",
+   "error": {
+    "message": "not supported",
+    "status": 500
+   }
+  },
+  {
+   "mod": {
+    "unknown": true
+   },
+   "jid": "200@s.whatsapp.net",
+   "error": {
+    "message": "not supported",
+    "status": 500
+   }
+  }
+ ]
+}

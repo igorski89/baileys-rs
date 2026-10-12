@@ -74,6 +74,204 @@ impl Socket {
             })
             .await
     }
+    /// Send one app-state patch: resynchronise its collection, encode against the stored
+    /// version, upload, persist the new version and, when own events are enabled,
+    /// publish the patch's own effects.
+    pub async fn app_patch(&self, patch: app_state::PatchCreate) -> Result<(), Error> {
+        use crate::{
+            auth::{KeyCategory, KeyMutation, KeyStore, KeyValue},
+            binary::{BinaryNode, NodeContent},
+        };
+        use prost::Message as _;
+        let credentials = super::load_credentials(self.inner.store.clone()).await?;
+        let key_id = credentials
+            .my_app_state_key_id
+            .clone()
+            .filter(|id| !id.is_empty())
+            .ok_or(app_state::Error::Modification("App state key not present!"))?;
+        let name = patch.name.clone();
+        let provider = app_state::KeyProvider::from_store(self.inner.store.clone());
+        let (initial, encoded) = {
+            let _serial = self.inner.app_state_patch_lock.lock().await;
+            let options = self
+                .inner
+                .app_state_options
+                .lock()
+                .map_err(|_| Error::Config)?
+                .clone();
+            self.resync_app_state(std::slice::from_ref(&name), false, &options)
+                .await?;
+            let store = self.inner.store.clone();
+            let id = name.clone();
+            let initial = tokio::task::spawn_blocking(move || {
+                store
+                    .get(KeyCategory::AppStateSyncVersion, std::slice::from_ref(&id))
+                    .map(|mut values| match values.remove(&id) {
+                        Some(KeyValue::AppStateSyncVersion(state)) => state,
+                        _ => app_state::new_lthash_state(),
+                    })
+            })
+            .await
+            .map_err(|_| Error::Task)??;
+            let encoded = app_state::encode_patch(&patch, &key_id, &initial, &provider).await?;
+            let node = BinaryNode::new("iq")
+                .attr("to", crate::jid::S_WHATSAPP_NET)
+                .attr("type", "set")
+                .attr("xmlns", "w:sync:app:state")
+                .with_content(NodeContent::Children(vec![
+                    BinaryNode::new("sync").with_content(NodeContent::Children(vec![
+                        BinaryNode::new("collection")
+                            .attr("name", &name)
+                            .attr("version", (encoded.state.version - 1).to_string())
+                            .attr("return_snapshot", "false")
+                            .with_content(NodeContent::Children(vec![
+                                BinaryNode::new("patch").with_content(NodeContent::Bytes(
+                                    encoded.patch.encode_to_vec(),
+                                )),
+                            ])),
+                    ])),
+                ]));
+            self.query(node, None).await?;
+            let store = self.inner.store.clone();
+            let state = encoded.state.clone();
+            let id = name.clone();
+            tokio::task::spawn_blocking(move || {
+                store.set(&[KeyMutation::put(id, KeyValue::AppStateSyncVersion(state))])
+            })
+            .await
+            .map_err(|_| Error::Task)??;
+            (initial, encoded)
+        };
+        if self.inner.own_messages.is_some() {
+            let mut patches = [crate::proto::SyncdPatch {
+                version: Some(crate::proto::SyncdVersion {
+                    version: Some(encoded.state.version),
+                }),
+                ..encoded.patch
+            }];
+            let decoded =
+                app_state::decode_patches(&mut patches, &name, &initial, &provider, None, true)
+                    .await?;
+            self.apply_app_state_mutations(&decoded.mutations, false)
+                .await?;
+        }
+        Ok(())
+    }
+    /// Modify a chat or app setting (archive, mute, pin, read state, stars, labels,
+    /// contacts, quick replies) through an app-state patch.
+    pub async fn chat_modify(
+        &self,
+        modification: app_state::ChatModification,
+        jid: &str,
+    ) -> Result<(), Error> {
+        let now = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .map_err(|_| Error::Config)?
+            .as_millis() as i64;
+        self.app_patch(app_state::chat_modification_patch(modification, jid, now)?)
+            .await
+    }
+    /// Enable or disable link previews in the account's privacy settings.
+    pub async fn update_disable_link_previews_privacy(&self, disabled: bool) -> Result<(), Error> {
+        self.chat_modify(
+            app_state::ChatModification::DisableLinkPreviews(
+                crate::proto::sync_action_value::PrivacySettingDisableLinkPreviewsAction {
+                    is_previews_disabled: Some(disabled),
+                },
+            ),
+            "",
+        )
+        .await
+    }
+    /// Star or unstar a message; only the first listed message is sent, as upstream.
+    pub async fn star(
+        &self,
+        jid: &str,
+        messages: Vec<app_state::StarredMessage>,
+        star: bool,
+    ) -> Result<(), Error> {
+        self.chat_modify(app_state::ChatModification::Star { messages, star }, jid)
+            .await
+    }
+    pub async fn add_or_edit_contact(
+        &self,
+        jid: &str,
+        contact: crate::proto::sync_action_value::ContactAction,
+    ) -> Result<(), Error> {
+        self.chat_modify(app_state::ChatModification::Contact(Some(contact)), jid)
+            .await
+    }
+    pub async fn remove_contact(&self, jid: &str) -> Result<(), Error> {
+        self.chat_modify(app_state::ChatModification::Contact(None), jid)
+            .await
+    }
+    pub async fn add_label(&self, jid: &str, label: app_state::LabelBody) -> Result<(), Error> {
+        self.chat_modify(app_state::ChatModification::AddLabel(label), jid)
+            .await
+    }
+    pub async fn add_chat_label(&self, jid: &str, label_id: &str) -> Result<(), Error> {
+        self.chat_modify(
+            app_state::ChatModification::AddChatLabel {
+                label_id: label_id.into(),
+            },
+            jid,
+        )
+        .await
+    }
+    pub async fn remove_chat_label(&self, jid: &str, label_id: &str) -> Result<(), Error> {
+        self.chat_modify(
+            app_state::ChatModification::RemoveChatLabel {
+                label_id: label_id.into(),
+            },
+            jid,
+        )
+        .await
+    }
+    pub async fn add_message_label(
+        &self,
+        jid: &str,
+        message_id: &str,
+        label_id: &str,
+    ) -> Result<(), Error> {
+        self.chat_modify(
+            app_state::ChatModification::AddMessageLabel {
+                message_id: message_id.into(),
+                label_id: label_id.into(),
+            },
+            jid,
+        )
+        .await
+    }
+    pub async fn remove_message_label(
+        &self,
+        jid: &str,
+        message_id: &str,
+        label_id: &str,
+    ) -> Result<(), Error> {
+        self.chat_modify(
+            app_state::ChatModification::RemoveMessageLabel {
+                message_id: message_id.into(),
+                label_id: label_id.into(),
+            },
+            jid,
+        )
+        .await
+    }
+    pub async fn add_or_edit_quick_reply(&self, reply: app_state::QuickReply) -> Result<(), Error> {
+        self.chat_modify(app_state::ChatModification::QuickReply(reply), "")
+            .await
+    }
+    pub async fn remove_quick_reply(&self, timestamp: &str) -> Result<(), Error> {
+        self.chat_modify(
+            app_state::ChatModification::QuickReply(app_state::QuickReply {
+                timestamp: Some(timestamp.into()),
+                deleted: Some(true),
+                ..Default::default()
+            }),
+            "",
+        )
+        .await
+    }
     /// Synchronize and atomically persist collection versions, returning actions
     /// for the caller to apply. Chat/contact/settings event application is separate.
     pub async fn sync_app_state(

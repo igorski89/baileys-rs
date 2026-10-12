@@ -1,6 +1,7 @@
 //! App-state mutation integrity and snapshot/patch codecs.
 mod actions;
 mod codec;
+mod modify;
 mod network;
 mod sync;
 use crate::{
@@ -10,6 +11,7 @@ use crate::{
 pub use actions::*;
 use base64::{Engine, engine::general_purpose::STANDARD};
 pub use codec::*;
+pub use modify::*;
 pub use network::*;
 use std::collections::BTreeMap;
 pub use sync::*;
@@ -44,6 +46,9 @@ pub enum Error {
         message: String,
         status_code: Option<u16>,
     },
+    /// A chat modification upstream rejects with status 400.
+    #[error("{0}")]
+    Modification(&'static str),
     #[error("app-state key worker failed")]
     Task,
 }
