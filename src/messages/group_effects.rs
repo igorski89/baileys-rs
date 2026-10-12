@@ -2,7 +2,7 @@
 use super::{Error, KeyMetadata, own::ChatUpdate};
 use crate::{jid, proto, relay};
 use serde_json::Value;
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub enum ParticipantAction {
     Modify,
     Remove,
@@ -21,7 +21,7 @@ impl ParticipantAction {
         }
     }
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
 pub enum Change {
     Announce(bool),
     Restrict(bool),
@@ -31,13 +31,13 @@ pub enum Change {
     MemberAddMode(bool),
     JoinApprovalMode(bool),
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct Author {
     pub jid: Option<String>,
     pub pn: Option<String>,
     pub username: Option<String>,
 }
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
 pub enum GroupEvent {
     Participants {
         id: String,

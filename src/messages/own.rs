@@ -13,6 +13,36 @@ pub struct Upsert {
     pub request_id: Option<String>,
     /// Runtime receive properties in message order; empty for generated own events.
     pub metadata: Vec<messages::EnvelopeMetadata>,
+    /// Message indices for sparse metadata after buffered own/received merges.
+    /// Empty means metadata is aligned from index zero.
+    pub metadata_indices: Vec<usize>,
+    /// Message-aligned runtime overrides (e.g. nullable fields or JS numbers).
+    /// Empty when all messages are fully represented by their protobufs.
+    pub runtime_fields: Vec<serde_json::Map<String, serde_json::Value>>,
+}
+impl Upsert {
+    /// Protocol JSON with buffered runtime overrides applied.
+    pub fn message_value(&self, index: usize) -> Option<serde_json::Value> {
+        use crate::proto_json::JsonField;
+        let mut value = self.messages.get(index)?.to_value();
+        if let Some(runtime) = self.runtime_fields.get(index) {
+            value
+                .as_object_mut()
+                .expect("message object")
+                .extend(runtime.clone());
+        }
+        Some(value)
+    }
+    pub fn metadata_for(&self, index: usize) -> Option<&messages::EnvelopeMetadata> {
+        if self.metadata_indices.is_empty() {
+            self.metadata.get(index)
+        } else {
+            self.metadata_indices
+                .iter()
+                .position(|i| *i == index)
+                .and_then(|position| self.metadata.get(position))
+        }
+    }
 }
 #[derive(Debug, Clone, PartialEq)]
 pub enum Mutation {
@@ -26,10 +56,31 @@ pub enum Mutation {
         timestamp: f64,
     },
 }
+/// One consolidated source messages.update entry. Protobuf fields retain their
+/// native types; runtime overrides preserve explicit nulls and extension fields.
+#[derive(Debug, Clone, PartialEq)]
+pub struct Update {
+    pub key: proto::MessageKey,
+    pub info: proto::WebMessageInfo,
+    pub runtime_fields: serde_json::Map<String, serde_json::Value>,
+}
+impl Update {
+    pub fn update_value(&self) -> serde_json::Value {
+        use crate::proto_json::JsonField;
+        let mut value = self.info.to_value();
+        value
+            .as_object_mut()
+            .expect("message update object")
+            .extend(self.runtime_fields.clone());
+        value
+    }
+}
 #[derive(Debug, Clone, PartialEq)]
 pub struct ReactionUpdate {
     pub key: Option<proto::MessageKey>,
     pub reaction: proto::Reaction,
+    /// Runtime properties of the reactor's key, used for PN/LID deduplication.
+    pub key_metadata: Option<messages::KeyMetadata>,
 }
 #[derive(Debug, Default, Clone, PartialEq)]
 pub struct ChatUpdate {
@@ -312,6 +363,7 @@ pub fn effects_received(
     } else if let Some(reaction) = content.and_then(|m| m.reaction_message.as_ref()) {
         result.reaction = Some(ReactionUpdate {
             key: reaction.key.clone(),
+            key_metadata: None,
             reaction: proto::Reaction {
                 key: Some(key.clone()),
                 text: reaction.text.clone(),

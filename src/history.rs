@@ -80,10 +80,28 @@ pub struct Processed {
     pub chats: Vec<Chat>,
     pub contacts: Vec<Contact>,
     pub messages: Vec<proto::WebMessageInfo>,
+    /// Receive metadata retained when buffered message upserts enter history.
+    /// Empty for history downloaded from the protocol; otherwise message-aligned.
+    pub message_metadata: Vec<Option<crate::messages::EnvelopeMetadata>>,
+    pub message_runtime_fields: Vec<serde_json::Map<String, serde_json::Value>>,
     pub lid_pn_mappings: Vec<Mapping>,
     pub past_participants: Vec<proto::PastParticipants>,
     pub sync_type: i32,
     pub progress: Option<u32>,
+}
+impl Processed {
+    /// Protocol JSON with buffered runtime overrides applied.
+    pub fn message_value(&self, index: usize) -> Option<serde_json::Value> {
+        use crate::proto_json::JsonField;
+        let mut value = self.messages.get(index)?.to_value();
+        if let Some(runtime) = self.message_runtime_fields.get(index) {
+            value
+                .as_object_mut()
+                .expect("message object")
+                .extend(runtime.clone());
+        }
+        Some(value)
+    }
 }
 #[derive(Debug, Clone, PartialEq)]
 pub struct Set {
@@ -115,6 +133,8 @@ pub fn process(item: &mut proto::HistorySync) -> Result<Processed, Error> {
         chats: vec![],
         contacts: vec![],
         messages: vec![],
+        message_metadata: vec![],
+        message_runtime_fields: vec![],
         lid_pn_mappings: vec![],
         past_participants: item.past_participants.clone(),
         sync_type: item.sync_type,

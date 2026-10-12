@@ -159,7 +159,7 @@ pub struct KeyMetadata {
 }
 
 /// Runtime receive properties associated with a protobuf message.
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct EnvelopeMetadata {
     pub key_metadata: KeyMetadata,
     pub category: Option<String>,

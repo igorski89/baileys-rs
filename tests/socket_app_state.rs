@@ -314,3 +314,120 @@ async fn missing_keys_park_then_explicit_key_retry_resumes_saved_state() {
     .await
     .unwrap();
 }
+
+#[tokio::test]
+async fn socket_buffer_consolidates_real_publishers_and_cancelled_scopes_flush() {
+    use baileys_rs::{
+        messages::{self, own},
+        proto_json::JsonField,
+    };
+    use serde_json::json;
+    timeout(Duration::from_secs(10), async {
+        let store = SqliteAuthStore::in_memory().unwrap();
+        let mut creds = store.load_credentials().unwrap();
+        creds.me = Some(baileys_rs::auth::Contact {
+            id: "100@s.whatsapp.net".into(),
+            ..Default::default()
+        });
+        store.save_credentials(&creds).unwrap();
+        let (listener, config) = setup().await;
+        let server = tokio::spawn(async move {
+            let mut peer = Peer::accept(listener.accept().await.unwrap().0).await;
+            peer.closed().await;
+        });
+        let (socket, mut events) = Socket::connect(config, store).await.unwrap();
+        while events.try_recv().is_ok() {}
+        socket.buffer_events();
+        let envelope = messages::Envelope {
+            message: proto::WebMessageInfo {
+                key: Some(proto::MessageKey {
+                    id: Some("M".into()),
+                    remote_jid: Some("200@s.whatsapp.net".into()),
+                    from_me: Some(false),
+                    participant: None,
+                }),
+                message: Some(proto::Message {
+                    conversation: Some("buffered body".into()),
+                    ..Default::default()
+                }),
+                message_timestamp: Some(10),
+                ..Default::default()
+            },
+            key_metadata: messages::KeyMetadata {
+                remote_jid_alt: Some("201@lid".into()),
+                addressing_mode: "pn".into(),
+                ..Default::default()
+            },
+            category: None,
+            retry_count: None,
+            author: "200@s.whatsapp.net".into(),
+            sender: "200@s.whatsapp.net".into(),
+        };
+        socket
+            .upsert_message(&envelope, own::UpsertKind::Notify)
+            .await
+            .unwrap();
+        let mut second = envelope.clone();
+        second.message.message_timestamp = Some(20);
+        socket
+            .upsert_message(&second, own::UpsertKind::Notify)
+            .await
+            .unwrap();
+        assert!(socket.is_buffering_events());
+        while let Ok(event) = events.try_recv() {
+            assert!(matches!(event, Event::Connection(_)));
+        }
+        assert!(socket.flush_events().unwrap());
+        let mut message_seen = false;
+        let mut chat_seen = false;
+        while let Ok(event) = events.try_recv() {
+            match event {
+                Event::MessagesUpserted(v) => {
+                    assert_eq!(v.messages.len(), 1);
+                    assert_eq!(v.messages[0].message_timestamp, Some(10));
+                    assert_eq!(
+                        v.messages[0]
+                            .message
+                            .as_ref()
+                            .unwrap()
+                            .conversation
+                            .as_deref(),
+                        Some("buffered body")
+                    );
+                    assert_eq!(
+                        v.metadata_for(0)
+                            .unwrap()
+                            .key_metadata
+                            .remote_jid_alt
+                            .as_deref(),
+                        Some("201@lid")
+                    );
+                    message_seen = true;
+                }
+                Event::ChatsUpdated(v) => {
+                    assert_eq!(v.len(), 1);
+                    assert_eq!(v[0].to_value()["unreadCount"], json!(2));
+                    chat_seen = true;
+                }
+                _ => (),
+            }
+        }
+        assert!(message_seen && chat_seen);
+        let mut operation =
+            Box::pin(socket.with_buffered_events(std::future::pending::<
+                Result<(), baileys_rs::socket::Error>,
+            >()));
+        assert!(
+            timeout(Duration::from_millis(1), &mut operation)
+                .await
+                .is_err()
+        );
+        drop(operation);
+        tokio::time::sleep(Duration::from_millis(120)).await;
+        assert!(!socket.is_buffering_events());
+        socket.close().await.unwrap();
+        server.await.unwrap();
+    })
+    .await
+    .unwrap();
+}

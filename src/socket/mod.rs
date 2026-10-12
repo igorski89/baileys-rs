@@ -2,6 +2,7 @@
 mod actor;
 mod app_state;
 mod event_responses;
+mod events;
 mod group_effects;
 mod groups;
 mod incoming_messages;
@@ -46,6 +47,12 @@ use tokio_tungstenite::{
 
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
+    #[error(transparent)]
+    EventBuffer(#[from] crate::event_buffer::Error),
+    #[error(transparent)]
+    EventJson(#[from] crate::proto_json::Error),
+    #[error("socket event projection failed: {0}")]
+    EventProjection(String),
     #[error(transparent)]
     History(#[from] crate::history::Error),
     #[error(transparent)]
@@ -218,18 +225,25 @@ pub enum Event {
     LabelEdited(crate::app_state::LabelEdit),
     LabelAssociationUpdated(crate::app_state::LabelAssociation),
     SettingUpdated(crate::app_state::SettingUpdate),
-    LidMappingUpdated { lid: Option<String>, pn: String },
+    LidMappingUpdated {
+        lid: Option<String>,
+        pn: String,
+    },
     ChatLocked(crate::app_state::ChatLock),
     MessageStubsUpdated(Vec<crate::messages::incoming::StubUpdate>),
     MessageContentsUpdated(Vec<crate::media::ContentUpdate>),
     GroupsUpdated(Vec<crate::groups::Metadata>),
     GroupEffects(Vec<crate::messages::group_effects::GroupEvent>),
     MessagesUpdated(Vec<crate::receipts::MessageUpdate>),
+    /// Atomic messages.update batches produced by event consolidation.
+    /// These can combine status, star, content, edit and revoke fields.
+    MessageUpdates(Vec<crate::messages::own::Update>),
     MessageReceiptsUpdated(Vec<crate::receipts::UserUpdate>),
     MessagesUpserted(crate::messages::own::Upsert),
     MessageMutations(Vec<crate::messages::own::Mutation>),
     MessageReactions(Vec<crate::messages::own::ReactionUpdate>),
     ChatsUpdated(Vec<crate::messages::own::ChatUpdate>),
+    ChatsUpserted(Vec<crate::history::Chat>),
     EventResponsesUpdated(Vec<crate::messages::EventResponseUpdate>),
     MessagingHistorySet(crate::history::Set),
 }
@@ -299,8 +313,15 @@ impl std::fmt::Debug for Event {
             Self::ChatsUpdated(updates) => {
                 f.debug_tuple("ChatsUpdated").field(&updates.len()).finish()
             }
+            Self::ChatsUpserted(chats) => {
+                f.debug_tuple("ChatsUpserted").field(&chats.len()).finish()
+            }
             Self::MessagesUpdated(updates) => f
                 .debug_tuple("MessagesUpdated")
+                .field(&updates.len())
+                .finish(),
+            Self::MessageUpdates(updates) => f
+                .debug_tuple("MessageUpdates")
                 .field(&updates.len())
                 .finish(),
             Self::MessageReceiptsUpdated(updates) => f
@@ -343,7 +364,7 @@ struct Inner {
     devices: crate::devices::Cache,
     commands: mpsc::Sender<Command>,
     cancel: mpsc::UnboundedSender<u64>,
-    events: broadcast::Sender<Event>,
+    events: events::Emitter,
     state: watch::Receiver<ConnectionState>,
     sequence: AtomicU64,
     prefix: String,
@@ -504,7 +525,7 @@ impl Socket {
         })
         .await
         .map_err(|_| Error::Timeout)??;
-        let (events, receiver) = broadcast::channel(config.event_capacity);
+        let (events, receiver) = events::Emitter::new(config.event_capacity);
         let (state, state_rx) = watch::channel(ConnectionState::Connecting);
         let (commands, command_rx) = mpsc::channel(64);
         let (cancel, cancel_rx) = mpsc::unbounded_channel();
@@ -607,6 +628,32 @@ impl Socket {
     }
     pub fn subscribe(&self) -> broadcast::Receiver<Event> {
         self.inner.events.subscribe()
+    }
+    /// Begin collecting the twelve upstream bufferable event families.
+    pub fn buffer_events(&self) {
+        self.inner.events.buffer();
+    }
+    pub fn is_buffering_events(&self) -> bool {
+        self.inner.events.is_buffering()
+    }
+    pub fn flush_events(&self) -> Result<bool, Error> {
+        self.inner.events.flush()
+    }
+    /// Complete a manually started buffered operation; also call on failure.
+    pub fn finish_buffered_events(&self, success: bool) {
+        self.inner.events.finish(success);
+    }
+    /// Run an operation with source-compatible completion/debounce timing.
+    /// Dropping the future completes the scope through its failure path.
+    pub async fn with_buffered_events<T>(
+        &self,
+        operation: impl std::future::Future<Output = Result<T, Error>>,
+    ) -> Result<T, Error> {
+        self.inner.events.buffer();
+        let scope = events::Scope(Some(self.inner.events.clone()));
+        let result = operation.await;
+        scope.finish(result.is_ok());
+        result
     }
     pub fn state(&self) -> ConnectionState {
         self.inner.state.borrow().clone()

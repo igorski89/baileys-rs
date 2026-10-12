@@ -67,6 +67,8 @@ impl Socket {
             kind,
             request_id: None,
             metadata: metadata.iter().cloned().collect(),
+            metadata_indices: vec![],
+            runtime_fields: vec![],
         }));
         if let Some(name) = message.push_name.as_ref().filter(|s| !s.is_empty()) {
             let key = message
@@ -107,7 +109,8 @@ impl Socket {
                 .events
                 .send(Event::MessageMutations(vec![update]));
         }
-        if let Some(update) = effects.reaction.take() {
+        if let Some(mut update) = effects.reaction.take() {
+            update.key_metadata = metadata.as_ref().map(|m| m.key_metadata.clone());
             let _ = self
                 .inner
                 .events

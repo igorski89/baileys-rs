@@ -152,6 +152,8 @@ impl Socket {
                         kind: own::UpsertKind::Notify,
                         request_id: response.stanza_id.clone(),
                         metadata: metadata.into_iter().collect(),
+                        metadata_indices: vec![],
+                        runtime_fields: vec![],
                     }));
                 }
             }
