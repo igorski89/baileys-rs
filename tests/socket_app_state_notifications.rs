@@ -27,6 +27,7 @@ async fn setup() -> (TcpListener, Config, SqliteAuthStore) {
     let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
     let config = Config {
         fire_init_queries: false,
+        announce_presence_on_connect: false,
         url: format!("ws://{}", listener.local_addr().unwrap()),
         initialize_session: false,
         noise: baileys_rs::noise::Config {

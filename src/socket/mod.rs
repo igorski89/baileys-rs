@@ -10,6 +10,7 @@ mod incoming_receipts;
 pub mod initial_sync;
 mod media;
 mod notifications;
+pub mod presence;
 mod protocol_messages;
 mod receipts;
 mod relay;
@@ -152,6 +153,13 @@ pub struct Config {
     /// Fetch server properties, the blocklist and privacy settings on connection open.
     /// Enabled by default, matching upstream.
     pub fire_init_queries: bool,
+    /// Native opt-out for the connection-open presence announcement. Defaults to true.
+    pub announce_presence_on_connect: bool,
+    /// Announce available (true) or unavailable (false) when the connection opens.
+    /// A saved self name is required for either announcement.
+    pub mark_online_on_connect: bool,
+    /// Sender filter, currently applied to presence updates; server presence bypasses it.
+    pub should_ignore_jid: presence::IgnoreJid,
     pub devices: crate::devices::Config,
     pub patch_message_before_sending: crate::relay::MessagePatch,
     pub enable_recent_message_cache: bool,
@@ -187,6 +195,9 @@ impl Default for Config {
             event_capacity: 256,
             initialize_session: true,
             fire_init_queries: true,
+            announce_presence_on_connect: true,
+            mark_online_on_connect: true,
+            should_ignore_jid: Default::default(),
             devices: Default::default(),
             patch_message_before_sending: Default::default(),
             enable_recent_message_cache: true,
@@ -217,6 +228,8 @@ pub enum ConnectionState {
 #[derive(Clone)]
 pub enum Event {
     Connection(ConnectionState),
+    Online(bool),
+    PresenceUpdated(presence::Update),
     Node(BinaryNode),
     Qr(String),
     PairingComplete,
@@ -296,6 +309,8 @@ impl std::fmt::Debug for Event {
                 .debug_tuple("MessageStubsUpdated")
                 .field(&updates.len())
                 .finish(),
+            Self::Online(v) => f.debug_tuple("Online").field(v).finish(),
+            Self::PresenceUpdated(v) => f.debug_tuple("PresenceUpdated").field(v).finish(),
             Self::Connection(s) => f.debug_tuple("Connection").field(s).finish(),
             Self::Node(n) => f.debug_tuple("Node").field(&n.tag).finish(),
             Self::Qr(_) => f.write_str("Qr(<redacted>)"),
@@ -404,6 +419,11 @@ enum Command {
         reply: oneshot::Sender<Result<bool, Error>>,
     },
     IncrementAccountSync {
+        reply: oneshot::Sender<Result<(), Error>>,
+    },
+    Presence {
+        presence: presence::Presence,
+        to: Option<String>,
         reply: oneshot::Sender<Result<(), Error>>,
     },
     LastPropHash {

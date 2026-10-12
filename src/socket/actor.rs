@@ -301,6 +301,14 @@ impl Actor<'_> {
                     };
                 let _ = reply.send(result);
             }
+            Command::Presence {
+                presence,
+                to,
+                reply,
+            } => {
+                let result = self.presence(presence, to.as_deref()).await;
+                let _ = reply.send(result);
+            }
             Command::LastPropHash { hash, reply } => {
                 self.credentials.last_prop_hash = Some(hash);
                 let result = self.persist().await;
@@ -485,6 +493,13 @@ impl Actor<'_> {
             let _ = sender.send(node.clone());
         }
         match node.tag.as_str() {
+            "presence" | "chatstate" => {
+                match super::presence::decode(&node, &self.config.should_ignore_jid) {
+                    Ok(Some(update)) => self.emit(Event::PresenceUpdated(update)),
+                    Ok(None) => (),
+                    Err(error) => tracing::warn!(?error, "invalid presence node"),
+                }
+            }
             "stream:error" => {
                 let code = node
                     .attrs
@@ -867,7 +882,38 @@ impl Actor<'_> {
     async fn open(&mut self) -> Result<(), Error> {
         self.state.send_replace(ConnectionState::Open);
         self.emit(Event::Connection(ConnectionState::Open));
+        let presence = if self.config.mark_online_on_connect {
+            super::presence::Presence::Available
+        } else {
+            super::presence::Presence::Unavailable
+        };
+        if self.config.announce_presence_on_connect
+            && let Err(error) = self.presence(presence, None).await
+        {
+            tracing::warn!(?error, "startup presence failed");
+        }
         self.unified_session().await
+    }
+    async fn presence(
+        &mut self,
+        presence: super::presence::Presence,
+        to: Option<&str>,
+    ) -> Result<(), Error> {
+        let me = self.credentials.me.as_ref().ok_or(Error::Config)?;
+        let Some(node) = super::presence::update_node(me, presence, to)? else {
+            return Ok(());
+        };
+        if presence.is_global() {
+            self.emit(Event::Online(
+                presence == super::presence::Presence::Available,
+            ));
+            if presence == super::presence::Presence::Available
+                && let Err(error) = self.unified_session().await
+            {
+                tracing::warn!(?error, "presence unified-session marker failed");
+            }
+        }
+        self.send(&node).await
     }
     async fn unified_session(&mut self) -> Result<(), Error> {
         let now = std::time::SystemTime::now()
