@@ -805,6 +805,18 @@ impl Actor<'_> {
                             tracing::warn!(?error, "groups dirty refresh failed");
                         }
                     });
+                } else if node
+                    .child("dirty")
+                    .is_some_and(|d| d.attrs.get("type").is_some_and(|t| t == "communities"))
+                    && let Some(inner) = self.socket_inner.upgrade()
+                {
+                    tokio::spawn(async move {
+                        if let Err(error) =
+                            (super::Socket { inner }).handle_communities_dirty().await
+                        {
+                            tracing::warn!(?error, "communities dirty refresh failed");
+                        }
+                    });
                 }
                 if node.child("offline_preview").is_some() {
                     self.send(

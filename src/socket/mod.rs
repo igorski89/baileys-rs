@@ -4,6 +4,7 @@ mod actor;
 mod app_state;
 mod calls;
 mod chats;
+mod communities;
 pub mod dispatch;
 mod event_responses;
 mod events;
