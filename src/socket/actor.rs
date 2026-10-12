@@ -17,11 +17,19 @@ enum PendingKind {
         last: u32,
         count: u32,
         attempt: u8,
-        open: bool,
+        after: After,
     },
     InitActive,
     InitDigest,
     CodeFinish,
+}
+/// What follows a completed pre-key upload.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum After {
+    Open,
+    Active,
+    /// A server-requested upload; only its waiters are notified.
+    Waiters,
 }
 struct Pending {
     kind: PendingKind,
@@ -49,7 +57,8 @@ struct Actor<'a> {
     qr_deadline: Option<Instant>,
     qr_first: bool,
     close_reply: Option<oneshot::Sender<Result<(), Error>>>,
-    upload_retry: Option<(Instant, u32, u8, bool)>,
+    upload_retry: Option<(Instant, u32, u8, After)>,
+    upload_waiters: Vec<oneshot::Sender<Result<(), Error>>>,
     initializing: bool,
     server_time_offset_ms: i128,
 }
@@ -97,6 +106,7 @@ pub(super) async fn run(
         qr_first: true,
         close_reply: None,
         upload_retry: None,
+        upload_waiters: vec![],
         initializing: false,
         server_time_offset_ms: 0,
     };
@@ -284,6 +294,19 @@ impl Actor<'_> {
                 };
                 let result = self.persist().await;
                 let _ = reply.send(result);
+            }
+            Command::UploadPreKeys { count, reply } => {
+                // A caller arriving during an upload waits for it instead of starting another.
+                let busy = self.upload_retry.is_some()
+                    || self
+                        .pending
+                        .values()
+                        .any(|p| matches!(p.kind, PendingKind::InitUpload { .. }));
+                self.upload_waiters.push(reply);
+                if !busy && let Err(error) = self.upload(count, 0, After::Waiters).await {
+                    tracing::warn!(?error, "pre-key upload preparation failed");
+                    self.finish_upload(After::Waiters, false).await?;
+                }
             }
             Command::DisappearingMode { mode, reply } => {
                 self.credentials.account_settings.default_disappearing_mode = Some(mode);
@@ -573,6 +596,20 @@ impl Actor<'_> {
                     Err(error) => tracing::warn!(?error, "invalid presence node"),
                 }
             }
+            "ack"
+                if self.config.process_messages
+                    && node.attrs.get("class").is_some_and(|c| c == "message") =>
+            {
+                // Bad acknowledgements run beside stanza processing, as upstream's listener.
+                if let Some(inner) = self.socket_inner.upgrade() {
+                    let ack = node.clone();
+                    tokio::spawn(async move {
+                        if let Err(error) = (super::Socket { inner }).handle_bad_ack(&ack).await {
+                            tracing::warn!(?error, "handling bad ack failed");
+                        }
+                    });
+                }
+            }
             "stream:error" => {
                 let code = node
                     .attrs
@@ -807,7 +844,7 @@ impl Actor<'_> {
                     .map_err(|_| Error::Task)??;
                     let threshold = if count == 0 { 812 } else { 5 };
                     if count <= threshold || missing {
-                        self.upload(threshold, 0, false).await?;
+                        self.upload(threshold, 0, After::Active).await?;
                         return Ok(());
                     }
                 }
@@ -817,7 +854,7 @@ impl Actor<'_> {
                 last,
                 count,
                 attempt,
-                open,
+                after,
             } => {
                 if valid {
                     let store = self.store.clone();
@@ -830,11 +867,9 @@ impl Actor<'_> {
                     self.emit(Event::CredentialsUpdated);
                 }
                 if !valid {
-                    self.retry_upload(count, attempt, open).await?;
-                } else if open {
-                    self.open().await?;
+                    self.retry_upload(count, attempt, after).await?;
                 } else {
-                    self.active().await?;
+                    self.finish_upload(after, true).await?;
                 }
             }
             PendingKind::InitActive => {
@@ -850,7 +885,7 @@ impl Actor<'_> {
             }
             PendingKind::InitDigest => {
                 if valid && node.child("digest").is_none() {
-                    self.upload(5, 0, true).await?;
+                    self.upload(5, 0, After::Open).await?;
                 } else {
                     self.open().await?;
                 }
@@ -858,7 +893,7 @@ impl Actor<'_> {
         }
         Ok(())
     }
-    async fn upload(&mut self, count: u32, attempt: u8, open: bool) -> Result<(), Error> {
+    async fn upload(&mut self, count: u32, attempt: u8, after: After) -> Result<(), Error> {
         let store = self.store.clone();
         let (batch, keys, credentials) = tokio::task::spawn_blocking(move || {
             store.transaction(|tx| {
@@ -916,23 +951,36 @@ impl Actor<'_> {
                 last: batch.last_pre_key_id,
                 count,
                 attempt,
-                open,
+                after,
             },
         )
         .await
     }
-    async fn retry_upload(&mut self, count: u32, attempt: u8, open: bool) -> Result<(), Error> {
+    /// Continue startup after its upload, and release callers waiting for any upload.
+    async fn finish_upload(&mut self, after: After, uploaded: bool) -> Result<(), Error> {
+        for waiter in self.upload_waiters.drain(..) {
+            let _ = waiter.send(if uploaded {
+                Ok(())
+            } else {
+                Err(Error::PreKeyUpload)
+            });
+        }
+        match after {
+            After::Open => self.open().await,
+            After::Active => self.active().await,
+            After::Waiters => Ok(()),
+        }
+    }
+    async fn retry_upload(&mut self, count: u32, attempt: u8, after: After) -> Result<(), Error> {
         if attempt < 3 {
             self.upload_retry = Some((
                 Instant::now() + Duration::from_secs(1 << attempt),
                 count,
                 attempt + 1,
-                open,
+                after,
             ));
-        } else if open {
-            self.open().await?;
         } else {
-            self.active().await?;
+            self.finish_upload(after, false).await?;
         }
         Ok(())
     }
@@ -1035,8 +1083,8 @@ impl Actor<'_> {
             .as_ref()
             .is_some_and(|(deadline, ..)| *deadline <= Instant::now())
         {
-            let (_, count, attempt, open) = self.upload_retry.take().expect("checked above");
-            self.upload(count, attempt, open).await?;
+            let (_, count, attempt, after) = self.upload_retry.take().expect("checked above");
+            self.upload(count, attempt, after).await?;
         }
         if self.qr_deadline.is_some_and(|t| t <= Instant::now()) {
             self.next_qr()?;
@@ -1060,9 +1108,9 @@ impl Actor<'_> {
                     PendingKind::InitUpload {
                         count,
                         attempt,
-                        open,
+                        after,
                         ..
-                    } => self.retry_upload(count, attempt, open).await?,
+                    } => self.retry_upload(count, attempt, after).await?,
                     PendingKind::InitActive | PendingKind::InitDigest => self.open().await?,
                     PendingKind::CodeFinish => return Err(Error::Timeout),
                     PendingKind::Heartbeat => (),

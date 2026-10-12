@@ -88,6 +88,21 @@ impl Socket {
         self.relay_message(&me, message, options).await
     }
     /// Retain original metadata while waiting for a phone's placeholder response.
+    /// Ask the phone for `count` messages older than the given one. The reply arrives
+    /// as an on-demand history notification; the returned ID is the request stanza's.
+    pub async fn fetch_message_history(
+        &self,
+        count: i32,
+        oldest: &proto::MessageKey,
+        oldest_timestamp_ms: i64,
+    ) -> Result<String, Error> {
+        self.send_peer_data_operation_message(crate::history::on_demand_request(
+            count,
+            oldest,
+            oldest_timestamp_ms,
+        ))
+        .await
+    }
     pub async fn request_placeholder_resend(
         &self,
         key: &proto::MessageKey,

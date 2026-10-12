@@ -76,7 +76,8 @@ pub(super) fn worker_notification(node: &BinaryNode, config: &super::Config) -> 
         config.process_app_state_notifications
     } else {
         config.process_notifications
-            && (kind == Some("devices") || crate::notifications::is_supported(kind))
+            && (matches!(kind, Some("devices" | "encrypt" | "privacy_token"))
+                || crate::notifications::is_supported(kind))
     }
 }
 pub(super) fn spawn_worker(inner: &Arc<Inner>, mut receiver: mpsc::UnboundedReceiver<BinaryNode>) {

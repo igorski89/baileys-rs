@@ -232,6 +232,12 @@ impl Repository {
         }
         Ok(jid.into())
     }
+    /// The sender timestamp recorded for a storage JID, if any.
+    pub fn sender_timestamp(&self, storage_jid: &str) -> Result<Option<u64>, Error> {
+        self.store.transaction_with_error(|tx| {
+            Ok(load(tx, storage_jid)?.and_then(|entry| entry.sender_timestamp))
+        })
+    }
     pub fn read_index(&self) -> Result<Vec<String>, Error> {
         let values = self.store.get(KeyCategory::Tctoken, &[INDEX_KEY.into()])?;
         Ok(read_index(values.get(INDEX_KEY)))

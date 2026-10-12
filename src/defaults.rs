@@ -10,3 +10,4 @@ pub const WA_CERT_PUBLIC_KEY: [u8; 32] = [
 pub const WA_VERSION: [u32; 3] = [2, 3000, 1043857760];
 pub const DEFAULT_ORIGIN: &str = "https://web.whatsapp.com";
 pub const DEFAULT_WEBSOCKET_URL: &str = "wss://web.whatsapp.com/ws/chat";
+pub const MIN_PREKEY_COUNT: u32 = 5;

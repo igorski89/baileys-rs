@@ -2,13 +2,14 @@
 #[path = "support/socket_peer.rs"]
 mod socket_peer;
 use baileys_rs::{
-    auth::{Contact, KeyCategory, KeyMutation, KeyStore, KeyValue, SqliteAuthStore},
+    auth::{Contact, Credentials, KeyCategory, KeyMutation, KeyStore, KeyValue, SqliteAuthStore},
     binary::{BinaryNode, NodeContent},
-    crypto::KeyPair,
+    crypto::{self, KeyPair},
     messages::own::UpsertKind,
     proto::web_message_info::StubType,
     receipts,
-    socket::{Config, Event, Socket},
+    signal::direct,
+    socket::{Config, Event, IdentityChange, Socket},
 };
 use socket_peer::{Peer, ROOT_PRIVATE};
 use std::time::Duration;
@@ -306,6 +307,332 @@ async fn removed_devices_delete_their_sessions_before_acknowledgement() {
         done_rx.await.unwrap();
         let remaining = store.get(KeyCategory::Session, &ids).unwrap();
         assert_eq!(remaining.keys().collect::<Vec<_>>(), ["200.2"]);
+        socket.close().await.unwrap();
+        server.await.unwrap();
+    })
+    .await
+    .unwrap();
+}
+fn encrypt(id: &str, from: &str, children: Vec<BinaryNode>) -> BinaryNode {
+    notification(id, from, "encrypt", children)
+}
+#[tokio::test]
+async fn low_prekey_notifications_upload_keys_before_acknowledgement() {
+    timeout(Duration::from_secs(10), async {
+        let temp = tempfile::tempdir().unwrap();
+        let (listener, config, store) = setup(&temp).await;
+        let before = store.load_credentials().unwrap().next_pre_key_id;
+        let (done_tx, done_rx) = tokio::sync::oneshot::channel();
+        let server = tokio::spawn(async move {
+            let mut peer = Peer::accept(listener.accept().await.unwrap().0).await;
+            peer.send(BinaryNode::new("success")).await;
+            assert!(peer.read().await.child("unified_session").is_some());
+            let count = |value: &str| vec![BinaryNode::new("count").attr("value", value)];
+            // Enough keys, and an unparseable count, upload nothing.
+            for (id, value) in [("ENOUGH", "5"), ("NAN", "many")] {
+                let node = encrypt(id, "@s.whatsapp.net", count(value));
+                peer.send(node.clone()).await;
+                assert_eq!(
+                    peer.read().await,
+                    receipts::acknowledgement(&node, None, None)
+                );
+            }
+            // The source dereferences a missing count; the ACK still follows.
+            let node = encrypt("MISSING", "@s.whatsapp.net", vec![]);
+            peer.send(node.clone()).await;
+            assert_eq!(
+                peer.read().await,
+                receipts::acknowledgement(&node, None, None)
+            );
+            // A low count uploads five keys; a failed upload is retried after backoff.
+            let node = encrypt("LOW", "@s.whatsapp.net", count("4"));
+            peer.send(node.clone()).await;
+            let upload = peer.read().await;
+            assert_eq!(upload.tag, "iq");
+            assert_eq!(upload.attrs["xmlns"], "encrypt");
+            assert_eq!(upload.attrs["type"], "set");
+            assert_eq!(upload.child("list").unwrap().all_children().len(), 5);
+            assert!(upload.child("skey").is_some());
+            peer.result(&upload).await;
+            assert_eq!(
+                peer.read().await,
+                receipts::acknowledgement(&node, None, None)
+            );
+            done_tx.send(()).unwrap();
+            peer.closed().await;
+        });
+        let (socket, _events) = Socket::connect(config, store.clone()).await.unwrap();
+        socket.wait_for_open(Duration::from_secs(2)).await.unwrap();
+        done_rx.await.unwrap();
+        let creds = store.load_credentials().unwrap();
+        assert_eq!(creds.next_pre_key_id, before + 5);
+        assert_eq!(creds.first_unuploaded_pre_key_id, before + 5);
+        socket.close().await.unwrap();
+        server.await.unwrap();
+    })
+    .await
+    .unwrap();
+}
+#[tokio::test]
+async fn identity_changes_follow_original_skip_rules_and_refresh_open_sessions() {
+    timeout(Duration::from_secs(10), async {
+        let temp = tempfile::tempdir().unwrap();
+        let (listener, mut config, store) = setup(&temp).await;
+        config.process_notifications = false;
+        let peer_creds = Credentials::generate().unwrap();
+        direct::Repository::new(store.clone())
+            .inject_session(
+                "200@lid",
+                &direct::Bundle {
+                    registration_id: peer_creds.registration_id.into(),
+                    identity: crypto::signal_public_key(&peer_creds.signed_identity_key.public)
+                        .unwrap()
+                        .to_vec(),
+                    signed: direct::PublicPreKey {
+                        id: peer_creds.signed_pre_key.key_id,
+                        public: crypto::signal_public_key(
+                            &peer_creds.signed_pre_key.key_pair.public,
+                        )
+                        .unwrap()
+                        .to_vec(),
+                    },
+                    signature: peer_creds.signed_pre_key.signature.clone(),
+                    pre_key: None,
+                },
+            )
+            .unwrap();
+        let server = tokio::spawn(async move {
+            let mut peer = Peer::accept(listener.accept().await.unwrap().0).await;
+            peer.send(BinaryNode::new("success").attr("lid", "900:7@lid"))
+                .await;
+            assert!(peer.read().await.child("unified_session").is_some());
+            // The forced refresh requests the changed contact's key bundle.
+            let mut query = peer.read().await;
+            if query.child("usync").is_some() {
+                // Background PN alias lookup; an empty result leaves the address unchanged.
+                peer.result(&query).await;
+                query = peer.read().await;
+            }
+            assert_eq!(query.attrs["xmlns"], "encrypt");
+            let user = &query.child("key").unwrap().all_children()[0];
+            assert_eq!(user.attrs["jid"], "200@lid");
+            assert_eq!(user.attrs["reason"], "identity");
+            peer.send(
+                BinaryNode::new("iq")
+                    .attr("id", &query.attrs["id"])
+                    .attr("type", "error")
+                    .with_content(NodeContent::Children(vec![
+                        BinaryNode::new("error")
+                            .attr("code", "500")
+                            .attr("text", "unavailable"),
+                    ])),
+            )
+            .await;
+            peer.closed().await;
+        });
+        let (socket, _events) = Socket::connect(config, store).await.unwrap();
+        socket.wait_for_open(Duration::from_secs(2)).await.unwrap();
+        let identity = || vec![BinaryNode::new("identity")];
+        let mut missing_from = encrypt("I0", "", identity());
+        missing_from.attrs.shift_remove("from");
+        for (node, expected) in [
+            (missing_from, IdentityChange::InvalidNotification),
+            (
+                encrypt("I1", "", identity()),
+                IdentityChange::InvalidNotification,
+            ),
+            (
+                encrypt("I2", "200@s.whatsapp.net", vec![]),
+                IdentityChange::NoIdentityNode,
+            ),
+            (
+                encrypt("I3", "200:4@s.whatsapp.net", identity()),
+                IdentityChange::SkippedCompanionDevice(4),
+            ),
+            (
+                encrypt("I4", "100@s.whatsapp.net", identity()),
+                IdentityChange::SkippedSelfPrimary,
+            ),
+            (
+                encrypt("I5", "900@lid", identity()),
+                IdentityChange::SkippedSelfPrimary,
+            ),
+            (
+                encrypt("I6", "300@s.whatsapp.net", identity()),
+                IdentityChange::SkippedNoSession,
+            ),
+            (
+                encrypt("I7", "300@s.whatsapp.net", identity()),
+                IdentityChange::Debounced,
+            ),
+            (
+                encrypt("I8", "200@lid", identity()).attr("offline", "1"),
+                IdentityChange::SkippedOffline,
+            ),
+            (
+                encrypt("I9", "200@lid", identity()),
+                IdentityChange::Debounced,
+            ),
+        ] {
+            assert_eq!(
+                socket.handle_identity_change(&node).await.unwrap(),
+                expected,
+                "{node:?}"
+            );
+        }
+        // The debounce entry lasts five seconds, as upstream's NodeCache TTL.
+        tokio::time::pause();
+        tokio::time::advance(Duration::from_millis(5001)).await;
+        tokio::time::resume();
+        assert_eq!(
+            socket
+                .handle_identity_change(&encrypt("I10", "200@lid", identity()))
+                .await
+                .unwrap(),
+            IdentityChange::SessionRefreshFailed
+        );
+        socket.close().await.unwrap();
+        server.await.unwrap();
+    })
+    .await
+    .unwrap();
+}
+#[tokio::test]
+async fn privacy_token_notifications_store_tokens_under_the_sender_lid() {
+    timeout(Duration::from_secs(10), async {
+        let temp = tempfile::tempdir().unwrap();
+        let (listener, config, store) = setup(&temp).await;
+        let node = notification(
+            "TOKEN",
+            "200@s.whatsapp.net",
+            "privacy_token",
+            vec![
+                BinaryNode::new("tokens").with_content(NodeContent::Children(vec![
+                    BinaryNode::new("token")
+                        .attr("type", "trusted_contact")
+                        .attr("t", "1700000000")
+                        .with_content(NodeContent::Bytes(vec![1, 2, 3])),
+                ])),
+            ],
+        )
+        .attr("sender_lid", "2000:3@lid");
+        let (done_tx, done_rx) = tokio::sync::oneshot::channel();
+        let server = tokio::spawn(async move {
+            let mut peer = Peer::accept(listener.accept().await.unwrap().0).await;
+            peer.send(BinaryNode::new("success")).await;
+            assert!(peer.read().await.child("unified_session").is_some());
+            peer.send(node.clone()).await;
+            assert_eq!(
+                peer.read().await,
+                receipts::acknowledgement(&node, None, None)
+            );
+            done_tx.send(()).unwrap();
+            peer.closed().await;
+        });
+        let (socket, _events) = Socket::connect(config, store.clone()).await.unwrap();
+        socket.wait_for_open(Duration::from_secs(2)).await.unwrap();
+        done_rx.await.unwrap();
+        let stored = store
+            .get(KeyCategory::Tctoken, &["2000@lid".to_string()])
+            .unwrap();
+        let Some(KeyValue::Tctoken(entry)) = stored.get("2000@lid") else {
+            panic!("token was not stored under the sender LID")
+        };
+        assert_eq!(entry.token, [1, 2, 3]);
+        socket.close().await.unwrap();
+        server.await.unwrap();
+    })
+    .await
+    .unwrap();
+}
+#[tokio::test]
+async fn errored_message_acks_mark_messages_failed_and_recover_missing_tokens() {
+    timeout(Duration::from_secs(10), async {
+        let temp = tempfile::tempdir().unwrap();
+        let (listener, config, store) = setup(&temp).await;
+        let server = tokio::spawn(async move {
+            let mut peer = Peer::accept(listener.accept().await.unwrap().0).await;
+            peer.send(BinaryNode::new("success")).await;
+            assert!(peer.read().await.child("unified_session").is_some());
+            let ack = |id: &str| {
+                BinaryNode::new("ack")
+                    .attr("id", id)
+                    .attr("class", "message")
+                    .attr("from", "200@lid")
+            };
+            peer.send(ack("FINE")).await;
+            peer.send(ack("OTHER").attr("class", "receipt").attr("error", "500"))
+                .await;
+            peer.send(ack("INVALID").attr("error", "479")).await;
+            // Two restricted acks for one chat start a single token issuance.
+            peer.send(ack("RESTRICTED").attr("error", "463")).await;
+            peer.send(ack("AGAIN").attr("error", "463")).await;
+            let issue = peer.read().await;
+            assert_eq!(issue.attrs["xmlns"], "privacy");
+            let token = &issue.child("tokens").unwrap().all_children()[0];
+            assert_eq!(token.attrs["jid"], "200@lid");
+            assert_eq!(token.attrs["type"], "trusted_contact");
+            peer.send(
+                BinaryNode::new("iq")
+                    .attr("id", &issue.attrs["id"])
+                    .attr("type", "result")
+                    .with_content(NodeContent::Children(vec![
+                        BinaryNode::new("tokens").with_content(NodeContent::Children(vec![
+                            BinaryNode::new("token")
+                                .attr("jid", "200@lid")
+                                .attr("type", "trusted_contact")
+                                .attr("t", "1700000000")
+                                .with_content(NodeContent::Bytes(vec![9, 9])),
+                        ])),
+                    ])),
+            )
+            .await;
+            peer.closed().await;
+        });
+        let (socket, mut events) = Socket::connect(config, store.clone()).await.unwrap();
+        socket.wait_for_open(Duration::from_secs(2)).await.unwrap();
+        let mut updates = vec![];
+        while updates.len() < 3 {
+            if let Event::MessageUpdates(values) = events.recv().await.unwrap() {
+                updates.extend(values);
+            }
+        }
+        updates.sort_by_key(|u| u.key.id.clone());
+        let summary: Vec<_> = updates
+            .iter()
+            .map(|u| {
+                assert_eq!(u.key.from_me, Some(true));
+                assert_eq!(u.key.remote_jid.as_deref(), Some("200@lid"));
+                assert_eq!(u.info.status, Some(0));
+                (
+                    u.key.id.clone().unwrap(),
+                    u.info.message_stub_parameters.clone(),
+                )
+            })
+            .collect();
+        let restricted = vec![
+            "463".to_string(),
+            "Your account has been restricted".to_string(),
+        ];
+        assert_eq!(
+            summary,
+            [
+                ("AGAIN".to_string(), restricted.clone()),
+                ("INVALID".to_string(), vec!["479".to_string()]),
+                ("RESTRICTED".to_string(), restricted),
+            ]
+        );
+        // The recovered token is stored for the chat once the issuance reply arrives.
+        loop {
+            let stored = store
+                .get(KeyCategory::Tctoken, &["200@lid".to_string()])
+                .unwrap();
+            if let Some(KeyValue::Tctoken(entry)) = stored.get("200@lid") {
+                assert_eq!(entry.token, [9, 9]);
+                break;
+            }
+            tokio::time::sleep(Duration::from_millis(10)).await;
+        }
         socket.close().await.unwrap();
         server.await.unwrap();
     })

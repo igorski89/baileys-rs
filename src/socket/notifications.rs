@@ -28,8 +28,10 @@ impl Socket {
     pub async fn handle_notification(&self, node: &BinaryNode) -> Result<bool, Error> {
         let kind = node.attrs.get("type").map(String::as_str);
         if node.tag != "notification"
-            || !(matches!(kind, Some("server_sync" | "devices"))
-                || notifications::is_supported(kind))
+            || !(matches!(
+                kind,
+                Some("server_sync" | "devices" | "encrypt" | "privacy_token")
+            ) || notifications::is_supported(kind))
         {
             return Ok(false);
         }
@@ -49,6 +51,12 @@ impl Socket {
                 tracing::error!(?error, "failed to handle devices notification");
             }
             return Ok(());
+        }
+        if node.attrs.get("type").is_some_and(|t| t == "encrypt") {
+            return self.process_encrypt_notification(node).await.map(|_| ());
+        }
+        if node.attrs.get("type").is_some_and(|t| t == "privacy_token") {
+            return self.process_privacy_token_notification(node).await;
         }
         let credentials = super::load_credentials(self.inner.store.clone()).await?;
         let me = credentials.me_id().map_err(Error::Auth)?.to_owned();
@@ -148,6 +156,196 @@ impl Socket {
         }
         Ok(())
     }
+    /// Server pre-key-low notices upload more keys; peer notices refresh a changed identity.
+    async fn process_encrypt_notification(
+        &self,
+        node: &BinaryNode,
+    ) -> Result<Option<IdentityChange>, Error> {
+        if node
+            .attrs
+            .get("from")
+            .is_none_or(|s| s != crate::jid::S_WHATSAPP_NET)
+        {
+            let result = self.handle_identity_change(node).await?;
+            if result == IdentityChange::NoIdentityNode {
+                tracing::info!("unknown encrypt notification");
+            }
+            return Ok(Some(result));
+        }
+        let id = node.attrs.get("id").filter(|s| !s.is_empty()).cloned();
+        if let Some(id) = &id
+            && self
+                .inner
+                .prekey_low
+                .lock()
+                .map_err(|_| Error::Task)?
+                .contains(id)
+        {
+            return Ok(None);
+        }
+        let count = node
+            .child("count")
+            .ok_or(notifications::Error::MissingChild)?
+            .attrs
+            .get("value")
+            .map_or(f64::NAN, |s| crate::privacy::number(s));
+        if count < f64::from(crate::defaults::MIN_PREKEY_COUNT) {
+            let _guard = id.map(|id| {
+                if let Ok(mut set) = self.inner.prekey_low.lock() {
+                    set.insert(id.clone());
+                }
+                PreKeyLow {
+                    inner: self.inner.clone(),
+                    id,
+                }
+            });
+            self.upload_pre_keys(crate::defaults::MIN_PREKEY_COUNT)
+                .await?;
+        }
+        Ok(None)
+    }
+    /// Generate and upload one-time pre-keys, waiting for an upload already in progress.
+    pub async fn upload_pre_keys(&self, count: u32) -> Result<(), Error> {
+        let (reply, response) = tokio::sync::oneshot::channel();
+        self.inner
+            .commands
+            .send(Command::UploadPreKeys { count, reply })
+            .await
+            .map_err(|_| Error::Closed(428))?;
+        response.await.map_err(|_| Error::Closed(428))?
+    }
+    /// Refresh the session of a contact whose primary-device identity changed.
+    pub async fn handle_identity_change(&self, node: &BinaryNode) -> Result<IdentityChange, Error> {
+        let Some(from) = node.attrs.get("from").filter(|s| !s.is_empty()).cloned() else {
+            return Ok(IdentityChange::InvalidNotification);
+        };
+        if node.child("identity").is_none() {
+            return Ok(IdentityChange::NoIdentityNode);
+        }
+        if let Some(device) = crate::jid::Jid::parse(&from)
+            .and_then(|jid| jid.device)
+            .filter(|device| *device != 0)
+        {
+            return Ok(IdentityChange::SkippedCompanionDevice(device));
+        }
+        let credentials = super::load_credentials(self.inner.store.clone()).await?;
+        if let Some(me) = &credentials.me
+            && !me.id.is_empty()
+            && (crate::jid::are_same_user(&from, &me.id)
+                || me
+                    .lid
+                    .as_deref()
+                    .is_some_and(|lid| !lid.is_empty() && crate::jid::are_same_user(&from, lid)))
+        {
+            return Ok(IdentityChange::SkippedSelfPrimary);
+        }
+        {
+            let mut debounce = self
+                .inner
+                .identity_debounce
+                .lock()
+                .map_err(|_| Error::Task)?;
+            let now = tokio::time::Instant::now();
+            debounce.retain(|_, expires| *expires > now);
+            if debounce.contains_key(&from) {
+                return Ok(IdentityChange::Debounced);
+            }
+            debounce.insert(from.clone(), now + IDENTITY_DEBOUNCE);
+        }
+        let repository = self.inner.decryptor.direct.clone();
+        let jid = from.clone();
+        // Validation errors mean no usable session, as upstream's catch reports.
+        let exists = tokio::task::spawn_blocking(move || repository.validate_session(&jid))
+            .await
+            .map_err(|_| Error::Task)?
+            .unwrap_or(false);
+        if !exists {
+            return Ok(IdentityChange::SkippedNoSession);
+        }
+        if node.attrs.get("offline").is_some_and(|s| !s.is_empty()) {
+            return Ok(IdentityChange::SkippedOffline);
+        }
+        // Token re-issuance runs alongside the session refresh, not after it.
+        let socket = self.clone();
+        let peer = from.clone();
+        tokio::spawn(async move {
+            if let Err(error) = socket.reissue_privacy_token(&peer).await {
+                tracing::debug!(?error, "failed to re-issue tctoken after identity change");
+            }
+        });
+        Ok(match self.assert_sessions(&[from], true).await {
+            Ok(_) => IdentityChange::SessionRefreshed,
+            Err(error) => {
+                tracing::warn!(?error, "failed to assert sessions after identity change");
+                IdentityChange::SessionRefreshFailed
+            }
+        })
+    }
+    fn privacy_repository(&self) -> crate::privacy::Repository {
+        crate::privacy::Repository::with_mappings(
+            self.inner.store.clone(),
+            self.inner.decryptor.direct.lid_mapping().clone(),
+        )
+    }
+    async fn reissue_privacy_token(&self, from: &str) -> Result<(), Error> {
+        let normalized = crate::jid::normalized_user(from);
+        let repo = self.privacy_repository();
+        let to_lid = self.server_props()?.lid_trusted_token_issue_to_lid;
+        let now = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .map_err(|_| Error::Config)?
+            .as_secs();
+        let lookup = repo.clone();
+        let Some((storage, sender, issuance)) = tokio::task::spawn_blocking(move || {
+            let storage = lookup.storage_jid(&normalized)?;
+            let Some(sender) = lookup.sender_timestamp(&storage)? else {
+                return Ok(None);
+            };
+            if crate::privacy::is_expired(Some(&auth::TokenTimestamp::Number(sender.into())), now) {
+                return Ok(None);
+            }
+            let issuance = lookup.issuance_jid(&normalized, to_lid)?;
+            Ok::<_, Error>(Some((storage, sender, issuance)))
+        })
+        .await
+        .map_err(|_| Error::Task)??
+        else {
+            return Ok(());
+        };
+        let result = self.issue_privacy_tokens(&[issuance], Some(sender)).await?;
+        tokio::task::spawn_blocking(move || repo.store_from_iq(&result, &storage))
+            .await
+            .map_err(|_| Error::Task)??;
+        Ok(())
+    }
+    async fn process_privacy_token_notification(&self, node: &BinaryNode) -> Result<(), Error> {
+        if node.child("tokens").is_none() {
+            return Ok(());
+        }
+        let from = node
+            .attrs
+            .get("from")
+            .map(|s| crate::jid::normalized_user(s))
+            .unwrap_or_default();
+        // The sender_lid attribute supplies the storage LID directly when present.
+        let sender_lid = node
+            .attrs
+            .get("sender_lid")
+            .map(|s| crate::jid::normalized_user(s))
+            .filter(|s| s.ends_with("@lid"));
+        let repo = self.privacy_repository();
+        let node = node.clone();
+        tokio::task::spawn_blocking(move || {
+            let fallback = match sender_lid {
+                Some(lid) => lid,
+                None => repo.storage_jid(&from)?,
+            };
+            repo.store_from_iq(&node, &fallback)
+        })
+        .await
+        .map_err(|_| Error::Task)??;
+        Ok(())
+    }
     async fn process_devices_notification(&self, node: &BinaryNode) -> Result<(), Error> {
         let Some(list) = crate::devices::parse_notification(node) else {
             return Ok(());
@@ -198,6 +396,32 @@ impl Socket {
         }
         result?;
         Ok(true)
+    }
+}
+const IDENTITY_DEBOUNCE: std::time::Duration = std::time::Duration::from_secs(5);
+/// Outcome of an identity-change notification.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum IdentityChange {
+    NoIdentityNode,
+    InvalidNotification,
+    SkippedCompanionDevice(u16),
+    SkippedSelfPrimary,
+    Debounced,
+    SkippedOffline,
+    SkippedNoSession,
+    SessionRefreshed,
+    SessionRefreshFailed,
+}
+// Clears the in-flight pre-key-low stanza when the upload ends or is cancelled.
+struct PreKeyLow {
+    inner: Arc<Inner>,
+    id: String,
+}
+impl Drop for PreKeyLow {
+    fn drop(&mut self) {
+        if let Ok(mut set) = self.inner.prekey_low.lock() {
+            set.remove(&self.id);
+        }
     }
 }
 pub(super) fn spawn_worker(

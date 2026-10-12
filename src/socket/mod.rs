@@ -1,4 +1,5 @@
 //! Async WhatsApp WebSocket connection with exclusive Noise ownership and IQ routing.
+pub mod acks;
 mod actor;
 mod app_state;
 mod calls;
@@ -29,6 +30,7 @@ use crate::{
 };
 use base64::{Engine, engine::general_purpose::URL_SAFE_NO_PAD};
 use futures_util::{SinkExt, StreamExt};
+pub use notifications::IdentityChange;
 use prost::Message;
 pub use relay::{RelayOptions, ServerProps};
 pub use send::{SendOptions, send_metadata};
@@ -112,6 +114,8 @@ pub enum Error {
     EventLagged(u64),
     #[error("blocking auth task failed")]
     Task,
+    #[error("pre-key upload failed")]
+    PreKeyUpload,
     #[error("message tag counter exhausted")]
     TagExhausted,
 }
@@ -399,6 +403,9 @@ struct Inner {
     call_offer_cache: crate::calls::Cache,
     notification_lock: Arc<tokio::sync::Mutex<()>>,
     devices_lock: tokio::sync::Mutex<()>,
+    prekey_low: std::sync::Mutex<std::collections::HashSet<String>>,
+    restricted_recoveries: std::sync::Mutex<std::collections::HashSet<String>>,
+    identity_debounce: std::sync::Mutex<std::collections::HashMap<String, tokio::time::Instant>>,
     message_lock: tokio::sync::Mutex<()>,
     active_receipts: std::sync::atomic::AtomicBool,
     retry_request_delay: Duration,
@@ -448,6 +455,10 @@ enum Command {
     },
     UnarchiveChats {
         value: bool,
+        reply: oneshot::Sender<Result<(), Error>>,
+    },
+    UploadPreKeys {
+        count: u32,
         reply: oneshot::Sender<Result<(), Error>>,
     },
     DisappearingMode {
@@ -639,6 +650,9 @@ impl Socket {
             call_offer_cache: config.call_offer_cache.clone().unwrap_or_default(),
             notification_lock: Arc::new(tokio::sync::Mutex::new(())),
             devices_lock: tokio::sync::Mutex::new(()),
+            prekey_low: Default::default(),
+            restricted_recoveries: Default::default(),
+            identity_debounce: Default::default(),
             message_lock: tokio::sync::Mutex::new(()),
             active_receipts: std::sync::atomic::AtomicBool::new(config.send_active_receipts),
             retry_request_delay: config.retry_request_delay,

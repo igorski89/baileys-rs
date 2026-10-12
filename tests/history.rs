@@ -379,3 +379,36 @@ async fn encrypted_https_history_inflates_without_buffering_compressed_download(
     .await
     .unwrap();
 }
+#[test]
+fn on_demand_history_requests_match_original_protobuf_bytes() {
+    use prost::Message as _;
+    // Bytes produced by the upstream fetchMessageHistory request object and protobufjs.
+    for (count, jid, from_me, id, timestamp, expected) in [
+        (
+            50,
+            "200@s.whatsapp.net",
+            false,
+            "OLDEST",
+            1700000000000,
+            "080322270a1232303040732e77686174736170702e6e657412064f4c44455354180020322880d095ffbc31",
+        ),
+        (
+            1,
+            "group@g.us",
+            true,
+            "X",
+            0,
+            "080322150a0a67726f757040672e7573120158180120012800",
+        ),
+    ] {
+        let key = baileys_rs::proto::MessageKey {
+            remote_jid: Some(jid.into()),
+            from_me: Some(from_me),
+            id: Some(id.into()),
+            participant: None,
+        };
+        let bytes = baileys_rs::history::on_demand_request(count, &key, timestamp).encode_to_vec();
+        let actual: String = bytes.iter().map(|b| format!("{b:02x}")).collect();
+        assert_eq!(actual, expected);
+    }
+}

@@ -385,3 +385,29 @@ impl Policy {
         (self.0)(n) && n.sync_type.is_some_and(|t| (0..=6).contains(&t))
     }
 }
+
+/// The peer request upstream's fetchMessageHistory sends to the phone for
+/// messages older than the given one.
+pub fn on_demand_request(
+    count: i32,
+    oldest: &proto::MessageKey,
+    oldest_timestamp_ms: i64,
+) -> proto::message::PeerDataOperationRequestMessage {
+    use proto::message::{PeerDataOperationRequestType, peer_data_operation_request_message};
+    proto::message::PeerDataOperationRequestMessage {
+        peer_data_operation_request_type: Some(
+            PeerDataOperationRequestType::HistorySyncOnDemand as i32,
+        ),
+        history_sync_on_demand_request: Some(
+            peer_data_operation_request_message::HistorySyncOnDemandRequest {
+                chat_jid: oldest.remote_jid.clone(),
+                oldest_msg_from_me: oldest.from_me,
+                oldest_msg_id: oldest.id.clone(),
+                oldest_msg_timestamp_ms: Some(oldest_timestamp_ms),
+                on_demand_msg_count: Some(count),
+                ..Default::default()
+            },
+        ),
+        ..Default::default()
+    }
+}
