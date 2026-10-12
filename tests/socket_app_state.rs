@@ -500,3 +500,32 @@ async fn automatic_message_and_sync_scopes_flush_success_failure_and_cancellatio
         socket.close().await.unwrap();server.await.unwrap();
     }).await.unwrap();
 }
+
+#[tokio::test]
+async fn connection_close_clears_parked_app_state_collections() {
+    timeout(Duration::from_secs(10), async {
+        let store = SqliteAuthStore::in_memory().unwrap();
+        let (listener, config) = setup().await;
+        let patch = patches().remove(0);
+        let server = tokio::spawn(async move {
+            let mut peer = Peer::accept(listener.accept().await.unwrap().0).await;
+            for _ in 0..2 {
+                let request = peer.read().await;
+                peer.send(response(&request, patch.clone(), false)).await;
+            }
+            peer.closed().await;
+        });
+        let (socket, _) = Socket::connect(config, store).await.unwrap();
+        let result = socket
+            .resync_app_state(&["regular".into()], false, &options())
+            .await
+            .unwrap();
+        assert_eq!(result.blocked, ["regular"]);
+        assert_eq!(socket.blocked_app_state_collections().await, ["regular"]);
+        socket.close().await.unwrap();
+        assert!(socket.blocked_app_state_collections().await.is_empty());
+        server.await.unwrap();
+    })
+    .await
+    .unwrap();
+}

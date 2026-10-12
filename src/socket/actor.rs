@@ -67,6 +67,7 @@ pub(super) async fn run(
     receipts: Option<mpsc::UnboundedSender<BinaryNode>>,
     messages: Option<mpsc::UnboundedSender<BinaryNode>>,
     notifications: Option<mpsc::UnboundedSender<BinaryNode>>,
+    socket_inner: std::sync::Weak<super::Inner>,
 ) {
     let mut actor = Actor {
         notifications,
@@ -156,6 +157,14 @@ pub(super) async fn run(
         tracing::debug!(?error, "retry state cleanup failed");
     }
     retry_requests.clear();
+    if let Some(inner) = socket_inner.upgrade() {
+        if let Some(sync) = inner.app_state_sync.get() {
+            sync.take_blocked_collections().await;
+        }
+        if let Ok(mut privacy) = inner.privacy_settings.lock() {
+            *privacy = None;
+        }
+    }
     actor.state.send_replace(ConnectionState::Closed { code });
     actor.emit(Event::Connection(ConnectionState::Closed { code }));
     for (_, pending) in actor.pending.drain() {
@@ -280,6 +289,16 @@ impl Actor<'_> {
                         message_timestamp: timestamp,
                     });
                 let result = self.persist().await.map(|()| latest);
+                let _ = reply.send(result);
+            }
+            Command::IncrementAccountSync { reply } => {
+                let result =
+                    if let Some(counter) = self.credentials.account_sync_counter.checked_add(1) {
+                        self.credentials.account_sync_counter = counter;
+                        self.persist().await
+                    } else {
+                        Err(Error::Config)
+                    };
                 let _ = reply.send(result);
             }
             Command::RetryReceipt {
@@ -640,6 +659,17 @@ impl Actor<'_> {
                     self.persist().await?;
                 }
                 if node.child("offline").is_some() {
+                    if self.events.start_initial_sync() {
+                        let recent = proto::message::HistorySyncNotification {
+                            sync_type: Some(3),
+                            ..Default::default()
+                        };
+                        let will_sync = self.config.history_policy.should_process(&recent);
+                        self.events.select_initial_history(
+                            will_sync,
+                            self.credentials.account_sync_counter,
+                        );
+                    }
                     self.emit(Event::PendingNotifications);
                 }
             }

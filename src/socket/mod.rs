@@ -7,6 +7,7 @@ mod group_effects;
 mod groups;
 mod incoming_messages;
 mod incoming_receipts;
+pub mod initial_sync;
 mod media;
 mod notifications;
 mod protocol_messages;
@@ -397,6 +398,9 @@ enum Command {
         timestamp: Option<u64>,
         reply: oneshot::Sender<Result<bool, Error>>,
     },
+    IncrementAccountSync {
+        reply: oneshot::Sender<Result<(), Error>>,
+    },
     RetryReceipt {
         node: BinaryNode,
         count: u64,
@@ -533,6 +537,7 @@ impl Socket {
         let (events, receiver) = events::Emitter::new(config.event_capacity);
         let (state, state_rx) = watch::channel(ConnectionState::Connecting);
         let (commands, command_rx) = mpsc::channel(64);
+        events.set_counter_command(commands.downgrade());
         let (cancel, cancel_rx) = mpsc::unbounded_channel();
         let mut random = [0; 4];
         getrandom::fill(&mut random).map_err(|_| crypto::Error::Random)?;
@@ -606,6 +611,7 @@ impl Socket {
                 }
             }
         });
+        let actor_inner = Arc::downgrade(&inner);
         tokio::spawn(async move {
             actor::run(
                 &mut ws,
@@ -623,6 +629,7 @@ impl Socket {
                 receipt_sender,
                 message_sender,
                 notification_sender,
+                actor_inner,
             )
             .await;
         });
@@ -640,6 +647,9 @@ impl Socket {
     }
     pub fn is_buffering_events(&self) -> bool {
         self.inner.events.is_buffering()
+    }
+    pub fn initial_sync_phase(&self) -> initial_sync::Phase {
+        self.inner.events.initial_sync_phase()
     }
     pub fn flush_events(&self) -> Result<bool, Error> {
         self.inner.events.flush()

@@ -164,6 +164,15 @@ impl Buffer {
     pub fn next_deadline(&self) -> Option<Duration> {
         self.timers.iter().map(|t| t.at).min()
     }
+    /// Registration time of the next timer, for ordering socket lifecycle timers.
+    pub fn next_timer_registration(&self) -> Option<Duration> {
+        self.timers.iter().min_by_key(|t| (t.at, t.id)).map(|t| {
+            t.at.saturating_sub(match t.kind {
+                TimerKind::Auto => Duration::from_secs(30),
+                TimerKind::Pending | TimerKind::Single => Duration::from_millis(100),
+            })
+        })
+    }
     pub fn tick(&mut self, now: Duration) -> Vec<Batch> {
         let mut batches = vec![];
         while let Some((position, timer)) = self

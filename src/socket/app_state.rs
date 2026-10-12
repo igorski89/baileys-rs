@@ -3,6 +3,39 @@ use crate::{app_state, media};
 use indexmap::IndexMap;
 
 impl Socket {
+    pub(super) async fn run_initial_app_state_sync(&self) -> Result<(), Error> {
+        if self.initial_sync_phase() != super::initial_sync::Phase::Syncing {
+            return Ok(());
+        }
+        self.run_admitted_initial_app_state_sync().await
+    }
+    pub(super) async fn run_admitted_initial_app_state_sync(&self) -> Result<(), Error> {
+        let sync = self.app_state_synchronizer().await?;
+        sync.take_blocked_collections().await;
+        let collections = [
+            "critical_block",
+            "critical_unblock_low",
+            "regular_high",
+            "regular_low",
+            "regular",
+        ]
+        .map(str::to_owned);
+        let options = self
+            .inner
+            .app_state_options
+            .lock()
+            .map_err(|_| Error::Config)?
+            .clone();
+        self.resync_app_state(&collections, true, &options).await?;
+        self.inner.events.initial_sync_complete()?;
+        let (reply, response) = tokio::sync::oneshot::channel();
+        self.inner
+            .commands
+            .send(super::Command::IncrementAccountSync { reply })
+            .await
+            .map_err(|_| Error::Closed(428))?;
+        response.await.map_err(|_| Error::Closed(428))?
+    }
     async fn app_state_synchronizer(&self) -> Result<&app_state::Synchronizer, Error> {
         self.inner
             .app_state_sync

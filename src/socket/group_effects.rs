@@ -123,6 +123,62 @@ impl Socket {
                 .events
                 .history_notification(notification, history_eligible);
         }
+        if history_notification.is_some() {
+            self.inner.events.initial_history(history_eligible)?;
+        }
+        if history_eligible && self.initial_sync_phase() == super::initial_sync::Phase::Syncing {
+            let sync_socket = self.clone();
+            let mut sync =
+                tokio::spawn(
+                    async move { sync_socket.run_admitted_initial_app_state_sync().await },
+                );
+            let process_socket = self.clone();
+            let process_message = message.clone();
+            let process_metadata = metadata.clone();
+            let process_credentials = credentials.clone();
+            let mut processing = tokio::spawn(async move {
+                process_socket
+                    .process_published_message(
+                        &process_message,
+                        process_metadata.as_ref(),
+                        &process_credentials,
+                        history_eligible,
+                    )
+                    .await
+            });
+            // Promise.all rejects at the first error while the other promise
+            // continues. Dropped JoinHandles detach their tasks rather than abort.
+            tokio::select! {
+                result=&mut sync=>{result.map_err(|_|Error::Task)??;processing.await.map_err(|_|Error::Task)??;},
+                result=&mut processing=>{result.map_err(|_|Error::Task)??;sync.await.map_err(|_|Error::Task)??;},
+            }
+        } else {
+            self.process_published_message(
+                message,
+                metadata.as_ref(),
+                &credentials,
+                history_eligible,
+            )
+            .await?;
+        }
+        if message
+            .message
+            .as_ref()
+            .and_then(|m| m.protocol_message.as_ref())
+            .is_some_and(|p| p.app_state_sync_key_share.is_some())
+            && self.initial_sync_phase() == super::initial_sync::Phase::Syncing
+        {
+            self.run_initial_app_state_sync().await?;
+        }
+        Ok(())
+    }
+    async fn process_published_message(
+        &self,
+        message: &proto::WebMessageInfo,
+        metadata: Option<&messages::EnvelopeMetadata>,
+        credentials: &Credentials,
+        history_eligible: bool,
+    ) -> Result<(), Error> {
         let mut effects =
             own::effects_received(message, credentials.account_settings.unarchive_chats)?;
         if let Some(update) = effects.mutation.take() {
@@ -141,13 +197,13 @@ impl Socket {
         self.process_event_response(
             message,
             metadata.as_ref().map(|m| &m.key_metadata),
-            &credentials,
+            credentials,
         )
         .await?;
         self.process_group_effects(
             message,
             metadata.as_ref().map(|m| &m.key_metadata),
-            &credentials,
+            credentials,
             &mut effects,
         )?;
         if let Some(update) = effects.chat {

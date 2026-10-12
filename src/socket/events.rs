@@ -12,6 +12,8 @@ struct Shared {
     sender: broadcast::Sender<Event>,
     buffer: Mutex<Buffer>,
     history: Mutex<crate::history::StatusTracker>,
+    initial: Mutex<super::initial_sync::Coordinator>,
+    counter_command: Mutex<Option<tokio::sync::mpsc::WeakSender<super::Command>>>,
     origin: Instant,
     changed: Arc<Notify>,
 }
@@ -23,6 +25,30 @@ impl Drop for Shared {
 #[derive(Clone)]
 pub(super) struct Emitter(Arc<Shared>);
 impl Shared {
+    fn increment_counter(&self) {
+        let command = self
+            .counter_command
+            .lock()
+            .expect("counter command mutex")
+            .as_ref()
+            .and_then(tokio::sync::mpsc::WeakSender::upgrade);
+        if let Some(command) = command {
+            tokio::spawn(async move {
+                let (reply, response) = tokio::sync::oneshot::channel();
+                let result = async {
+                    command
+                        .send(super::Command::IncrementAccountSync { reply })
+                        .await
+                        .map_err(|_| Error::Closed(428))?;
+                    response.await.map_err(|_| Error::Closed(428))?
+                }
+                .await;
+                if let Err(error) = result {
+                    tracing::warn!(?error, "initial sync counter update failed");
+                }
+            });
+        }
+    }
     fn status(&self, updates: Vec<crate::history::StatusUpdate>) {
         for update in updates {
             let _ = self.sender.send(Event::MessagingHistoryStatus(update));
@@ -31,20 +57,41 @@ impl Shared {
     fn tick(&self) -> Option<std::time::Duration> {
         let mut buffer = self.buffer.lock().expect("event buffer mutex");
         let mut history = self.history.lock().expect("history progress mutex");
+        let mut initial = self.initial.lock().expect("initial sync mutex");
         let now = self.origin.elapsed();
         loop {
-            let next = match (buffer.next_deadline(), history.next_deadline()) {
-                (Some(a), Some(b)) => Some(a.min(b)),
-                (a, b) => a.or(b),
-            };
-            let deadline = next?;
+            let mut timers = vec![];
+            if let Some(at) = buffer.next_deadline() {
+                timers.push((at, buffer.next_timer_registration().unwrap(), 0));
+            }
+            if let Some(at) = history.next_deadline() {
+                timers.push((
+                    at,
+                    at.saturating_sub(std::time::Duration::from_secs(120)),
+                    1,
+                ));
+            }
+            if let Some(at) = initial.next_deadline() {
+                timers.push((at, initial.registration_time().unwrap(), 2));
+            }
+            let (deadline, _, kind) = timers.into_iter().min()?;
             if deadline > now {
-                return next;
+                return Some(deadline);
             }
             // A 120s pause timer was registered before any shorter buffer timer
             // sharing its deadline, so progress wins ties in the source clock.
-            if history.next_deadline() == Some(deadline) {
+            if kind == 1 {
                 self.status(history.tick(deadline));
+            } else if kind == 2 {
+                let effects = initial.tick(deadline);
+                if effects.flush
+                    && let Err(error) = self.deliver(buffer.flush().1)
+                {
+                    tracing::error!(?error, "initial sync flush failed");
+                }
+                if effects.increment_counter {
+                    self.increment_counter();
+                }
             } else if let Err(error) = self.deliver(buffer.tick(deadline)) {
                 tracing::error!(?error, "buffered event delivery failed");
             }
@@ -67,6 +114,8 @@ impl Emitter {
             sender,
             buffer: Mutex::new(Buffer::new()),
             history: Mutex::new(crate::history::StatusTracker::default()),
+            initial: Mutex::new(super::initial_sync::Coordinator::default()),
+            counter_command: Mutex::new(None),
             origin: Instant::now(),
             changed: Arc::new(Notify::new()),
         });
@@ -112,6 +161,12 @@ impl Emitter {
                 .close(),
             _ => (),
         }
+        if matches!(
+            event,
+            Event::Connection(super::ConnectionState::Closed { .. })
+        ) {
+            self.0.initial.lock().expect("initial sync mutex").close();
+        }
         self.0.changed.notify_one();
         if !buffer.is_buffering() {
             return Ok(self.0.sender.send(event).unwrap_or(0));
@@ -144,6 +199,61 @@ impl Emitter {
             .expect("event buffer mutex")
             .buffer(self.0.origin.elapsed());
         self.0.changed.notify_one();
+    }
+    pub fn set_counter_command(&self, command: tokio::sync::mpsc::WeakSender<super::Command>) {
+        *self
+            .0
+            .counter_command
+            .lock()
+            .expect("counter command mutex") = Some(command);
+    }
+    pub fn initial_sync_phase(&self) -> super::initial_sync::Phase {
+        self.0.initial.lock().expect("initial sync mutex").phase()
+    }
+    pub fn start_initial_sync(&self) -> bool {
+        let mut buffer = self.0.buffer.lock().expect("event buffer mutex");
+        let mut history = self.0.history.lock().expect("history progress mutex");
+        let mut initial = self.0.initial.lock().expect("initial sync mutex");
+        let effects = initial.begin_pending_notifications();
+        if effects.buffer {
+            history.pending_notifications();
+            buffer.buffer(self.0.origin.elapsed());
+        }
+        self.0.changed.notify_one();
+        effects.buffer
+    }
+    pub fn select_initial_history(&self, will_sync: bool, counter: u32) {
+        self.0
+            .initial
+            .lock()
+            .expect("initial sync mutex")
+            .select_history(will_sync, counter, self.0.origin.elapsed());
+        self.0.changed.notify_one();
+    }
+    pub fn initial_history(&self, eligible: bool) -> Result<(), Error> {
+        let mut buffer = self.0.buffer.lock().expect("event buffer mutex");
+        let effects = self
+            .0
+            .initial
+            .lock()
+            .expect("initial sync mutex")
+            .history_notification(eligible);
+        if effects.flush {
+            self.0.deliver(buffer.flush().1)?;
+        }
+        self.0.changed.notify_one();
+        Ok(())
+    }
+    pub fn initial_sync_complete(&self) -> Result<(), Error> {
+        let mut buffer = self.0.buffer.lock().expect("event buffer mutex");
+        self.0
+            .initial
+            .lock()
+            .expect("initial sync mutex")
+            .sync_completed();
+        self.0.deliver(buffer.flush().1)?;
+        self.0.changed.notify_one();
+        Ok(())
     }
     pub fn history_notification(
         &self,
