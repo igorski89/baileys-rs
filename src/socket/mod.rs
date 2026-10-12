@@ -3,6 +3,7 @@ pub mod acks;
 mod actor;
 mod app_state;
 mod calls;
+mod chats;
 pub mod dispatch;
 mod event_responses;
 mod events;
@@ -58,6 +59,8 @@ pub enum Error {
     Call(#[from] crate::calls::Error),
     #[error(transparent)]
     Notification(#[from] crate::notifications::Error),
+    #[error(transparent)]
+    Chat(#[from] crate::chats::Error),
     #[error(transparent)]
     EventBuffer(#[from] crate::event_buffer::Error),
     #[error(transparent)]
@@ -130,6 +133,7 @@ impl Error {
             Self::Media(error) => error.status_code(),
             Self::MediaConnection(error) => error.status_code(),
             Self::Receipt(error) => Some(error.status_code()),
+            Self::Chat(error) => Some(error.status_code()),
             Self::Closed(code) => Some(*code),
             Self::Auth(e) => e.status_code(),
             Self::Signal(e) => e.status_code(),

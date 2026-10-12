@@ -779,6 +779,33 @@ impl Actor<'_> {
                 if node.child("downgrade_webclient").is_some() {
                     return Err(Error::Closed(411));
                 }
+                if let Some(dirty) = crate::chats::account_sync_dirty(
+                    &node,
+                    self.credentials.last_account_sync_timestamp,
+                ) {
+                    if let Some(from) = dirty.clean_from {
+                        let id = self.tag()?;
+                        self.send(&crate::chats::clean_dirty_bits_node(
+                            "account_sync",
+                            Some(&from.to_string()),
+                            &id,
+                        ))
+                        .await?;
+                    }
+                    self.credentials.last_account_sync_timestamp =
+                        dirty.last_account_sync_timestamp;
+                    self.persist().await?;
+                } else if node
+                    .child("dirty")
+                    .is_some_and(|d| d.attrs.get("type").is_some_and(|t| t == "groups"))
+                    && let Some(inner) = self.socket_inner.upgrade()
+                {
+                    tokio::spawn(async move {
+                        if let Err(error) = (super::Socket { inner }).handle_groups_dirty().await {
+                            tracing::warn!(?error, "groups dirty refresh failed");
+                        }
+                    });
+                }
                 if node.child("offline_preview").is_some() {
                     self.send(
                         &BinaryNode::new("ib").with_content(NodeContent::Children(vec![

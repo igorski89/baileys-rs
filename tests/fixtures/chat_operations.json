@@ -1,0 +1,8574 @@
+{
+ "me": "100:7@s.whatsapp.net",
+ "lid": "900:7@lid",
+ "cases": [
+  {
+   "op": "updateDefaultDisappearingMode",
+   "args": [
+    0
+   ],
+   "opts": {},
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "xmlns": "disappearing_mode",
+       "to": "@s.whatsapp.net",
+       "type": "set"
+      },
+      "content": [
+       {
+        "tag": "disappearing_mode",
+        "attrs": {
+         "duration": "0"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "updateDefaultDisappearingMode",
+   "args": [
+    86400
+   ],
+   "opts": {},
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "xmlns": "disappearing_mode",
+       "to": "@s.whatsapp.net",
+       "type": "set"
+      },
+      "content": [
+       {
+        "tag": "disappearing_mode",
+        "attrs": {
+         "duration": "86400"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "updateDefaultDisappearingMode",
+   "args": [
+    7776000
+   ],
+   "opts": {},
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "xmlns": "disappearing_mode",
+       "to": "@s.whatsapp.net",
+       "type": "set"
+      },
+      "content": [
+       {
+        "tag": "disappearing_mode",
+        "attrs": {
+         "duration": "7776000"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "getBotListV2",
+   "args": [],
+   "opts": {
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "bot",
+        "attrs": {},
+        "content": [
+         {
+          "tag": "section",
+          "attrs": {
+           "type": "all"
+          },
+          "content": [
+           {
+            "tag": "bot",
+            "attrs": {
+             "jid": "13135550002@c.us",
+             "persona_id": "P1"
+            }
+           },
+           {
+            "tag": "bot",
+            "attrs": {
+             "jid": "867051314767696@bot"
+            }
+           }
+          ]
+         },
+         {
+          "tag": "section",
+          "attrs": {
+           "type": "featured"
+          },
+          "content": [
+           {
+            "tag": "bot",
+            "attrs": {
+             "jid": "x@bot",
+             "persona_id": "P9"
+            }
+           }
+          ]
+         },
+         {
+          "tag": "section",
+          "attrs": {
+           "type": "all"
+          },
+          "content": [
+           {
+            "tag": "bot",
+            "attrs": {
+             "persona_id": "P3"
+            }
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "xmlns": "bot",
+       "to": "@s.whatsapp.net",
+       "type": "get"
+      },
+      "content": [
+       {
+        "tag": "bot",
+        "attrs": {
+         "v": "2"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": [
+    {
+     "jid": "13135550002@c.us",
+     "personaId": "P1"
+    },
+    {
+     "jid": "867051314767696@bot"
+    },
+    {
+     "personaId": "P3"
+    }
+   ],
+   "error": null
+  },
+  {
+   "op": "getBotListV2",
+   "args": [],
+   "opts": {
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {}
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "xmlns": "bot",
+       "to": "@s.whatsapp.net",
+       "type": "get"
+      },
+      "content": [
+       {
+        "tag": "bot",
+        "attrs": {
+         "v": "2"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": [],
+   "error": null
+  },
+  {
+   "op": "getBotListV2",
+   "args": [],
+   "opts": {
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "bot",
+        "attrs": {}
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "xmlns": "bot",
+       "to": "@s.whatsapp.net",
+       "type": "get"
+      },
+      "content": [
+       {
+        "tag": "bot",
+        "attrs": {
+         "v": "2"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": [],
+   "error": null
+  },
+  {
+   "op": "fetchStatus",
+   "args": [
+    "200@s.whatsapp.net",
+    "300@lid"
+   ],
+   "opts": {
+    "usyncResult": {
+     "list": [
+      {
+       "id": "200@s.whatsapp.net"
+      }
+     ],
+     "sideList": []
+    }
+   },
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [
+    {
+     "protocols": [
+      "status"
+     ],
+     "users": [
+      "200@s.whatsapp.net",
+      "300@lid"
+     ]
+    }
+   ],
+   "result": [
+    {
+     "id": "200@s.whatsapp.net"
+    }
+   ],
+   "error": null
+  },
+  {
+   "op": "fetchStatus",
+   "args": [],
+   "opts": {},
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [
+    {
+     "protocols": [
+      "status"
+     ],
+     "users": []
+    }
+   ],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "fetchStatus",
+   "args": [
+    "200@s.whatsapp.net"
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [
+    {
+     "protocols": [
+      "status"
+     ],
+     "users": [
+      "200@s.whatsapp.net"
+     ]
+    }
+   ],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "fetchDisappearingDuration",
+   "args": [
+    "200@s.whatsapp.net",
+    "300@lid"
+   ],
+   "opts": {
+    "usyncResult": {
+     "list": [
+      {
+       "id": "200@s.whatsapp.net"
+      }
+     ],
+     "sideList": []
+    }
+   },
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [
+    {
+     "protocols": [
+      "disappearing_mode"
+     ],
+     "users": [
+      "200@s.whatsapp.net",
+      "300@lid"
+     ]
+    }
+   ],
+   "result": [
+    {
+     "id": "200@s.whatsapp.net"
+    }
+   ],
+   "error": null
+  },
+  {
+   "op": "fetchDisappearingDuration",
+   "args": [],
+   "opts": {},
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [
+    {
+     "protocols": [
+      "disappearing_mode"
+     ],
+     "users": []
+    }
+   ],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "fetchDisappearingDuration",
+   "args": [
+    "200@s.whatsapp.net"
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [
+    {
+     "protocols": [
+      "disappearing_mode"
+     ],
+     "users": [
+      "200@s.whatsapp.net"
+     ]
+    }
+   ],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "updateProfilePicture",
+   "args": [
+    "100:7@s.whatsapp.net",
+    "photo"
+   ],
+   "opts": {},
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "to": "@s.whatsapp.net",
+       "type": "set",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "image"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "SU1HOnBob3RvOm51bGw="
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "updateProfilePicture",
+   "args": [
+    "100:7@s.whatsapp.net",
+    "photo",
+    {
+     "width": 96,
+     "height": 96
+    }
+   ],
+   "opts": {},
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "to": "@s.whatsapp.net",
+       "type": "set",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "image"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "SU1HOnBob3RvOnsid2lkdGgiOjk2LCJoZWlnaHQiOjk2fQ=="
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "removeProfilePicture",
+   "args": [
+    "100:7@s.whatsapp.net"
+   ],
+   "opts": {},
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "to": "@s.whatsapp.net",
+       "type": "set",
+       "xmlns": "w:profile:picture"
+      }
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "updateProfilePicture",
+   "args": [
+    "100@s.whatsapp.net",
+    "photo"
+   ],
+   "opts": {},
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "to": "@s.whatsapp.net",
+       "type": "set",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "image"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "SU1HOnBob3RvOm51bGw="
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "updateProfilePicture",
+   "args": [
+    "100@s.whatsapp.net",
+    "photo",
+    {
+     "width": 96,
+     "height": 96
+    }
+   ],
+   "opts": {},
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "to": "@s.whatsapp.net",
+       "type": "set",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "image"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "SU1HOnBob3RvOnsid2lkdGgiOjk2LCJoZWlnaHQiOjk2fQ=="
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "removeProfilePicture",
+   "args": [
+    "100@s.whatsapp.net"
+   ],
+   "opts": {},
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "to": "@s.whatsapp.net",
+       "type": "set",
+       "xmlns": "w:profile:picture"
+      }
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "updateProfilePicture",
+   "args": [
+    "100@c.us",
+    "photo"
+   ],
+   "opts": {},
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "to": "@s.whatsapp.net",
+       "type": "set",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "image"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "SU1HOnBob3RvOm51bGw="
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "updateProfilePicture",
+   "args": [
+    "100@c.us",
+    "photo",
+    {
+     "width": 96,
+     "height": 96
+    }
+   ],
+   "opts": {},
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "to": "@s.whatsapp.net",
+       "type": "set",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "image"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "SU1HOnBob3RvOnsid2lkdGgiOjk2LCJoZWlnaHQiOjk2fQ=="
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "removeProfilePicture",
+   "args": [
+    "100@c.us"
+   ],
+   "opts": {},
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "to": "@s.whatsapp.net",
+       "type": "set",
+       "xmlns": "w:profile:picture"
+      }
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "updateProfilePicture",
+   "args": [
+    "900@lid",
+    "photo"
+   ],
+   "opts": {},
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "to": "@s.whatsapp.net",
+       "type": "set",
+       "xmlns": "w:profile:picture",
+       "target": "900@lid"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "image"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "SU1HOnBob3RvOm51bGw="
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "updateProfilePicture",
+   "args": [
+    "900@lid",
+    "photo",
+    {
+     "width": 96,
+     "height": 96
+    }
+   ],
+   "opts": {},
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "to": "@s.whatsapp.net",
+       "type": "set",
+       "xmlns": "w:profile:picture",
+       "target": "900@lid"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "image"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "SU1HOnBob3RvOnsid2lkdGgiOjk2LCJoZWlnaHQiOjk2fQ=="
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "removeProfilePicture",
+   "args": [
+    "900@lid"
+   ],
+   "opts": {},
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "to": "@s.whatsapp.net",
+       "type": "set",
+       "xmlns": "w:profile:picture",
+       "target": "900@lid"
+      }
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "updateProfilePicture",
+   "args": [
+    "group@g.us",
+    "photo"
+   ],
+   "opts": {},
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "to": "@s.whatsapp.net",
+       "type": "set",
+       "xmlns": "w:profile:picture",
+       "target": "group@g.us"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "image"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "SU1HOnBob3RvOm51bGw="
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "updateProfilePicture",
+   "args": [
+    "group@g.us",
+    "photo",
+    {
+     "width": 96,
+     "height": 96
+    }
+   ],
+   "opts": {},
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "to": "@s.whatsapp.net",
+       "type": "set",
+       "xmlns": "w:profile:picture",
+       "target": "group@g.us"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "image"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "SU1HOnBob3RvOnsid2lkdGgiOjk2LCJoZWlnaHQiOjk2fQ=="
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "removeProfilePicture",
+   "args": [
+    "group@g.us"
+   ],
+   "opts": {},
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "to": "@s.whatsapp.net",
+       "type": "set",
+       "xmlns": "w:profile:picture",
+       "target": "group@g.us"
+      }
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "updateProfilePicture",
+   "args": [
+    "200:3@s.whatsapp.net",
+    "photo"
+   ],
+   "opts": {},
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "to": "@s.whatsapp.net",
+       "type": "set",
+       "xmlns": "w:profile:picture",
+       "target": "200@s.whatsapp.net"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "image"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "SU1HOnBob3RvOm51bGw="
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "updateProfilePicture",
+   "args": [
+    "200:3@s.whatsapp.net",
+    "photo",
+    {
+     "width": 96,
+     "height": 96
+    }
+   ],
+   "opts": {},
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "to": "@s.whatsapp.net",
+       "type": "set",
+       "xmlns": "w:profile:picture",
+       "target": "200@s.whatsapp.net"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "image"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "SU1HOnBob3RvOnsid2lkdGgiOjk2LCJoZWlnaHQiOjk2fQ=="
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "removeProfilePicture",
+   "args": [
+    "200:3@s.whatsapp.net"
+   ],
+   "opts": {},
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "to": "@s.whatsapp.net",
+       "type": "set",
+       "xmlns": "w:profile:picture",
+       "target": "200@s.whatsapp.net"
+      }
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "updateProfilePicture",
+   "args": [
+    "",
+    "photo"
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": {
+    "message": "Illegal no-jid profile update. Please specify either your ID or the ID of the chat you wish to update",
+    "status": 500
+   }
+  },
+  {
+   "op": "updateProfilePicture",
+   "args": [
+    "",
+    "photo",
+    {
+     "width": 96,
+     "height": 96
+    }
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": {
+    "message": "Illegal no-jid profile update. Please specify either your ID or the ID of the chat you wish to update",
+    "status": 500
+   }
+  },
+  {
+   "op": "removeProfilePicture",
+   "args": [
+    ""
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": {
+    "message": "Illegal no-jid profile update. Please specify either your ID or the ID of the chat you wish to update",
+    "status": 500
+   }
+  },
+  {
+   "op": "updateProfilePicture",
+   "args": [
+    "invalid",
+    "photo"
+   ],
+   "opts": {},
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "to": "@s.whatsapp.net",
+       "type": "set",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "image"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "SU1HOnBob3RvOm51bGw="
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "updateProfilePicture",
+   "args": [
+    "invalid",
+    "photo",
+    {
+     "width": 96,
+     "height": 96
+    }
+   ],
+   "opts": {},
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "to": "@s.whatsapp.net",
+       "type": "set",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "image"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "SU1HOnBob3RvOnsid2lkdGgiOjk2LCJoZWlnaHQiOjk2fQ=="
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "removeProfilePicture",
+   "args": [
+    "invalid"
+   ],
+   "opts": {},
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "to": "@s.whatsapp.net",
+       "type": "set",
+       "xmlns": "w:profile:picture"
+      }
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "updateProfileStatus",
+   "args": [
+    "Busy ☕"
+   ],
+   "opts": {},
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "to": "@s.whatsapp.net",
+       "type": "set",
+       "xmlns": "status"
+      },
+      "content": [
+       {
+        "tag": "status",
+        "attrs": {},
+        "content": {
+         "type": "Buffer",
+         "data": "QnVzeSDimJU="
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "updateProfileStatus",
+   "args": [
+    ""
+   ],
+   "opts": {},
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "to": "@s.whatsapp.net",
+       "type": "set",
+       "xmlns": "status"
+      },
+      "content": [
+       {
+        "tag": "status",
+        "attrs": {},
+        "content": {
+         "type": "Buffer",
+         "data": ""
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "updateProfileStatus",
+   "args": [
+    " spaced "
+   ],
+   "opts": {},
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "to": "@s.whatsapp.net",
+       "type": "set",
+       "xmlns": "status"
+      },
+      "content": [
+       {
+        "tag": "status",
+        "attrs": {},
+        "content": {
+         "type": "Buffer",
+         "data": "IHNwYWNlZCA="
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "updateProfileName",
+   "args": [
+    "Name ☕"
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [
+    {
+     "mod": {
+      "pushNameSetting": "Name ☕"
+     },
+     "jid": ""
+    }
+   ],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "updateProfileName",
+   "args": [
+    ""
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [
+    {
+     "mod": {
+      "pushNameSetting": ""
+     },
+     "jid": ""
+    }
+   ],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "fetchBlocklist",
+   "args": [],
+   "opts": {
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "list",
+        "attrs": {},
+        "content": [
+         {
+          "tag": "item",
+          "attrs": {
+           "jid": "200@s.whatsapp.net"
+          }
+         },
+         {
+          "tag": "item",
+          "attrs": {}
+         },
+         {
+          "tag": "other",
+          "attrs": {
+           "jid": "x"
+          }
+         },
+         {
+          "tag": "item",
+          "attrs": {
+           "jid": "201@lid"
+          }
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "xmlns": "blocklist",
+       "to": "@s.whatsapp.net",
+       "type": "get"
+      }
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": [
+    "200@s.whatsapp.net",
+    null,
+    "201@lid"
+   ],
+   "error": null
+  },
+  {
+   "op": "fetchBlocklist",
+   "args": [],
+   "opts": {
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {}
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "xmlns": "blocklist",
+       "to": "@s.whatsapp.net",
+       "type": "get"
+      }
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": [],
+   "error": null
+  },
+  {
+   "op": "fetchBlocklist",
+   "args": [],
+   "opts": {
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "list",
+        "attrs": {}
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "xmlns": "blocklist",
+       "to": "@s.whatsapp.net",
+       "type": "get"
+      }
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": [],
+   "error": null
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "200@s.whatsapp.net",
+    "block"
+   ],
+   "opts": {
+    "pn": {
+     "201@lid": "201:5@s.whatsapp.net",
+     "401@hosted.lid": "401@hosted"
+    },
+    "lid": {
+     "200@s.whatsapp.net": "2000@lid",
+     "400@hosted": "4000@hosted.lid"
+    }
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "xmlns": "blocklist",
+       "to": "@s.whatsapp.net",
+       "type": "set"
+      },
+      "content": [
+       {
+        "tag": "item",
+        "attrs": {
+         "action": "block",
+         "jid": "2000@lid",
+         "pn_jid": "200@s.whatsapp.net"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "200@s.whatsapp.net",
+    "block"
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": {
+    "message": "Unable to resolve LID for PN JID: 200@s.whatsapp.net",
+    "status": 400
+   }
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "200@s.whatsapp.net",
+    "unblock"
+   ],
+   "opts": {
+    "pn": {
+     "201@lid": "201:5@s.whatsapp.net",
+     "401@hosted.lid": "401@hosted"
+    },
+    "lid": {
+     "200@s.whatsapp.net": "2000@lid",
+     "400@hosted": "4000@hosted.lid"
+    }
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "xmlns": "blocklist",
+       "to": "@s.whatsapp.net",
+       "type": "set"
+      },
+      "content": [
+       {
+        "tag": "item",
+        "attrs": {
+         "action": "unblock",
+         "jid": "2000@lid"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "200@s.whatsapp.net",
+    "unblock"
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": {
+    "message": "Unable to resolve LID for PN JID: 200@s.whatsapp.net",
+    "status": 400
+   }
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "200:4@s.whatsapp.net",
+    "block"
+   ],
+   "opts": {
+    "pn": {
+     "201@lid": "201:5@s.whatsapp.net",
+     "401@hosted.lid": "401@hosted"
+    },
+    "lid": {
+     "200@s.whatsapp.net": "2000@lid",
+     "400@hosted": "4000@hosted.lid"
+    }
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "xmlns": "blocklist",
+       "to": "@s.whatsapp.net",
+       "type": "set"
+      },
+      "content": [
+       {
+        "tag": "item",
+        "attrs": {
+         "action": "block",
+         "jid": "2000@lid",
+         "pn_jid": "200@s.whatsapp.net"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "200:4@s.whatsapp.net",
+    "block"
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": {
+    "message": "Unable to resolve LID for PN JID: 200:4@s.whatsapp.net",
+    "status": 400
+   }
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "200:4@s.whatsapp.net",
+    "unblock"
+   ],
+   "opts": {
+    "pn": {
+     "201@lid": "201:5@s.whatsapp.net",
+     "401@hosted.lid": "401@hosted"
+    },
+    "lid": {
+     "200@s.whatsapp.net": "2000@lid",
+     "400@hosted": "4000@hosted.lid"
+    }
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "xmlns": "blocklist",
+       "to": "@s.whatsapp.net",
+       "type": "set"
+      },
+      "content": [
+       {
+        "tag": "item",
+        "attrs": {
+         "action": "unblock",
+         "jid": "2000@lid"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "200:4@s.whatsapp.net",
+    "unblock"
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": {
+    "message": "Unable to resolve LID for PN JID: 200:4@s.whatsapp.net",
+    "status": 400
+   }
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "200@c.us",
+    "block"
+   ],
+   "opts": {
+    "pn": {
+     "201@lid": "201:5@s.whatsapp.net",
+     "401@hosted.lid": "401@hosted"
+    },
+    "lid": {
+     "200@s.whatsapp.net": "2000@lid",
+     "400@hosted": "4000@hosted.lid"
+    }
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "xmlns": "blocklist",
+       "to": "@s.whatsapp.net",
+       "type": "set"
+      },
+      "content": [
+       {
+        "tag": "item",
+        "attrs": {
+         "action": "block",
+         "jid": "2000@lid",
+         "pn_jid": "200@s.whatsapp.net"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "200@c.us",
+    "block"
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": {
+    "message": "Unable to resolve LID for PN JID: 200@c.us",
+    "status": 400
+   }
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "200@c.us",
+    "unblock"
+   ],
+   "opts": {
+    "pn": {
+     "201@lid": "201:5@s.whatsapp.net",
+     "401@hosted.lid": "401@hosted"
+    },
+    "lid": {
+     "200@s.whatsapp.net": "2000@lid",
+     "400@hosted": "4000@hosted.lid"
+    }
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "xmlns": "blocklist",
+       "to": "@s.whatsapp.net",
+       "type": "set"
+      },
+      "content": [
+       {
+        "tag": "item",
+        "attrs": {
+         "action": "unblock",
+         "jid": "2000@lid"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "200@c.us",
+    "unblock"
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": {
+    "message": "Unable to resolve LID for PN JID: 200@c.us",
+    "status": 400
+   }
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "201@lid",
+    "block"
+   ],
+   "opts": {
+    "pn": {
+     "201@lid": "201:5@s.whatsapp.net",
+     "401@hosted.lid": "401@hosted"
+    },
+    "lid": {
+     "200@s.whatsapp.net": "2000@lid",
+     "400@hosted": "4000@hosted.lid"
+    }
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "xmlns": "blocklist",
+       "to": "@s.whatsapp.net",
+       "type": "set"
+      },
+      "content": [
+       {
+        "tag": "item",
+        "attrs": {
+         "action": "block",
+         "jid": "201@lid",
+         "pn_jid": "201@s.whatsapp.net"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "201@lid",
+    "block"
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": {
+    "message": "Unable to resolve PN JID for LID: 201@lid",
+    "status": 400
+   }
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "201@lid",
+    "unblock"
+   ],
+   "opts": {
+    "pn": {
+     "201@lid": "201:5@s.whatsapp.net",
+     "401@hosted.lid": "401@hosted"
+    },
+    "lid": {
+     "200@s.whatsapp.net": "2000@lid",
+     "400@hosted": "4000@hosted.lid"
+    }
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "xmlns": "blocklist",
+       "to": "@s.whatsapp.net",
+       "type": "set"
+      },
+      "content": [
+       {
+        "tag": "item",
+        "attrs": {
+         "action": "unblock",
+         "jid": "201@lid"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "201@lid",
+    "unblock"
+   ],
+   "opts": {},
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "xmlns": "blocklist",
+       "to": "@s.whatsapp.net",
+       "type": "set"
+      },
+      "content": [
+       {
+        "tag": "item",
+        "attrs": {
+         "action": "unblock",
+         "jid": "201@lid"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "201:9@lid",
+    "block"
+   ],
+   "opts": {
+    "pn": {
+     "201@lid": "201:5@s.whatsapp.net",
+     "401@hosted.lid": "401@hosted"
+    },
+    "lid": {
+     "200@s.whatsapp.net": "2000@lid",
+     "400@hosted": "4000@hosted.lid"
+    }
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "xmlns": "blocklist",
+       "to": "@s.whatsapp.net",
+       "type": "set"
+      },
+      "content": [
+       {
+        "tag": "item",
+        "attrs": {
+         "action": "block",
+         "jid": "201@lid",
+         "pn_jid": "201@s.whatsapp.net"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "201:9@lid",
+    "block"
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": {
+    "message": "Unable to resolve PN JID for LID: 201:9@lid",
+    "status": 400
+   }
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "201:9@lid",
+    "unblock"
+   ],
+   "opts": {
+    "pn": {
+     "201@lid": "201:5@s.whatsapp.net",
+     "401@hosted.lid": "401@hosted"
+    },
+    "lid": {
+     "200@s.whatsapp.net": "2000@lid",
+     "400@hosted": "4000@hosted.lid"
+    }
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "xmlns": "blocklist",
+       "to": "@s.whatsapp.net",
+       "type": "set"
+      },
+      "content": [
+       {
+        "tag": "item",
+        "attrs": {
+         "action": "unblock",
+         "jid": "201@lid"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "201:9@lid",
+    "unblock"
+   ],
+   "opts": {},
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "xmlns": "blocklist",
+       "to": "@s.whatsapp.net",
+       "type": "set"
+      },
+      "content": [
+       {
+        "tag": "item",
+        "attrs": {
+         "action": "unblock",
+         "jid": "201@lid"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "300@s.whatsapp.net",
+    "block"
+   ],
+   "opts": {
+    "pn": {
+     "201@lid": "201:5@s.whatsapp.net",
+     "401@hosted.lid": "401@hosted"
+    },
+    "lid": {
+     "200@s.whatsapp.net": "2000@lid",
+     "400@hosted": "4000@hosted.lid"
+    }
+   },
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": {
+    "message": "Unable to resolve LID for PN JID: 300@s.whatsapp.net",
+    "status": 400
+   }
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "300@s.whatsapp.net",
+    "block"
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": {
+    "message": "Unable to resolve LID for PN JID: 300@s.whatsapp.net",
+    "status": 400
+   }
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "300@s.whatsapp.net",
+    "unblock"
+   ],
+   "opts": {
+    "pn": {
+     "201@lid": "201:5@s.whatsapp.net",
+     "401@hosted.lid": "401@hosted"
+    },
+    "lid": {
+     "200@s.whatsapp.net": "2000@lid",
+     "400@hosted": "4000@hosted.lid"
+    }
+   },
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": {
+    "message": "Unable to resolve LID for PN JID: 300@s.whatsapp.net",
+    "status": 400
+   }
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "300@s.whatsapp.net",
+    "unblock"
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": {
+    "message": "Unable to resolve LID for PN JID: 300@s.whatsapp.net",
+    "status": 400
+   }
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "301@lid",
+    "block"
+   ],
+   "opts": {
+    "pn": {
+     "201@lid": "201:5@s.whatsapp.net",
+     "401@hosted.lid": "401@hosted"
+    },
+    "lid": {
+     "200@s.whatsapp.net": "2000@lid",
+     "400@hosted": "4000@hosted.lid"
+    }
+   },
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": {
+    "message": "Unable to resolve PN JID for LID: 301@lid",
+    "status": 400
+   }
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "301@lid",
+    "block"
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": {
+    "message": "Unable to resolve PN JID for LID: 301@lid",
+    "status": 400
+   }
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "301@lid",
+    "unblock"
+   ],
+   "opts": {
+    "pn": {
+     "201@lid": "201:5@s.whatsapp.net",
+     "401@hosted.lid": "401@hosted"
+    },
+    "lid": {
+     "200@s.whatsapp.net": "2000@lid",
+     "400@hosted": "4000@hosted.lid"
+    }
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "xmlns": "blocklist",
+       "to": "@s.whatsapp.net",
+       "type": "set"
+      },
+      "content": [
+       {
+        "tag": "item",
+        "attrs": {
+         "action": "unblock",
+         "jid": "301@lid"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "301@lid",
+    "unblock"
+   ],
+   "opts": {},
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "xmlns": "blocklist",
+       "to": "@s.whatsapp.net",
+       "type": "set"
+      },
+      "content": [
+       {
+        "tag": "item",
+        "attrs": {
+         "action": "unblock",
+         "jid": "301@lid"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "400@hosted",
+    "block"
+   ],
+   "opts": {
+    "pn": {
+     "201@lid": "201:5@s.whatsapp.net",
+     "401@hosted.lid": "401@hosted"
+    },
+    "lid": {
+     "200@s.whatsapp.net": "2000@lid",
+     "400@hosted": "4000@hosted.lid"
+    }
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "xmlns": "blocklist",
+       "to": "@s.whatsapp.net",
+       "type": "set"
+      },
+      "content": [
+       {
+        "tag": "item",
+        "attrs": {
+         "action": "block",
+         "jid": "4000@hosted.lid",
+         "pn_jid": "400@hosted"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "400@hosted",
+    "block"
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": {
+    "message": "Unable to resolve LID for PN JID: 400@hosted",
+    "status": 400
+   }
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "400@hosted",
+    "unblock"
+   ],
+   "opts": {
+    "pn": {
+     "201@lid": "201:5@s.whatsapp.net",
+     "401@hosted.lid": "401@hosted"
+    },
+    "lid": {
+     "200@s.whatsapp.net": "2000@lid",
+     "400@hosted": "4000@hosted.lid"
+    }
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "xmlns": "blocklist",
+       "to": "@s.whatsapp.net",
+       "type": "set"
+      },
+      "content": [
+       {
+        "tag": "item",
+        "attrs": {
+         "action": "unblock",
+         "jid": "4000@hosted.lid"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "400@hosted",
+    "unblock"
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": {
+    "message": "Unable to resolve LID for PN JID: 400@hosted",
+    "status": 400
+   }
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "401@hosted.lid",
+    "block"
+   ],
+   "opts": {
+    "pn": {
+     "201@lid": "201:5@s.whatsapp.net",
+     "401@hosted.lid": "401@hosted"
+    },
+    "lid": {
+     "200@s.whatsapp.net": "2000@lid",
+     "400@hosted": "4000@hosted.lid"
+    }
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "xmlns": "blocklist",
+       "to": "@s.whatsapp.net",
+       "type": "set"
+      },
+      "content": [
+       {
+        "tag": "item",
+        "attrs": {
+         "action": "block",
+         "jid": "401@hosted.lid",
+         "pn_jid": "401@hosted"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "401@hosted.lid",
+    "block"
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": {
+    "message": "Unable to resolve PN JID for LID: 401@hosted.lid",
+    "status": 400
+   }
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "401@hosted.lid",
+    "unblock"
+   ],
+   "opts": {
+    "pn": {
+     "201@lid": "201:5@s.whatsapp.net",
+     "401@hosted.lid": "401@hosted"
+    },
+    "lid": {
+     "200@s.whatsapp.net": "2000@lid",
+     "400@hosted": "4000@hosted.lid"
+    }
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "xmlns": "blocklist",
+       "to": "@s.whatsapp.net",
+       "type": "set"
+      },
+      "content": [
+       {
+        "tag": "item",
+        "attrs": {
+         "action": "unblock",
+         "jid": "401@hosted.lid"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "401@hosted.lid",
+    "unblock"
+   ],
+   "opts": {},
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "xmlns": "blocklist",
+       "to": "@s.whatsapp.net",
+       "type": "set"
+      },
+      "content": [
+       {
+        "tag": "item",
+        "attrs": {
+         "action": "unblock",
+         "jid": "401@hosted.lid"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "group@g.us",
+    "block"
+   ],
+   "opts": {
+    "pn": {
+     "201@lid": "201:5@s.whatsapp.net",
+     "401@hosted.lid": "401@hosted"
+    },
+    "lid": {
+     "200@s.whatsapp.net": "2000@lid",
+     "400@hosted": "4000@hosted.lid"
+    }
+   },
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": {
+    "message": "Invalid jid: group@g.us",
+    "status": 400
+   }
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "group@g.us",
+    "block"
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": {
+    "message": "Invalid jid: group@g.us",
+    "status": 400
+   }
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "group@g.us",
+    "unblock"
+   ],
+   "opts": {
+    "pn": {
+     "201@lid": "201:5@s.whatsapp.net",
+     "401@hosted.lid": "401@hosted"
+    },
+    "lid": {
+     "200@s.whatsapp.net": "2000@lid",
+     "400@hosted": "4000@hosted.lid"
+    }
+   },
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": {
+    "message": "Invalid jid: group@g.us",
+    "status": 400
+   }
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "group@g.us",
+    "unblock"
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": {
+    "message": "Invalid jid: group@g.us",
+    "status": 400
+   }
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "status@broadcast",
+    "block"
+   ],
+   "opts": {
+    "pn": {
+     "201@lid": "201:5@s.whatsapp.net",
+     "401@hosted.lid": "401@hosted"
+    },
+    "lid": {
+     "200@s.whatsapp.net": "2000@lid",
+     "400@hosted": "4000@hosted.lid"
+    }
+   },
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": {
+    "message": "Invalid jid: status@broadcast",
+    "status": 400
+   }
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "status@broadcast",
+    "block"
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": {
+    "message": "Invalid jid: status@broadcast",
+    "status": 400
+   }
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "status@broadcast",
+    "unblock"
+   ],
+   "opts": {
+    "pn": {
+     "201@lid": "201:5@s.whatsapp.net",
+     "401@hosted.lid": "401@hosted"
+    },
+    "lid": {
+     "200@s.whatsapp.net": "2000@lid",
+     "400@hosted": "4000@hosted.lid"
+    }
+   },
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": {
+    "message": "Invalid jid: status@broadcast",
+    "status": 400
+   }
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "status@broadcast",
+    "unblock"
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": {
+    "message": "Invalid jid: status@broadcast",
+    "status": 400
+   }
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "",
+    "block"
+   ],
+   "opts": {
+    "pn": {
+     "201@lid": "201:5@s.whatsapp.net",
+     "401@hosted.lid": "401@hosted"
+    },
+    "lid": {
+     "200@s.whatsapp.net": "2000@lid",
+     "400@hosted": "4000@hosted.lid"
+    }
+   },
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": {
+    "message": "Invalid jid: ",
+    "status": 400
+   }
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "",
+    "block"
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": {
+    "message": "Invalid jid: ",
+    "status": 400
+   }
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "",
+    "unblock"
+   ],
+   "opts": {
+    "pn": {
+     "201@lid": "201:5@s.whatsapp.net",
+     "401@hosted.lid": "401@hosted"
+    },
+    "lid": {
+     "200@s.whatsapp.net": "2000@lid",
+     "400@hosted": "4000@hosted.lid"
+    }
+   },
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": {
+    "message": "Invalid jid: ",
+    "status": 400
+   }
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "",
+    "unblock"
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": {
+    "message": "Invalid jid: ",
+    "status": 400
+   }
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "invalid",
+    "block"
+   ],
+   "opts": {
+    "pn": {
+     "201@lid": "201:5@s.whatsapp.net",
+     "401@hosted.lid": "401@hosted"
+    },
+    "lid": {
+     "200@s.whatsapp.net": "2000@lid",
+     "400@hosted": "4000@hosted.lid"
+    }
+   },
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": {
+    "message": "Invalid jid: invalid",
+    "status": 400
+   }
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "invalid",
+    "block"
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": {
+    "message": "Invalid jid: invalid",
+    "status": 400
+   }
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "invalid",
+    "unblock"
+   ],
+   "opts": {
+    "pn": {
+     "201@lid": "201:5@s.whatsapp.net",
+     "401@hosted.lid": "401@hosted"
+    },
+    "lid": {
+     "200@s.whatsapp.net": "2000@lid",
+     "400@hosted": "4000@hosted.lid"
+    }
+   },
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": {
+    "message": "Invalid jid: invalid",
+    "status": 400
+   }
+  },
+  {
+   "op": "updateBlockStatus",
+   "args": [
+    "invalid",
+    "unblock"
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": {
+    "message": "Invalid jid: invalid",
+    "status": 400
+   }
+  },
+  {
+   "op": "getBusinessProfile",
+   "args": [
+    "500@s.whatsapp.net"
+   ],
+   "opts": {
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "business_profile",
+        "attrs": {},
+        "content": [
+         {
+          "tag": "profile",
+          "attrs": {
+           "jid": "500@s.whatsapp.net"
+          },
+          "content": [
+           {
+            "tag": "address",
+            "attrs": {},
+            "content": {
+             "type": "Buffer",
+             "data": "MSBSb2FkIOKYlQ=="
+            }
+           },
+           {
+            "tag": "description",
+            "attrs": {},
+            "content": {
+             "type": "Buffer",
+             "data": "U2hvcA=="
+            }
+           },
+           {
+            "tag": "website",
+            "attrs": {},
+            "content": {
+             "type": "Buffer",
+             "data": "aHR0cHM6Ly9leGFtcGxlLmNvbQ=="
+            }
+           },
+           {
+            "tag": "website",
+            "attrs": {},
+            "content": "ignored"
+           },
+           {
+            "tag": "email",
+            "attrs": {},
+            "content": {
+             "type": "Buffer",
+             "data": "YUBleGFtcGxlLmNvbQ=="
+            }
+           },
+           {
+            "tag": "categories",
+            "attrs": {},
+            "content": [
+             {
+              "tag": "category",
+              "attrs": {},
+              "content": {
+               "type": "Buffer",
+               "data": "Q2FmZQ=="
+              }
+             },
+             {
+              "tag": "category",
+              "attrs": {},
+              "content": {
+               "type": "Buffer",
+               "data": "T3RoZXI="
+              }
+             }
+            ]
+           },
+           {
+            "tag": "business_hours",
+            "attrs": {
+             "timezone": "Europe/Kyiv"
+            },
+            "content": [
+             {
+              "tag": "business_hours_config",
+              "attrs": {
+               "day_of_week": "mon",
+               "mode": "open_24h"
+              }
+             },
+             {
+              "tag": "business_hours_config",
+              "attrs": {
+               "day_of_week": "tue",
+               "mode": "specific_hours",
+               "open_time": "480",
+               "close_time": "1020"
+              }
+             },
+             {
+              "tag": "other",
+              "attrs": {}
+             }
+            ]
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "to": "s.whatsapp.net",
+       "xmlns": "w:biz",
+       "type": "get"
+      },
+      "content": [
+       {
+        "tag": "business_profile",
+        "attrs": {
+         "v": "244"
+        },
+        "content": [
+         {
+          "tag": "profile",
+          "attrs": {
+           "jid": "500@s.whatsapp.net"
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": {
+    "wid": "500@s.whatsapp.net",
+    "address": "1 Road ☕",
+    "description": "Shop",
+    "website": [
+     "https://example.com"
+    ],
+    "email": "a@example.com",
+    "category": "Cafe",
+    "business_hours": {
+     "timezone": "Europe/Kyiv",
+     "business_config": [
+      {
+       "day_of_week": "mon",
+       "mode": "open_24h"
+      },
+      {
+       "day_of_week": "tue",
+       "mode": "specific_hours",
+       "open_time": "480",
+       "close_time": "1020"
+      }
+     ]
+    }
+   },
+   "error": null
+  },
+  {
+   "op": "getBusinessProfile",
+   "args": [
+    "500@s.whatsapp.net"
+   ],
+   "opts": {
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "business_profile",
+        "attrs": {},
+        "content": [
+         {
+          "tag": "profile",
+          "attrs": {},
+          "content": [
+           {
+            "tag": "description",
+            "attrs": {},
+            "content": {
+             "type": "Buffer",
+             "data": ""
+            }
+           },
+           {
+            "tag": "website",
+            "attrs": {},
+            "content": ""
+           },
+           {
+            "tag": "address",
+            "attrs": {},
+            "content": "plain"
+           }
+          ]
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "to": "s.whatsapp.net",
+       "xmlns": "w:biz",
+       "type": "get"
+      },
+      "content": [
+       {
+        "tag": "business_profile",
+        "attrs": {
+         "v": "244"
+        },
+        "content": [
+         {
+          "tag": "profile",
+          "attrs": {
+           "jid": "500@s.whatsapp.net"
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": {
+    "address": "plain",
+    "description": "",
+    "website": [],
+    "business_hours": {}
+   },
+   "error": null
+  },
+  {
+   "op": "getBusinessProfile",
+   "args": [
+    "500@s.whatsapp.net"
+   ],
+   "opts": {
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "business_profile",
+        "attrs": {},
+        "content": [
+         {
+          "tag": "profile",
+          "attrs": {
+           "jid": "501@s.whatsapp.net"
+          }
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "to": "s.whatsapp.net",
+       "xmlns": "w:biz",
+       "type": "get"
+      },
+      "content": [
+       {
+        "tag": "business_profile",
+        "attrs": {
+         "v": "244"
+        },
+        "content": [
+         {
+          "tag": "profile",
+          "attrs": {
+           "jid": "500@s.whatsapp.net"
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": {
+    "wid": "501@s.whatsapp.net",
+    "description": "",
+    "website": [],
+    "business_hours": {}
+   },
+   "error": null
+  },
+  {
+   "op": "getBusinessProfile",
+   "args": [
+    "500@s.whatsapp.net"
+   ],
+   "opts": {
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "business_profile",
+        "attrs": {}
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "to": "s.whatsapp.net",
+       "xmlns": "w:biz",
+       "type": "get"
+      },
+      "content": [
+       {
+        "tag": "business_profile",
+        "attrs": {
+         "v": "244"
+        },
+        "content": [
+         {
+          "tag": "profile",
+          "attrs": {
+           "jid": "500@s.whatsapp.net"
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "getBusinessProfile",
+   "args": [
+    "500@s.whatsapp.net"
+   ],
+   "opts": {
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {}
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "to": "s.whatsapp.net",
+       "xmlns": "w:biz",
+       "type": "get"
+      },
+      "content": [
+       {
+        "tag": "business_profile",
+        "attrs": {
+         "v": "244"
+        },
+        "content": [
+         {
+          "tag": "profile",
+          "attrs": {
+           "jid": "500@s.whatsapp.net"
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "cleanDirtyBits",
+   "args": [
+    "account_sync"
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [
+    {
+     "tag": "iq",
+     "attrs": {
+      "to": "@s.whatsapp.net",
+      "type": "set",
+      "xmlns": "urn:xmpp:whatsapp:dirty",
+      "id": "TAG-1"
+     },
+     "content": [
+      {
+       "tag": "clean",
+       "attrs": {
+        "type": "account_sync"
+       }
+      }
+     ]
+    }
+   ],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "cleanDirtyBits",
+   "args": [
+    "groups"
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [
+    {
+     "tag": "iq",
+     "attrs": {
+      "to": "@s.whatsapp.net",
+      "type": "set",
+      "xmlns": "urn:xmpp:whatsapp:dirty",
+      "id": "TAG-1"
+     },
+     "content": [
+      {
+       "tag": "clean",
+       "attrs": {
+        "type": "groups"
+       }
+      }
+     ]
+    }
+   ],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "cleanDirtyBits",
+   "args": [
+    "account_sync",
+    1700000000
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [
+    {
+     "tag": "iq",
+     "attrs": {
+      "to": "@s.whatsapp.net",
+      "type": "set",
+      "xmlns": "urn:xmpp:whatsapp:dirty",
+      "id": "TAG-1"
+     },
+     "content": [
+      {
+       "tag": "clean",
+       "attrs": {
+        "type": "account_sync",
+        "timestamp": "1700000000"
+       }
+      }
+     ]
+    }
+   ],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "cleanDirtyBits",
+   "args": [
+    "account_sync",
+    "1700000001"
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [
+    {
+     "tag": "iq",
+     "attrs": {
+      "to": "@s.whatsapp.net",
+      "type": "set",
+      "xmlns": "urn:xmpp:whatsapp:dirty",
+      "id": "TAG-1"
+     },
+     "content": [
+      {
+       "tag": "clean",
+       "attrs": {
+        "type": "account_sync",
+        "timestamp": "1700000001"
+       }
+      }
+     ]
+    }
+   ],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "cleanDirtyBits",
+   "args": [
+    "groups",
+    0
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [
+    {
+     "tag": "iq",
+     "attrs": {
+      "to": "@s.whatsapp.net",
+      "type": "set",
+      "xmlns": "urn:xmpp:whatsapp:dirty",
+      "id": "TAG-1"
+     },
+     "content": [
+      {
+       "tag": "clean",
+       "attrs": {
+        "type": "groups"
+       }
+      }
+     ]
+    }
+   ],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "cleanDirtyBits",
+   "args": [
+    "groups",
+    ""
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [
+    {
+     "tag": "iq",
+     "attrs": {
+      "to": "@s.whatsapp.net",
+      "type": "set",
+      "xmlns": "urn:xmpp:whatsapp:dirty",
+      "id": "TAG-1"
+     },
+     "content": [
+      {
+       "tag": "clean",
+       "attrs": {
+        "type": "groups"
+       }
+      }
+     ]
+    }
+   ],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "200@s.whatsapp.net"
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "url": "https://pps.example/p.jpg",
+         "id": "1",
+         "type": "image",
+         "direct_path": "/p"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "200@s.whatsapp.net",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "preview",
+         "query": "url"
+        },
+        "content": [
+         {
+          "tag": "tctoken",
+          "attrs": {
+           "t": "1700000000"
+          },
+          "content": {
+           "type": "Buffer",
+           "data": "AQID"
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": "https://pps.example/p.jpg",
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "200@s.whatsapp.net"
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "pictureToken": false,
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {}
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "200@s.whatsapp.net",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "preview",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "200@s.whatsapp.net",
+    "image"
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "url": "https://pps.example/p.jpg",
+         "id": "1",
+         "type": "image",
+         "direct_path": "/p"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "200@s.whatsapp.net",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "image",
+         "query": "url"
+        },
+        "content": [
+         {
+          "tag": "tctoken",
+          "attrs": {
+           "t": "1700000000"
+          },
+          "content": {
+           "type": "Buffer",
+           "data": "AQID"
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": "https://pps.example/p.jpg",
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "200@s.whatsapp.net",
+    "image"
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "pictureToken": false,
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {}
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "200@s.whatsapp.net",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "image",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "200@s.whatsapp.net",
+    "preview",
+    5000
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "url": "https://pps.example/p.jpg",
+         "id": "1",
+         "type": "image",
+         "direct_path": "/p"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "200@s.whatsapp.net",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "preview",
+         "query": "url"
+        },
+        "content": [
+         {
+          "tag": "tctoken",
+          "attrs": {
+           "t": "1700000000"
+          },
+          "content": {
+           "type": "Buffer",
+           "data": "AQID"
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "timeout": 5000
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": "https://pps.example/p.jpg",
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "200@s.whatsapp.net",
+    "preview",
+    5000
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "pictureToken": false,
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {}
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "200@s.whatsapp.net",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "preview",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": 5000
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "200:3@s.whatsapp.net"
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "url": "https://pps.example/p.jpg",
+         "id": "1",
+         "type": "image",
+         "direct_path": "/p"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "200@s.whatsapp.net",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "preview",
+         "query": "url"
+        },
+        "content": [
+         {
+          "tag": "tctoken",
+          "attrs": {
+           "t": "1700000000"
+          },
+          "content": {
+           "type": "Buffer",
+           "data": "AQID"
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": "https://pps.example/p.jpg",
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "200:3@s.whatsapp.net"
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "pictureToken": false,
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {}
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "200@s.whatsapp.net",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "preview",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "200:3@s.whatsapp.net",
+    "image"
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "url": "https://pps.example/p.jpg",
+         "id": "1",
+         "type": "image",
+         "direct_path": "/p"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "200@s.whatsapp.net",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "image",
+         "query": "url"
+        },
+        "content": [
+         {
+          "tag": "tctoken",
+          "attrs": {
+           "t": "1700000000"
+          },
+          "content": {
+           "type": "Buffer",
+           "data": "AQID"
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": "https://pps.example/p.jpg",
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "200:3@s.whatsapp.net",
+    "image"
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "pictureToken": false,
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {}
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "200@s.whatsapp.net",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "image",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "200:3@s.whatsapp.net",
+    "preview",
+    5000
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "url": "https://pps.example/p.jpg",
+         "id": "1",
+         "type": "image",
+         "direct_path": "/p"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "200@s.whatsapp.net",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "preview",
+         "query": "url"
+        },
+        "content": [
+         {
+          "tag": "tctoken",
+          "attrs": {
+           "t": "1700000000"
+          },
+          "content": {
+           "type": "Buffer",
+           "data": "AQID"
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "timeout": 5000
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": "https://pps.example/p.jpg",
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "200:3@s.whatsapp.net",
+    "preview",
+    5000
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "pictureToken": false,
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {}
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "200@s.whatsapp.net",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "preview",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": 5000
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "200@c.us"
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "url": "https://pps.example/p.jpg",
+         "id": "1",
+         "type": "image",
+         "direct_path": "/p"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "200@s.whatsapp.net",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "preview",
+         "query": "url"
+        },
+        "content": [
+         {
+          "tag": "tctoken",
+          "attrs": {
+           "t": "1700000000"
+          },
+          "content": {
+           "type": "Buffer",
+           "data": "AQID"
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": "https://pps.example/p.jpg",
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "200@c.us"
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "pictureToken": false,
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {}
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "200@s.whatsapp.net",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "preview",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "200@c.us",
+    "image"
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "url": "https://pps.example/p.jpg",
+         "id": "1",
+         "type": "image",
+         "direct_path": "/p"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "200@s.whatsapp.net",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "image",
+         "query": "url"
+        },
+        "content": [
+         {
+          "tag": "tctoken",
+          "attrs": {
+           "t": "1700000000"
+          },
+          "content": {
+           "type": "Buffer",
+           "data": "AQID"
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": "https://pps.example/p.jpg",
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "200@c.us",
+    "image"
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "pictureToken": false,
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {}
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "200@s.whatsapp.net",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "image",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "200@c.us",
+    "preview",
+    5000
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "url": "https://pps.example/p.jpg",
+         "id": "1",
+         "type": "image",
+         "direct_path": "/p"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "200@s.whatsapp.net",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "preview",
+         "query": "url"
+        },
+        "content": [
+         {
+          "tag": "tctoken",
+          "attrs": {
+           "t": "1700000000"
+          },
+          "content": {
+           "type": "Buffer",
+           "data": "AQID"
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "timeout": 5000
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": "https://pps.example/p.jpg",
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "200@c.us",
+    "preview",
+    5000
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "pictureToken": false,
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {}
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "200@s.whatsapp.net",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "preview",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": 5000
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "300@lid"
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "url": "https://pps.example/p.jpg",
+         "id": "1",
+         "type": "image",
+         "direct_path": "/p"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "300@lid",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "preview",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": "https://pps.example/p.jpg",
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "300@lid"
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "pictureToken": false,
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {}
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "300@lid",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "preview",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "300@lid",
+    "image"
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "url": "https://pps.example/p.jpg",
+         "id": "1",
+         "type": "image",
+         "direct_path": "/p"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "300@lid",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "image",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": "https://pps.example/p.jpg",
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "300@lid",
+    "image"
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "pictureToken": false,
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {}
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "300@lid",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "image",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "300@lid",
+    "preview",
+    5000
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "url": "https://pps.example/p.jpg",
+         "id": "1",
+         "type": "image",
+         "direct_path": "/p"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "300@lid",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "preview",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": 5000
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": "https://pps.example/p.jpg",
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "300@lid",
+    "preview",
+    5000
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "pictureToken": false,
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {}
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "300@lid",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "preview",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": 5000
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "400@s.whatsapp.net"
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "url": "https://pps.example/p.jpg",
+         "id": "1",
+         "type": "image",
+         "direct_path": "/p"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "400@s.whatsapp.net",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "preview",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": "https://pps.example/p.jpg",
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "400@s.whatsapp.net"
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "pictureToken": false,
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {}
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "400@s.whatsapp.net",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "preview",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "400@s.whatsapp.net",
+    "image"
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "url": "https://pps.example/p.jpg",
+         "id": "1",
+         "type": "image",
+         "direct_path": "/p"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "400@s.whatsapp.net",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "image",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": "https://pps.example/p.jpg",
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "400@s.whatsapp.net",
+    "image"
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "pictureToken": false,
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {}
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "400@s.whatsapp.net",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "image",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "400@s.whatsapp.net",
+    "preview",
+    5000
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "url": "https://pps.example/p.jpg",
+         "id": "1",
+         "type": "image",
+         "direct_path": "/p"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "400@s.whatsapp.net",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "preview",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": 5000
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": "https://pps.example/p.jpg",
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "400@s.whatsapp.net",
+    "preview",
+    5000
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "pictureToken": false,
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {}
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "400@s.whatsapp.net",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "preview",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": 5000
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "100:7@s.whatsapp.net"
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "url": "https://pps.example/p.jpg",
+         "id": "1",
+         "type": "image",
+         "direct_path": "/p"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "100@s.whatsapp.net",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "preview",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": "https://pps.example/p.jpg",
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "100:7@s.whatsapp.net"
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "pictureToken": false,
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {}
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "100@s.whatsapp.net",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "preview",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "100:7@s.whatsapp.net",
+    "image"
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "url": "https://pps.example/p.jpg",
+         "id": "1",
+         "type": "image",
+         "direct_path": "/p"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "100@s.whatsapp.net",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "image",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": "https://pps.example/p.jpg",
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "100:7@s.whatsapp.net",
+    "image"
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "pictureToken": false,
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {}
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "100@s.whatsapp.net",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "image",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "100:7@s.whatsapp.net",
+    "preview",
+    5000
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "url": "https://pps.example/p.jpg",
+         "id": "1",
+         "type": "image",
+         "direct_path": "/p"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "100@s.whatsapp.net",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "preview",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": 5000
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": "https://pps.example/p.jpg",
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "100:7@s.whatsapp.net",
+    "preview",
+    5000
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "pictureToken": false,
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {}
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "100@s.whatsapp.net",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "preview",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": 5000
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "900@lid"
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "url": "https://pps.example/p.jpg",
+         "id": "1",
+         "type": "image",
+         "direct_path": "/p"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "900@lid",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "preview",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": "https://pps.example/p.jpg",
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "900@lid"
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "pictureToken": false,
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {}
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "900@lid",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "preview",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "900@lid",
+    "image"
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "url": "https://pps.example/p.jpg",
+         "id": "1",
+         "type": "image",
+         "direct_path": "/p"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "900@lid",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "image",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": "https://pps.example/p.jpg",
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "900@lid",
+    "image"
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "pictureToken": false,
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {}
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "900@lid",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "image",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "900@lid",
+    "preview",
+    5000
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "url": "https://pps.example/p.jpg",
+         "id": "1",
+         "type": "image",
+         "direct_path": "/p"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "900@lid",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "preview",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": 5000
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": "https://pps.example/p.jpg",
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "900@lid",
+    "preview",
+    5000
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "pictureToken": false,
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {}
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "900@lid",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "preview",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": 5000
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "group@g.us"
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "url": "https://pps.example/p.jpg",
+         "id": "1",
+         "type": "image",
+         "direct_path": "/p"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "group@g.us",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "preview",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": "https://pps.example/p.jpg",
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "group@g.us"
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "pictureToken": false,
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {}
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "group@g.us",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "preview",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "group@g.us",
+    "image"
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "url": "https://pps.example/p.jpg",
+         "id": "1",
+         "type": "image",
+         "direct_path": "/p"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "group@g.us",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "image",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": "https://pps.example/p.jpg",
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "group@g.us",
+    "image"
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "pictureToken": false,
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {}
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "group@g.us",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "image",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "group@g.us",
+    "preview",
+    5000
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "url": "https://pps.example/p.jpg",
+         "id": "1",
+         "type": "image",
+         "direct_path": "/p"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "group@g.us",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "preview",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": 5000
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": "https://pps.example/p.jpg",
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "group@g.us",
+    "preview",
+    5000
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "pictureToken": false,
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {}
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "group@g.us",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "preview",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": 5000
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "news@newsletter"
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "url": "https://pps.example/p.jpg",
+         "id": "1",
+         "type": "image",
+         "direct_path": "/p"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "news@newsletter",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "preview",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": "https://pps.example/p.jpg",
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "news@newsletter"
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "pictureToken": false,
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {}
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "news@newsletter",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "preview",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "news@newsletter",
+    "image"
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "url": "https://pps.example/p.jpg",
+         "id": "1",
+         "type": "image",
+         "direct_path": "/p"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "news@newsletter",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "image",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": "https://pps.example/p.jpg",
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "news@newsletter",
+    "image"
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "pictureToken": false,
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {}
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "news@newsletter",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "image",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "news@newsletter",
+    "preview",
+    5000
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "url": "https://pps.example/p.jpg",
+         "id": "1",
+         "type": "image",
+         "direct_path": "/p"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "news@newsletter",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "preview",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": 5000
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": "https://pps.example/p.jpg",
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "news@newsletter",
+    "preview",
+    5000
+   ],
+   "opts": {
+    "token": {
+     "200@s.whatsapp.net": [
+      {
+       "tag": "tctoken",
+       "attrs": {
+        "t": "1700000000"
+       },
+       "content": {
+        "type": "Buffer",
+        "data": "AQID"
+       }
+      }
+     ],
+     "300@lid": []
+    },
+    "pictureToken": false,
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {}
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "news@newsletter",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "preview",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": 5000
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "profilePictureUrl",
+   "args": [
+    "200@s.whatsapp.net"
+   ],
+   "opts": {
+    "responses": [
+     {
+      "tag": "iq",
+      "attrs": {}
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "iq",
+      "attrs": {
+       "target": "200@s.whatsapp.net",
+       "to": "@s.whatsapp.net",
+       "type": "get",
+       "xmlns": "w:profile:picture"
+      },
+      "content": [
+       {
+        "tag": "picture",
+        "attrs": {
+         "type": "preview",
+         "query": "url"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "createCallLink",
+   "args": [
+    "audio"
+   ],
+   "opts": {
+    "responses": [
+     {
+      "tag": "call",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "link_create",
+        "attrs": {
+         "token": "TOKEN"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "call",
+      "attrs": {
+       "id": "TAG-1",
+       "to": "@call"
+      },
+      "content": [
+       {
+        "tag": "link_create",
+        "attrs": {
+         "media": "audio"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": "TOKEN",
+   "error": null
+  },
+  {
+   "op": "createCallLink",
+   "args": [
+    "video"
+   ],
+   "opts": {
+    "responses": [
+     {
+      "tag": "call",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "link_create",
+        "attrs": {
+         "token": "TOKEN"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "call",
+      "attrs": {
+       "id": "TAG-1",
+       "to": "@call"
+      },
+      "content": [
+       {
+        "tag": "link_create",
+        "attrs": {
+         "media": "video"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": "TOKEN",
+   "error": null
+  },
+  {
+   "op": "createCallLink",
+   "args": [
+    "video",
+    {
+     "startTime": 1700000000
+    }
+   ],
+   "opts": {
+    "responses": [
+     {
+      "tag": "call",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "link_create",
+        "attrs": {
+         "token": "TOKEN"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "call",
+      "attrs": {
+       "id": "TAG-1",
+       "to": "@call"
+      },
+      "content": [
+       {
+        "tag": "link_create",
+        "attrs": {
+         "media": "video"
+        },
+        "content": [
+         {
+          "tag": "event",
+          "attrs": {
+           "start_time": "1700000000"
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": "TOKEN",
+   "error": null
+  },
+  {
+   "op": "createCallLink",
+   "args": [
+    "audio",
+    {
+     "startTime": 0
+    },
+    2500
+   ],
+   "opts": {
+    "responses": [
+     {
+      "tag": "call",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "link_create",
+        "attrs": {
+         "token": "TOKEN"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "call",
+      "attrs": {
+       "id": "TAG-1",
+       "to": "@call"
+      },
+      "content": [
+       {
+        "tag": "link_create",
+        "attrs": {
+         "media": "audio"
+        },
+        "content": [
+         {
+          "tag": "event",
+          "attrs": {
+           "start_time": "0"
+          }
+         }
+        ]
+       }
+      ]
+     },
+     "timeout": 2500
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": "TOKEN",
+   "error": null
+  },
+  {
+   "op": "createCallLink",
+   "args": [
+    "video",
+    null,
+    100
+   ],
+   "opts": {
+    "responses": [
+     {
+      "tag": "call",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "link_create",
+        "attrs": {
+         "token": "TOKEN"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "call",
+      "attrs": {
+       "id": "TAG-1",
+       "to": "@call"
+      },
+      "content": [
+       {
+        "tag": "link_create",
+        "attrs": {
+         "media": "video"
+        }
+       }
+      ]
+     },
+     "timeout": 100
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": "TOKEN",
+   "error": null
+  },
+  {
+   "op": "createCallLink",
+   "args": [
+    "audio"
+   ],
+   "opts": {
+    "responses": [
+     {
+      "tag": "call",
+      "attrs": {}
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "call",
+      "attrs": {
+       "id": "TAG-1",
+       "to": "@call"
+      },
+      "content": [
+       {
+        "tag": "link_create",
+        "attrs": {
+         "media": "audio"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "createCallLink",
+   "args": [
+    "audio"
+   ],
+   "opts": {
+    "responses": [
+     {
+      "tag": "call",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "link_create",
+        "attrs": {}
+       }
+      ]
+     }
+    ]
+   },
+   "queries": [
+    {
+     "node": {
+      "tag": "call",
+      "attrs": {
+       "id": "TAG-1",
+       "to": "@call"
+      },
+      "content": [
+       {
+        "tag": "link_create",
+        "attrs": {
+         "media": "audio"
+        }
+       }
+      ]
+     },
+     "timeout": null
+    }
+   ],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "dirty",
+   "args": [
+    {
+     "tag": "ib",
+     "attrs": {
+      "from": "@s.whatsapp.net"
+     },
+     "content": [
+      {
+       "tag": "dirty",
+       "attrs": {
+        "type": "account_sync",
+        "timestamp": "1700000002"
+       }
+      }
+     ]
+    }
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [],
+   "events": [
+    {
+     "name": "creds.update",
+     "data": {
+      "lastAccountSyncTimestamp": 1700000002
+     }
+    }
+   ],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "dirty",
+   "args": [
+    {
+     "tag": "ib",
+     "attrs": {
+      "from": "@s.whatsapp.net"
+     },
+     "content": [
+      {
+       "tag": "dirty",
+       "attrs": {
+        "type": "account_sync"
+       }
+      }
+     ]
+    }
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "dirty",
+   "args": [
+    {
+     "tag": "ib",
+     "attrs": {
+      "from": "@s.whatsapp.net"
+     },
+     "content": [
+      {
+       "tag": "dirty",
+       "attrs": {
+        "type": "account_sync",
+        "timestamp": ""
+       }
+      }
+     ]
+    }
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "dirty",
+   "args": [
+    {
+     "tag": "ib",
+     "attrs": {
+      "from": "@s.whatsapp.net"
+     },
+     "content": [
+      {
+       "tag": "dirty",
+       "attrs": {
+        "type": "account_sync",
+        "timestamp": "bad"
+       }
+      }
+     ]
+    }
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [],
+   "events": [
+    {
+     "name": "creds.update",
+     "data": {
+      "lastAccountSyncTimestamp": null
+     }
+    }
+   ],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "dirty",
+   "args": [
+    {
+     "tag": "ib",
+     "attrs": {
+      "from": "@s.whatsapp.net"
+     },
+     "content": [
+      {
+       "tag": "dirty",
+       "attrs": {
+        "type": "groups",
+        "timestamp": "1700000003"
+       }
+      }
+     ]
+    }
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "dirty",
+   "args": [
+    {
+     "tag": "ib",
+     "attrs": {
+      "from": "@s.whatsapp.net"
+     },
+     "content": [
+      {
+       "tag": "dirty",
+       "attrs": {
+        "type": "other",
+        "timestamp": "1"
+       }
+      }
+     ]
+    }
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "dirty",
+   "args": [
+    {
+     "tag": "ib",
+     "attrs": {
+      "from": "@s.whatsapp.net"
+     },
+     "content": [
+      {
+       "tag": "dirty",
+       "attrs": {}
+      }
+     ]
+    }
+   ],
+   "opts": {},
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "dirty",
+   "args": [
+    {
+     "tag": "ib",
+     "attrs": {
+      "from": "@s.whatsapp.net"
+     },
+     "content": [
+      {
+       "tag": "dirty",
+       "attrs": {
+        "type": "account_sync",
+        "timestamp": "1700000002"
+       }
+      }
+     ]
+    }
+   ],
+   "opts": {
+    "lastSync": 0
+   },
+   "queries": [],
+   "sent": [],
+   "events": [
+    {
+     "name": "creds.update",
+     "data": {
+      "lastAccountSyncTimestamp": 1700000002
+     }
+    }
+   ],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "dirty",
+   "args": [
+    {
+     "tag": "ib",
+     "attrs": {
+      "from": "@s.whatsapp.net"
+     },
+     "content": [
+      {
+       "tag": "dirty",
+       "attrs": {
+        "type": "account_sync"
+       }
+      }
+     ]
+    }
+   ],
+   "opts": {
+    "lastSync": 0
+   },
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "dirty",
+   "args": [
+    {
+     "tag": "ib",
+     "attrs": {
+      "from": "@s.whatsapp.net"
+     },
+     "content": [
+      {
+       "tag": "dirty",
+       "attrs": {
+        "type": "account_sync",
+        "timestamp": ""
+       }
+      }
+     ]
+    }
+   ],
+   "opts": {
+    "lastSync": 0
+   },
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "dirty",
+   "args": [
+    {
+     "tag": "ib",
+     "attrs": {
+      "from": "@s.whatsapp.net"
+     },
+     "content": [
+      {
+       "tag": "dirty",
+       "attrs": {
+        "type": "account_sync",
+        "timestamp": "bad"
+       }
+      }
+     ]
+    }
+   ],
+   "opts": {
+    "lastSync": 0
+   },
+   "queries": [],
+   "sent": [],
+   "events": [
+    {
+     "name": "creds.update",
+     "data": {
+      "lastAccountSyncTimestamp": null
+     }
+    }
+   ],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "dirty",
+   "args": [
+    {
+     "tag": "ib",
+     "attrs": {
+      "from": "@s.whatsapp.net"
+     },
+     "content": [
+      {
+       "tag": "dirty",
+       "attrs": {
+        "type": "groups",
+        "timestamp": "1700000003"
+       }
+      }
+     ]
+    }
+   ],
+   "opts": {
+    "lastSync": 0
+   },
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "dirty",
+   "args": [
+    {
+     "tag": "ib",
+     "attrs": {
+      "from": "@s.whatsapp.net"
+     },
+     "content": [
+      {
+       "tag": "dirty",
+       "attrs": {
+        "type": "other",
+        "timestamp": "1"
+       }
+      }
+     ]
+    }
+   ],
+   "opts": {
+    "lastSync": 0
+   },
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "dirty",
+   "args": [
+    {
+     "tag": "ib",
+     "attrs": {
+      "from": "@s.whatsapp.net"
+     },
+     "content": [
+      {
+       "tag": "dirty",
+       "attrs": {}
+      }
+     ]
+    }
+   ],
+   "opts": {
+    "lastSync": 0
+   },
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "dirty",
+   "args": [
+    {
+     "tag": "ib",
+     "attrs": {
+      "from": "@s.whatsapp.net"
+     },
+     "content": [
+      {
+       "tag": "dirty",
+       "attrs": {
+        "type": "account_sync",
+        "timestamp": "1700000002"
+       }
+      }
+     ]
+    }
+   ],
+   "opts": {
+    "lastSync": 1699999999
+   },
+   "queries": [],
+   "sent": [
+    {
+     "tag": "iq",
+     "attrs": {
+      "to": "@s.whatsapp.net",
+      "type": "set",
+      "xmlns": "urn:xmpp:whatsapp:dirty",
+      "id": "TAG-1"
+     },
+     "content": [
+      {
+       "tag": "clean",
+       "attrs": {
+        "type": "account_sync",
+        "timestamp": "1699999999"
+       }
+      }
+     ]
+    }
+   ],
+   "events": [
+    {
+     "name": "creds.update",
+     "data": {
+      "lastAccountSyncTimestamp": 1700000002
+     }
+    }
+   ],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "dirty",
+   "args": [
+    {
+     "tag": "ib",
+     "attrs": {
+      "from": "@s.whatsapp.net"
+     },
+     "content": [
+      {
+       "tag": "dirty",
+       "attrs": {
+        "type": "account_sync"
+       }
+      }
+     ]
+    }
+   ],
+   "opts": {
+    "lastSync": 1699999999
+   },
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "dirty",
+   "args": [
+    {
+     "tag": "ib",
+     "attrs": {
+      "from": "@s.whatsapp.net"
+     },
+     "content": [
+      {
+       "tag": "dirty",
+       "attrs": {
+        "type": "account_sync",
+        "timestamp": ""
+       }
+      }
+     ]
+    }
+   ],
+   "opts": {
+    "lastSync": 1699999999
+   },
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "dirty",
+   "args": [
+    {
+     "tag": "ib",
+     "attrs": {
+      "from": "@s.whatsapp.net"
+     },
+     "content": [
+      {
+       "tag": "dirty",
+       "attrs": {
+        "type": "account_sync",
+        "timestamp": "bad"
+       }
+      }
+     ]
+    }
+   ],
+   "opts": {
+    "lastSync": 1699999999
+   },
+   "queries": [],
+   "sent": [
+    {
+     "tag": "iq",
+     "attrs": {
+      "to": "@s.whatsapp.net",
+      "type": "set",
+      "xmlns": "urn:xmpp:whatsapp:dirty",
+      "id": "TAG-1"
+     },
+     "content": [
+      {
+       "tag": "clean",
+       "attrs": {
+        "type": "account_sync",
+        "timestamp": "1699999999"
+       }
+      }
+     ]
+    }
+   ],
+   "events": [
+    {
+     "name": "creds.update",
+     "data": {
+      "lastAccountSyncTimestamp": null
+     }
+    }
+   ],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "dirty",
+   "args": [
+    {
+     "tag": "ib",
+     "attrs": {
+      "from": "@s.whatsapp.net"
+     },
+     "content": [
+      {
+       "tag": "dirty",
+       "attrs": {
+        "type": "groups",
+        "timestamp": "1700000003"
+       }
+      }
+     ]
+    }
+   ],
+   "opts": {
+    "lastSync": 1699999999
+   },
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "dirty",
+   "args": [
+    {
+     "tag": "ib",
+     "attrs": {
+      "from": "@s.whatsapp.net"
+     },
+     "content": [
+      {
+       "tag": "dirty",
+       "attrs": {
+        "type": "other",
+        "timestamp": "1"
+       }
+      }
+     ]
+    }
+   ],
+   "opts": {
+    "lastSync": 1699999999
+   },
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  },
+  {
+   "op": "dirty",
+   "args": [
+    {
+     "tag": "ib",
+     "attrs": {
+      "from": "@s.whatsapp.net"
+     },
+     "content": [
+      {
+       "tag": "dirty",
+       "attrs": {}
+      }
+     ]
+    }
+   ],
+   "opts": {
+    "lastSync": 1699999999
+   },
+   "queries": [],
+   "sent": [],
+   "events": [],
+   "mods": [],
+   "usync": [],
+   "result": null,
+   "error": null
+  }
+ ]
+}
