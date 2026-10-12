@@ -178,6 +178,11 @@ pub(super) fn spawn_own_worker(
                 (Socket {
                     inner: inner.clone(),
                 })
+                .process_phone_protocol(&message)
+                .await?;
+                (Socket {
+                    inner: inner.clone(),
+                })
                 .process_event_response(&message, None, &credentials)
                 .await?;
                 if let Some(update) = effects.chat {

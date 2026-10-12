@@ -5,6 +5,7 @@ mod groups;
 mod incoming_messages;
 mod incoming_receipts;
 mod media;
+mod protocol_messages;
 mod receipts;
 mod relay;
 mod retries;
@@ -297,6 +298,10 @@ pub struct Socket {
     inner: Arc<Inner>,
 }
 enum Command {
+    AppStateKeys {
+        keys: Vec<proto::message::AppStateSyncKey>,
+        reply: oneshot::Sender<Result<(), Error>>,
+    },
     PushName {
         name: String,
         reply: oneshot::Sender<Result<(), Error>>,

@@ -281,6 +281,7 @@ impl Socket {
                 .events
                 .send(Event::MessageReactions(vec![update]));
         }
+        self.process_phone_protocol(message).await?;
         self.process_event_response(message, Some(&envelope.key_metadata), &credentials)
             .await?;
         if let Some(update) = effects.chat {

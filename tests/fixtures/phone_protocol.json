@@ -1,0 +1,1118 @@
+{
+  "cases": [
+    {
+      "kind": "share",
+      "variant": "normal",
+      "fromMe": false,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410001a0550484f4e45126b626910063a650a2c0a040a02fbff12240a20070707070707070707070707070707070707070707070707070707070707070718000a350a040a020102122d0a2008080808080808080808080808080808080808080808080808080808080808081207082a1a03000102180c1880e2cfaa06",
+      "cached": {},
+      "events": [],
+      "keys": {},
+      "writes": [],
+      "maps": [],
+      "migrations": [],
+      "deleted": []
+    },
+    {
+      "kind": "share",
+      "variant": "empty",
+      "fromMe": false,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410001a0550484f4e451206620410063a001880e2cfaa06",
+      "cached": {},
+      "events": [],
+      "keys": {},
+      "writes": [],
+      "maps": [],
+      "migrations": [],
+      "deleted": []
+    },
+    {
+      "kind": "share",
+      "variant": "zero",
+      "fromMe": false,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410001a0550484f4e451269626710063a630a2c0a040a02fbff12240a20070707070707070707070707070707070707070707070707070707070707070718000a330a020a00122d0a2008080808080808080808080808080808080808080808080808080808080808081207082a1a03000102180c1880e2cfaa06",
+      "cached": {},
+      "events": [],
+      "keys": {},
+      "writes": [],
+      "maps": [],
+      "migrations": [],
+      "deleted": []
+    },
+    {
+      "kind": "share",
+      "variant": "absent",
+      "fromMe": false,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410001a0550484f4e451204620210061880e2cfaa06",
+      "cached": {},
+      "events": [],
+      "keys": {},
+      "writes": [],
+      "maps": [],
+      "migrations": [],
+      "deleted": []
+    },
+    {
+      "kind": "share",
+      "variant": "malformed",
+      "fromMe": false,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410001a0550484f4e4512930162900110063a8b010a2c0a040a02fbff12240a20070707070707070707070707070707070707070707070707070707070707070718000a350a040a020102122d0a2008080808080808080808080808080808080808080808080808080808080808081207082a1a03000102180c0a2412220a2009090909090909090909090909090909090909090909090909090909090909091880e2cfaa06",
+      "cached": {},
+      "events": [],
+      "keys": {},
+      "writes": [],
+      "maps": [],
+      "migrations": [],
+      "deleted": []
+    },
+    {
+      "kind": "share",
+      "variant": "duplicates",
+      "fromMe": false,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410001a0550484f4e45126b626910063a650a2c0a040a02fbff12240a20070707070707070707070707070707070707070707070707070707070707070718000a350a040a02fbff122d0a2008080808080808080808080808080808080808080808080808080808080808081207082a1a03000102180c1880e2cfaa06",
+      "cached": {},
+      "events": [],
+      "keys": {},
+      "writes": [],
+      "maps": [],
+      "migrations": [],
+      "deleted": []
+    },
+    {
+      "kind": "share",
+      "variant": "deleted",
+      "fromMe": false,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410001a0550484f4e45123c623a10063a360a2c0a040a02fbff12240a20070707070707070707070707070707070707070707070707070707070707070718000a060a040a0201021880e2cfaa06",
+      "cached": {},
+      "events": [],
+      "keys": {},
+      "writes": [],
+      "maps": [],
+      "migrations": [],
+      "deleted": []
+    },
+    {
+      "kind": "share",
+      "variant": "noTimestamp",
+      "fromMe": false,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410001a0550484f4e45126b626910063a650a2c0a040a02fbff12240a20070707070707070707070707070707070707070707070707070707070707070718000a350a040a020102122d0a2008080808080808080808080808080808080808080808080808080808080808081207082a1a03000102180c1880e2cfaa06",
+      "cached": {},
+      "events": [],
+      "keys": {},
+      "writes": [],
+      "maps": [],
+      "migrations": [],
+      "deleted": []
+    },
+    {
+      "kind": "pdo",
+      "variant": "normal",
+      "fromMe": false,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410001a0550484f4e451256625410118a014f1207524551554553541a0208011a40223e0a3c0a170a0970686f6e65406c696410001a084f524947494e414c120b0a097265636f76657265641881e2cfaa069a010a70686f6e65206e616d65c001021880e2cfaa06",
+      "cached": {
+        "ORIGINAL": {
+          "key": {
+            "remoteJid": "2000@lid",
+            "remoteJidAlt": "200@s.whatsapp.net",
+            "id": "ORIGINAL",
+            "fromMe": false,
+            "participant": "3000@lid",
+            "participantAlt": "300@s.whatsapp.net"
+          },
+          "messageTimestamp": 1700000000,
+          "pushName": "cached name",
+          "participant": "cached participant",
+          "verifiedBizName": "cached business"
+        }
+      },
+      "events": [],
+      "keys": {},
+      "writes": [],
+      "maps": [],
+      "migrations": [],
+      "deleted": []
+    },
+    {
+      "kind": "pdo",
+      "variant": "empty",
+      "fromMe": false,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410001a0550484f4e451210620e10118a01091207524551554553541880e2cfaa06",
+      "cached": {
+        "ORIGINAL": {
+          "key": {
+            "remoteJid": "2000@lid",
+            "remoteJidAlt": "200@s.whatsapp.net",
+            "id": "ORIGINAL",
+            "fromMe": false,
+            "participant": "3000@lid",
+            "participantAlt": "300@s.whatsapp.net"
+          },
+          "messageTimestamp": 1700000000,
+          "pushName": "cached name",
+          "participant": "cached participant",
+          "verifiedBizName": "cached business"
+        }
+      },
+      "events": [],
+      "keys": {},
+      "writes": [],
+      "maps": [],
+      "migrations": [],
+      "deleted": []
+    },
+    {
+      "kind": "pdo",
+      "variant": "zero",
+      "fromMe": false,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410001a0550484f4e45124b624910118a014412001a0208011a3c223a0a380a170a0970686f6e65406c696410001a084f524947494e414c120b0a097265636f766572656418009a010a70686f6e65206e616d65c001021880e2cfaa06",
+      "cached": {
+        "ORIGINAL": {
+          "key": {
+            "remoteJid": "2000@lid",
+            "remoteJidAlt": "200@s.whatsapp.net",
+            "id": "ORIGINAL",
+            "fromMe": false,
+            "participant": "3000@lid",
+            "participantAlt": "300@s.whatsapp.net"
+          },
+          "messageTimestamp": 1700000000,
+          "pushName": "cached name",
+          "participant": "cached participant",
+          "verifiedBizName": "cached business"
+        }
+      },
+      "events": [],
+      "keys": {},
+      "writes": [],
+      "maps": [],
+      "migrations": [],
+      "deleted": []
+    },
+    {
+      "kind": "pdo",
+      "variant": "absent",
+      "fromMe": false,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410001a0550484f4e451256625410118a014f1207524551554553541a0208011a40223e0a3c0a170a0970686f6e65406c696410001a084f524947494e414c120b0a097265636f76657265641881e2cfaa069a010a70686f6e65206e616d65c001021880e2cfaa06",
+      "cached": {},
+      "events": [],
+      "keys": {},
+      "writes": [],
+      "maps": [],
+      "migrations": [],
+      "deleted": []
+    },
+    {
+      "kind": "pdo",
+      "variant": "malformed",
+      "fromMe": false,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410001a0550484f4e45125d625b10118a01561207524551554553541a0208011a0522030a01ff1a40223e0a3c0a170a0970686f6e65406c696410001a084f524947494e414c120b0a097265636f76657265641881e2cfaa069a010a70686f6e65206e616d65c001021880e2cfaa06",
+      "cached": {
+        "ORIGINAL": {
+          "key": {
+            "remoteJid": "2000@lid",
+            "remoteJidAlt": "200@s.whatsapp.net",
+            "id": "ORIGINAL",
+            "fromMe": false,
+            "participant": "3000@lid",
+            "participantAlt": "300@s.whatsapp.net"
+          },
+          "messageTimestamp": 1700000000,
+          "pushName": "cached name",
+          "participant": "cached participant",
+          "verifiedBizName": "cached business"
+        }
+      },
+      "events": [],
+      "keys": {},
+      "writes": [],
+      "maps": [],
+      "migrations": [],
+      "deleted": []
+    },
+    {
+      "kind": "pdo",
+      "variant": "duplicates",
+      "fromMe": false,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410001a0550484f4e45129a0162970110118a0191011207524551554553541a0208011a40223e0a3c0a170a0970686f6e65406c696410001a084f524947494e414c120b0a097265636f76657265641881e2cfaa069a010a70686f6e65206e616d65c001021a40223e0a3c0a170a0970686f6e65406c696410001a084f524947494e414c120b0a097265636f76657265641881e2cfaa069a010a70686f6e65206e616d65c001021880e2cfaa06",
+      "cached": {
+        "ORIGINAL": {
+          "key": {
+            "remoteJid": "2000@lid",
+            "remoteJidAlt": "200@s.whatsapp.net",
+            "id": "ORIGINAL",
+            "fromMe": false,
+            "participant": "3000@lid",
+            "participantAlt": "300@s.whatsapp.net"
+          },
+          "messageTimestamp": 1700000000,
+          "pushName": "cached name",
+          "participant": "cached participant",
+          "verifiedBizName": "cached business"
+        }
+      },
+      "events": [],
+      "keys": {},
+      "writes": [],
+      "maps": [],
+      "migrations": [],
+      "deleted": []
+    },
+    {
+      "kind": "pdo",
+      "variant": "deleted",
+      "fromMe": false,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410001a0550484f4e45125c625a10118a01551207524551554553541a0208011a40223e0a3c0a170a0970686f6e65406c696410001a084f524947494e414c120b0a097265636f76657265641881e2cfaa069a010a70686f6e65206e616d65c001021a0422020a001880e2cfaa06",
+      "cached": {
+        "ORIGINAL": {
+          "key": {
+            "remoteJid": "2000@lid",
+            "remoteJidAlt": "200@s.whatsapp.net",
+            "id": "ORIGINAL",
+            "fromMe": false,
+            "participant": "3000@lid",
+            "participantAlt": "300@s.whatsapp.net"
+          },
+          "messageTimestamp": 1700000000,
+          "pushName": "cached name",
+          "participant": "cached participant",
+          "verifiedBizName": "cached business"
+        }
+      },
+      "events": [],
+      "keys": {},
+      "writes": [],
+      "maps": [],
+      "migrations": [],
+      "deleted": []
+    },
+    {
+      "kind": "pdo",
+      "variant": "noTimestamp",
+      "fromMe": false,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410001a0550484f4e451247624510118a01401a0208011a3a22380a360a170a0970686f6e65406c696410001a084f524947494e414c120b0a097265636f76657265649a010a70686f6e65206e616d65c001021880e2cfaa06",
+      "cached": {
+        "ORIGINAL": {
+          "key": {
+            "remoteJid": "2000@lid",
+            "remoteJidAlt": "200@s.whatsapp.net",
+            "id": "ORIGINAL",
+            "fromMe": false,
+            "participant": "3000@lid",
+            "participantAlt": "300@s.whatsapp.net"
+          },
+          "messageTimestamp": 1700000000,
+          "pushName": "cached name",
+          "participant": "cached participant",
+          "verifiedBizName": "cached business"
+        }
+      },
+      "events": [],
+      "keys": {},
+      "writes": [],
+      "maps": [],
+      "migrations": [],
+      "deleted": []
+    },
+    {
+      "kind": "lid",
+      "variant": "normal",
+      "fromMe": false,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410001a0550484f4e45122e622c1016ba01270a250a1b08818080808080801010e98780808080801018d18f8080808080100a0608c80110d00f1880e2cfaa06",
+      "cached": {},
+      "events": [],
+      "keys": {},
+      "writes": [],
+      "maps": [],
+      "migrations": [],
+      "deleted": []
+    },
+    {
+      "kind": "lid",
+      "variant": "empty",
+      "fromMe": false,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410001a0550484f4e45120962071016ba01020a001880e2cfaa06",
+      "cached": {},
+      "events": [],
+      "keys": {},
+      "writes": [],
+      "maps": [],
+      "migrations": [],
+      "deleted": []
+    },
+    {
+      "kind": "lid",
+      "variant": "zero",
+      "fromMe": false,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410001a0550484f4e45122762251016ba01200a1e0a1408818080808080801010e98780808080801018000a0608c80110d00f1880e2cfaa06",
+      "cached": {},
+      "events": [],
+      "keys": {},
+      "writes": [],
+      "maps": [],
+      "migrations": [],
+      "deleted": []
+    },
+    {
+      "kind": "lid",
+      "variant": "absent",
+      "fromMe": false,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410001a0550484f4e45122562231016ba011e0a1c0a1208818080808080801010e9878080808080100a0608c80110d00f1880e2cfaa06",
+      "cached": {},
+      "events": [],
+      "keys": {},
+      "writes": [],
+      "maps": [],
+      "migrations": [],
+      "deleted": []
+    },
+    {
+      "kind": "lid",
+      "variant": "malformed",
+      "fromMe": false,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410001a0550484f4e45120a62081016ba01030a01ff1880e2cfaa06",
+      "cached": {},
+      "events": [],
+      "keys": {},
+      "writes": [],
+      "maps": [],
+      "migrations": [],
+      "deleted": []
+    },
+    {
+      "kind": "lid",
+      "variant": "duplicates",
+      "fromMe": false,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410001a0550484f4e45123662341016ba012f0a2d0a1b08818080808080801010e98780808080801018d18f8080808080100a0608c80110d00f0a0608c80110d10f1880e2cfaa06",
+      "cached": {},
+      "events": [],
+      "keys": {},
+      "writes": [],
+      "maps": [],
+      "migrations": [],
+      "deleted": []
+    },
+    {
+      "kind": "lid",
+      "variant": "deleted",
+      "fromMe": false,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410001a0550484f4e45122e622c1016ba01270a250a1b08818080808080801010e98780808080801018d18f8080808080100a0608c80110d00f1880e2cfaa06",
+      "cached": {},
+      "events": [],
+      "keys": {},
+      "writes": [],
+      "maps": [],
+      "migrations": [],
+      "deleted": []
+    },
+    {
+      "kind": "lid",
+      "variant": "noTimestamp",
+      "fromMe": false,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410001a0550484f4e45122e622c1016ba01270a250a1b08818080808080801010e98780808080801018d18f8080808080100a0608c80110d00f1880e2cfaa06",
+      "cached": {},
+      "events": [],
+      "keys": {},
+      "writes": [],
+      "maps": [],
+      "migrations": [],
+      "deleted": []
+    },
+    {
+      "kind": "share",
+      "variant": "normal",
+      "fromMe": true,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410011a0550484f4e45126b626910063a650a2c0a040a02fbff12240a20070707070707070707070707070707070707070707070707070707070707070718000a350a040a020102122d0a2008080808080808080808080808080808080808080808080808080808080808081207082a1a03000102180c1880e2cfaa06",
+      "cached": {},
+      "events": [
+        {
+          "name": "creds.update",
+          "data": {
+            "myAppStateKeyId": "AQI="
+          }
+        }
+      ],
+      "keys": {
+        "+/8=": "0a2007070707070707070707070707070707070707070707070707070707070707071800",
+        "AQI=": "0a2008080808080808080808080808080808080808080808080808080808080808081207082a1a03000102180c"
+      },
+      "writes": [
+        "+/8=",
+        "AQI="
+      ],
+      "maps": [],
+      "migrations": [],
+      "deleted": []
+    },
+    {
+      "kind": "share",
+      "variant": "empty",
+      "fromMe": true,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410011a0550484f4e451206620410063a001880e2cfaa06",
+      "cached": {},
+      "events": [],
+      "keys": {},
+      "writes": [],
+      "maps": [],
+      "migrations": [],
+      "deleted": []
+    },
+    {
+      "kind": "share",
+      "variant": "zero",
+      "fromMe": true,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410011a0550484f4e451269626710063a630a2c0a040a02fbff12240a20070707070707070707070707070707070707070707070707070707070707070718000a330a020a00122d0a2008080808080808080808080808080808080808080808080808080808080808081207082a1a03000102180c1880e2cfaa06",
+      "cached": {},
+      "events": [
+        {
+          "name": "creds.update",
+          "data": {
+            "myAppStateKeyId": ""
+          }
+        }
+      ],
+      "keys": {
+        "+/8=": "0a2007070707070707070707070707070707070707070707070707070707070707071800",
+        "": "0a2008080808080808080808080808080808080808080808080808080808080808081207082a1a03000102180c"
+      },
+      "writes": [
+        "+/8=",
+        ""
+      ],
+      "maps": [],
+      "migrations": [],
+      "deleted": []
+    },
+    {
+      "kind": "share",
+      "variant": "absent",
+      "fromMe": true,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410011a0550484f4e451204620210061880e2cfaa06",
+      "cached": {},
+      "events": [],
+      "keys": {},
+      "writes": [],
+      "maps": [],
+      "migrations": [],
+      "deleted": [],
+      "error": "Cannot read properties of null (reading 'keys')"
+    },
+    {
+      "kind": "share",
+      "variant": "malformed",
+      "fromMe": true,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410011a0550484f4e4512930162900110063a8b010a2c0a040a02fbff12240a20070707070707070707070707070707070707070707070707070707070707070718000a350a040a020102122d0a2008080808080808080808080808080808080808080808080808080808080808081207082a1a03000102180c0a2412220a2009090909090909090909090909090909090909090909090909090909090909091880e2cfaa06",
+      "cached": {},
+      "events": [],
+      "keys": {},
+      "writes": [
+        "+/8=",
+        "AQI="
+      ],
+      "maps": [],
+      "migrations": [],
+      "deleted": [],
+      "error": "Cannot read properties of null (reading 'keyId')"
+    },
+    {
+      "kind": "share",
+      "variant": "duplicates",
+      "fromMe": true,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410011a0550484f4e45126b626910063a650a2c0a040a02fbff12240a20070707070707070707070707070707070707070707070707070707070707070718000a350a040a02fbff122d0a2008080808080808080808080808080808080808080808080808080808080808081207082a1a03000102180c1880e2cfaa06",
+      "cached": {},
+      "events": [
+        {
+          "name": "creds.update",
+          "data": {
+            "myAppStateKeyId": "+/8="
+          }
+        }
+      ],
+      "keys": {
+        "+/8=": "0a2008080808080808080808080808080808080808080808080808080808080808081207082a1a03000102180c"
+      },
+      "writes": [
+        "+/8=",
+        "+/8="
+      ],
+      "maps": [],
+      "migrations": [],
+      "deleted": []
+    },
+    {
+      "kind": "share",
+      "variant": "deleted",
+      "fromMe": true,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410011a0550484f4e45123c623a10063a360a2c0a040a02fbff12240a20070707070707070707070707070707070707070707070707070707070707070718000a060a040a0201021880e2cfaa06",
+      "cached": {},
+      "events": [
+        {
+          "name": "creds.update",
+          "data": {
+            "myAppStateKeyId": "AQI="
+          }
+        }
+      ],
+      "keys": {
+        "+/8=": "0a2007070707070707070707070707070707070707070707070707070707070707071800",
+        "AQI=": null
+      },
+      "writes": [
+        "+/8=",
+        "AQI="
+      ],
+      "maps": [],
+      "migrations": [],
+      "deleted": []
+    },
+    {
+      "kind": "share",
+      "variant": "noTimestamp",
+      "fromMe": true,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410011a0550484f4e45126b626910063a650a2c0a040a02fbff12240a20070707070707070707070707070707070707070707070707070707070707070718000a350a040a020102122d0a2008080808080808080808080808080808080808080808080808080808080808081207082a1a03000102180c1880e2cfaa06",
+      "cached": {},
+      "events": [
+        {
+          "name": "creds.update",
+          "data": {
+            "myAppStateKeyId": "AQI="
+          }
+        }
+      ],
+      "keys": {
+        "+/8=": "0a2007070707070707070707070707070707070707070707070707070707070707071800",
+        "AQI=": "0a2008080808080808080808080808080808080808080808080808080808080808081207082a1a03000102180c"
+      },
+      "writes": [
+        "+/8=",
+        "AQI="
+      ],
+      "maps": [],
+      "migrations": [],
+      "deleted": []
+    },
+    {
+      "kind": "pdo",
+      "variant": "normal",
+      "fromMe": true,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410011a0550484f4e451256625410118a014f1207524551554553541a0208011a40223e0a3c0a170a0970686f6e65406c696410001a084f524947494e414c120b0a097265636f76657265641881e2cfaa069a010a70686f6e65206e616d65c001021880e2cfaa06",
+      "cached": {
+        "ORIGINAL": {
+          "key": {
+            "remoteJid": "2000@lid",
+            "remoteJidAlt": "200@s.whatsapp.net",
+            "id": "ORIGINAL",
+            "fromMe": false,
+            "participant": "3000@lid",
+            "participantAlt": "300@s.whatsapp.net"
+          },
+          "messageTimestamp": 1700000000,
+          "pushName": "cached name",
+          "participant": "cached participant",
+          "verifiedBizName": "cached business"
+        }
+      },
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a200a0832303030406c696410001a084f524947494e414c220833303030406c6964120b0a097265636f76657265641881e2cfaa062a12636163686564207061727469636970616e749a010b636163686564206e616d65aa020f63616368656420627573696e657373"
+          ],
+          "requestId": "REQUEST",
+          "type": "notify"
+        }
+      ],
+      "keys": {},
+      "writes": [],
+      "maps": [],
+      "migrations": [],
+      "deleted": [
+        "ORIGINAL"
+      ]
+    },
+    {
+      "kind": "pdo",
+      "variant": "empty",
+      "fromMe": true,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410011a0550484f4e451210620e10118a01091207524551554553541880e2cfaa06",
+      "cached": {
+        "ORIGINAL": {
+          "key": {
+            "remoteJid": "2000@lid",
+            "remoteJidAlt": "200@s.whatsapp.net",
+            "id": "ORIGINAL",
+            "fromMe": false,
+            "participant": "3000@lid",
+            "participantAlt": "300@s.whatsapp.net"
+          },
+          "messageTimestamp": 1700000000,
+          "pushName": "cached name",
+          "participant": "cached participant",
+          "verifiedBizName": "cached business"
+        }
+      },
+      "events": [],
+      "keys": {},
+      "writes": [],
+      "maps": [],
+      "migrations": [],
+      "deleted": []
+    },
+    {
+      "kind": "pdo",
+      "variant": "zero",
+      "fromMe": true,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410011a0550484f4e45124b624910118a014412001a0208011a3c223a0a380a170a0970686f6e65406c696410001a084f524947494e414c120b0a097265636f766572656418009a010a70686f6e65206e616d65c001021880e2cfaa06",
+      "cached": {
+        "ORIGINAL": {
+          "key": {
+            "remoteJid": "2000@lid",
+            "remoteJidAlt": "200@s.whatsapp.net",
+            "id": "ORIGINAL",
+            "fromMe": false,
+            "participant": "3000@lid",
+            "participantAlt": "300@s.whatsapp.net"
+          },
+          "messageTimestamp": 1700000000,
+          "pushName": "cached name",
+          "participant": "cached participant",
+          "verifiedBizName": "cached business"
+        }
+      },
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a200a0832303030406c696410001a084f524947494e414c220833303030406c6964120b0a097265636f766572656418002a12636163686564207061727469636970616e749a010b636163686564206e616d65aa020f63616368656420627573696e657373"
+          ],
+          "requestId": "",
+          "type": "notify"
+        }
+      ],
+      "keys": {},
+      "writes": [],
+      "maps": [],
+      "migrations": [],
+      "deleted": [
+        "ORIGINAL"
+      ]
+    },
+    {
+      "kind": "pdo",
+      "variant": "absent",
+      "fromMe": true,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410011a0550484f4e451256625410118a014f1207524551554553541a0208011a40223e0a3c0a170a0970686f6e65406c696410001a084f524947494e414c120b0a097265636f76657265641881e2cfaa069a010a70686f6e65206e616d65c001021880e2cfaa06",
+      "cached": {},
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a170a0970686f6e65406c696410001a084f524947494e414c120b0a097265636f76657265641881e2cfaa069a010a70686f6e65206e616d65c00102"
+          ],
+          "requestId": "REQUEST",
+          "type": "notify"
+        }
+      ],
+      "keys": {},
+      "writes": [],
+      "maps": [],
+      "migrations": [],
+      "deleted": [
+        "ORIGINAL"
+      ]
+    },
+    {
+      "kind": "pdo",
+      "variant": "malformed",
+      "fromMe": true,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410011a0550484f4e45125d625b10118a01561207524551554553541a0208011a0522030a01ff1a40223e0a3c0a170a0970686f6e65406c696410001a084f524947494e414c120b0a097265636f76657265641881e2cfaa069a010a70686f6e65206e616d65c001021880e2cfaa06",
+      "cached": {
+        "ORIGINAL": {
+          "key": {
+            "remoteJid": "2000@lid",
+            "remoteJidAlt": "200@s.whatsapp.net",
+            "id": "ORIGINAL",
+            "fromMe": false,
+            "participant": "3000@lid",
+            "participantAlt": "300@s.whatsapp.net"
+          },
+          "messageTimestamp": 1700000000,
+          "pushName": "cached name",
+          "participant": "cached participant",
+          "verifiedBizName": "cached business"
+        }
+      },
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a200a0832303030406c696410001a084f524947494e414c220833303030406c6964120b0a097265636f76657265641881e2cfaa062a12636163686564207061727469636970616e749a010b636163686564206e616d65aa020f63616368656420627573696e657373"
+          ],
+          "requestId": "REQUEST",
+          "type": "notify"
+        }
+      ],
+      "keys": {},
+      "writes": [],
+      "maps": [],
+      "migrations": [],
+      "deleted": [
+        "ORIGINAL"
+      ]
+    },
+    {
+      "kind": "pdo",
+      "variant": "duplicates",
+      "fromMe": true,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410011a0550484f4e45129a0162970110118a0191011207524551554553541a0208011a40223e0a3c0a170a0970686f6e65406c696410001a084f524947494e414c120b0a097265636f76657265641881e2cfaa069a010a70686f6e65206e616d65c001021a40223e0a3c0a170a0970686f6e65406c696410001a084f524947494e414c120b0a097265636f76657265641881e2cfaa069a010a70686f6e65206e616d65c001021880e2cfaa06",
+      "cached": {
+        "ORIGINAL": {
+          "key": {
+            "remoteJid": "2000@lid",
+            "remoteJidAlt": "200@s.whatsapp.net",
+            "id": "ORIGINAL",
+            "fromMe": false,
+            "participant": "3000@lid",
+            "participantAlt": "300@s.whatsapp.net"
+          },
+          "messageTimestamp": 1700000000,
+          "pushName": "cached name",
+          "participant": "cached participant",
+          "verifiedBizName": "cached business"
+        }
+      },
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a200a0832303030406c696410001a084f524947494e414c220833303030406c6964120b0a097265636f76657265641881e2cfaa062a12636163686564207061727469636970616e749a010b636163686564206e616d65aa020f63616368656420627573696e657373"
+          ],
+          "requestId": "REQUEST",
+          "type": "notify"
+        },
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a170a0970686f6e65406c696410001a084f524947494e414c120b0a097265636f76657265641881e2cfaa069a010a70686f6e65206e616d65c00102"
+          ],
+          "requestId": "REQUEST",
+          "type": "notify"
+        }
+      ],
+      "keys": {},
+      "writes": [],
+      "maps": [],
+      "migrations": [],
+      "deleted": [
+        "ORIGINAL",
+        "ORIGINAL"
+      ]
+    },
+    {
+      "kind": "pdo",
+      "variant": "deleted",
+      "fromMe": true,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410011a0550484f4e45125c625a10118a01551207524551554553541a0208011a40223e0a3c0a170a0970686f6e65406c696410001a084f524947494e414c120b0a097265636f76657265641881e2cfaa069a010a70686f6e65206e616d65c001021a0422020a001880e2cfaa06",
+      "cached": {
+        "ORIGINAL": {
+          "key": {
+            "remoteJid": "2000@lid",
+            "remoteJidAlt": "200@s.whatsapp.net",
+            "id": "ORIGINAL",
+            "fromMe": false,
+            "participant": "3000@lid",
+            "participantAlt": "300@s.whatsapp.net"
+          },
+          "messageTimestamp": 1700000000,
+          "pushName": "cached name",
+          "participant": "cached participant",
+          "verifiedBizName": "cached business"
+        }
+      },
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a200a0832303030406c696410001a084f524947494e414c220833303030406c6964120b0a097265636f76657265641881e2cfaa062a12636163686564207061727469636970616e749a010b636163686564206e616d65aa020f63616368656420627573696e657373"
+          ],
+          "requestId": "REQUEST",
+          "type": "notify"
+        },
+        {
+          "name": "messages.upsert",
+          "messages": [
+            ""
+          ],
+          "requestId": "REQUEST",
+          "type": "notify"
+        }
+      ],
+      "keys": {},
+      "writes": [],
+      "maps": [],
+      "migrations": [],
+      "deleted": [
+        "ORIGINAL"
+      ]
+    },
+    {
+      "kind": "pdo",
+      "variant": "noTimestamp",
+      "fromMe": true,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410011a0550484f4e451247624510118a01401a0208011a3a22380a360a170a0970686f6e65406c696410001a084f524947494e414c120b0a097265636f76657265649a010a70686f6e65206e616d65c001021880e2cfaa06",
+      "cached": {
+        "ORIGINAL": {
+          "key": {
+            "remoteJid": "2000@lid",
+            "remoteJidAlt": "200@s.whatsapp.net",
+            "id": "ORIGINAL",
+            "fromMe": false,
+            "participant": "3000@lid",
+            "participantAlt": "300@s.whatsapp.net"
+          },
+          "messageTimestamp": 1700000000,
+          "pushName": "cached name",
+          "participant": "cached participant",
+          "verifiedBizName": "cached business"
+        }
+      },
+      "events": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a200a0832303030406c696410001a084f524947494e414c220833303030406c6964120b0a097265636f76657265641880e2cfaa062a12636163686564207061727469636970616e749a010b636163686564206e616d65aa020f63616368656420627573696e657373"
+          ],
+          "requestId": null,
+          "type": "notify"
+        }
+      ],
+      "keys": {},
+      "writes": [],
+      "maps": [],
+      "migrations": [],
+      "deleted": [
+        "ORIGINAL"
+      ]
+    },
+    {
+      "kind": "lid",
+      "variant": "normal",
+      "fromMe": true,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410011a0550484f4e45122e622c1016ba01270a250a1b08818080808080801010e98780808080801018d18f8080808080100a0608c80110d00f1880e2cfaa06",
+      "cached": {},
+      "events": [],
+      "keys": {},
+      "writes": [],
+      "maps": [
+        {
+          "lid": "9007199254742993@lid",
+          "pn": "9007199254740993@s.whatsapp.net"
+        },
+        {
+          "lid": "2000@lid",
+          "pn": "200@s.whatsapp.net"
+        }
+      ],
+      "migrations": [
+        {
+          "pn": "9007199254740993@s.whatsapp.net",
+          "lid": "9007199254742993@lid"
+        },
+        {
+          "pn": "200@s.whatsapp.net",
+          "lid": "2000@lid"
+        }
+      ],
+      "deleted": []
+    },
+    {
+      "kind": "lid",
+      "variant": "empty",
+      "fromMe": true,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410011a0550484f4e45120962071016ba01020a001880e2cfaa06",
+      "cached": {},
+      "events": [],
+      "keys": {},
+      "writes": [],
+      "maps": [],
+      "migrations": [],
+      "deleted": []
+    },
+    {
+      "kind": "lid",
+      "variant": "zero",
+      "fromMe": true,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410011a0550484f4e45122762251016ba01200a1e0a1408818080808080801010e98780808080801018000a0608c80110d00f1880e2cfaa06",
+      "cached": {},
+      "events": [],
+      "keys": {},
+      "writes": [],
+      "maps": [
+        {
+          "lid": "0@lid",
+          "pn": "9007199254740993@s.whatsapp.net"
+        },
+        {
+          "lid": "2000@lid",
+          "pn": "200@s.whatsapp.net"
+        }
+      ],
+      "migrations": [
+        {
+          "pn": "9007199254740993@s.whatsapp.net",
+          "lid": "0@lid"
+        },
+        {
+          "pn": "200@s.whatsapp.net",
+          "lid": "2000@lid"
+        }
+      ],
+      "deleted": []
+    },
+    {
+      "kind": "lid",
+      "variant": "absent",
+      "fromMe": true,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410011a0550484f4e45122562231016ba011e0a1c0a1208818080808080801010e9878080808080100a0608c80110d00f1880e2cfaa06",
+      "cached": {},
+      "events": [],
+      "keys": {},
+      "writes": [],
+      "maps": [
+        {
+          "lid": "9007199254741993@lid",
+          "pn": "9007199254740993@s.whatsapp.net"
+        },
+        {
+          "lid": "2000@lid",
+          "pn": "200@s.whatsapp.net"
+        }
+      ],
+      "migrations": [
+        {
+          "pn": "9007199254740993@s.whatsapp.net",
+          "lid": "9007199254741993@lid"
+        },
+        {
+          "pn": "200@s.whatsapp.net",
+          "lid": "2000@lid"
+        }
+      ],
+      "deleted": []
+    },
+    {
+      "kind": "lid",
+      "variant": "malformed",
+      "fromMe": true,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410011a0550484f4e45120a62081016ba01030a01ff1880e2cfaa06",
+      "cached": {},
+      "events": [],
+      "keys": {},
+      "writes": [],
+      "maps": [],
+      "migrations": [],
+      "deleted": [],
+      "error": "index out of range: 1 + 10 > 1"
+    },
+    {
+      "kind": "lid",
+      "variant": "duplicates",
+      "fromMe": true,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410011a0550484f4e45123662341016ba012f0a2d0a1b08818080808080801010e98780808080801018d18f8080808080100a0608c80110d00f0a0608c80110d10f1880e2cfaa06",
+      "cached": {},
+      "events": [],
+      "keys": {},
+      "writes": [],
+      "maps": [
+        {
+          "lid": "9007199254742993@lid",
+          "pn": "9007199254740993@s.whatsapp.net"
+        },
+        {
+          "lid": "2000@lid",
+          "pn": "200@s.whatsapp.net"
+        },
+        {
+          "lid": "2001@lid",
+          "pn": "200@s.whatsapp.net"
+        }
+      ],
+      "migrations": [
+        {
+          "pn": "9007199254740993@s.whatsapp.net",
+          "lid": "9007199254742993@lid"
+        },
+        {
+          "pn": "200@s.whatsapp.net",
+          "lid": "2000@lid"
+        },
+        {
+          "pn": "200@s.whatsapp.net",
+          "lid": "2001@lid"
+        }
+      ],
+      "deleted": []
+    },
+    {
+      "kind": "lid",
+      "variant": "deleted",
+      "fromMe": true,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410011a0550484f4e45122e622c1016ba01270a250a1b08818080808080801010e98780808080801018d18f8080808080100a0608c80110d00f1880e2cfaa06",
+      "cached": {},
+      "events": [],
+      "keys": {},
+      "writes": [],
+      "maps": [
+        {
+          "lid": "9007199254742993@lid",
+          "pn": "9007199254740993@s.whatsapp.net"
+        },
+        {
+          "lid": "2000@lid",
+          "pn": "200@s.whatsapp.net"
+        }
+      ],
+      "migrations": [
+        {
+          "pn": "9007199254740993@s.whatsapp.net",
+          "lid": "9007199254742993@lid"
+        },
+        {
+          "pn": "200@s.whatsapp.net",
+          "lid": "2000@lid"
+        }
+      ],
+      "deleted": []
+    },
+    {
+      "kind": "lid",
+      "variant": "noTimestamp",
+      "fromMe": true,
+      "input": "0a1d0a1231303040732e77686174736170702e6e657410011a0550484f4e45122e622c1016ba01270a250a1b08818080808080801010e98780808080801018d18f8080808080100a0608c80110d00f1880e2cfaa06",
+      "cached": {},
+      "events": [],
+      "keys": {},
+      "writes": [],
+      "maps": [
+        {
+          "lid": "9007199254742993@lid",
+          "pn": "9007199254740993@s.whatsapp.net"
+        },
+        {
+          "lid": "2000@lid",
+          "pn": "200@s.whatsapp.net"
+        }
+      ],
+      "migrations": [
+        {
+          "pn": "9007199254740993@s.whatsapp.net",
+          "lid": "9007199254742993@lid"
+        },
+        {
+          "pn": "200@s.whatsapp.net",
+          "lid": "2000@lid"
+        }
+      ],
+      "deleted": []
+    }
+  ]
+}

@@ -4,6 +4,7 @@ pub use encrypted::*;
 pub mod generation;
 pub mod incoming;
 pub mod own;
+pub mod protocol;
 use crate::{
     binary::{BinaryNode, NodeContent},
     crypto,

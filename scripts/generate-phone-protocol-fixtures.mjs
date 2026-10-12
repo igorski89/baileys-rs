@@ -1,0 +1,43 @@
+// Original MIT decrypt helpers/processMessage on synthetic secrets and ciphertext.
+import {stripTypeScriptTypes,createRequire} from 'node:module'
+import {readFile,writeFile,mkdtemp,rm} from 'node:fs/promises'
+import {resolve,join} from 'node:path'
+import {tmpdir} from 'node:os'
+import {pathToFileURL} from 'node:url'
+import {createCipheriv,createHmac} from 'node:crypto'
+const upstream=resolve(process.argv[2]??'../Baileys'),require=createRequire(resolve('.cache/fixture-tools/package.json')),temp=await mkdtemp(join(tmpdir(),'baileys-phone-'))
+try {
+ let source=(await readFile(join(upstream,'WAProto/index.js'),'utf8')).replace('"protobufjs/minimal.js"',JSON.stringify(pathToFileURL(require.resolve('protobufjs/minimal.js')).href));await writeFile(join(temp,'proto.mjs'),source)
+ for(const name of ['constants','jid-utils']) {let source=await readFile(join(upstream,`src/WABinary/${name}.ts`),'utf8');source=source.replace(/export enum WAJIDDomains \{([^}]+)\}/,(_,body)=>'export const WAJIDDomains = {'+body.replaceAll('=',':')+'}');await writeFile(join(temp,`${name}.mjs`),stripTypeScriptTypes(source).replaceAll("'./constants'","'./constants.mjs'"))}
+ const p=await readFile(join(upstream,'src/Utils/process-message.ts'),'utf8'),m=await readFile(join(upstream,'src/Utils/messages.ts'),'utf8'),g=await readFile(join(upstream,'src/Utils/generics.ts'),'utf8'),c=await readFile(join(upstream,'src/Utils/crypto.ts'),'utf8')
+ const clean=p.slice(p.indexOf('export const cleanMessage'),p.indexOf('// TODO: target:audit'));
+ const real=p.slice(p.indexOf('const REAL_MSG_STUB_TYPES'),p.indexOf('async function storeTcTokensFromHistorySync')),classifiers=p.slice(p.indexOf('export const isRealMessage'),p.indexOf('type PollContext')),decrypt=p.slice(p.indexOf('export function decryptPollVote'),p.indexOf('const processMessage =')),process=p.slice(p.indexOf('const processMessage =')).replace('export default processMessage',''),helpers=m.slice(m.indexOf('export const getContentType'),m.indexOf('export const extractMessageContent')),author=g.slice(g.indexOf('export const getKeyAuthor'),g.indexOf('export const isStringNullOrEmpty'))
+ const aes=c.slice(c.indexOf('export function aesDecryptGCM'),c.indexOf('export function aesEncryptCTR')),hmac=c.slice(c.indexOf('export function hmacSign'),c.indexOf('export function sha256'))
+ const prefix=`import {proto} from './proto.mjs';import {createDecipheriv,createHmac} from 'node:crypto';import {areJidsSameUser,isHostedLidUser,isHostedPnUser,isJidBroadcast,isJidNewsletter,isJidStatusBroadcast,isLidUser,jidDecode,jidEncode,jidNormalizedUser} from './jid-utils.mjs';const GCM_TAG_LENGTH=16,WAMessageStubType=proto.WebMessageInfo.StubType,toNumber=v=>typeof v==='object'&&v?v.toNumber():v;class Boom extends Error{};`
+ const factory=`export async function run(message,cached){const events=[],writes=[],maps=[],migrations=[],deleted=[];let keys={};const creds={me:{id:'100:7@s.whatsapp.net'},accountSettings:{unarchiveChats:true}},ev={emit:(name,data)=>events.push({name,data})},logger={warn(){},debug(){},info(){}};const keyStore={transaction:async fn=>{const old={...keys};try{await fn()}catch(e){keys=old;throw e}},set:async value=>{for(const [id,data] of Object.entries(value['app-state-sync-key'])){keys[id]=data?wdata(data):null;writes.push(id)}}},placeholderResendCache={get:async id=>cached[id],del:async id=>{deleted.push(id);delete cached[id]}},signalRepository={lidMapping:{storeLIDPNMappings:async pairs=>maps.push(...pairs)},migrateSession:async(pn,lid)=>migrations.push({pn,lid})};const wdata=k=>Buffer.from(proto.Message.AppStateSyncKeyData.encode(k).finish()).toString('hex');let error;try{await processMessage(message,{creds,ev,logger,keyStore,placeholderResendCache,signalRepository})}catch(e){error=e.message}return{events,keys,writes,maps,migrations,deleted,error}}`
+ await writeFile(join(temp,'helpers.mjs'),prefix+stripTypeScriptTypes(aes+hmac+author+real+clean+classifiers+helpers+decrypt+process)+factory)
+ const h=await import(pathToFileURL(join(temp,'helpers.mjs'))),{proto}=await import(pathToFileURL(join(temp,'proto.mjs'))),hex=b=>Buffer.from(b).toString('hex'),wire=m=>hex(proto.Message.encode(m).finish()),wmi=m=>hex(proto.WebMessageInfo.encode(m).finish()),kw=k=>k?hex(proto.MessageKey.encode(proto.MessageKey.fromObject(k)).finish()):null
+ function encrypt(bytes,secret,id,creator,actor,label){const key0=createHmac('sha256',Buffer.alloc(32)).update(secret).digest(),sign=Buffer.concat([Buffer.from(id+creator+actor+label),Buffer.from([1])]),key=createHmac('sha256',key0).update(sign).digest(),iv=Buffer.alloc(12,5),cipher=createCipheriv('aes-256-gcm',key,iv);cipher.setAAD(Buffer.from(id+'\0'+actor));return {encIv:iv,encPayload:Buffer.concat([cipher.update(bytes),cipher.final(),cipher.getAuthTag()])}}
+ const cases=[]
+ const pdo=proto.Message.ProtocolMessage.Type.PEER_DATA_OPERATION_REQUEST_RESPONSE_MESSAGE,share=proto.Message.ProtocolMessage.Type.APP_STATE_SYNC_KEY_SHARE,lids=proto.Message.ProtocolMessage.Type.LID_MIGRATION_MAPPING_SYNC;
+ for(const fromMe of [false,true])for(const kind of ['share','pdo','lid'])for(const variant of ['normal','empty','zero','absent','malformed','duplicates','deleted','noTimestamp']){
+  let protocol,cached={};
+  if(kind==='share') {
+   const keys=variant==='empty'?[]:[{keyId:{keyId:Buffer.from([251,255])},keyData:{keyData:Buffer.alloc(32,7),timestamp:0}},{keyId:{keyId:variant==='zero'?Buffer.alloc(0):Buffer.from([1,2])},...(variant==='deleted'?{}:{keyData:{keyData:Buffer.alloc(32,8),timestamp:12,fingerprint:{rawId:42,deviceIndexes:[0,1,2]}}})}];
+   if(variant==='malformed')keys.push({keyData:{keyData:Buffer.alloc(32,9)}});if(variant==='duplicates')keys[1].keyId=keys[0].keyId;
+   protocol={type:share,...(variant==='absent'?{}:{appStateSyncKeyShare:{keys}})};
+  }else if(kind==='pdo') {
+   const recovered=proto.WebMessageInfo.fromObject({key:{remoteJid:'phone@lid',id:'ORIGINAL',fromMe:false},message:{conversation:'recovered'},...(variant==='noTimestamp'?{}:{messageTimestamp:variant==='zero'?0:1700000001}),pushName:'phone name',messageStubType:2});
+   const original={key:{remoteJid:'2000@lid',remoteJidAlt:'200@s.whatsapp.net',id:'ORIGINAL',fromMe:false,participant:'3000@lid',participantAlt:'300@s.whatsapp.net'},messageTimestamp:1700000000,pushName:'cached name',participant:'cached participant',verifiedBizName:'cached business'};
+   if(variant!=='absent')cached.ORIGINAL=original;
+   const result={placeholderMessageResendResponse:{webMessageInfoBytes:Buffer.from(proto.WebMessageInfo.encode(recovered).finish())}},results=variant==='empty'?[]:[{mediaUploadResult:1},...(variant==='malformed'?[{placeholderMessageResendResponse:{webMessageInfoBytes:Buffer.from([255])}}]:[]),result,...(variant==='duplicates'?[result]:[]),...(variant==='deleted'?[{placeholderMessageResendResponse:{webMessageInfoBytes:Buffer.alloc(0)}}]:[])];
+   protocol={type:pdo,peerDataOperationRequestResponseMessage:{...(variant==='noTimestamp'?{}:{stanzaId:variant==='zero'?'':'REQUEST'}),peerDataOperationResult:results}};
+  }else {
+   const pairs=variant==='empty'?[]:[{pn:'9007199254740993',assignedLid:'9007199254741993',...(variant==='zero'?{latestLid:0}:variant==='absent'?{}:{latestLid:'9007199254742993'})},{pn:200,assignedLid:2000},...(variant==='duplicates'?[{pn:200,assignedLid:2001}]:[])];
+   protocol={type:lids,lidMigrationMappingSyncMessage:{...(variant==='malformed'?{encodedMappingPayload:Buffer.from([255])}:{encodedMappingPayload:proto.LIDMigrationMappingSyncPayload.encode(proto.LIDMigrationMappingSyncPayload.fromObject({pnToLidMappings:pairs})).finish()})}};
+  }
+  const message=proto.WebMessageInfo.fromObject({key:{remoteJid:'100@s.whatsapp.net',id:'PHONE',fromMe},message:{protocolMessage:protocol},messageTimestamp:1700000000}),input=wmi(message),cacheInput=JSON.parse(JSON.stringify(cached)),result=await h.run(message,cached);
+  cases.push({kind,variant,fromMe,input,cached:cacheInput,...result,events:result.events.map(({name,data})=>({name,...(name==='messages.upsert'?{messages:data.messages.map(wmi),requestId:data.requestId??null,type:data.type}:name==='creds.update'?{data}:{data})}))});
+ }
+ await writeFile('tests/fixtures/phone_protocol.json',JSON.stringify({cases},null,2)+'\n');console.log(`Generated ${cases.length} phone protocol cases`)
+}finally{await rm(temp,{recursive:true,force:true})}

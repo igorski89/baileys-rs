@@ -208,6 +208,41 @@ impl Actor<'_> {
     }
     async fn command(&mut self, command: Command) -> Result<(), Error> {
         match command {
+            Command::AppStateKeys { keys, reply } => {
+                let store = self.store.clone();
+                let mut credentials = self.credentials.clone();
+                let prepared = tokio::task::spawn_blocking(move || {
+                    store.transaction_with_error(|tx| {
+                        use base64::{Engine, engine::general_purpose::STANDARD};
+                        for key in keys {
+                            let id = key.key_id.and_then(|k| k.key_id).ok_or(
+                                crate::messages::Error::Envelope("missing app-state key id"),
+                            )?;
+                            let id = STANDARD.encode(id);
+                            let mutation = if let Some(data) = key.key_data {
+                                KeyMutation::put(id.clone(), KeyValue::AppStateSyncKey(data))
+                            } else {
+                                KeyMutation::delete(KeyCategory::AppStateSyncKey, id.clone())
+                            };
+                            tx.set(&[mutation])?;
+                            credentials.my_app_state_key_id = Some(id);
+                        }
+                        tx.save_credentials(&credentials)?;
+                        Ok::<_, Error>(credentials)
+                    })
+                })
+                .await
+                .map_err(|_| Error::Task);
+                let result = match prepared {
+                    Ok(Ok(credentials)) => {
+                        self.credentials = credentials;
+                        self.emit(Event::CredentialsUpdated);
+                        Ok(())
+                    }
+                    Ok(Err(error)) | Err(error) => Err(error),
+                };
+                let _ = reply.send(result);
+            }
             Command::PushName { name, reply } => {
                 let result = if let Some(me) = self.credentials.me.as_mut() {
                     if me.name.as_ref() == Some(&name) {
