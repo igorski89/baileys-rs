@@ -301,6 +301,11 @@ impl Actor<'_> {
                     };
                 let _ = reply.send(result);
             }
+            Command::LastPropHash { hash, reply } => {
+                self.credentials.last_prop_hash = Some(hash);
+                let result = self.persist().await;
+                let _ = reply.send(result);
+            }
             Command::RetryReceipt {
                 node,
                 count,

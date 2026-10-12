@@ -15,6 +15,7 @@ mod receipts;
 mod relay;
 mod retries;
 mod send;
+pub mod startup;
 use crate::{
     auth::{self, Credentials, SqliteAuthStore},
     binary::{self, BinaryNode},
@@ -148,6 +149,9 @@ pub struct Config {
     pub max_pending_queries: usize,
     pub event_capacity: usize,
     pub initialize_session: bool,
+    /// Fetch server properties, the blocklist and privacy settings on connection open.
+    /// Enabled by default, matching upstream.
+    pub fire_init_queries: bool,
     pub devices: crate::devices::Config,
     pub patch_message_before_sending: crate::relay::MessagePatch,
     pub enable_recent_message_cache: bool,
@@ -182,6 +186,7 @@ impl Default for Config {
             max_pending_queries: 128,
             event_capacity: 256,
             initialize_session: true,
+            fire_init_queries: true,
             devices: Default::default(),
             patch_message_before_sending: Default::default(),
             enable_recent_message_cache: true,
@@ -401,6 +406,10 @@ enum Command {
     IncrementAccountSync {
         reply: oneshot::Sender<Result<(), Error>>,
     },
+    LastPropHash {
+        hash: String,
+        reply: oneshot::Sender<Result<(), Error>>,
+    },
     RetryReceipt {
         node: BinaryNode,
         count: u64,
@@ -598,6 +607,7 @@ impl Socket {
             query_timeout: config.query_timeout,
         });
         send::spawn_own_worker(&inner, own_receiver);
+        startup::spawn_worker(&inner, config.fire_init_queries);
         incoming_messages::spawn_worker(&inner, message_receiver);
         notifications::spawn_worker(&inner, notification_receiver);
         let receipt_inner = Arc::downgrade(&inner);

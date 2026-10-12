@@ -37,6 +37,7 @@ fn store(temp: &tempfile::TempDir) -> SqliteAuthStore {
 async fn listener() -> (TcpListener, Config) {
     let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
     let config = Config {
+        fire_init_queries: false,
         url: format!("ws://{}", listener.local_addr().unwrap()),
         noise: baileys_rs::noise::Config {
             certificate_public_key: KeyPair::from_private(ROOT_PRIVATE).public,
