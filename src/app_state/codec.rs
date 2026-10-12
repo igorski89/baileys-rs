@@ -444,12 +444,35 @@ pub async fn decode_patches(
     minimum_version: Option<u64>,
     validate: bool,
 ) -> Result<DecodedState, Error> {
+    decode_patches_inner(
+        patches,
+        name,
+        initial,
+        provider,
+        minimum_version,
+        validate,
+        None,
+    )
+    .await
+}
+
+pub(crate) async fn decode_patches_inner(
+    patches: &mut [proto::SyncdPatch],
+    name: &str,
+    initial: &LtHashState,
+    provider: &KeyProvider,
+    minimum_version: Option<u64>,
+    validate: bool,
+    downloader: Option<&super::BlobDownloader>,
+) -> Result<DecodedState, Error> {
     let mut state = initial.clone();
     let mut mutations = MutationMap::new();
     let mut verified = None;
     for patch in patches {
-        if patch.external_mutations.is_some() {
-            return Err(Error::Input("unresolved external mutations"));
+        if let Some(reference) = &patch.external_mutations {
+            let downloader = downloader.ok_or(Error::Input("unresolved external mutations"))?;
+            let external = downloader.download_patch(reference.clone()).await?;
+            patch.mutations.extend(external.mutations);
         }
         let version = patch
             .version

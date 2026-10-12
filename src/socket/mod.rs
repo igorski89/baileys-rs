@@ -1,5 +1,6 @@
 //! Async WhatsApp WebSocket connection with exclusive Noise ownership and IQ routing.
 mod actor;
+mod app_state;
 mod event_responses;
 mod group_effects;
 mod groups;
@@ -44,6 +45,8 @@ use tokio_tungstenite::{
 
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
+    #[error(transparent)]
+    AppState(#[from] crate::app_state::Error),
     #[error(transparent)]
     Media(#[from] crate::media::Error),
     #[error("media connection query failed: {0}")]
@@ -97,6 +100,7 @@ impl Error {
     pub fn status_code(&self) -> Option<u16> {
         match self {
             Self::Timeout => Some(408),
+            Self::AppState(crate::app_state::Error::Media(error)) => error.status_code(),
             Self::Media(error) => error.status_code(),
             Self::MediaConnection(error) => error.status_code(),
             Self::Receipt(error) => Some(error.status_code()),

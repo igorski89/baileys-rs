@@ -27,6 +27,77 @@ async fn setup() -> (TcpListener, Config) {
     };
     (listener, config)
 }
+#[tokio::test]
+async fn app_state_collection_iq_runs_through_encrypted_socket() {
+    timeout(Duration::from_secs(8), async {
+        use baileys_rs::{
+            app_state::{CollectionRequest, collection_query},
+            proto,
+        };
+        use prost::Message as _;
+        let collections = vec![
+            CollectionRequest {
+                name: "regular".into(),
+                version: 12,
+                force_snapshot: false,
+            },
+            CollectionRequest {
+                name: "critical_block".into(),
+                version: 0,
+                force_snapshot: false,
+            },
+        ];
+        let expected = collection_query(&collections);
+        let (listener, config) = setup().await;
+        let server = tokio::spawn(async move {
+            let mut peer = Peer::accept(listener.accept().await.unwrap().0).await;
+            let mut request = peer.read().await;
+            let id = request.attrs.shift_remove("id").unwrap();
+            assert_eq!(request, expected);
+            peer.send(
+                BinaryNode::new("iq")
+                    .attr("id", id)
+                    .attr("type", "result")
+                    .with_content(NodeContent::Children(vec![
+                        BinaryNode::new("sync").with_content(NodeContent::Children(vec![
+                            BinaryNode::new("collection")
+                                .attr("name", "regular")
+                                .attr("version", "12")
+                                .attr("has_more_patches", "true")
+                                .with_content(NodeContent::Children(vec![
+                                    BinaryNode::new("patch").with_content(NodeContent::Bytes(
+                                        proto::SyncdPatch::default().encode_to_vec(),
+                                    )),
+                                ])),
+                        ])),
+                    ])),
+            )
+            .await;
+            peer.closed().await;
+        });
+        let (socket, _events) = Socket::connect(config, SqliteAuthStore::in_memory().unwrap())
+            .await
+            .unwrap();
+        let response = socket
+            .query_app_state_collections(&collections, Default::default())
+            .await
+            .unwrap();
+        assert_eq!(response.len(), 1);
+        assert!(response["regular"].has_more_patches);
+        assert_eq!(
+            response["regular"].patches[0]
+                .version
+                .as_ref()
+                .unwrap()
+                .version,
+            Some(13)
+        );
+        socket.close().await.unwrap();
+        server.await.unwrap();
+    })
+    .await
+    .unwrap();
+}
 fn reply(request: &BinaryNode, ttl: &str, auth: &str, hosts: &[&str]) -> BinaryNode {
     BinaryNode::new("iq")
         .attr("id", &request.attrs["id"])

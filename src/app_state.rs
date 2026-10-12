@@ -1,11 +1,13 @@
 //! App-state mutation integrity and snapshot/patch codecs.
 mod codec;
+mod network;
 use crate::{
     auth::{LtHashState, ValueMac},
     crypto, proto,
 };
 use base64::{Engine, engine::general_purpose::STANDARD};
 pub use codec::*;
+pub use network::*;
 use std::collections::BTreeMap;
 use zeroize::Zeroizing;
 pub const HASH_SIZE: usize = 128;
@@ -23,6 +25,8 @@ pub enum Error {
     Protobuf(#[from] prost::DecodeError),
     #[error(transparent)]
     Json(#[from] serde_json::Error),
+    #[error(transparent)]
+    Media(#[from] crate::media::Error),
     #[error("missing app-state key {0}")]
     MissingKey(String),
     #[error("invalid app-state {0}")]

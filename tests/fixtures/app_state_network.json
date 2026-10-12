@@ -1,0 +1,3476 @@
+[
+  {
+    "input": {
+      "tag": "iq",
+      "attrs": {},
+      "content": {
+        "Children": [
+          {
+            "tag": "sync",
+            "attrs": {},
+            "content": {
+              "Children": [
+                {
+                  "tag": "collection",
+                  "attrs": {
+                    "name": "regular",
+                    "version": "0",
+                    "has_more_patches": "true"
+                  },
+                  "content": {
+                    "Children": [
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": []
+                        }
+                      },
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": [
+                            10,
+                            2,
+                            8,
+                            7
+                          ]
+                        }
+                      },
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": null
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "downloads": [],
+    "expected": {
+      "regular": {
+        "patches": [
+          "0a020801",
+          "0a020807"
+        ],
+        "hasMorePatches": true,
+        "snapshot": null
+      }
+    }
+  },
+  {
+    "input": {
+      "tag": "iq",
+      "attrs": {},
+      "content": {
+        "Children": [
+          {
+            "tag": "sync",
+            "attrs": {},
+            "content": {
+              "Children": [
+                {
+                  "tag": "collection",
+                  "attrs": {
+                    "name": "regular",
+                    "version": "0",
+                    "has_more_patches": "false"
+                  },
+                  "content": {
+                    "Children": [
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": []
+                        }
+                      },
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": [
+                            10,
+                            2,
+                            8,
+                            7
+                          ]
+                        }
+                      },
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": null
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "downloads": [],
+    "expected": {
+      "regular": {
+        "patches": [
+          "0a020801",
+          "0a020807"
+        ],
+        "hasMorePatches": false,
+        "snapshot": null
+      }
+    }
+  },
+  {
+    "input": {
+      "tag": "iq",
+      "attrs": {},
+      "content": {
+        "Children": [
+          {
+            "tag": "sync",
+            "attrs": {},
+            "content": {
+              "Children": [
+                {
+                  "tag": "collection",
+                  "attrs": {
+                    "name": "regular",
+                    "version": "0",
+                    "has_more_patches": "TRUE"
+                  },
+                  "content": {
+                    "Children": [
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": []
+                        }
+                      },
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": [
+                            10,
+                            2,
+                            8,
+                            7
+                          ]
+                        }
+                      },
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": null
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "downloads": [],
+    "expected": {
+      "regular": {
+        "patches": [
+          "0a020801",
+          "0a020807"
+        ],
+        "hasMorePatches": false,
+        "snapshot": null
+      }
+    }
+  },
+  {
+    "input": {
+      "tag": "iq",
+      "attrs": {},
+      "content": {
+        "Children": [
+          {
+            "tag": "sync",
+            "attrs": {},
+            "content": {
+              "Children": [
+                {
+                  "tag": "collection",
+                  "attrs": {
+                    "name": "regular",
+                    "version": "12",
+                    "has_more_patches": "true"
+                  },
+                  "content": {
+                    "Children": [
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": []
+                        }
+                      },
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": [
+                            10,
+                            2,
+                            8,
+                            7
+                          ]
+                        }
+                      },
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": null
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "downloads": [],
+    "expected": {
+      "regular": {
+        "patches": [
+          "0a02080d",
+          "0a020807"
+        ],
+        "hasMorePatches": true,
+        "snapshot": null
+      }
+    }
+  },
+  {
+    "input": {
+      "tag": "iq",
+      "attrs": {},
+      "content": {
+        "Children": [
+          {
+            "tag": "sync",
+            "attrs": {},
+            "content": {
+              "Children": [
+                {
+                  "tag": "collection",
+                  "attrs": {
+                    "name": "regular",
+                    "version": "12",
+                    "has_more_patches": "false"
+                  },
+                  "content": {
+                    "Children": [
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": []
+                        }
+                      },
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": [
+                            10,
+                            2,
+                            8,
+                            7
+                          ]
+                        }
+                      },
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": null
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "downloads": [],
+    "expected": {
+      "regular": {
+        "patches": [
+          "0a02080d",
+          "0a020807"
+        ],
+        "hasMorePatches": false,
+        "snapshot": null
+      }
+    }
+  },
+  {
+    "input": {
+      "tag": "iq",
+      "attrs": {},
+      "content": {
+        "Children": [
+          {
+            "tag": "sync",
+            "attrs": {},
+            "content": {
+              "Children": [
+                {
+                  "tag": "collection",
+                  "attrs": {
+                    "name": "regular",
+                    "version": "12",
+                    "has_more_patches": "TRUE"
+                  },
+                  "content": {
+                    "Children": [
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": []
+                        }
+                      },
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": [
+                            10,
+                            2,
+                            8,
+                            7
+                          ]
+                        }
+                      },
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": null
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "downloads": [],
+    "expected": {
+      "regular": {
+        "patches": [
+          "0a02080d",
+          "0a020807"
+        ],
+        "hasMorePatches": false,
+        "snapshot": null
+      }
+    }
+  },
+  {
+    "input": {
+      "tag": "iq",
+      "attrs": {},
+      "content": {
+        "Children": [
+          {
+            "tag": "sync",
+            "attrs": {},
+            "content": {
+              "Children": [
+                {
+                  "tag": "collection",
+                  "attrs": {
+                    "name": "regular",
+                    "version": "4294967295",
+                    "has_more_patches": "true"
+                  },
+                  "content": {
+                    "Children": [
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": []
+                        }
+                      },
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": [
+                            10,
+                            2,
+                            8,
+                            7
+                          ]
+                        }
+                      },
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": null
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "downloads": [],
+    "expected": {
+      "regular": {
+        "patches": [
+          "0a06088080808010",
+          "0a020807"
+        ],
+        "hasMorePatches": true,
+        "snapshot": null
+      }
+    }
+  },
+  {
+    "input": {
+      "tag": "iq",
+      "attrs": {},
+      "content": {
+        "Children": [
+          {
+            "tag": "sync",
+            "attrs": {},
+            "content": {
+              "Children": [
+                {
+                  "tag": "collection",
+                  "attrs": {
+                    "name": "regular",
+                    "version": "4294967295",
+                    "has_more_patches": "false"
+                  },
+                  "content": {
+                    "Children": [
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": []
+                        }
+                      },
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": [
+                            10,
+                            2,
+                            8,
+                            7
+                          ]
+                        }
+                      },
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": null
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "downloads": [],
+    "expected": {
+      "regular": {
+        "patches": [
+          "0a06088080808010",
+          "0a020807"
+        ],
+        "hasMorePatches": false,
+        "snapshot": null
+      }
+    }
+  },
+  {
+    "input": {
+      "tag": "iq",
+      "attrs": {},
+      "content": {
+        "Children": [
+          {
+            "tag": "sync",
+            "attrs": {},
+            "content": {
+              "Children": [
+                {
+                  "tag": "collection",
+                  "attrs": {
+                    "name": "regular",
+                    "version": "4294967295",
+                    "has_more_patches": "TRUE"
+                  },
+                  "content": {
+                    "Children": [
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": []
+                        }
+                      },
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": [
+                            10,
+                            2,
+                            8,
+                            7
+                          ]
+                        }
+                      },
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": null
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "downloads": [],
+    "expected": {
+      "regular": {
+        "patches": [
+          "0a06088080808010",
+          "0a020807"
+        ],
+        "hasMorePatches": false,
+        "snapshot": null
+      }
+    }
+  },
+  {
+    "input": {
+      "tag": "iq",
+      "attrs": {},
+      "content": {
+        "Children": [
+          {
+            "tag": "sync",
+            "attrs": {},
+            "content": {
+              "Children": [
+                {
+                  "tag": "collection",
+                  "attrs": {
+                    "name": "regular",
+                    "version": "0",
+                    "has_more_patches": "true"
+                  },
+                  "content": {
+                    "Children": [
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": []
+                        }
+                      },
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": [
+                            10,
+                            2,
+                            8,
+                            7
+                          ]
+                        }
+                      },
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": null
+                      },
+                      {
+                        "tag": "snapshot",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": [
+                            10,
+                            32,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            18,
+                            9,
+                            47,
+                            115,
+                            110,
+                            97,
+                            112,
+                            115,
+                            104,
+                            111,
+                            116
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "downloads": [
+      "/snapshot"
+    ],
+    "expected": {
+      "regular": {
+        "patches": [
+          "0a020801",
+          "0a020807"
+        ],
+        "hasMorePatches": true,
+        "snapshot": "0a0208091a010122030a0102"
+      }
+    }
+  },
+  {
+    "input": {
+      "tag": "iq",
+      "attrs": {},
+      "content": {
+        "Children": [
+          {
+            "tag": "sync",
+            "attrs": {},
+            "content": {
+              "Children": [
+                {
+                  "tag": "collection",
+                  "attrs": {
+                    "name": "regular",
+                    "version": "0",
+                    "has_more_patches": "false"
+                  },
+                  "content": {
+                    "Children": [
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": []
+                        }
+                      },
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": [
+                            10,
+                            2,
+                            8,
+                            7
+                          ]
+                        }
+                      },
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": null
+                      },
+                      {
+                        "tag": "snapshot",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": [
+                            10,
+                            32,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            18,
+                            9,
+                            47,
+                            115,
+                            110,
+                            97,
+                            112,
+                            115,
+                            104,
+                            111,
+                            116
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "downloads": [
+      "/snapshot"
+    ],
+    "expected": {
+      "regular": {
+        "patches": [
+          "0a020801",
+          "0a020807"
+        ],
+        "hasMorePatches": false,
+        "snapshot": "0a0208091a010122030a0102"
+      }
+    }
+  },
+  {
+    "input": {
+      "tag": "iq",
+      "attrs": {},
+      "content": {
+        "Children": [
+          {
+            "tag": "sync",
+            "attrs": {},
+            "content": {
+              "Children": [
+                {
+                  "tag": "collection",
+                  "attrs": {
+                    "name": "regular",
+                    "version": "0",
+                    "has_more_patches": "TRUE"
+                  },
+                  "content": {
+                    "Children": [
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": []
+                        }
+                      },
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": [
+                            10,
+                            2,
+                            8,
+                            7
+                          ]
+                        }
+                      },
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": null
+                      },
+                      {
+                        "tag": "snapshot",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": [
+                            10,
+                            32,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            18,
+                            9,
+                            47,
+                            115,
+                            110,
+                            97,
+                            112,
+                            115,
+                            104,
+                            111,
+                            116
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "downloads": [
+      "/snapshot"
+    ],
+    "expected": {
+      "regular": {
+        "patches": [
+          "0a020801",
+          "0a020807"
+        ],
+        "hasMorePatches": false,
+        "snapshot": "0a0208091a010122030a0102"
+      }
+    }
+  },
+  {
+    "input": {
+      "tag": "iq",
+      "attrs": {},
+      "content": {
+        "Children": [
+          {
+            "tag": "sync",
+            "attrs": {},
+            "content": {
+              "Children": [
+                {
+                  "tag": "collection",
+                  "attrs": {
+                    "name": "regular",
+                    "version": "12",
+                    "has_more_patches": "true"
+                  },
+                  "content": {
+                    "Children": [
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": []
+                        }
+                      },
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": [
+                            10,
+                            2,
+                            8,
+                            7
+                          ]
+                        }
+                      },
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": null
+                      },
+                      {
+                        "tag": "snapshot",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": [
+                            10,
+                            32,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            18,
+                            9,
+                            47,
+                            115,
+                            110,
+                            97,
+                            112,
+                            115,
+                            104,
+                            111,
+                            116
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "downloads": [
+      "/snapshot"
+    ],
+    "expected": {
+      "regular": {
+        "patches": [
+          "0a02080d",
+          "0a020807"
+        ],
+        "hasMorePatches": true,
+        "snapshot": "0a0208091a010122030a0102"
+      }
+    }
+  },
+  {
+    "input": {
+      "tag": "iq",
+      "attrs": {},
+      "content": {
+        "Children": [
+          {
+            "tag": "sync",
+            "attrs": {},
+            "content": {
+              "Children": [
+                {
+                  "tag": "collection",
+                  "attrs": {
+                    "name": "regular",
+                    "version": "12",
+                    "has_more_patches": "false"
+                  },
+                  "content": {
+                    "Children": [
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": []
+                        }
+                      },
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": [
+                            10,
+                            2,
+                            8,
+                            7
+                          ]
+                        }
+                      },
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": null
+                      },
+                      {
+                        "tag": "snapshot",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": [
+                            10,
+                            32,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            18,
+                            9,
+                            47,
+                            115,
+                            110,
+                            97,
+                            112,
+                            115,
+                            104,
+                            111,
+                            116
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "downloads": [
+      "/snapshot"
+    ],
+    "expected": {
+      "regular": {
+        "patches": [
+          "0a02080d",
+          "0a020807"
+        ],
+        "hasMorePatches": false,
+        "snapshot": "0a0208091a010122030a0102"
+      }
+    }
+  },
+  {
+    "input": {
+      "tag": "iq",
+      "attrs": {},
+      "content": {
+        "Children": [
+          {
+            "tag": "sync",
+            "attrs": {},
+            "content": {
+              "Children": [
+                {
+                  "tag": "collection",
+                  "attrs": {
+                    "name": "regular",
+                    "version": "12",
+                    "has_more_patches": "TRUE"
+                  },
+                  "content": {
+                    "Children": [
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": []
+                        }
+                      },
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": [
+                            10,
+                            2,
+                            8,
+                            7
+                          ]
+                        }
+                      },
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": null
+                      },
+                      {
+                        "tag": "snapshot",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": [
+                            10,
+                            32,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            18,
+                            9,
+                            47,
+                            115,
+                            110,
+                            97,
+                            112,
+                            115,
+                            104,
+                            111,
+                            116
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "downloads": [
+      "/snapshot"
+    ],
+    "expected": {
+      "regular": {
+        "patches": [
+          "0a02080d",
+          "0a020807"
+        ],
+        "hasMorePatches": false,
+        "snapshot": "0a0208091a010122030a0102"
+      }
+    }
+  },
+  {
+    "input": {
+      "tag": "iq",
+      "attrs": {},
+      "content": {
+        "Children": [
+          {
+            "tag": "sync",
+            "attrs": {},
+            "content": {
+              "Children": [
+                {
+                  "tag": "collection",
+                  "attrs": {
+                    "name": "regular",
+                    "version": "4294967295",
+                    "has_more_patches": "true"
+                  },
+                  "content": {
+                    "Children": [
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": []
+                        }
+                      },
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": [
+                            10,
+                            2,
+                            8,
+                            7
+                          ]
+                        }
+                      },
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": null
+                      },
+                      {
+                        "tag": "snapshot",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": [
+                            10,
+                            32,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            18,
+                            9,
+                            47,
+                            115,
+                            110,
+                            97,
+                            112,
+                            115,
+                            104,
+                            111,
+                            116
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "downloads": [
+      "/snapshot"
+    ],
+    "expected": {
+      "regular": {
+        "patches": [
+          "0a06088080808010",
+          "0a020807"
+        ],
+        "hasMorePatches": true,
+        "snapshot": "0a0208091a010122030a0102"
+      }
+    }
+  },
+  {
+    "input": {
+      "tag": "iq",
+      "attrs": {},
+      "content": {
+        "Children": [
+          {
+            "tag": "sync",
+            "attrs": {},
+            "content": {
+              "Children": [
+                {
+                  "tag": "collection",
+                  "attrs": {
+                    "name": "regular",
+                    "version": "4294967295",
+                    "has_more_patches": "false"
+                  },
+                  "content": {
+                    "Children": [
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": []
+                        }
+                      },
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": [
+                            10,
+                            2,
+                            8,
+                            7
+                          ]
+                        }
+                      },
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": null
+                      },
+                      {
+                        "tag": "snapshot",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": [
+                            10,
+                            32,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            18,
+                            9,
+                            47,
+                            115,
+                            110,
+                            97,
+                            112,
+                            115,
+                            104,
+                            111,
+                            116
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "downloads": [
+      "/snapshot"
+    ],
+    "expected": {
+      "regular": {
+        "patches": [
+          "0a06088080808010",
+          "0a020807"
+        ],
+        "hasMorePatches": false,
+        "snapshot": "0a0208091a010122030a0102"
+      }
+    }
+  },
+  {
+    "input": {
+      "tag": "iq",
+      "attrs": {},
+      "content": {
+        "Children": [
+          {
+            "tag": "sync",
+            "attrs": {},
+            "content": {
+              "Children": [
+                {
+                  "tag": "collection",
+                  "attrs": {
+                    "name": "regular",
+                    "version": "4294967295",
+                    "has_more_patches": "TRUE"
+                  },
+                  "content": {
+                    "Children": [
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": []
+                        }
+                      },
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": [
+                            10,
+                            2,
+                            8,
+                            7
+                          ]
+                        }
+                      },
+                      {
+                        "tag": "patch",
+                        "attrs": {},
+                        "content": null
+                      },
+                      {
+                        "tag": "snapshot",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": [
+                            10,
+                            32,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            18,
+                            9,
+                            47,
+                            115,
+                            110,
+                            97,
+                            112,
+                            115,
+                            104,
+                            111,
+                            116
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "downloads": [
+      "/snapshot"
+    ],
+    "expected": {
+      "regular": {
+        "patches": [
+          "0a06088080808010",
+          "0a020807"
+        ],
+        "hasMorePatches": false,
+        "snapshot": "0a0208091a010122030a0102"
+      }
+    }
+  },
+  {
+    "input": {
+      "tag": "iq",
+      "attrs": {},
+      "content": {
+        "Children": [
+          {
+            "tag": "sync",
+            "attrs": {},
+            "content": {
+              "Children": [
+                {
+                  "tag": "collection",
+                  "attrs": {
+                    "name": "regular",
+                    "version": "0",
+                    "has_more_patches": "true"
+                  },
+                  "content": {
+                    "Children": [
+                      {
+                        "tag": "patches",
+                        "attrs": {},
+                        "content": {
+                          "Children": [
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": {
+                                "Bytes": []
+                              }
+                            },
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": {
+                                "Bytes": [
+                                  10,
+                                  2,
+                                  8,
+                                  7
+                                ]
+                              }
+                            },
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": null
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "downloads": [],
+    "expected": {
+      "regular": {
+        "patches": [
+          "0a020801",
+          "0a020807"
+        ],
+        "hasMorePatches": true,
+        "snapshot": null
+      }
+    }
+  },
+  {
+    "input": {
+      "tag": "iq",
+      "attrs": {},
+      "content": {
+        "Children": [
+          {
+            "tag": "sync",
+            "attrs": {},
+            "content": {
+              "Children": [
+                {
+                  "tag": "collection",
+                  "attrs": {
+                    "name": "regular",
+                    "version": "0",
+                    "has_more_patches": "false"
+                  },
+                  "content": {
+                    "Children": [
+                      {
+                        "tag": "patches",
+                        "attrs": {},
+                        "content": {
+                          "Children": [
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": {
+                                "Bytes": []
+                              }
+                            },
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": {
+                                "Bytes": [
+                                  10,
+                                  2,
+                                  8,
+                                  7
+                                ]
+                              }
+                            },
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": null
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "downloads": [],
+    "expected": {
+      "regular": {
+        "patches": [
+          "0a020801",
+          "0a020807"
+        ],
+        "hasMorePatches": false,
+        "snapshot": null
+      }
+    }
+  },
+  {
+    "input": {
+      "tag": "iq",
+      "attrs": {},
+      "content": {
+        "Children": [
+          {
+            "tag": "sync",
+            "attrs": {},
+            "content": {
+              "Children": [
+                {
+                  "tag": "collection",
+                  "attrs": {
+                    "name": "regular",
+                    "version": "0",
+                    "has_more_patches": "TRUE"
+                  },
+                  "content": {
+                    "Children": [
+                      {
+                        "tag": "patches",
+                        "attrs": {},
+                        "content": {
+                          "Children": [
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": {
+                                "Bytes": []
+                              }
+                            },
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": {
+                                "Bytes": [
+                                  10,
+                                  2,
+                                  8,
+                                  7
+                                ]
+                              }
+                            },
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": null
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "downloads": [],
+    "expected": {
+      "regular": {
+        "patches": [
+          "0a020801",
+          "0a020807"
+        ],
+        "hasMorePatches": false,
+        "snapshot": null
+      }
+    }
+  },
+  {
+    "input": {
+      "tag": "iq",
+      "attrs": {},
+      "content": {
+        "Children": [
+          {
+            "tag": "sync",
+            "attrs": {},
+            "content": {
+              "Children": [
+                {
+                  "tag": "collection",
+                  "attrs": {
+                    "name": "regular",
+                    "version": "12",
+                    "has_more_patches": "true"
+                  },
+                  "content": {
+                    "Children": [
+                      {
+                        "tag": "patches",
+                        "attrs": {},
+                        "content": {
+                          "Children": [
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": {
+                                "Bytes": []
+                              }
+                            },
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": {
+                                "Bytes": [
+                                  10,
+                                  2,
+                                  8,
+                                  7
+                                ]
+                              }
+                            },
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": null
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "downloads": [],
+    "expected": {
+      "regular": {
+        "patches": [
+          "0a02080d",
+          "0a020807"
+        ],
+        "hasMorePatches": true,
+        "snapshot": null
+      }
+    }
+  },
+  {
+    "input": {
+      "tag": "iq",
+      "attrs": {},
+      "content": {
+        "Children": [
+          {
+            "tag": "sync",
+            "attrs": {},
+            "content": {
+              "Children": [
+                {
+                  "tag": "collection",
+                  "attrs": {
+                    "name": "regular",
+                    "version": "12",
+                    "has_more_patches": "false"
+                  },
+                  "content": {
+                    "Children": [
+                      {
+                        "tag": "patches",
+                        "attrs": {},
+                        "content": {
+                          "Children": [
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": {
+                                "Bytes": []
+                              }
+                            },
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": {
+                                "Bytes": [
+                                  10,
+                                  2,
+                                  8,
+                                  7
+                                ]
+                              }
+                            },
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": null
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "downloads": [],
+    "expected": {
+      "regular": {
+        "patches": [
+          "0a02080d",
+          "0a020807"
+        ],
+        "hasMorePatches": false,
+        "snapshot": null
+      }
+    }
+  },
+  {
+    "input": {
+      "tag": "iq",
+      "attrs": {},
+      "content": {
+        "Children": [
+          {
+            "tag": "sync",
+            "attrs": {},
+            "content": {
+              "Children": [
+                {
+                  "tag": "collection",
+                  "attrs": {
+                    "name": "regular",
+                    "version": "12",
+                    "has_more_patches": "TRUE"
+                  },
+                  "content": {
+                    "Children": [
+                      {
+                        "tag": "patches",
+                        "attrs": {},
+                        "content": {
+                          "Children": [
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": {
+                                "Bytes": []
+                              }
+                            },
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": {
+                                "Bytes": [
+                                  10,
+                                  2,
+                                  8,
+                                  7
+                                ]
+                              }
+                            },
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": null
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "downloads": [],
+    "expected": {
+      "regular": {
+        "patches": [
+          "0a02080d",
+          "0a020807"
+        ],
+        "hasMorePatches": false,
+        "snapshot": null
+      }
+    }
+  },
+  {
+    "input": {
+      "tag": "iq",
+      "attrs": {},
+      "content": {
+        "Children": [
+          {
+            "tag": "sync",
+            "attrs": {},
+            "content": {
+              "Children": [
+                {
+                  "tag": "collection",
+                  "attrs": {
+                    "name": "regular",
+                    "version": "4294967295",
+                    "has_more_patches": "true"
+                  },
+                  "content": {
+                    "Children": [
+                      {
+                        "tag": "patches",
+                        "attrs": {},
+                        "content": {
+                          "Children": [
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": {
+                                "Bytes": []
+                              }
+                            },
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": {
+                                "Bytes": [
+                                  10,
+                                  2,
+                                  8,
+                                  7
+                                ]
+                              }
+                            },
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": null
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "downloads": [],
+    "expected": {
+      "regular": {
+        "patches": [
+          "0a06088080808010",
+          "0a020807"
+        ],
+        "hasMorePatches": true,
+        "snapshot": null
+      }
+    }
+  },
+  {
+    "input": {
+      "tag": "iq",
+      "attrs": {},
+      "content": {
+        "Children": [
+          {
+            "tag": "sync",
+            "attrs": {},
+            "content": {
+              "Children": [
+                {
+                  "tag": "collection",
+                  "attrs": {
+                    "name": "regular",
+                    "version": "4294967295",
+                    "has_more_patches": "false"
+                  },
+                  "content": {
+                    "Children": [
+                      {
+                        "tag": "patches",
+                        "attrs": {},
+                        "content": {
+                          "Children": [
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": {
+                                "Bytes": []
+                              }
+                            },
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": {
+                                "Bytes": [
+                                  10,
+                                  2,
+                                  8,
+                                  7
+                                ]
+                              }
+                            },
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": null
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "downloads": [],
+    "expected": {
+      "regular": {
+        "patches": [
+          "0a06088080808010",
+          "0a020807"
+        ],
+        "hasMorePatches": false,
+        "snapshot": null
+      }
+    }
+  },
+  {
+    "input": {
+      "tag": "iq",
+      "attrs": {},
+      "content": {
+        "Children": [
+          {
+            "tag": "sync",
+            "attrs": {},
+            "content": {
+              "Children": [
+                {
+                  "tag": "collection",
+                  "attrs": {
+                    "name": "regular",
+                    "version": "4294967295",
+                    "has_more_patches": "TRUE"
+                  },
+                  "content": {
+                    "Children": [
+                      {
+                        "tag": "patches",
+                        "attrs": {},
+                        "content": {
+                          "Children": [
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": {
+                                "Bytes": []
+                              }
+                            },
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": {
+                                "Bytes": [
+                                  10,
+                                  2,
+                                  8,
+                                  7
+                                ]
+                              }
+                            },
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": null
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "downloads": [],
+    "expected": {
+      "regular": {
+        "patches": [
+          "0a06088080808010",
+          "0a020807"
+        ],
+        "hasMorePatches": false,
+        "snapshot": null
+      }
+    }
+  },
+  {
+    "input": {
+      "tag": "iq",
+      "attrs": {},
+      "content": {
+        "Children": [
+          {
+            "tag": "sync",
+            "attrs": {},
+            "content": {
+              "Children": [
+                {
+                  "tag": "collection",
+                  "attrs": {
+                    "name": "regular",
+                    "version": "0",
+                    "has_more_patches": "true"
+                  },
+                  "content": {
+                    "Children": [
+                      {
+                        "tag": "patches",
+                        "attrs": {},
+                        "content": {
+                          "Children": [
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": {
+                                "Bytes": []
+                              }
+                            },
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": {
+                                "Bytes": [
+                                  10,
+                                  2,
+                                  8,
+                                  7
+                                ]
+                              }
+                            },
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": null
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "tag": "snapshot",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": [
+                            10,
+                            32,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            18,
+                            9,
+                            47,
+                            115,
+                            110,
+                            97,
+                            112,
+                            115,
+                            104,
+                            111,
+                            116
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "downloads": [
+      "/snapshot"
+    ],
+    "expected": {
+      "regular": {
+        "patches": [
+          "0a020801",
+          "0a020807"
+        ],
+        "hasMorePatches": true,
+        "snapshot": "0a0208091a010122030a0102"
+      }
+    }
+  },
+  {
+    "input": {
+      "tag": "iq",
+      "attrs": {},
+      "content": {
+        "Children": [
+          {
+            "tag": "sync",
+            "attrs": {},
+            "content": {
+              "Children": [
+                {
+                  "tag": "collection",
+                  "attrs": {
+                    "name": "regular",
+                    "version": "0",
+                    "has_more_patches": "false"
+                  },
+                  "content": {
+                    "Children": [
+                      {
+                        "tag": "patches",
+                        "attrs": {},
+                        "content": {
+                          "Children": [
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": {
+                                "Bytes": []
+                              }
+                            },
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": {
+                                "Bytes": [
+                                  10,
+                                  2,
+                                  8,
+                                  7
+                                ]
+                              }
+                            },
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": null
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "tag": "snapshot",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": [
+                            10,
+                            32,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            18,
+                            9,
+                            47,
+                            115,
+                            110,
+                            97,
+                            112,
+                            115,
+                            104,
+                            111,
+                            116
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "downloads": [
+      "/snapshot"
+    ],
+    "expected": {
+      "regular": {
+        "patches": [
+          "0a020801",
+          "0a020807"
+        ],
+        "hasMorePatches": false,
+        "snapshot": "0a0208091a010122030a0102"
+      }
+    }
+  },
+  {
+    "input": {
+      "tag": "iq",
+      "attrs": {},
+      "content": {
+        "Children": [
+          {
+            "tag": "sync",
+            "attrs": {},
+            "content": {
+              "Children": [
+                {
+                  "tag": "collection",
+                  "attrs": {
+                    "name": "regular",
+                    "version": "0",
+                    "has_more_patches": "TRUE"
+                  },
+                  "content": {
+                    "Children": [
+                      {
+                        "tag": "patches",
+                        "attrs": {},
+                        "content": {
+                          "Children": [
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": {
+                                "Bytes": []
+                              }
+                            },
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": {
+                                "Bytes": [
+                                  10,
+                                  2,
+                                  8,
+                                  7
+                                ]
+                              }
+                            },
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": null
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "tag": "snapshot",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": [
+                            10,
+                            32,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            18,
+                            9,
+                            47,
+                            115,
+                            110,
+                            97,
+                            112,
+                            115,
+                            104,
+                            111,
+                            116
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "downloads": [
+      "/snapshot"
+    ],
+    "expected": {
+      "regular": {
+        "patches": [
+          "0a020801",
+          "0a020807"
+        ],
+        "hasMorePatches": false,
+        "snapshot": "0a0208091a010122030a0102"
+      }
+    }
+  },
+  {
+    "input": {
+      "tag": "iq",
+      "attrs": {},
+      "content": {
+        "Children": [
+          {
+            "tag": "sync",
+            "attrs": {},
+            "content": {
+              "Children": [
+                {
+                  "tag": "collection",
+                  "attrs": {
+                    "name": "regular",
+                    "version": "12",
+                    "has_more_patches": "true"
+                  },
+                  "content": {
+                    "Children": [
+                      {
+                        "tag": "patches",
+                        "attrs": {},
+                        "content": {
+                          "Children": [
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": {
+                                "Bytes": []
+                              }
+                            },
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": {
+                                "Bytes": [
+                                  10,
+                                  2,
+                                  8,
+                                  7
+                                ]
+                              }
+                            },
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": null
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "tag": "snapshot",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": [
+                            10,
+                            32,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            18,
+                            9,
+                            47,
+                            115,
+                            110,
+                            97,
+                            112,
+                            115,
+                            104,
+                            111,
+                            116
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "downloads": [
+      "/snapshot"
+    ],
+    "expected": {
+      "regular": {
+        "patches": [
+          "0a02080d",
+          "0a020807"
+        ],
+        "hasMorePatches": true,
+        "snapshot": "0a0208091a010122030a0102"
+      }
+    }
+  },
+  {
+    "input": {
+      "tag": "iq",
+      "attrs": {},
+      "content": {
+        "Children": [
+          {
+            "tag": "sync",
+            "attrs": {},
+            "content": {
+              "Children": [
+                {
+                  "tag": "collection",
+                  "attrs": {
+                    "name": "regular",
+                    "version": "12",
+                    "has_more_patches": "false"
+                  },
+                  "content": {
+                    "Children": [
+                      {
+                        "tag": "patches",
+                        "attrs": {},
+                        "content": {
+                          "Children": [
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": {
+                                "Bytes": []
+                              }
+                            },
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": {
+                                "Bytes": [
+                                  10,
+                                  2,
+                                  8,
+                                  7
+                                ]
+                              }
+                            },
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": null
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "tag": "snapshot",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": [
+                            10,
+                            32,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            18,
+                            9,
+                            47,
+                            115,
+                            110,
+                            97,
+                            112,
+                            115,
+                            104,
+                            111,
+                            116
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "downloads": [
+      "/snapshot"
+    ],
+    "expected": {
+      "regular": {
+        "patches": [
+          "0a02080d",
+          "0a020807"
+        ],
+        "hasMorePatches": false,
+        "snapshot": "0a0208091a010122030a0102"
+      }
+    }
+  },
+  {
+    "input": {
+      "tag": "iq",
+      "attrs": {},
+      "content": {
+        "Children": [
+          {
+            "tag": "sync",
+            "attrs": {},
+            "content": {
+              "Children": [
+                {
+                  "tag": "collection",
+                  "attrs": {
+                    "name": "regular",
+                    "version": "12",
+                    "has_more_patches": "TRUE"
+                  },
+                  "content": {
+                    "Children": [
+                      {
+                        "tag": "patches",
+                        "attrs": {},
+                        "content": {
+                          "Children": [
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": {
+                                "Bytes": []
+                              }
+                            },
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": {
+                                "Bytes": [
+                                  10,
+                                  2,
+                                  8,
+                                  7
+                                ]
+                              }
+                            },
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": null
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "tag": "snapshot",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": [
+                            10,
+                            32,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            18,
+                            9,
+                            47,
+                            115,
+                            110,
+                            97,
+                            112,
+                            115,
+                            104,
+                            111,
+                            116
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "downloads": [
+      "/snapshot"
+    ],
+    "expected": {
+      "regular": {
+        "patches": [
+          "0a02080d",
+          "0a020807"
+        ],
+        "hasMorePatches": false,
+        "snapshot": "0a0208091a010122030a0102"
+      }
+    }
+  },
+  {
+    "input": {
+      "tag": "iq",
+      "attrs": {},
+      "content": {
+        "Children": [
+          {
+            "tag": "sync",
+            "attrs": {},
+            "content": {
+              "Children": [
+                {
+                  "tag": "collection",
+                  "attrs": {
+                    "name": "regular",
+                    "version": "4294967295",
+                    "has_more_patches": "true"
+                  },
+                  "content": {
+                    "Children": [
+                      {
+                        "tag": "patches",
+                        "attrs": {},
+                        "content": {
+                          "Children": [
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": {
+                                "Bytes": []
+                              }
+                            },
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": {
+                                "Bytes": [
+                                  10,
+                                  2,
+                                  8,
+                                  7
+                                ]
+                              }
+                            },
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": null
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "tag": "snapshot",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": [
+                            10,
+                            32,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            18,
+                            9,
+                            47,
+                            115,
+                            110,
+                            97,
+                            112,
+                            115,
+                            104,
+                            111,
+                            116
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "downloads": [
+      "/snapshot"
+    ],
+    "expected": {
+      "regular": {
+        "patches": [
+          "0a06088080808010",
+          "0a020807"
+        ],
+        "hasMorePatches": true,
+        "snapshot": "0a0208091a010122030a0102"
+      }
+    }
+  },
+  {
+    "input": {
+      "tag": "iq",
+      "attrs": {},
+      "content": {
+        "Children": [
+          {
+            "tag": "sync",
+            "attrs": {},
+            "content": {
+              "Children": [
+                {
+                  "tag": "collection",
+                  "attrs": {
+                    "name": "regular",
+                    "version": "4294967295",
+                    "has_more_patches": "false"
+                  },
+                  "content": {
+                    "Children": [
+                      {
+                        "tag": "patches",
+                        "attrs": {},
+                        "content": {
+                          "Children": [
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": {
+                                "Bytes": []
+                              }
+                            },
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": {
+                                "Bytes": [
+                                  10,
+                                  2,
+                                  8,
+                                  7
+                                ]
+                              }
+                            },
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": null
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "tag": "snapshot",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": [
+                            10,
+                            32,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            18,
+                            9,
+                            47,
+                            115,
+                            110,
+                            97,
+                            112,
+                            115,
+                            104,
+                            111,
+                            116
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "downloads": [
+      "/snapshot"
+    ],
+    "expected": {
+      "regular": {
+        "patches": [
+          "0a06088080808010",
+          "0a020807"
+        ],
+        "hasMorePatches": false,
+        "snapshot": "0a0208091a010122030a0102"
+      }
+    }
+  },
+  {
+    "input": {
+      "tag": "iq",
+      "attrs": {},
+      "content": {
+        "Children": [
+          {
+            "tag": "sync",
+            "attrs": {},
+            "content": {
+              "Children": [
+                {
+                  "tag": "collection",
+                  "attrs": {
+                    "name": "regular",
+                    "version": "4294967295",
+                    "has_more_patches": "TRUE"
+                  },
+                  "content": {
+                    "Children": [
+                      {
+                        "tag": "patches",
+                        "attrs": {},
+                        "content": {
+                          "Children": [
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": {
+                                "Bytes": []
+                              }
+                            },
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": {
+                                "Bytes": [
+                                  10,
+                                  2,
+                                  8,
+                                  7
+                                ]
+                              }
+                            },
+                            {
+                              "tag": "patch",
+                              "attrs": {},
+                              "content": null
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "tag": "snapshot",
+                        "attrs": {},
+                        "content": {
+                          "Bytes": [
+                            10,
+                            32,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            8,
+                            18,
+                            9,
+                            47,
+                            115,
+                            110,
+                            97,
+                            112,
+                            115,
+                            104,
+                            111,
+                            116
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "downloads": [
+      "/snapshot"
+    ],
+    "expected": {
+      "regular": {
+        "patches": [
+          "0a06088080808010",
+          "0a020807"
+        ],
+        "hasMorePatches": false,
+        "snapshot": "0a0208091a010122030a0102"
+      }
+    }
+  }
+]
