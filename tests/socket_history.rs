@@ -70,11 +70,11 @@ async fn history_protocol_policy_self_guards_records_failures_and_metadata_match
             let server=tokio::spawn(async move{let mut peer=Peer::accept(listener.accept().await.unwrap().0).await;peer.closed().await;});
             let(socket,mut events)=Socket::connect(config,store.clone()).await.unwrap();while events.try_recv().is_ok(){}
             let message=proto::WebMessageInfo::decode(unhex(case["message"].as_str().unwrap()).as_slice()).unwrap();let envelope=messages::Envelope{message,key_metadata:Default::default(),category:None,retry_count:None,author:"100@s.whatsapp.net".into(),sender:"100@s.whatsapp.net".into()};
-            let result=socket.upsert_message(&envelope,messages::own::UpsertKind::Notify).await;assert_eq!(result.is_err(),case["expected"]["error"].is_string(),"{}",case);
-            let mut observed=vec![];while let Ok(event)=events.try_recv(){match event {
+            socket.buffer_events();let result=socket.upsert_message(&envelope,messages::own::UpsertKind::Notify).await;assert_eq!(result.is_err(),case["expected"]["error"].is_string(),"{}",case);
+            socket.flush_events().unwrap();let mut observed=vec![];while let Ok(event)=events.try_recv(){match event {
                 Event::CredentialsUpdated=>{let creds=store.load_credentials().unwrap();observed.push(json!({"name":"creds.update","records":creds.processed_history_messages.iter().map(|m|json!({"key":wire(&m.key.as_ref().unwrap().encode_to_vec()),"timestamp":m.message_timestamp.unwrap().to_string()})).collect::<Vec<_>>()}));},
                 Event::MessagingHistorySet(set)=>{let mut value=json!({"name":"messaging-history.set","chunkOrder":set.chunk_order,"session":set.peer_data_request_session_id,"syncType":set.data.sync_type});if let Some(latest)=set.is_latest{value["isLatest"]=json!(latest)}assert_eq!(set.data.chats.len(),1);assert_eq!(set.data.contacts.len(),1);observed.push(value);},_=>{}
-            }}assert_eq!(json!(observed),case["expected"]["events"],"{}",case);
+            }}assert_eq!(json!(observed),case["expected"]["bufferedEvents"],"{}",case);
             let ids:Vec<_>=case["expected"]["keys"].as_object().unwrap().keys().cloned().collect();let tokens=store.get(KeyCategory::Tctoken,&ids).unwrap();let mut observed=json!({});for(id,value)in tokens{let KeyValue::Tctoken(token)=value else{panic!()};let mut value=serde_json::to_value(&token).unwrap();value["token"]=json!(wire(&token.token));observed[id]=value;}assert_eq!(observed,case["expected"]["keys"]);
             if !case["expected"]["maps"].as_array().unwrap().is_empty(){assert_eq!(baileys_rs::signal::mapping::Store::new(store.clone()).get_lid_for_pn("200@s.whatsapp.net").unwrap().as_deref(),Some("201@lid"));}
             socket.close().await.unwrap();server.await.unwrap();

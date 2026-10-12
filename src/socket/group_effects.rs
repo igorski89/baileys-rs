@@ -61,15 +61,26 @@ impl Socket {
         metadata: Option<messages::EnvelopeMetadata>,
         kind: own::UpsertKind,
     ) -> Result<(), Error> {
+        self.with_buffered_events(self.publish_message_inner(message, metadata, kind))
+            .await
+    }
+    async fn publish_message_inner(
+        &self,
+        message: &proto::WebMessageInfo,
+        metadata: Option<messages::EnvelopeMetadata>,
+        kind: own::UpsertKind,
+    ) -> Result<(), Error> {
         let credentials = super::load_credentials(self.inner.store.clone()).await?;
-        let _ = self.inner.events.send(Event::MessagesUpserted(own::Upsert {
-            messages: vec![message.clone()],
-            kind,
-            request_id: None,
-            metadata: metadata.iter().cloned().collect(),
-            metadata_indices: vec![],
-            runtime_fields: vec![],
-        }));
+        self.inner
+            .events
+            .send(Event::MessagesUpserted(own::Upsert {
+                messages: vec![message.clone()],
+                kind,
+                request_id: None,
+                metadata: metadata.iter().cloned().collect(),
+                metadata_indices: vec![],
+                runtime_fields: vec![],
+            }))?;
         if let Some(name) = message.push_name.as_ref().filter(|s| !s.is_empty()) {
             let key = message
                 .key
@@ -82,12 +93,14 @@ impl Socket {
                     .filter(|s| !s.is_empty())
                     .or(key.remote_jid.as_deref())
                     .unwrap_or("");
-                let _ = self.inner.events.send(Event::ContactsUpdated(vec![Contact {
-                    id: jid::normalized_user(target),
-                    notify: Some(name.clone()),
-                    verified_name: message.verified_biz_name.clone(),
-                    ..Default::default()
-                }]));
+                self.inner
+                    .events
+                    .send(Event::ContactsUpdated(vec![Contact {
+                        id: jid::normalized_user(target),
+                        notify: Some(name.clone()),
+                        verified_name: message.verified_biz_name.clone(),
+                        ..Default::default()
+                    }]))?;
             } else {
                 let (reply, response) = oneshot::channel();
                 self.inner
@@ -104,17 +117,15 @@ impl Socket {
         let mut effects =
             own::effects_received(message, credentials.account_settings.unarchive_chats)?;
         if let Some(update) = effects.mutation.take() {
-            let _ = self
-                .inner
+            self.inner
                 .events
-                .send(Event::MessageMutations(vec![update]));
+                .send(Event::MessageMutations(vec![update]))?;
         }
         if let Some(mut update) = effects.reaction.take() {
             update.key_metadata = metadata.as_ref().map(|m| m.key_metadata.clone());
-            let _ = self
-                .inner
+            self.inner
                 .events
-                .send(Event::MessageReactions(vec![update]));
+                .send(Event::MessageReactions(vec![update]))?;
         }
         self.process_phone_protocol(message).await?;
         self.process_event_response(
@@ -130,7 +141,7 @@ impl Socket {
             &mut effects,
         )?;
         if let Some(update) = effects.chat {
-            let _ = self.inner.events.send(Event::ChatsUpdated(vec![update]));
+            self.inner.events.send(Event::ChatsUpdated(vec![update]))?;
         }
         Ok(())
     }

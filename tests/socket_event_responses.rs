@@ -1,3 +1,4 @@
+use baileys_rs::proto_json::JsonField;
 #[allow(dead_code)]
 #[path = "support/socket_peer.rs"]
 mod socket_peer;
@@ -87,6 +88,34 @@ struct LookupState {
     socket: Option<Socket>,
     probe: bool,
 }
+fn response_updates(updates: Vec<messages::own::Update>) -> Vec<messages::EventResponseUpdate> {
+    updates
+        .into_iter()
+        .flat_map(|update| {
+            let value = update.update_value();
+            value["eventResponses"]
+                .as_array()
+                .into_iter()
+                .flatten()
+                .map(|response| messages::EventResponseUpdate {
+                    key: update.key.clone(),
+                    event_response_message_key: proto::MessageKey::from_value(
+                        &response["eventResponseMessageKey"],
+                    )
+                    .unwrap(),
+                    sender_timestamp_ms: response
+                        .get("senderTimestampMs")
+                        .filter(|v| !v.is_null())
+                        .map(|v| i64::from_value(v).unwrap()),
+                    response: proto::message::EventResponseMessage::from_value(
+                        &response["response"],
+                    )
+                    .unwrap(),
+                })
+                .collect::<Vec<_>>()
+        })
+        .collect()
+}
 #[tokio::test]
 async fn event_response_lookup_mapping_failures_and_poll_policy_match_original_processor() {
     timeout(Duration::from_secs(15),async{
@@ -112,9 +141,9 @@ if node.tag=="receipt"{received+=1;}else{assert!(node.child("event_lookup_probe"
             let key=input.key.as_ref().unwrap();let mut node=stanza("RESPONSE",if key.from_me==Some(true){"100:2@s.whatsapp.net"}else{key.remote_jid.as_deref().unwrap()},input.message.clone().unwrap());
             if key.from_me==Some(true){node=node.attr("recipient",key.remote_jid.as_deref().unwrap());}else if let Some(p)=key.participant.as_deref().filter(|s|!s.is_empty()){node=node.attr("participant",p);}
             if let Some(alt)=case["metadata"]["participantAlt"].as_str(){node=node.attr("participant_lid",alt);}
-            let result=socket.handle_message(&node).await;assert_eq!(result.is_err(),case.get("error").is_some(),"{case}");
+            socket.buffer_events();let result=socket.handle_message(&node).await;assert_eq!(result.is_err(),case.get("error").is_some(),"{case}");socket.flush_events().unwrap();
             let mut actual=vec![];while let Ok(event)=events.try_recv(){match event {
-                Event::EventResponsesUpdated(updates)=>actual.push(json!({"name":"messages.update","data":updates.into_iter().map(|v|json!({"key":wire(v.key.encode_to_vec()),"responses":[{"key":wire(v.event_response_message_key.encode_to_vec()),"timestamp":v.sender_timestamp_ms.map(|v|v.to_string()),"response":wire(v.response.encode_to_vec())}]})).collect::<Vec<_>>()})),
+                Event::MessageUpdates(batch)=>{let updates=response_updates(batch);actual.push(json!({"name":"messages.update","data":updates.into_iter().map(|v|json!({"key":wire(v.key.encode_to_vec()),"responses":[{"key":wire(v.event_response_message_key.encode_to_vec()),"timestamp":v.sender_timestamp_ms.map(|v|v.to_string()),"response":wire(v.response.encode_to_vec())}]})).collect::<Vec<_>>()}));},
                 Event::ChatsUpdated(updates)=>{let data:Vec<_>=updates.into_iter().map(|c|{let mut v=json!({"id":c.id});if let Some(m)=c.messages{v["messages"]=json!(m.into_iter().map(|m|wire(m.encode_to_vec())).collect::<Vec<_>>());}
 if let Some(t)=c.conversation_timestamp{v["conversationTimestamp"]=json!(t as i64);}
 if let Some(n)=c.unread_count{v["unreadCount"]=json!(n);}
@@ -123,15 +152,15 @@ if let Some(r)=c.read_only{v["readOnly"]=json!(r);}
 if let Some(t)=c.ephemeral_setting_timestamp{v["ephemeralSettingTimestamp"]=json!(t as i64);}
 if let Some(e)=c.ephemeral_expiration{v["ephemeralExpiration"]=json!(e);}v}).collect();actual.push(json!({"name":"chats.update","data":data}));},_=>{}
             }}
-            assert_eq!(json!(actual),case["events"],"{case}");let keys=state.lock().unwrap().keys.iter().map(|k|wire(k.encode_to_vec())).collect::<Vec<_>>();assert_eq!(json!(keys),case["lookups"],"{case}");
+            assert_eq!(json!(actual),case["bufferedEvents"],"{case}");let keys=state.lock().unwrap().keys.iter().map(|k|wire(k.encode_to_vec())).collect::<Vec<_>>();assert_eq!(json!(keys),case["lookups"],"{case}");
         }
         {
             let mut state=state.lock().unwrap();state.keys.clear();state.error=true;state.probe=false;
         }
-        socket.handle_message(&stanza("NO_KEY","300@s.whatsapp.net",proto::Message{enc_event_response_message:Some(Default::default()),..Default::default()})).await.unwrap();
+        socket.buffer_events();socket.handle_message(&stanza("NO_KEY","300@s.whatsapp.net",proto::Message{enc_event_response_message:Some(Default::default()),..Default::default()})).await.unwrap();
         assert!(state.lock().unwrap().keys.is_empty());
-        let mut chat=false;
-        while let Ok(event)=events.try_recv(){match event{Event::EventResponsesUpdated(_)=>panic!("malformed response emitted update"),Event::ChatsUpdated(_)=>chat=true,_=>{}}}
+        socket.flush_events().unwrap();let mut chat=false;
+        while let Ok(event)=events.try_recv(){match event{Event::MessageUpdates(_)=>panic!("malformed response emitted update"),Event::ChatsUpdated(_)=>chat=true,_=>{}}}
         assert!(chat);
         socket.query(BinaryNode::new("iq").attr("type","get").with_content(NodeContent::Children(vec![BinaryNode::new("finish")])),None).await.unwrap();state.lock().unwrap().socket=None;socket.close().await.unwrap();server.await.unwrap();
     }).await.unwrap();
@@ -223,8 +252,8 @@ async fn outgoing_own_event_responses_use_async_lookup_after_successful_relay() 
         let own = upsert(&mut events).await;
         assert_eq!(own.kind, messages::own::UpsertKind::Append);
         let response = loop {
-            if let Event::EventResponsesUpdated(updates) = events.recv().await.unwrap() {
-                break updates;
+            if let Event::MessageUpdates(updates) = events.recv().await.unwrap() {
+                break response_updates(updates);
             }
         };
         assert_eq!(response[0].key.id.as_deref(), Some("EVENT"));

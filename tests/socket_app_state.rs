@@ -431,3 +431,72 @@ async fn socket_buffer_consolidates_real_publishers_and_cancelled_scopes_flush()
     .await
     .unwrap();
 }
+
+#[tokio::test]
+async fn automatic_message_and_sync_scopes_flush_success_failure_and_cancellation() {
+    use baileys_rs::{
+        messages::{self, own},
+        relay,
+    };
+    timeout(Duration::from_secs(10), async {
+        let store=SqliteAuthStore::in_memory().unwrap();
+        let mut credentials=store.load_credentials().unwrap();
+        credentials.me=Some(baileys_rs::auth::Contact {id:"100@s.whatsapp.net".into(),..Default::default()});
+        store.save_credentials(&credentials).unwrap();
+        let (lookup_entered,lookup_seen)=tokio::sync::oneshot::channel();
+        let lookup_entered=std::sync::Arc::new(std::sync::Mutex::new(Some(lookup_entered)));
+        let (listener,mut config)=setup().await;
+        config.get_message=relay::MessageLookup::new(move |_| {
+            let entered=lookup_entered.clone();
+            async move {
+                if let Some(entered)=entered.lock().unwrap().take() {let _=entered.send(());}
+                std::future::pending::<Result<Option<proto::Message>,relay::Error>>().await
+            }
+        });
+        let (sync_entered,sync_seen)=tokio::sync::oneshot::channel();
+        let server=tokio::spawn(async move {
+            let mut peer=Peer::accept(listener.accept().await.unwrap().0).await;
+            let request=peer.read().await;
+            assert_eq!(request.attrs["xmlns"],"w:sync:app:state");
+            sync_entered.send(()).unwrap();
+            peer.closed().await;
+        });
+        let (socket,mut events)=Socket::connect(config,store).await.unwrap();
+        let mut envelope=messages::Envelope {
+            message:proto::WebMessageInfo {
+                key:Some(proto::MessageKey {remote_jid:Some("200@s.whatsapp.net".into()),id:Some("AUTO".into()),from_me:Some(false),participant:None}),
+                message:Some(proto::Message {conversation:Some("automatic scope".into()),..Default::default()}),
+                message_timestamp:Some(10),..Default::default()
+            },
+            key_metadata:Default::default(),category:None,retry_count:None,author:"200@s.whatsapp.net".into(),sender:"200@s.whatsapp.net".into(),
+        };
+        socket.upsert_message(&envelope,own::UpsertKind::Notify).await.unwrap();
+        let finished=tokio::time::Instant::now();
+        assert!(socket.is_buffering_events());
+        while let Ok(event)=events.try_recv(){assert!(matches!(event,Event::Connection(_)));}
+        let mut chat=false;let mut message=false;
+        while !(chat&&message){match events.recv().await.unwrap(){Event::ChatsUpdated(_)=>chat=true,Event::MessagesUpserted(_)=>message=true,_=>()}}
+        assert!(finished.elapsed()>=Duration::from_millis(90));
+        assert!(!socket.is_buffering_events());
+        envelope.message.key.as_mut().unwrap().id=Some("CANCEL".into());
+        envelope.message.message=Some(proto::Message {enc_event_response_message:Some(proto::message::EncEventResponseMessage {event_creation_message_key:Some(proto::MessageKey {id:Some("EVENT".into()),..Default::default()}),..Default::default()}),..Default::default()});
+        let mut operation=Box::pin(socket.upsert_message(&envelope,own::UpsertKind::Notify));
+        tokio::select!{result=&mut operation=>panic!("lookup unexpectedly completed {result:?}"), result=lookup_seen=>result.unwrap()}
+        assert!(socket.is_buffering_events());drop(operation);
+        let cancelled=loop{if let Event::MessagesUpserted(upsert)=events.recv().await.unwrap(){break upsert;}};
+        assert_eq!(cancelled.messages[0].key.as_ref().unwrap().id.as_deref(),Some("CANCEL"));
+        assert!(!socket.is_buffering_events());
+        envelope.message.key=None;
+        assert!(socket.upsert_message(&envelope,own::UpsertKind::Notify).await.is_err());
+        assert!(socket.is_buffering_events());
+        tokio::time::sleep(Duration::from_millis(120)).await;
+        assert!(!socket.is_buffering_events());
+        let collections=["regular".into()];let options=SyncOptions::default();
+        let mut operation=Box::pin(socket.resync_app_state(&collections,false,&options));
+        tokio::select!{result=&mut operation=>panic!("sync unexpectedly completed: success={}",result.is_ok()),result=sync_seen=>result.unwrap()}
+        assert!(socket.is_buffering_events());drop(operation);
+        tokio::time::sleep(Duration::from_millis(120)).await;
+        assert!(!socket.is_buffering_events());
+        socket.close().await.unwrap();server.await.unwrap();
+    }).await.unwrap();
+}

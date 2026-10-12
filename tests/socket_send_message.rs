@@ -1,3 +1,5 @@
+#[path = "support/json_numbers.rs"]
+mod json_numbers;
 #[path = "support/socket_peer.rs"]
 mod socket_peer;
 use baileys_rs::{
@@ -127,7 +129,7 @@ async fn next_own(events: &mut tokio::sync::broadcast::Receiver<Event>) -> Event
         if matches!(
             e,
             Event::MessagesUpserted(_)
-                | Event::MessageMutations(_)
+                | Event::MessageUpdates(_)
                 | Event::MessageReactions(_)
                 | Event::ChatsUpdated(_)
         ) {
@@ -362,30 +364,78 @@ async fn send_generates_encrypts_metadata_and_own_events_and_keeps_actor_respons
                 .unwrap()
                 .unwrap();
             assert_eq!(sent_rx.recv().await.unwrap(), full.message.clone().unwrap());
-            let Event::MessagesUpserted(upsert) = next_own(&mut events).await else {
-                panic!("missing upsert")
-            };
-            assert_eq!(upsert.messages.as_slice(), std::slice::from_ref(&full));
-            assert_eq!(upsert.kind, own::UpsertKind::Append);
             let effects = own::effects(&full, true).unwrap();
-            if let Some(update) = effects.mutation {
-                let Event::MessageMutations(updates) = next_own(&mut events).await else {
-                    panic!("missing mutation")
-                };
-                assert_eq!(updates, [update]);
+            let count = 1
+                + usize::from(effects.mutation.is_some())
+                + usize::from(effects.reaction.is_some())
+                + usize::from(effects.chat.is_some());
+            let mut upsert_seen = false;
+            let mut mutation_seen = false;
+            let mut reaction_seen = false;
+            let mut chat_seen = false;
+            for _ in 0..count {
+                match next_own(&mut events).await {
+                    Event::MessagesUpserted(upsert) => {
+                        assert!(!upsert_seen);
+                        upsert_seen = true;
+                        assert_eq!(upsert.messages.as_slice(), std::slice::from_ref(&full));
+                        assert_eq!(upsert.kind, own::UpsertKind::Append);
+                    }
+                    Event::MessageUpdates(updates) => {
+                        assert!(!mutation_seen);
+                        mutation_seen = true;
+                        assert_eq!(updates.len(), 1);
+                        let update = &updates[0];
+                        match effects.mutation.as_ref().unwrap() {
+                            own::Mutation::Revoke { key, original_key } => {
+                                assert_eq!(&update.key, key);
+                                assert_eq!(update.info.key.as_ref(), Some(original_key));
+                                assert_eq!(
+                                    update.info.message_stub_type,
+                                    Some(proto::web_message_info::StubType::Revoke as i32)
+                                );
+                                assert_eq!(
+                                    update.update_value()["message"],
+                                    serde_json::Value::Null
+                                );
+                            }
+                            own::Mutation::Edit {
+                                key,
+                                message,
+                                timestamp,
+                            } => {
+                                assert_eq!(&update.key, key);
+                                assert_eq!(update.info.message.as_ref(), Some(message.as_ref()));
+                                assert_eq!(
+                                    update.update_value()["messageTimestamp"].as_f64(),
+                                    Some(*timestamp)
+                                );
+                            }
+                        }
+                    }
+                    Event::MessageReactions(updates) => {
+                        assert!(!reaction_seen);
+                        reaction_seen = true;
+                        assert_eq!(
+                            updates.as_slice(),
+                            std::slice::from_ref(effects.reaction.as_ref().unwrap())
+                        );
+                    }
+                    Event::ChatsUpdated(updates) => {
+                        assert!(!chat_seen);
+                        chat_seen = true;
+                        assert_eq!(
+                            updates.as_slice(),
+                            std::slice::from_ref(effects.chat.as_ref().unwrap())
+                        );
+                    }
+                    _ => panic!("unexpected own event"),
+                }
             }
-            if let Some(update) = effects.reaction {
-                let Event::MessageReactions(updates) = next_own(&mut events).await else {
-                    panic!("missing reaction")
-                };
-                assert_eq!(updates, [update]);
-            }
-            if let Some(update) = effects.chat {
-                let Event::ChatsUpdated(updates) = next_own(&mut events).await else {
-                    panic!("missing chat")
-                };
-                assert_eq!(updates, [update]);
-            }
+            assert!(upsert_seen);
+            assert_eq!(mutation_seen, effects.mutation.is_some());
+            assert_eq!(reaction_seen, effects.reaction.is_some());
+            assert_eq!(chat_seen, effects.chat.is_some());
             assert!(
                 socket
                     .message_retry_manager()
@@ -541,7 +591,7 @@ async fn newsletter_send_supports_generated_ids_hook_override_and_disabled_own_e
             assert!(!matches!(
                 event,
                 Event::MessagesUpserted(_)
-                    | Event::MessageMutations(_)
+                    | Event::MessageUpdates(_)
                     | Event::MessageReactions(_)
                     | Event::ChatsUpdated(_)
             ));
@@ -709,6 +759,104 @@ async fn send_media_prepares_newsletter_images_video_notes_and_products_before_r
             )
             .await
             .unwrap();
+        socket.close().await.unwrap();
+        server.await.unwrap();
+    })
+    .await
+    .unwrap();
+}
+
+#[tokio::test]
+async fn own_publication_matches_complete_original_buffered_event_sequences() {
+    use baileys_rs::proto_json::JsonField;
+    use serde_json::{Value, json};
+    fn wire(bytes: Vec<u8>) -> String {
+        bytes.iter().map(|b| format!("{b:02x}")).collect()
+    }
+    fn event_value(event: Event) -> Option<Value> {
+        Some(match event {
+            Event::MessagesUpserted(upsert) => {
+                json!({"name":"messages.upsert","type":if upsert.kind==own::UpsertKind::Append{"append"}else{"notify"},"messages":upsert.messages.iter().map(|m|wire(m.encode_to_vec())).collect::<Vec<_>>()})
+            }
+            Event::ChatsUpdated(chats) => {
+                json!({"name":"chats.update","updates":chats.iter().map(|c|{
+                let mut value=c.to_value();
+                if let Some(messages)=&c.messages {value["messages"]=json!(messages.iter().map(|m|wire(m.encode_to_vec())).collect::<Vec<_>>());}value
+            }).collect::<Vec<_>>()})
+            }
+            Event::MessageUpdates(updates) => {
+                json!({"name":"messages.update","updates":updates.iter().map(|update|{
+                let value=update.update_value();let key=wire(update.key.encode_to_vec());
+                if value.get("message").is_some_and(Value::is_null) {
+                    json!({"key":key,"revoke":true,"stub":update.info.message_stub_type,"originalKey":update.info.key.as_ref().map(|k|wire(k.encode_to_vec()))})
+                }else{json!({"key":key,"message":wire(update.info.message.as_ref().unwrap().encode_to_vec()),"timestamp":value["messageTimestamp"]})}
+            }).collect::<Vec<_>>()})
+            }
+            Event::MessageReactions(updates) => {
+                json!({"name":"messages.reaction","updates":updates.iter().map(|u|json!({"key":u.key.as_ref().map(|k|wire(k.encode_to_vec())),"reaction":wire(u.reaction.encode_to_vec())})).collect::<Vec<_>>()})
+            }
+            _ => return None,
+        })
+    }
+    timeout(Duration::from_secs(10), async {
+        let fixture: Value =
+            serde_json::from_str(include_str!("fixtures/send_message.json")).unwrap();
+        let temp = tempfile::tempdir().unwrap();
+        let auth = store(&temp);
+        let (listener, config) = listener().await;
+        let server = tokio::spawn(async move {
+            let mut peer = Peer::accept(listener.accept().await.unwrap().0).await;
+            peer.send(BinaryNode::new("success")).await;
+            assert_eq!(peer.read().await.tag, "ib");
+            peer.closed().await;
+        });
+        let (socket, mut events) = Socket::connect(config, auth.clone()).await.unwrap();
+        socket.wait_for_open(Duration::from_secs(2)).await.unwrap();
+        let mut count = 0;
+        for case in fixture["cases"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .filter(|c| c["emit"] == true && c["full"].is_string())
+        {
+            let mut creds = auth.load_credentials().unwrap();
+            creds.me.as_mut().unwrap().id = "100:7@s.whatsapp.net".into();
+            creds.account_settings.unarchive_chats = case["unarchive"].as_bool().unwrap();
+            auth.save_credentials(&creds).unwrap();
+            let message =
+                proto::WebMessageInfo::decode(hex(case["full"].as_str().unwrap()).as_slice())
+                    .unwrap();
+            let envelope = messages::Envelope {
+                message,
+                key_metadata: Default::default(),
+                category: None,
+                retry_count: None,
+                author: "100@s.whatsapp.net".into(),
+                sender: "100@s.whatsapp.net".into(),
+            };
+            // The outer scope holds each synthetic case together while the
+            // automatic publication scope executes, then source flushes it.
+            socket.buffer_events();
+            socket
+                .upsert_message(&envelope, own::UpsertKind::Append)
+                .await
+                .unwrap();
+            socket.flush_events().unwrap();
+            let mut actual = vec![];
+            while let Ok(event) = events.try_recv() {
+                if let Some(value) = event_value(event) {
+                    actual.push(value);
+                }
+            }
+            assert_eq!(
+                json_numbers::canonical(&json!(actual)),
+                json_numbers::canonical(&case["bufferedEvents"]),
+                "{}",
+                case["kind"]
+            );
+            count += 1;
+        }
+        assert!(count >= 30);
         socket.close().await.unwrap();
         server.await.unwrap();
     })

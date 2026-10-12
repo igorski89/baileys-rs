@@ -275,6 +275,7 @@ async fn automatic_notifications_serialize_resync_apply_actions_ack_errors_and_k
             .await
             .unwrap();
         done.await.unwrap();
+        socket.flush_events().unwrap();
         let mut chats = Vec::new();
         while let Ok(event) = events.try_recv() {
             if let Event::ChatsUpdated(updates) = event {

@@ -11,7 +11,8 @@
       "writes": [],
       "maps": [],
       "migrations": [],
-      "deleted": []
+      "deleted": [],
+      "bufferedEvents": []
     },
     {
       "kind": "share",
@@ -24,7 +25,8 @@
       "writes": [],
       "maps": [],
       "migrations": [],
-      "deleted": []
+      "deleted": [],
+      "bufferedEvents": []
     },
     {
       "kind": "share",
@@ -37,7 +39,8 @@
       "writes": [],
       "maps": [],
       "migrations": [],
-      "deleted": []
+      "deleted": [],
+      "bufferedEvents": []
     },
     {
       "kind": "share",
@@ -50,7 +53,8 @@
       "writes": [],
       "maps": [],
       "migrations": [],
-      "deleted": []
+      "deleted": [],
+      "bufferedEvents": []
     },
     {
       "kind": "share",
@@ -63,7 +67,8 @@
       "writes": [],
       "maps": [],
       "migrations": [],
-      "deleted": []
+      "deleted": [],
+      "bufferedEvents": []
     },
     {
       "kind": "share",
@@ -76,7 +81,8 @@
       "writes": [],
       "maps": [],
       "migrations": [],
-      "deleted": []
+      "deleted": [],
+      "bufferedEvents": []
     },
     {
       "kind": "share",
@@ -89,7 +95,8 @@
       "writes": [],
       "maps": [],
       "migrations": [],
-      "deleted": []
+      "deleted": [],
+      "bufferedEvents": []
     },
     {
       "kind": "share",
@@ -102,7 +109,8 @@
       "writes": [],
       "maps": [],
       "migrations": [],
-      "deleted": []
+      "deleted": [],
+      "bufferedEvents": []
     },
     {
       "kind": "pdo",
@@ -130,7 +138,8 @@
       "writes": [],
       "maps": [],
       "migrations": [],
-      "deleted": []
+      "deleted": [],
+      "bufferedEvents": []
     },
     {
       "kind": "pdo",
@@ -158,7 +167,8 @@
       "writes": [],
       "maps": [],
       "migrations": [],
-      "deleted": []
+      "deleted": [],
+      "bufferedEvents": []
     },
     {
       "kind": "pdo",
@@ -186,7 +196,8 @@
       "writes": [],
       "maps": [],
       "migrations": [],
-      "deleted": []
+      "deleted": [],
+      "bufferedEvents": []
     },
     {
       "kind": "pdo",
@@ -199,7 +210,8 @@
       "writes": [],
       "maps": [],
       "migrations": [],
-      "deleted": []
+      "deleted": [],
+      "bufferedEvents": []
     },
     {
       "kind": "pdo",
@@ -227,7 +239,8 @@
       "writes": [],
       "maps": [],
       "migrations": [],
-      "deleted": []
+      "deleted": [],
+      "bufferedEvents": []
     },
     {
       "kind": "pdo",
@@ -255,7 +268,8 @@
       "writes": [],
       "maps": [],
       "migrations": [],
-      "deleted": []
+      "deleted": [],
+      "bufferedEvents": []
     },
     {
       "kind": "pdo",
@@ -283,7 +297,8 @@
       "writes": [],
       "maps": [],
       "migrations": [],
-      "deleted": []
+      "deleted": [],
+      "bufferedEvents": []
     },
     {
       "kind": "pdo",
@@ -311,7 +326,8 @@
       "writes": [],
       "maps": [],
       "migrations": [],
-      "deleted": []
+      "deleted": [],
+      "bufferedEvents": []
     },
     {
       "kind": "lid",
@@ -324,7 +340,8 @@
       "writes": [],
       "maps": [],
       "migrations": [],
-      "deleted": []
+      "deleted": [],
+      "bufferedEvents": []
     },
     {
       "kind": "lid",
@@ -337,7 +354,8 @@
       "writes": [],
       "maps": [],
       "migrations": [],
-      "deleted": []
+      "deleted": [],
+      "bufferedEvents": []
     },
     {
       "kind": "lid",
@@ -350,7 +368,8 @@
       "writes": [],
       "maps": [],
       "migrations": [],
-      "deleted": []
+      "deleted": [],
+      "bufferedEvents": []
     },
     {
       "kind": "lid",
@@ -363,7 +382,8 @@
       "writes": [],
       "maps": [],
       "migrations": [],
-      "deleted": []
+      "deleted": [],
+      "bufferedEvents": []
     },
     {
       "kind": "lid",
@@ -376,7 +396,8 @@
       "writes": [],
       "maps": [],
       "migrations": [],
-      "deleted": []
+      "deleted": [],
+      "bufferedEvents": []
     },
     {
       "kind": "lid",
@@ -389,7 +410,8 @@
       "writes": [],
       "maps": [],
       "migrations": [],
-      "deleted": []
+      "deleted": [],
+      "bufferedEvents": []
     },
     {
       "kind": "lid",
@@ -402,7 +424,8 @@
       "writes": [],
       "maps": [],
       "migrations": [],
-      "deleted": []
+      "deleted": [],
+      "bufferedEvents": []
     },
     {
       "kind": "lid",
@@ -415,7 +438,8 @@
       "writes": [],
       "maps": [],
       "migrations": [],
-      "deleted": []
+      "deleted": [],
+      "bufferedEvents": []
     },
     {
       "kind": "share",
@@ -441,7 +465,15 @@
       ],
       "maps": [],
       "migrations": [],
-      "deleted": []
+      "deleted": [],
+      "bufferedEvents": [
+        {
+          "name": "creds.update",
+          "data": {
+            "myAppStateKeyId": "AQI="
+          }
+        }
+      ]
     },
     {
       "kind": "share",
@@ -454,7 +486,8 @@
       "writes": [],
       "maps": [],
       "migrations": [],
-      "deleted": []
+      "deleted": [],
+      "bufferedEvents": []
     },
     {
       "kind": "share",
@@ -480,7 +513,15 @@
       ],
       "maps": [],
       "migrations": [],
-      "deleted": []
+      "deleted": [],
+      "bufferedEvents": [
+        {
+          "name": "creds.update",
+          "data": {
+            "myAppStateKeyId": ""
+          }
+        }
+      ]
     },
     {
       "kind": "share",
@@ -494,7 +535,8 @@
       "maps": [],
       "migrations": [],
       "deleted": [],
-      "error": "Cannot read properties of null (reading 'keys')"
+      "error": "Cannot read properties of null (reading 'keys')",
+      "bufferedEvents": []
     },
     {
       "kind": "share",
@@ -511,7 +553,8 @@
       "maps": [],
       "migrations": [],
       "deleted": [],
-      "error": "Cannot read properties of null (reading 'keyId')"
+      "error": "Cannot read properties of null (reading 'keyId')",
+      "bufferedEvents": []
     },
     {
       "kind": "share",
@@ -536,7 +579,15 @@
       ],
       "maps": [],
       "migrations": [],
-      "deleted": []
+      "deleted": [],
+      "bufferedEvents": [
+        {
+          "name": "creds.update",
+          "data": {
+            "myAppStateKeyId": "+/8="
+          }
+        }
+      ]
     },
     {
       "kind": "share",
@@ -562,7 +613,15 @@
       ],
       "maps": [],
       "migrations": [],
-      "deleted": []
+      "deleted": [],
+      "bufferedEvents": [
+        {
+          "name": "creds.update",
+          "data": {
+            "myAppStateKeyId": "AQI="
+          }
+        }
+      ]
     },
     {
       "kind": "share",
@@ -588,7 +647,15 @@
       ],
       "maps": [],
       "migrations": [],
-      "deleted": []
+      "deleted": [],
+      "bufferedEvents": [
+        {
+          "name": "creds.update",
+          "data": {
+            "myAppStateKeyId": "AQI="
+          }
+        }
+      ]
     },
     {
       "kind": "pdo",
@@ -627,6 +694,16 @@
       "migrations": [],
       "deleted": [
         "ORIGINAL"
+      ],
+      "bufferedEvents": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a200a0832303030406c696410001a084f524947494e414c220833303030406c6964120b0a097265636f76657265641881e2cfaa062a12636163686564207061727469636970616e749a010b636163686564206e616d65aa020f63616368656420627573696e657373"
+          ],
+          "requestId": null,
+          "type": "notify"
+        }
       ]
     },
     {
@@ -655,7 +732,8 @@
       "writes": [],
       "maps": [],
       "migrations": [],
-      "deleted": []
+      "deleted": [],
+      "bufferedEvents": []
     },
     {
       "kind": "pdo",
@@ -694,6 +772,16 @@
       "migrations": [],
       "deleted": [
         "ORIGINAL"
+      ],
+      "bufferedEvents": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a200a0832303030406c696410001a084f524947494e414c220833303030406c6964120b0a097265636f766572656418002a12636163686564207061727469636970616e749a010b636163686564206e616d65aa020f63616368656420627573696e657373"
+          ],
+          "requestId": null,
+          "type": "notify"
+        }
       ]
     },
     {
@@ -718,6 +806,16 @@
       "migrations": [],
       "deleted": [
         "ORIGINAL"
+      ],
+      "bufferedEvents": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a170a0970686f6e65406c696410001a084f524947494e414c120b0a097265636f76657265641881e2cfaa069a010a70686f6e65206e616d65c00102"
+          ],
+          "requestId": null,
+          "type": "notify"
+        }
       ]
     },
     {
@@ -757,6 +855,16 @@
       "migrations": [],
       "deleted": [
         "ORIGINAL"
+      ],
+      "bufferedEvents": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a200a0832303030406c696410001a084f524947494e414c220833303030406c6964120b0a097265636f76657265641881e2cfaa062a12636163686564207061727469636970616e749a010b636163686564206e616d65aa020f63616368656420627573696e657373"
+          ],
+          "requestId": null,
+          "type": "notify"
+        }
       ]
     },
     {
@@ -805,6 +913,17 @@
       "deleted": [
         "ORIGINAL",
         "ORIGINAL"
+      ],
+      "bufferedEvents": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a200a0832303030406c696410001a084f524947494e414c220833303030406c6964120b0a097265636f76657265641881e2cfaa062a12636163686564207061727469636970616e749a010b636163686564206e616d65aa020f63616368656420627573696e657373",
+            "0a170a0970686f6e65406c696410001a084f524947494e414c120b0a097265636f76657265641881e2cfaa069a010a70686f6e65206e616d65c00102"
+          ],
+          "requestId": null,
+          "type": "notify"
+        }
       ]
     },
     {
@@ -852,6 +971,16 @@
       "migrations": [],
       "deleted": [
         "ORIGINAL"
+      ],
+      "bufferedEvents": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a200a0832303030406c696410001a084f524947494e414c220833303030406c6964120b0a097265636f76657265641881e2cfaa062a12636163686564207061727469636970616e749a010b636163686564206e616d65aa020f63616368656420627573696e657373"
+          ],
+          "requestId": null,
+          "type": "notify"
+        }
       ]
     },
     {
@@ -891,6 +1020,16 @@
       "migrations": [],
       "deleted": [
         "ORIGINAL"
+      ],
+      "bufferedEvents": [
+        {
+          "name": "messages.upsert",
+          "messages": [
+            "0a200a0832303030406c696410001a084f524947494e414c220833303030406c6964120b0a097265636f76657265641880e2cfaa062a12636163686564207061727469636970616e749a010b636163686564206e616d65aa020f63616368656420627573696e657373"
+          ],
+          "requestId": null,
+          "type": "notify"
+        }
       ]
     },
     {
@@ -922,7 +1061,8 @@
           "lid": "2000@lid"
         }
       ],
-      "deleted": []
+      "deleted": [],
+      "bufferedEvents": []
     },
     {
       "kind": "lid",
@@ -935,7 +1075,8 @@
       "writes": [],
       "maps": [],
       "migrations": [],
-      "deleted": []
+      "deleted": [],
+      "bufferedEvents": []
     },
     {
       "kind": "lid",
@@ -966,7 +1107,8 @@
           "lid": "2000@lid"
         }
       ],
-      "deleted": []
+      "deleted": [],
+      "bufferedEvents": []
     },
     {
       "kind": "lid",
@@ -997,7 +1139,8 @@
           "lid": "2000@lid"
         }
       ],
-      "deleted": []
+      "deleted": [],
+      "bufferedEvents": []
     },
     {
       "kind": "lid",
@@ -1011,7 +1154,8 @@
       "maps": [],
       "migrations": [],
       "deleted": [],
-      "error": "index out of range: 1 + 10 > 1"
+      "error": "index out of range: 1 + 10 > 1",
+      "bufferedEvents": []
     },
     {
       "kind": "lid",
@@ -1050,7 +1194,8 @@
           "lid": "2001@lid"
         }
       ],
-      "deleted": []
+      "deleted": [],
+      "bufferedEvents": []
     },
     {
       "kind": "lid",
@@ -1081,7 +1226,8 @@
           "lid": "2000@lid"
         }
       ],
-      "deleted": []
+      "deleted": [],
+      "bufferedEvents": []
     },
     {
       "kind": "lid",
@@ -1112,7 +1258,8 @@
           "lid": "2000@lid"
         }
       ],
-      "deleted": []
+      "deleted": [],
+      "bufferedEvents": []
     }
   ]
 }

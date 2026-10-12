@@ -183,7 +183,9 @@ async fn automatic_signal_decryption_orders_receipts_keys_upserts_and_chat_effec
         );
         let mut contacts = false;
         let mut unread = false;
-        let second = loop {
+        let mut second = None;
+        let mut reactions = None;
+        while !(contacts && unread && second.is_some() && reactions.is_some()) {
             match events.recv().await.unwrap() {
                 Event::ContactsUpdated(values) => {
                     assert_eq!(values[0].notify.as_deref(), Some("Alice"));
@@ -193,21 +195,23 @@ async fn automatic_signal_decryption_orders_receipts_keys_upserts_and_chat_effec
                     assert_eq!(values[0].unread_count, Some(1));
                     unread = true;
                 }
-                Event::MessagesUpserted(value) => break value,
+                Event::MessagesUpserted(value) => second = Some(value),
+                Event::MessageReactions(values) => reactions = Some(values),
                 _ => {}
             }
-        };
-        assert!(contacts && unread);
+        }
+        let second = second.unwrap();
         assert_eq!(second.kind, messages::own::UpsertKind::Append);
         assert_eq!(
-            second.metadata[0].key_metadata.remote_jid_alt.as_deref(),
+            second
+                .metadata_for(0)
+                .unwrap()
+                .key_metadata
+                .remote_jid_alt
+                .as_deref(),
             Some("2000@lid")
         );
-        let values = loop {
-            if let Event::MessageReactions(v) = events.recv().await.unwrap() {
-                break v;
-            }
-        };
+        let values = reactions.unwrap();
         let key = values[0].key.as_ref().unwrap();
         assert_eq!(key.from_me, Some(true));
         assert_eq!(key.remote_jid.as_deref(), Some("200@s.whatsapp.net"));

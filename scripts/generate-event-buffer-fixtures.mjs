@@ -1,3 +1,4 @@
+import {writeEventBuffer} from './lib/event-buffer.mjs'
 // Execute the full original event buffer with actual helpers and a fake clock.
 import {stripTypeScriptTypes,createRequire} from 'node:module'
 import {readFile,writeFile,mkdtemp,rm} from 'node:fs/promises'
@@ -7,11 +8,7 @@ import {pathToFileURL} from 'node:url'
 const upstream=resolve(process.argv[2]??'../Baileys'),require=createRequire(resolve('.cache/fixture-tools/package.json')),temp=await mkdtemp(join(tmpdir(),'baileys-buffer-'))
 try {
  const protoSource=(await readFile(join(upstream,'WAProto/index.js'),'utf8')).replace('"protobufjs/minimal.js"',JSON.stringify(pathToFileURL(require.resolve('protobufjs/minimal.js')).href));await writeFile(join(temp,'proto.mjs'),protoSource)
- const source=await readFile(join(upstream,'src/Utils/event-buffer.ts'),'utf8'),messages=await readFile(join(upstream,'src/Utils/messages.ts'),'utf8'),process=await readFile(join(upstream,'src/Utils/process-message.ts'),'utf8'),generics=await readFile(join(upstream,'src/Utils/generics.ts'),'utf8');
- const helpers=messages.slice(messages.indexOf('export const getContentType'),messages.indexOf('export const extractMessageContent'))+messages.slice(messages.indexOf('export const updateMessageWithReceipt'),messages.indexOf('export const updateMessageWithPollUpdate'))+generics.slice(generics.indexOf('export const getKeyAuthor'),generics.indexOf('export const isStringNullOrEmpty'))+generics.slice(generics.indexOf('export function trimUndefined'),generics.indexOf('const CROCKFORD_CHARACTERS'))+process.slice(process.indexOf('const REAL_MSG_STUB_TYPES'),process.indexOf('async function storeTcTokensFromHistorySync'))+process.slice(process.indexOf('export const isRealMessage'),process.indexOf('export const getChatId'));
- const buffer=stripTypeScriptTypes(source).replace(/import \{[^}]*\} from '\.\.\/Types'\s*/g,'').replace(/import \{[^}]*\} from '\.\/generics'\s*/g,'').replace(/import \{[^}]*\} from '\.\/messages'\s*/g,'').replace(/import \{[^}]*\} from '\.\/process-message'\s*/g,'');
- await writeFile(join(temp,'helpers.mjs'),`import {proto} from './proto.mjs';const WAMessageStatus=proto.WebMessageInfo.Status,WAMessageStubType=proto.WebMessageInfo.StubType;`+stripTypeScriptTypes(helpers)+buffer);
- const {makeEventBuffer}=await import(pathToFileURL(join(temp,'helpers.mjs'))),emit=(event,data,conditions)=>({op:'emit',event,data,conditions}),key=(id='M',fromMe=false)=>({id,remoteJid:'200@s.whatsapp.net',fromMe}),msg=(id='M',extra={})=>({key:key(id),message:{conversation:'hello'},messageTimestamp:10,...extra}),hist=(chats=[],messages=[],contacts=[],extra={})=>({chats,messages,contacts,...extra});
+ const {makeEventBuffer}=await writeEventBuffer(upstream,temp),emit=(event,data,conditions)=>({op:'emit',event,data,conditions}),key=(id='M',fromMe=false)=>({id,remoteJid:'200@s.whatsapp.net',fromMe}),msg=(id='M',extra={})=>({key:key(id),message:{conversation:'hello'},messageTimestamp:10,...extra}),hist=(chats=[],messages=[],contacts=[],extra={})=>({chats,messages,contacts,...extra});
  const streams=[
   [emit('chats.update',[{id:'200@s.whatsapp.net',archived:true}],[{kind:'chat',last:10}]),{op:'flush'},{op:'buffer'},emit('messaging-history.set',hist([{id:'200@s.whatsapp.net',lastMessageRecvTimestamp:5}]))],
   [emit('chats.update',[{id:'200@s.whatsapp.net',archived:true}],[{kind:'chat',last:10}]),emit('chats.update',[{id:'200@s.whatsapp.net',pinned:9}]),{op:'flush'},{op:'buffer'},emit('chats.upsert',[{id:'200@s.whatsapp.net',lastMessageRecvTimestamp:50}])],

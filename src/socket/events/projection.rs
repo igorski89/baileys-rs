@@ -147,6 +147,7 @@ pub(super) fn project(event: Event) -> Result<Vec<Action>, Error> {
         }
         Event::MessagesDeleted(keys) => ("messages.delete", json!({"keys":keys.iter().map(JsonField::to_value).collect::<Vec<_>>()})),
         Event::MessagesUpdated(updates) => ("messages.update", json!(updates.iter().map(|v| update(&v.key,json!({"status":v.status as i32,"messageTimestamp":v.message_timestamp.to_value()}))).collect::<Vec<_>>())),
+        Event::EventResponsesUpdated(updates) => ("messages.update", json!(updates.iter().map(|v|update(&v.key,json!({"eventResponses":[{"eventResponseMessageKey":v.event_response_message_key.to_value(),"senderTimestampMs":v.sender_timestamp_ms.map(|t|t.to_value()),"response":v.response.to_value()}]}))).collect::<Vec<_>>())),
         Event::MessageUpdates(updates) => ("messages.update", json!(updates.iter().map(|v|update(&v.key,v.update_value())).collect::<Vec<_>>())),
         Event::MessagesStarred(updates) => ("messages.update", json!(updates.iter().map(|v| update(&v.key,json!({"starred":v.starred}))).collect::<Vec<_>>())),
         Event::MessageStubsUpdated(updates) => ("messages.update", json!(updates.iter().map(|v| update(&v.key,json!({"messageStubParameters":v.parameters}))).collect::<Vec<_>>())),

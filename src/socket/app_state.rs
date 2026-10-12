@@ -66,6 +66,15 @@ impl Socket {
         initial_sync: bool,
         options: &app_state::SyncOptions,
     ) -> Result<app_state::SyncResult, Error> {
+        self.with_buffered_events(self.resync_app_state_inner(collections, initial_sync, options))
+            .await
+    }
+    async fn resync_app_state_inner(
+        &self,
+        collections: &[String],
+        initial_sync: bool,
+        options: &app_state::SyncOptions,
+    ) -> Result<app_state::SyncResult, Error> {
         let _serial = self.inner.app_state_apply_lock.lock().await;
         let result = self.sync_app_state(collections, options).await?;
         self.apply_app_state_actions(&result.mutations, initial_sync)
