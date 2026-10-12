@@ -14,6 +14,7 @@ pub mod jid;
 pub mod media;
 pub mod messages;
 pub mod noise;
+pub mod offline;
 pub mod privacy;
 pub mod privacy_settings;
 pub mod proto_json;

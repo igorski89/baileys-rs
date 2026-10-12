@@ -28,6 +28,8 @@ struct Pending {
     deadline: Instant,
 }
 struct Actor<'a> {
+    socket_inner: std::sync::Weak<super::Inner>,
+    offline: mpsc::UnboundedSender<BinaryNode>,
     notifications: Option<mpsc::UnboundedSender<BinaryNode>>,
     receipts: Option<mpsc::UnboundedSender<BinaryNode>>,
     messages: Option<mpsc::UnboundedSender<BinaryNode>>,
@@ -67,9 +69,12 @@ pub(super) async fn run(
     receipts: Option<mpsc::UnboundedSender<BinaryNode>>,
     messages: Option<mpsc::UnboundedSender<BinaryNode>>,
     notifications: Option<mpsc::UnboundedSender<BinaryNode>>,
+    offline: mpsc::UnboundedSender<BinaryNode>,
     socket_inner: std::sync::Weak<super::Inner>,
 ) {
     let mut actor = Actor {
+        socket_inner: socket_inner.clone(),
+        offline,
         notifications,
         receipts,
         messages,
@@ -158,6 +163,7 @@ pub(super) async fn run(
     }
     retry_requests.clear();
     if let Some(inner) = socket_inner.upgrade() {
+        inner.active_receipts.store(false, Ordering::Relaxed);
         if let Some(sync) = inner.app_state_sync.get() {
             sync.take_blocked_collections().await;
         }
@@ -482,17 +488,60 @@ impl Actor<'_> {
         {
             self.response(pending.kind, node.clone()).await?;
         }
-        if node.tag == "receipt"
+        let admission = if matches!(
+            node.tag.as_str(),
+            "message" | "receipt" | "notification" | "call"
+        ) {
+            super::dispatch::admission(
+                &node,
+                self.credentials.me.as_ref(),
+                &self.config.should_ignore_jid,
+            )
+        } else {
+            super::dispatch::Admission::Online
+        };
+        let ignored = admission == super::dispatch::Admission::Ignored;
+        if ignored {
+            let ack = crate::receipts::acknowledgement(
+                &node,
+                (node.tag == "message").then_some(500),
+                self.credentials.me.as_ref().map(|m| m.id.as_str()),
+            );
+            if let Err(error) = self.send(&ack).await {
+                tracing::warn!(?error, "ignored node acknowledgement failed");
+            }
+        }
+        let queued = admission == super::dispatch::Admission::Offline
+            && match node.tag.as_str() {
+                "message" => self.messages.is_some(),
+                "receipt" => self.receipts.is_some(),
+                "notification" => {
+                    (node.attrs.get("type").is_some_and(|t| t == "server_sync")
+                        && self.notifications.is_some())
+                        || (node.attrs.get("type").is_some_and(|t| t == "mediaretry")
+                            && self.config.process_media_notifications)
+                }
+                _ => false,
+            };
+        if queued {
+            let _ = self.offline.send(node.clone());
+        }
+        if !ignored
+            && !queued
+            && node.tag == "receipt"
             && let Some(sender) = &self.receipts
         {
             let _ = sender.send(node.clone());
         }
-        if node.tag == "message"
+        if !ignored
+            && !queued
+            && node.tag == "message"
             && let Some(sender) = &self.messages
         {
             let _ = sender.send(node.clone());
         }
         match node.tag.as_str() {
+            _ if ignored || queued => (),
             "presence" | "chatstate" => {
                 match super::presence::decode(&node, &self.config.should_ignore_jid) {
                     Ok(Some(update)) => self.emit(Event::PresenceUpdated(update)),
@@ -904,6 +953,12 @@ impl Actor<'_> {
             return Ok(());
         };
         if presence.is_global() {
+            if let Some(inner) = self.socket_inner.upgrade() {
+                inner.active_receipts.store(
+                    presence == super::presence::Presence::Available,
+                    Ordering::Relaxed,
+                );
+            }
             self.emit(Event::Online(
                 presence == super::presence::Presence::Available,
             ));

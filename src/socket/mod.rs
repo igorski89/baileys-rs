@@ -1,6 +1,7 @@
 //! Async WhatsApp WebSocket connection with exclusive Noise ownership and IQ routing.
 mod actor;
 mod app_state;
+pub mod dispatch;
 mod event_responses;
 mod events;
 mod group_effects;
@@ -158,7 +159,7 @@ pub struct Config {
     /// Announce available (true) or unavailable (false) when the connection opens.
     /// A saved self name is required for either announcement.
     pub mark_online_on_connect: bool,
-    /// Sender filter, currently applied to presence updates; server presence bypasses it.
+    /// Sender filter for incoming stanzas; server stanzas bypass it.
     pub should_ignore_jid: presence::IgnoreJid,
     pub devices: crate::devices::Config,
     pub patch_message_before_sending: crate::relay::MessagePatch,
@@ -589,6 +590,7 @@ impl Socket {
         let notification_sender = config
             .process_app_state_notifications
             .then_some(notification_sender);
+        let (offline_sender, offline_receiver) = mpsc::unbounded_channel();
         let (own_sender, own_receiver) = mpsc::unbounded_channel();
         let inner = Arc::new(Inner {
             notification_lock: Arc::new(tokio::sync::Mutex::new(())),
@@ -628,6 +630,7 @@ impl Socket {
         });
         send::spawn_own_worker(&inner, own_receiver);
         startup::spawn_worker(&inner, config.fire_init_queries);
+        dispatch::spawn_worker(&inner, offline_receiver);
         incoming_messages::spawn_worker(&inner, message_receiver);
         notifications::spawn_worker(&inner, notification_receiver);
         let receipt_inner = Arc::downgrade(&inner);
@@ -659,6 +662,7 @@ impl Socket {
                 receipt_sender,
                 message_sender,
                 notification_sender,
+                offline_sender,
                 actor_inner,
             )
             .await;
