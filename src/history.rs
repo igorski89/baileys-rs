@@ -1,8 +1,10 @@
 //! History download, inflation and chat/message/contact extraction.
+mod status;
 use crate::{auth::Contact, media, proto, relay, signal::mapping::Mapping};
 use flate2::{Decompress, FlushDecompress, Status};
 use futures_util::future::BoxFuture;
 use prost::Message as _;
+pub use status::{ProgressState, StatusTracker, StatusUpdate};
 use std::{io::Read, sync::Arc};
 use tokio_util::io::SyncIoBridge;
 

@@ -207,3 +207,46 @@ async fn actual_history_notifications_receipt_inline_inflate_and_preserve_latest
     .await
     .unwrap();
 }
+
+#[tokio::test]
+async fn history_status_precedes_download_checks_policy_once_and_accepts_nonself_progress() {
+    use history::ProgressState;
+    use std::sync::{
+        Arc,
+        atomic::{AtomicUsize, Ordering},
+    };
+    timeout(Duration::from_secs(8),async {
+        let(listener,mut config)=setup().await;
+        let count=Arc::new(AtomicUsize::new(0));let checked=count.clone();
+        config.history_policy=history::Policy::new(move |_|{checked.fetch_add(1,Ordering::SeqCst);true});
+        let (entered,seen)=tokio::sync::oneshot::channel();
+        let entered=Arc::new(std::sync::Mutex::new(Some(entered)));
+        config.history_downloader=Some(history::Downloader::new(move |_|{
+            let entered=entered.clone();async move{
+                if let Some(entered)=entered.lock().unwrap().take(){let _=entered.send(());}
+                std::future::pending::<Result<proto::HistorySync,history::Error>>().await
+            }
+        }));
+        let server=tokio::spawn(async move{let mut peer=Peer::accept(listener.accept().await.unwrap().0).await;peer.closed().await;});
+        let(socket,mut events)=Socket::connect(config,store(false)).await.unwrap();
+        let mut envelope=messages::Envelope {
+            message:proto::WebMessageInfo {key:Some(proto::MessageKey {remote_jid:Some("100@s.whatsapp.net".into()),id:Some("BOOT".into()),from_me:Some(true),participant:None}),message:Some(proto::Message {protocol_message:Some(Box::new(proto::message::ProtocolMessage {r#type:Some(5),history_sync_notification:Some(proto::message::HistorySyncNotification {sync_type:Some(0),..Default::default()}),..Default::default()})),..Default::default()}),..Default::default()},
+            key_metadata:Default::default(),category:None,retry_count:None,author:"100@s.whatsapp.net".into(),sender:"100@s.whatsapp.net".into(),
+        };
+        let mut operation=Box::pin(socket.upsert_message(&envelope,messages::own::UpsertKind::Notify));
+        tokio::select!{result=&mut operation=>panic!("download unexpectedly completed {result:?}"),result=seen=>result.unwrap()}
+        let status=loop{if let Event::MessagingHistoryStatus(status)=events.recv().await.unwrap(){break status;}};
+        assert_eq!(status.sync_type,0);assert_eq!(status.status,ProgressState::Complete);assert!(status.explicit);
+        assert!(socket.is_buffering_events());assert_eq!(count.load(Ordering::SeqCst),1);
+        drop(operation);socket.flush_events().unwrap();while events.try_recv().is_ok(){}
+        envelope.message.key.as_mut().unwrap().from_me=Some(false);
+        envelope.message.message.as_mut().unwrap().protocol_message.as_mut().unwrap().history_sync_notification=Some(proto::message::HistorySyncNotification {sync_type:Some(3),progress:Some(100),..Default::default()});
+        socket.upsert_message(&envelope,messages::own::UpsertKind::Notify).await.unwrap();
+        let status=loop{if let Event::MessagingHistoryStatus(status)=events.recv().await.unwrap(){break status;}};
+        assert_eq!(status.sync_type,3);assert!(status.explicit);assert_eq!(count.load(Ordering::SeqCst),2);
+        socket.upsert_message(&envelope,messages::own::UpsertKind::Notify).await.unwrap();
+        assert_eq!(count.load(Ordering::SeqCst),3);
+        assert!(!std::iter::from_fn(||events.try_recv().ok()).any(|event|matches!(event,Event::MessagingHistoryStatus(_))));
+        socket.close().await.unwrap();server.await.unwrap();
+    }).await.unwrap();
+}

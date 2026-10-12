@@ -11,6 +11,7 @@ use tokio::{
 struct Shared {
     sender: broadcast::Sender<Event>,
     buffer: Mutex<Buffer>,
+    history: Mutex<crate::history::StatusTracker>,
     origin: Instant,
     changed: Arc<Notify>,
 }
@@ -22,6 +23,33 @@ impl Drop for Shared {
 #[derive(Clone)]
 pub(super) struct Emitter(Arc<Shared>);
 impl Shared {
+    fn status(&self, updates: Vec<crate::history::StatusUpdate>) {
+        for update in updates {
+            let _ = self.sender.send(Event::MessagingHistoryStatus(update));
+        }
+    }
+    fn tick(&self) -> Option<std::time::Duration> {
+        let mut buffer = self.buffer.lock().expect("event buffer mutex");
+        let mut history = self.history.lock().expect("history progress mutex");
+        let now = self.origin.elapsed();
+        loop {
+            let next = match (buffer.next_deadline(), history.next_deadline()) {
+                (Some(a), Some(b)) => Some(a.min(b)),
+                (a, b) => a.or(b),
+            };
+            let deadline = next?;
+            if deadline > now {
+                return next;
+            }
+            // A 120s pause timer was registered before any shorter buffer timer
+            // sharing its deadline, so progress wins ties in the source clock.
+            if history.next_deadline() == Some(deadline) {
+                self.status(history.tick(deadline));
+            } else if let Err(error) = self.deliver(buffer.tick(deadline)) {
+                tracing::error!(?error, "buffered event delivery failed");
+            }
+        }
+    }
     fn deliver(&self, batches: Vec<Batch>) -> Result<usize, Error> {
         let mut receivers = 0;
         for batch in batches {
@@ -38,6 +66,7 @@ impl Emitter {
         let shared = Arc::new(Shared {
             sender,
             buffer: Mutex::new(Buffer::new()),
+            history: Mutex::new(crate::history::StatusTracker::default()),
             origin: Instant::now(),
             changed: Arc::new(Notify::new()),
         });
@@ -52,11 +81,7 @@ impl Emitter {
                     let Some(shared) = weak.upgrade() else {
                         break;
                     };
-                    let mut buffer = shared.buffer.lock().expect("event buffer mutex");
-                    if let Err(error) = shared.deliver(buffer.tick(shared.origin.elapsed())) {
-                        tracing::error!(?error, "buffered event delivery failed");
-                    }
-                    buffer.next_deadline().map(|d| shared.origin + d)
+                    shared.tick().map(|d| shared.origin + d)
                 };
                 if let Some(deadline) = deadline {
                     tokio::select! {_ = tokio::time::sleep_until(deadline)=>(),_ = &mut notified=>()}
@@ -72,6 +97,22 @@ impl Emitter {
     }
     pub fn send(&self, event: Event) -> Result<usize, Error> {
         let mut buffer = self.0.buffer.lock().expect("event buffer mutex");
+        match &event {
+            Event::PendingNotifications => self
+                .0
+                .history
+                .lock()
+                .expect("history progress mutex")
+                .pending_notifications(),
+            Event::Connection(super::ConnectionState::Closed { .. }) => self
+                .0
+                .history
+                .lock()
+                .expect("history progress mutex")
+                .close(),
+            _ => (),
+        }
+        self.0.changed.notify_one();
         if !buffer.is_buffering() {
             return Ok(self.0.sender.send(event).unwrap_or(0));
         }
@@ -102,6 +143,16 @@ impl Emitter {
             .lock()
             .expect("event buffer mutex")
             .buffer(self.0.origin.elapsed());
+        self.0.changed.notify_one();
+    }
+    pub fn history_notification(
+        &self,
+        notification: &crate::proto::message::HistorySyncNotification,
+        eligible: bool,
+    ) {
+        let mut history = self.0.history.lock().expect("history progress mutex");
+        self.0
+            .status(history.observe(notification, eligible, self.0.origin.elapsed()));
         self.0.changed.notify_one();
     }
     pub fn is_buffering(&self) -> bool {
@@ -202,6 +253,76 @@ mod tests {
             author: "200@s.whatsapp.net".into(),
             sender: "200@s.whatsapp.net".into(),
         }
+    }
+    #[tokio::test(start_paused = true)]
+    async fn history_pause_timer_orders_shared_deadlines_and_close_cancels_it() {
+        use crate::history::ProgressState;
+        let (emitter, mut receiver) = Emitter::new(32);
+        emitter.send(Event::PendingNotifications).unwrap();
+        receiver.try_recv().unwrap();
+        let recent = proto::message::HistorySyncNotification {
+            sync_type: Some(3),
+            progress: Some(50),
+            ..Default::default()
+        };
+        emitter.history_notification(&recent, true);
+        tokio::task::yield_now().await;
+        tokio::time::advance(Duration::from_secs(90)).await;
+        emitter.buffer();
+        emitter
+            .send(Event::ContactsUpserted(vec![Contact {
+                id: "200@s.whatsapp.net".into(),
+                ..Default::default()
+            }]))
+            .unwrap();
+        tokio::task::yield_now().await;
+        tokio::time::advance(Duration::from_secs(30)).await;
+        tokio::task::yield_now().await;
+        let Event::MessagingHistoryStatus(status) = receiver.try_recv().unwrap() else {
+            panic!()
+        };
+        assert_eq!(status.status, ProgressState::Paused);
+        assert!(!status.explicit);
+        assert!(matches!(
+            receiver.try_recv().unwrap(),
+            Event::ContactsUpserted(_)
+        ));
+        emitter.send(Event::PendingNotifications).unwrap();
+        receiver.try_recv().unwrap();
+        emitter.history_notification(
+            &proto::message::HistorySyncNotification {
+                sync_type: Some(3),
+                progress: Some(100),
+                ..Default::default()
+            },
+            true,
+        );
+        assert!(receiver.try_recv().is_err());
+        emitter
+            .send(Event::Connection(super::super::ConnectionState::Closed {
+                code: 428,
+            }))
+            .unwrap();
+        receiver.try_recv().unwrap();
+        emitter.send(Event::PendingNotifications).unwrap();
+        receiver.try_recv().unwrap();
+        emitter.history_notification(&recent, true);
+        emitter
+            .send(Event::Connection(super::super::ConnectionState::Closed {
+                code: 428,
+            }))
+            .unwrap();
+        receiver.try_recv().unwrap();
+        tokio::task::yield_now().await;
+        tokio::time::advance(Duration::from_secs(120)).await;
+        tokio::task::yield_now().await;
+        assert!(receiver.try_recv().is_err());
+        emitter.history_notification(&recent, true);
+        drop(emitter);
+        assert!(matches!(
+            receiver.try_recv(),
+            Err(broadcast::error::TryRecvError::Closed)
+        ));
     }
     #[tokio::test(start_paused = true)]
     async fn completion_auto_flush_and_last_handle_drop_drive_timers_without_leaks() {

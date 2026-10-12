@@ -114,6 +114,15 @@ impl Socket {
                 response.await.map_err(|_| Error::Closed(428))??;
             }
         }
+        let history_notification = crate::history::notification(message.message.as_ref());
+        let history_eligible = history_notification
+            .as_ref()
+            .is_some_and(|notification| self.inner.history_policy.should_process(notification));
+        if let Some(notification) = &history_notification {
+            self.inner
+                .events
+                .history_notification(notification, history_eligible);
+        }
         let mut effects =
             own::effects_received(message, credentials.account_settings.unarchive_chats)?;
         if let Some(update) = effects.mutation.take() {
@@ -127,7 +136,8 @@ impl Socket {
                 .events
                 .send(Event::MessageReactions(vec![update]))?;
         }
-        self.process_phone_protocol(message).await?;
+        self.process_phone_protocol(message, history_eligible)
+            .await?;
         self.process_event_response(
             message,
             metadata.as_ref().map(|m| &m.key_metadata),

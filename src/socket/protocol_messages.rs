@@ -9,6 +9,7 @@ impl Socket {
     pub(super) async fn process_phone_protocol(
         &self,
         message: &proto::WebMessageInfo,
+        history_eligible: bool,
     ) -> Result<(), Error> {
         let Some(protocol) =
             relay::normalize(message.message.as_ref()).and_then(|m| m.protocol_message.as_deref())
@@ -26,7 +27,7 @@ impl Socket {
                 let Some(notification) = protocol.history_sync_notification.clone() else {
                     return Ok(());
                 };
-                if !self.inner.history_policy.should_process(&notification) {
+                if !history_eligible {
                     return Ok(());
                 }
                 let demand = notification.sync_type == Some(6);

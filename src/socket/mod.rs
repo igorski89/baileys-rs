@@ -246,10 +246,15 @@ pub enum Event {
     ChatsUpserted(Vec<crate::history::Chat>),
     EventResponsesUpdated(Vec<crate::messages::EventResponseUpdate>),
     MessagingHistorySet(crate::history::Set),
+    MessagingHistoryStatus(crate::history::StatusUpdate),
 }
 impl std::fmt::Debug for Event {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
+            Self::MessagingHistoryStatus(status) => f
+                .debug_tuple("MessagingHistoryStatus")
+                .field(status)
+                .finish(),
             Self::MessagingHistorySet(v) => f
                 .debug_struct("MessagingHistorySet")
                 .field("chats", &v.data.chats.len())
