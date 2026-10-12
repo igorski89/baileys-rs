@@ -52,6 +52,166 @@ pub struct ChatUpdate {
     pub ephemeral_setting_timestamp: Option<f64>,
     /// None means unchanged; Some(None) disables expiration.
     pub ephemeral_expiration: Option<Option<u32>>,
+    /// Extension fields and runtime values outside the native field ranges.
+    pub runtime_fields: Option<Box<serde_json::Map<String, serde_json::Value>>>,
+}
+impl crate::proto_json::JsonField for ChatUpdate {
+    fn to_value(&self) -> serde_json::Value {
+        use serde_json::json;
+        let mut value = json!({"id": self.id});
+        let fields = value.as_object_mut().expect("chat update object");
+        macro_rules! field {
+            ($member:ident, $name:literal) => {
+                if let Some(value) = &self.$member {
+                    fields.insert($name.into(), json!(value));
+                }
+            };
+        }
+        field!(name, "name");
+        field!(description, "description");
+        field!(conversation_timestamp, "conversationTimestamp");
+        field!(unread_count, "unreadCount");
+        field!(archived, "archived");
+        field!(mute_end_time, "muteEndTime");
+        field!(pinned, "pinned");
+        field!(read_only, "readOnly");
+        field!(ephemeral_setting_timestamp, "ephemeralSettingTimestamp");
+        field!(ephemeral_expiration, "ephemeralExpiration");
+        if let Some(messages) = &self.messages {
+            fields.insert(
+                "messages".into(),
+                json!(
+                    messages
+                        .iter()
+                        .map(|message| { json!({"message": message.to_value()}) })
+                        .collect::<Vec<_>>()
+                ),
+            );
+        }
+        if self.clear_archived {
+            fields.insert("archived".into(), serde_json::Value::Null);
+        }
+        if self.clear_unread_count {
+            fields.insert("unreadCount".into(), serde_json::Value::Null);
+        }
+        if let Some(runtime_fields) = &self.runtime_fields {
+            fields.extend(runtime_fields.as_ref().clone());
+        }
+        value
+    }
+    fn from_value(value: &serde_json::Value) -> Result<Self, crate::proto_json::Error> {
+        use crate::proto_json::{Error, object};
+        let mut fields = object(value)?.clone();
+        let id = fields
+            .remove("id")
+            .and_then(|v| v.as_str().map(str::to_owned))
+            .ok_or(Error::Input("chat update id"))?;
+        let mut result = Self {
+            id,
+            ..Default::default()
+        };
+        macro_rules! field {
+            ($member:ident, $name:literal, $parse:expr) => {
+                if let Some(value) = fields.get($name)
+                    && let Some(parsed) = ($parse)(value)
+                {
+                    result.$member = Some(parsed);
+                    fields.remove($name);
+                }
+            };
+        }
+        fn text(v: &serde_json::Value) -> Option<Option<String>> {
+            if v.is_null() {
+                Some(None)
+            } else {
+                v.as_str().map(|s| Some(s.into()))
+            }
+        }
+        fn number(v: &serde_json::Value) -> Option<Option<f64>> {
+            if v.is_null() {
+                Some(None)
+            } else {
+                v.as_f64().map(Some)
+            }
+        }
+        field!(name, "name", text);
+        field!(description, "description", text);
+        field!(
+            conversation_timestamp,
+            "conversationTimestamp",
+            serde_json::Value::as_f64
+        );
+        field!(archived, "archived", serde_json::Value::as_bool);
+        field!(read_only, "readOnly", serde_json::Value::as_bool);
+        field!(mute_end_time, "muteEndTime", number);
+        field!(pinned, "pinned", number);
+        field!(
+            ephemeral_setting_timestamp,
+            "ephemeralSettingTimestamp",
+            serde_json::Value::as_f64
+        );
+        field!(
+            ephemeral_expiration,
+            "ephemeralExpiration",
+            |v: &serde_json::Value| {
+                if v.is_null() {
+                    Some(None)
+                } else {
+                    v.as_u64().and_then(|n| u32::try_from(n).ok()).map(Some)
+                }
+            }
+        );
+        field!(unread_count, "unreadCount", serde_json::Value::as_i64);
+        if result.unread_count.is_none()
+            && let Some(n) = fields
+                .get("unreadCount")
+                .and_then(serde_json::Value::as_f64)
+            && n.fract() == 0.0
+            && (-9223372036854775808.0..9223372036854775808.0).contains(&n)
+        {
+            result.unread_count = Some(n as i64);
+            fields.remove("unreadCount");
+        }
+        if fields
+            .get("archived")
+            .is_some_and(serde_json::Value::is_null)
+        {
+            result.clear_archived = true;
+            fields.remove("archived");
+        }
+        if fields
+            .get("unreadCount")
+            .is_some_and(serde_json::Value::is_null)
+        {
+            result.clear_unread_count = true;
+            fields.remove("unreadCount");
+        }
+        if let Some(messages) = fields.get("messages") {
+            result.messages = Some(
+                messages
+                    .as_array()
+                    .ok_or(Error::Input("chat messages"))?
+                    .iter()
+                    .map(|entry| {
+                        proto::WebMessageInfo::from_value(
+                            entry
+                                .get("message")
+                                .ok_or(Error::Input("chat message envelope"))?,
+                        )
+                    })
+                    .collect::<Result<_, _>>()?,
+            );
+            // Preserve future wrapper fields rather than discard them.
+            let canonical = result.to_value();
+            if canonical.get("messages") == Some(messages) {
+                fields.remove("messages");
+            }
+        }
+        if !fields.is_empty() {
+            result.runtime_fields = Some(Box::new(fields));
+        }
+        Ok(result)
+    }
 }
 #[derive(Debug, Default, Clone, PartialEq)]
 pub struct Effects {

@@ -27,6 +27,53 @@ pub enum Error {
 pub struct Chat {
     pub conversation: proto::Conversation,
     pub last_message_recv_timestamp: Option<f64>,
+    /// Buffered runtime fields that cannot be represented by Conversation.
+    /// These override the protocol projection, including explicit nulls.
+    pub runtime_fields: serde_json::Map<String, serde_json::Value>,
+}
+impl crate::proto_json::JsonField for Chat {
+    fn to_value(&self) -> serde_json::Value {
+        let mut value = self.conversation.to_value();
+        let object = value.as_object_mut().expect("Conversation JSON object");
+        if let Some(timestamp) = self.last_message_recv_timestamp {
+            object.insert("lastMessageRecvTimestamp".into(), timestamp.into());
+        }
+        object.extend(self.runtime_fields.clone());
+        value
+    }
+    fn from_value(value: &serde_json::Value) -> Result<Self, crate::proto_json::Error> {
+        use crate::proto_json::{Error, object};
+        let mut fields = object(value)?.clone();
+        if !fields.get("id").is_some_and(serde_json::Value::is_string) {
+            return Err(Error::Input("chat id"));
+        }
+        let timestamp = fields.remove("lastMessageRecvTimestamp");
+        let last_message_recv_timestamp = timestamp.as_ref().and_then(serde_json::Value::as_f64);
+        let candidate =
+            proto::Conversation::from_value(&serde_json::Value::Object(fields.clone()))?;
+        let canonical = candidate.to_value();
+        let mut runtime_fields = serde_json::Map::new();
+        // Do not expose protobufjs' scalar coercion (e.g. a wrapped uint32 pin
+        // timestamp) as protocol data. Keep the exact runtime value instead.
+        fields.retain(|name, value| {
+            if canonical.get(name) == Some(value) {
+                true
+            } else {
+                runtime_fields.insert(name.clone(), value.clone());
+                false
+            }
+        });
+        if let Some(timestamp) = timestamp
+            && last_message_recv_timestamp.is_none()
+        {
+            runtime_fields.insert("lastMessageRecvTimestamp".into(), timestamp);
+        }
+        Ok(Self {
+            conversation: proto::Conversation::from_value(&serde_json::Value::Object(fields))?,
+            last_message_recv_timestamp,
+            runtime_fields,
+        })
+    }
 }
 #[derive(Debug, Clone, PartialEq)]
 pub struct Processed {
@@ -159,6 +206,7 @@ pub fn process(item: &mut proto::HistorySync) -> Result<Processed, Error> {
                 result.chats.push(Chat {
                     conversation: chat.clone(),
                     last_message_recv_timestamp: received,
+                    runtime_fields: Default::default(),
                 });
             }
         }

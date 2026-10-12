@@ -48,6 +48,7 @@ fn history_privacy_tokens_match_original_snapshot_comparisons_and_index_order() 
                 conversation: proto::Conversation::decode(unhex(c.as_str().unwrap()).as_slice())
                     .unwrap(),
                 last_message_recv_timestamp: None,
+                runtime_fields: Default::default(),
             })
             .collect::<Vec<_>>();
         privacy::Repository::new(store.clone())
@@ -100,6 +101,7 @@ fn history_privacy_write_failure_is_suppressed_but_read_failure_propagates() {
             ..Default::default()
         },
         last_message_recv_timestamp: None,
+        runtime_fields: Default::default(),
     }];
     let privacy = privacy::Repository::new(store.clone());
     assert!(privacy.store_from_history(&chats).unwrap().is_empty());

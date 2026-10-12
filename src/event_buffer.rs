@@ -281,6 +281,22 @@ impl Buffer {
         }
         Ok(vec![])
     }
+    /// Project native socket chat updates while keeping conditions callable.
+    pub fn emit_native_chat_updates(
+        &mut self,
+        updates: Vec<crate::messages::own::ChatUpdate>,
+    ) -> Result<Vec<Batch>, Error> {
+        use crate::proto_json::JsonField;
+        self.emit_chat_updates(
+            updates
+                .into_iter()
+                .map(|update| ChatUpdate {
+                    data: update.to_value(),
+                    condition: update.conditional.map(Condition::chat),
+                })
+                .collect(),
+        )
+    }
     fn chat_update(&mut self, mut update: ChatUpdate) -> Result<(), Error> {
         object(&update.data)?;
         let id = property(update.data.get("id"));
