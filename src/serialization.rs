@@ -3,7 +3,7 @@ use base64::{Engine, engine::general_purpose::STANDARD};
 use serde::{Deserialize, Deserializer, Serialize, Serializer, de::Error};
 use serde_json::Value;
 
-fn decode_bytes(value: Value) -> Result<Vec<u8>, &'static str> {
+pub(crate) fn decode_bytes(value: Value) -> Result<Vec<u8>, &'static str> {
     match value {
         Value::String(value) => STANDARD.decode(value).map_err(|_| "invalid base64 buffer"),
         Value::Array(values) => values
@@ -78,7 +78,7 @@ pub mod optional_bytes {
         }
     }
 }
-fn integer(value: Value) -> Result<u64, &'static str> {
+pub(crate) fn integer(value: Value) -> Result<u64, &'static str> {
     match value {
         Value::Number(n) => n
             .as_u64()

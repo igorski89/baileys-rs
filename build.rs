@@ -1,4 +1,6 @@
 use std::{env, fs, path::PathBuf};
+#[path = "build/proto_json.rs"]
+mod proto_json;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("cargo:rerun-if-changed=proto/WAProto.proto");
@@ -67,7 +69,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
     let normalized_path = out_dir.join("WAProto.proto");
     fs::write(&normalized_path, normalized)?;
-    config.compile_protos(&[normalized_path], &[out_dir])?;
+    let descriptors = config.load_fds(&[normalized_path], &[&out_dir])?;
+    fs::write(
+        out_dir.join("proto_json.rs"),
+        proto_json::generate(&descriptors),
+    )?;
+    fs::write(
+        out_dir.join("proto_json_schema.json"),
+        serde_json::to_vec_pretty(&proto_json::schema(&descriptors))?,
+    )?;
+    config.compile_fds(descriptors)?;
     let tokens: serde_json::Value = serde_json::from_slice(&fs::read("proto/tokens.json")?)?;
     let mut output = String::from("// Generated from upstream Baileys token tables.\n");
     for (key, name) in [("single", "SINGLE"), ("double", "DOUBLE")] {

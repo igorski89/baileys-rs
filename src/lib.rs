@@ -16,6 +16,7 @@ pub mod messages;
 pub mod noise;
 pub mod privacy;
 pub mod privacy_settings;
+pub mod proto_json;
 pub mod receipts;
 pub mod relay;
 pub mod reporting;

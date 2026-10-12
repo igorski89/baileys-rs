@@ -43,6 +43,8 @@ image = { version = "0.25", default-features = false, features = ["jpeg", "png",
 symphonia = { version = "0.5.5", features = ["all"] }
 
 [build-dependencies]
+heck = "0.5"
+prost-types = "0.14"
 prost-build = "0.14"
 protoc-bin-vendored = "3"
 serde_json = { version = "1", features = ["preserve_order"] }
