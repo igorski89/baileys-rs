@@ -133,19 +133,28 @@ impl Socket {
                     ])),
                 ]));
             self.query(node, None).await?;
-            // The transaction commit, with upstream's retries.
+            // The transaction commit, with upstream's retries. Versions the resync
+            // staged for collections the server added unasked are part of it.
+            let writes: Vec<_> = synced
+                .states
+                .iter()
+                .map(|(other, state)| {
+                    KeyMutation::put(other, KeyValue::AppStateSyncVersion(state.clone()))
+                })
+                .chain([KeyMutation::put(
+                    &name,
+                    KeyValue::AppStateSyncVersion(encoded.state.clone()),
+                )])
+                .collect();
             let options = &self.inner.app_state_options;
             let mut attempt = 0;
             loop {
                 attempt += 1;
                 let store = self.inner.store.clone();
-                let state = encoded.state.clone();
-                let id = name.clone();
-                match tokio::task::spawn_blocking(move || {
-                    store.set(&[KeyMutation::put(id, KeyValue::AppStateSyncVersion(state))])
-                })
-                .await
-                .map_err(|_| Error::Task)?
+                let writes = writes.clone();
+                match tokio::task::spawn_blocking(move || store.set(&writes))
+                    .await
+                    .map_err(|_| Error::Task)?
                 {
                     Ok(()) => break,
                     Err(error) if attempt >= options.max_commit_attempts.max(1) => {

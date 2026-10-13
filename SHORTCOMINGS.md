@@ -55,7 +55,7 @@ Not gaps, but worth knowing: like upstream, the socket does not reconnect by its
 
 ### USync and device cache
 - A USync query assembled through its public fields rather than the builder methods lists built-in protocols before custom ones.
-- The external device store is synchronous and is called while the cache is locked; upstream's cache interface is asynchronous and has an optional batched read.
+- The external device store's calls cannot fail; upstream propagates an exception thrown by a cache. It stores the encoded JID with each device, which upstream recomputes on every read.
 
 ### Configuration
 - `Config::transaction` (upstream's `transactionOpts`) retries only the commits that end an app-state synchronization or patch upload; every other storage write is one SQLite transaction without retries.

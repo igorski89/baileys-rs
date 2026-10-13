@@ -1175,7 +1175,7 @@ impl Socket {
         use_cache: bool,
         ignore_zero: bool,
     ) -> Result<Vec<crate::devices::Device>, Error> {
-        let mut plan = self.inner.devices.plan(jids, use_cache)?;
+        let mut plan = self.inner.devices.plan(jids, use_cache).await?;
         if plan.to_fetch.is_empty() {
             return Ok(plan.devices);
         }
@@ -1228,7 +1228,11 @@ impl Socket {
                 .unwrap_or_default(),
             ignore_zero,
         )?;
-        let groups = self.inner.devices.update(extracted)?;
+        // Cache writes are serialized with device-list notifications.
+        let groups = {
+            let _serial = self.inner.devices_lock.lock().await;
+            self.inner.devices.update(extracted).await?
+        };
         let updates = groups
             .iter()
             .map(|(user, devices)| {
@@ -1258,7 +1262,7 @@ impl Socket {
         }
         Ok(plan.devices)
     }
-    pub fn invalidate_user_devices(&self, jids: &[String]) -> Result<(), Error> {
+    pub async fn invalidate_user_devices(&self, jids: &[String]) -> Result<(), Error> {
         let users = jids
             .iter()
             .map(|j| {
@@ -1267,7 +1271,7 @@ impl Socket {
                     .ok_or(crate::signal::Error::Address)
             })
             .collect::<Result<Vec<_>, _>>()?;
-        Ok(self.inner.devices.invalidate_users(&users)?)
+        Ok(self.inner.devices.invalidate_users(&users).await?)
     }
     /// Fetch bundles and establish sessions on a blocking executor.
     pub async fn establish_sessions(

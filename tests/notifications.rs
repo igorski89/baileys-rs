@@ -101,8 +101,8 @@ fn group_picture_and_account_notifications_match_original_handler() {
         );
     }
 }
-#[test]
-fn device_list_notifications_match_original_cache_and_session_effects() {
+#[tokio::test]
+async fn device_list_notifications_match_original_cache_and_session_effects() {
     use baileys_rs::{
         devices::{self, Cache, Change},
         jid::Jid,
@@ -125,6 +125,7 @@ fn device_list_notifications_match_original_cache_and_session_effects() {
                     })
                     .collect(),
             )
+            .await
             .unwrap();
         // The socket deletes removed sessions per user before updating that user's cache.
         let mut deleted = vec![];
@@ -144,7 +145,7 @@ fn device_list_notifications_match_original_cache_and_session_effects() {
                     );
                 }
                 let jids: Vec<_> = entries.iter().map(|(_, jid)| jid.clone()).collect();
-                cache.apply_change(user, list.change, &jids).unwrap();
+                cache.apply_change(user, list.change, &jids).await.unwrap();
             }
         }
         assert_eq!(failed, case["error"].as_bool().unwrap(), "{case}");
@@ -155,7 +156,7 @@ fn device_list_notifications_match_original_cache_and_session_effects() {
             .chain(expected.keys())
             .chain([&"400".to_string()])
         {
-            let actual = cache.cached(user).unwrap().map(|entries| {
+            let actual = cache.cached(user).await.unwrap().map(|entries| {
                 entries
                     .iter()
                     .map(|d| json!({"user": d.user, "server": d.server, "device": d.device}))

@@ -3,6 +3,7 @@ use crate::{
     jid::{self, Jid},
     signal::Error,
 };
+use futures_util::future::BoxFuture;
 use indexmap::IndexMap;
 use serde::{Deserialize, Serialize};
 use std::{
@@ -29,12 +30,31 @@ impl Default for Config {
     }
 }
 /// Storage for per-user device lists, keyed by the user part of the JID.
-/// Calls are made while the cache is locked and must not block for long.
+/// The batched calls are upstream's optional mget and mset; by default they
+/// go through the single-key calls one user at a time.
 pub trait Store: Send + Sync {
-    fn get(&self, user: &str) -> Option<Vec<Device>>;
-    fn set(&self, user: &str, devices: Vec<Device>);
-    fn del(&self, user: &str);
-    fn flush_all(&self);
+    fn get<'a>(&'a self, user: &'a str) -> BoxFuture<'a, Option<Vec<Device>>>;
+    fn set<'a>(&'a self, user: &'a str, devices: Vec<Device>) -> BoxFuture<'a, ()>;
+    fn del<'a>(&'a self, user: &'a str) -> BoxFuture<'a, ()>;
+    fn flush_all(&self) -> BoxFuture<'_, ()>;
+    fn get_many<'a>(&'a self, users: &'a [String]) -> BoxFuture<'a, HashMap<String, Vec<Device>>> {
+        Box::pin(async move {
+            let mut found = HashMap::new();
+            for user in users {
+                if let Some(devices) = self.get(user).await {
+                    found.insert(user.clone(), devices);
+                }
+            }
+            found
+        })
+    }
+    fn set_many<'a>(&'a self, entries: &'a [(String, Vec<Device>)]) -> BoxFuture<'a, ()> {
+        Box::pin(async move {
+            for (user, devices) in entries {
+                self.set(user, devices.clone()).await;
+            }
+        })
+    }
 }
 #[derive(Clone)]
 pub struct ExternalStore(Arc<dyn Store>);
@@ -128,17 +148,11 @@ impl State {
         self.entries.retain(|_, entry| entry.expires > now);
     }
     fn get(&mut self, user: &str, now: Instant) -> Option<Vec<Device>> {
-        if let Some(store) = &self.config.store {
-            return store.0.get(user);
-        }
         let entry = self.entries.get_mut(user).filter(|e| e.expires > now)?;
         entry.used = now;
         Some(entry.devices.clone())
     }
     fn set(&mut self, user: &str, devices: Vec<Device>, now: Instant) {
-        if let Some(store) = &self.config.store {
-            return store.0.set(user, devices);
-        }
         if self.config.capacity == 0 || self.config.ttl.is_zero() {
             return;
         }
@@ -163,29 +177,51 @@ impl State {
         );
     }
     fn del(&mut self, user: &str) {
-        match &self.config.store {
-            Some(store) => store.0.del(user),
-            None => {
-                self.entries.remove(user);
-            }
-        }
+        self.entries.remove(user);
     }
 }
 #[derive(Clone)]
 pub struct Cache {
     state: Arc<Mutex<State>>,
+    store: Option<ExternalStore>,
 }
 impl Cache {
     pub fn new(config: Config) -> Self {
         Self {
+            store: config.store.clone(),
             state: Arc::new(Mutex::new(State {
                 entries: HashMap::new(),
                 config,
             })),
         }
     }
+    fn state(&self) -> Result<std::sync::MutexGuard<'_, State>, Error> {
+        let mut state = self.state.lock().map_err(|_| Error::Invalid)?;
+        state.purge(Instant::now());
+        Ok(state)
+    }
+    async fn get(&self, user: &str) -> Result<Option<Vec<Device>>, Error> {
+        match &self.store {
+            Some(store) => Ok(store.0.get(user).await),
+            None => Ok(self.state()?.get(user, Instant::now())),
+        }
+    }
+    async fn set(&self, user: &str, devices: Vec<Device>) -> Result<(), Error> {
+        match &self.store {
+            Some(store) => store.0.set(user, devices).await,
+            None => self.state()?.set(user, devices, Instant::now()),
+        }
+        Ok(())
+    }
+    async fn del(&self, user: &str) -> Result<(), Error> {
+        match &self.store {
+            Some(store) => store.0.del(user).await,
+            None => self.state()?.del(user),
+        }
+        Ok(())
+    }
     /// Explicit devices bypass discovery and filtering; remaining requests keep input order.
-    pub fn plan(&self, inputs: &[String], use_cache: bool) -> Result<Plan, Error> {
+    pub async fn plan(&self, inputs: &[String], use_cache: bool) -> Result<Plan, Error> {
         let mut plan = Plan {
             devices: vec![],
             to_fetch: vec![],
@@ -207,21 +243,30 @@ impl Cache {
                 users.push((jid.normalized(), jid.user));
             }
         }
-        let mut state = self.state.lock().map_err(|_| Error::Invalid)?;
-        let now = Instant::now();
-        state.purge(now);
+        // An external store is asked for all users at once, as upstream's mget.
+        let mut found = match &self.store {
+            Some(store) if use_cache => {
+                let names: Vec<_> = users.iter().map(|(_, user)| user.clone()).collect();
+                Some(store.0.get_many(&names).await)
+            }
+            _ => None,
+        };
         for (jid, user) in users {
-            if use_cache && let Some(devices) = state.get(&user, now) {
-                plan.devices.extend(devices);
-            } else {
-                plan.to_fetch.push(jid);
+            let devices = match &mut found {
+                Some(found) => found.get(&user).cloned(),
+                None if use_cache => self.get(&user).await?,
+                None => None,
+            };
+            match devices {
+                Some(devices) => plan.devices.extend(devices),
+                None => plan.to_fetch.push(jid),
             }
         }
         Ok(plan)
     }
     /// Cache only users with extracted devices. Empty server results are not negative-cached.
     /// The first fetch's zero/own-device filtering is retained on subsequent cache hits.
-    pub fn update(&self, devices: Vec<Jid>) -> Result<IndexMap<String, Vec<Device>>, Error> {
+    pub async fn update(&self, devices: Vec<Jid>) -> Result<IndexMap<String, Vec<Device>>, Error> {
         let mut groups = IndexMap::<String, Vec<Device>>::new();
         for device in devices {
             groups
@@ -229,30 +274,39 @@ impl Cache {
                 .or_default()
                 .push(device.into());
         }
-        let mut state = self.state.lock().map_err(|_| Error::Invalid)?;
-        let now = Instant::now();
-        state.purge(now);
-        for (user, devices) in &groups {
-            state.set(user, devices.clone(), now);
+        match &self.store {
+            Some(store) => {
+                let entries: Vec<_> = groups
+                    .iter()
+                    .map(|(user, devices)| (user.clone(), devices.clone()))
+                    .collect();
+                store.0.set_many(&entries).await;
+            }
+            None => {
+                for (user, devices) in &groups {
+                    self.set(user, devices.clone()).await?;
+                }
+            }
         }
         Ok(groups)
     }
     /// Unexpired cached devices for one user.
-    pub fn cached(&self, user: &str) -> Result<Option<Vec<Device>>, Error> {
-        let mut state = self.state.lock().map_err(|_| Error::Invalid)?;
-        Ok(state.get(user, Instant::now()))
+    pub async fn cached(&self, user: &str) -> Result<Option<Vec<Device>>, Error> {
+        self.get(user).await
     }
     /// Apply one user's device-list notification delta. Users without a cached
-    /// baseline are left for a later full USync refresh.
-    pub fn apply_change(&self, user: &str, change: Change, devices: &[Jid]) -> Result<(), Error> {
-        let mut state = self.state.lock().map_err(|_| Error::Invalid)?;
-        let now = Instant::now();
-        state.purge(now);
+    /// baseline are left for a later full USync refresh. Callers serialize the
+    /// writers, as upstream's devices mutex does.
+    pub async fn apply_change(
+        &self,
+        user: &str,
+        change: Change,
+        devices: &[Jid],
+    ) -> Result<(), Error> {
         if change == Change::Update {
-            state.del(user);
-            return Ok(());
+            return self.del(user).await;
         }
-        let Some(existing) = state.get(user, now).filter(|d| !d.is_empty()) else {
+        let Some(existing) = self.get(user).await?.filter(|d| !d.is_empty()) else {
             return Ok(());
         };
         // A device-less JID only matches a cached entry that has no device either.
@@ -266,24 +320,21 @@ impl Cache {
             _ => return Ok(()),
         }
         if updated.is_empty() {
-            state.del(user);
+            self.del(user).await
         } else {
-            state.set(user, updated, now);
+            self.set(user, updated).await
         }
-        Ok(())
     }
-    pub fn invalidate_users(&self, users: &[String]) -> Result<(), Error> {
-        let mut state = self.state.lock().map_err(|_| Error::Invalid)?;
+    pub async fn invalidate_users(&self, users: &[String]) -> Result<(), Error> {
         for user in users {
-            state.del(user);
+            self.del(user).await?;
         }
         Ok(())
     }
-    pub fn clear(&self) -> Result<(), Error> {
-        let mut state = self.state.lock().map_err(|_| Error::Invalid)?;
-        match &state.config.store {
-            Some(store) => store.0.flush_all(),
-            None => state.entries.clear(),
+    pub async fn clear(&self) -> Result<(), Error> {
+        match &self.store {
+            Some(store) => store.0.flush_all().await,
+            None => self.state()?.entries.clear(),
         }
         Ok(())
     }

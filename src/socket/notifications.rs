@@ -443,7 +443,8 @@ impl Socket {
             let devices: Vec<_> = entries.iter().map(|(_, jid)| jid.clone()).collect();
             self.inner
                 .devices
-                .apply_change(user, list.change, &devices)?;
+                .apply_change(user, list.change, &devices)
+                .await?;
         }
         Ok(())
     }

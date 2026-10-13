@@ -362,7 +362,7 @@ async fn device_discovery_cache_and_session_assertions_use_lid_addresses() {
         assert!(socket.assert_sessions(&["200:1@s.whatsapp.net".into()], false).await.unwrap());
         assert!(!socket.assert_sessions(&["200:1@s.whatsapp.net".into()], false).await.unwrap());
         assert!(socket.assert_sessions(&["800:1@lid".into(), "800:1@lid".into()], true).await.unwrap());
-        socket.invalidate_user_devices(&["200@s.whatsapp.net".into()]).unwrap();
+        socket.invalidate_user_devices(&["200@s.whatsapp.net".into()]).await.unwrap();
         let refreshed = socket.get_usync_devices(&["200@s.whatsapp.net".into()], true, true).await.unwrap();
         assert_eq!(refreshed.iter().map(|d| d.device).collect::<Vec<_>>(), [Some(1)]);
         assert!(matches!(store.get(KeyCategory::DeviceList, &["200".into()]).unwrap().get("200"), Some(KeyValue::DeviceList(devices)) if devices == &["1"]));
