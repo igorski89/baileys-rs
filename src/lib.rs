@@ -16,6 +16,7 @@ pub mod history;
 pub mod jid;
 pub mod media;
 pub mod messages;
+pub mod newsletters;
 pub mod noise;
 pub mod notifications;
 pub mod offline;

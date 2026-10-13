@@ -30,7 +30,9 @@ impl Socket {
         if node.tag != "notification"
             || !(matches!(
                 kind,
-                Some("server_sync" | "devices" | "encrypt" | "privacy_token")
+                Some(
+                    "server_sync" | "devices" | "encrypt" | "privacy_token" | "newsletter" | "mex"
+                )
             ) || notifications::is_supported(kind))
         {
             return Ok(false);
@@ -57,6 +59,22 @@ impl Socket {
         }
         if node.attrs.get("type").is_some_and(|t| t == "privacy_token") {
             return self.process_privacy_token_notification(node).await;
+        }
+        match node.attrs.get("type").map(String::as_str) {
+            Some("newsletter") => {
+                return self
+                    .apply_newsletter_effects(crate::newsletters::notification(node))
+                    .await;
+            }
+            Some("mex") => {
+                let now = std::time::SystemTime::now()
+                    .duration_since(std::time::UNIX_EPOCH)
+                    .map_or(0.0, |elapsed| elapsed.as_millis() as f64);
+                return self
+                    .apply_newsletter_effects(crate::newsletters::mex_notification(node, now)?)
+                    .await;
+            }
+            _ => {}
         }
         let credentials = super::load_credentials(self.inner.store.clone()).await?;
         let me = credentials.me_id().map_err(Error::Auth)?.to_owned();

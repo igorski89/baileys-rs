@@ -84,7 +84,7 @@ fn content_string(node: &BinaryNode) -> Option<String> {
     }
 }
 // Long.fromValue(number) reinterpreted as unsigned, as fromObject does for uint64.
-fn long(value: f64) -> u64 {
+pub(crate) fn long(value: f64) -> u64 {
     const TWO_63: f64 = 9_223_372_036_854_775_808.0;
     if value.is_nan() {
         0

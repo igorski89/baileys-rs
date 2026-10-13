@@ -14,6 +14,7 @@ mod incoming_messages;
 mod incoming_receipts;
 pub mod initial_sync;
 mod media;
+mod newsletters;
 mod notifications;
 pub mod presence;
 mod protocol_messages;
@@ -62,6 +63,8 @@ pub enum Error {
     Notification(#[from] crate::notifications::Error),
     #[error(transparent)]
     Chat(#[from] crate::chats::Error),
+    #[error(transparent)]
+    Mex(#[from] crate::newsletters::Error),
     #[error(transparent)]
     EventBuffer(#[from] crate::event_buffer::Error),
     #[error(transparent)]
@@ -135,6 +138,7 @@ impl Error {
             Self::MediaConnection(error) => error.status_code(),
             Self::Receipt(error) => Some(error.status_code()),
             Self::Chat(error) => Some(error.status_code()),
+            Self::Mex(error) => Some(error.status_code()),
             Self::Closed(code) => Some(*code),
             Self::Auth(e) => e.status_code(),
             Self::Signal(e) => e.status_code(),
@@ -287,6 +291,33 @@ pub enum Event {
         blocklist: Vec<Option<String>>,
         add: bool,
     },
+    /// One reaction to a newsletter message; the count is always one.
+    NewsletterReaction {
+        id: Option<String>,
+        server_id: Option<String>,
+        code: Option<String>,
+    },
+    /// View count of a newsletter message; NaN when the server text is not numeric.
+    NewsletterView {
+        id: Option<String>,
+        server_id: Option<String>,
+        count: f64,
+    },
+    NewsletterParticipantsUpdated {
+        id: Option<String>,
+        author: Option<String>,
+        user: Option<String>,
+        new_role: Option<String>,
+        action: Option<String>,
+    },
+    NewsletterSettingsUpdated {
+        id: Option<String>,
+        update: serde_json::Value,
+    },
+    /// New-chat message quota state as sent by the server.
+    MessageCappingUpdated(serde_json::Value),
+    /// Outgoing-message restriction state; upstream reports it on connection.update.
+    ReachoutTimelockUpdated(crate::newsletters::ReachoutTimelock),
     GroupEffects(Vec<crate::messages::group_effects::GroupEvent>),
     MessagesUpdated(Vec<crate::receipts::MessageUpdate>),
     /// Atomic messages.update batches produced by event consolidation.
@@ -402,6 +433,35 @@ impl std::fmt::Debug for Event {
             Self::GroupsUpdated(groups) => {
                 f.debug_tuple("GroupsUpdated").field(&groups.len()).finish()
             }
+            Self::NewsletterReaction { id, server_id, .. } => f
+                .debug_struct("NewsletterReaction")
+                .field("id", id)
+                .field("server_id", server_id)
+                .finish(),
+            Self::NewsletterView {
+                id,
+                server_id,
+                count,
+            } => f
+                .debug_struct("NewsletterView")
+                .field("id", id)
+                .field("server_id", server_id)
+                .field("count", count)
+                .finish(),
+            Self::NewsletterParticipantsUpdated { id, action, .. } => f
+                .debug_struct("NewsletterParticipantsUpdated")
+                .field("id", id)
+                .field("action", action)
+                .finish(),
+            Self::NewsletterSettingsUpdated { id, .. } => f
+                .debug_struct("NewsletterSettingsUpdated")
+                .field("id", id)
+                .finish(),
+            Self::MessageCappingUpdated(_) => f.write_str("MessageCappingUpdated"),
+            Self::ReachoutTimelockUpdated(state) => f
+                .debug_tuple("ReachoutTimelockUpdated")
+                .field(state)
+                .finish(),
         }
     }
 }
