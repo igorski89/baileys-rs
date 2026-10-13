@@ -246,9 +246,30 @@ fn time_ms(node: &BinaryNode, name: &str) -> Result<u64, Error> {
         .checked_mul(1000)
         .ok_or(Error::Invalid("timestamp overflow"))
 }
+/// A caller-defined USync protocol, as upstream's USyncQueryProtocol interface.
+pub trait CustomProtocol: Send + Sync {
+    /// The protocol name, which is also the tag of its result nodes.
+    fn name(&self) -> &str;
+    /// What goes inside the query part of the request.
+    fn query_element(&self) -> BinaryNode;
+    /// What goes inside each user of the request, if anything.
+    fn user_element(&self, user: &User) -> Option<BinaryNode>;
+    /// Parse one result node; no value leaves the protocol out of the user's result.
+    fn parse(&self, node: &BinaryNode) -> Result<Option<serde_json::Value>, Error>;
+}
+#[derive(Clone)]
+pub struct Custom(std::sync::Arc<dyn CustomProtocol>);
+impl std::fmt::Debug for Custom {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_tuple("Custom").field(&self.0.name()).finish()
+    }
+}
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Query {
     pub protocols: Vec<Protocol>,
+    /// Caller-defined protocols; they follow the built-in ones in the request.
+    #[serde(skip)]
+    pub custom: Vec<Custom>,
     pub users: Vec<User>,
     pub context: String,
     pub mode: String,
@@ -257,6 +278,7 @@ impl Default for Query {
     fn default() -> Self {
         Self {
             protocols: vec![],
+            custom: vec![],
             users: vec![],
             context: "interactive".into(),
             mode: "query".into(),
@@ -268,12 +290,16 @@ impl Query {
         self.protocols.push(protocol);
         self
     }
+    pub fn with_custom_protocol(mut self, protocol: impl CustomProtocol + 'static) -> Self {
+        self.custom.push(Custom(std::sync::Arc::new(protocol)));
+        self
+    }
     pub fn with_user(mut self, user: User) -> Self {
         self.users.push(user);
         self
     }
     pub fn stanza(&self, sid: &str) -> Result<BinaryNode, Error> {
-        if self.protocols.is_empty() {
+        if self.protocols.is_empty() && self.custom.is_empty() {
             return Err(Error::NoProtocol);
         }
         let users = self
@@ -291,13 +317,18 @@ impl Query {
                     self.protocols
                         .iter()
                         .filter_map(|p| p.user_element(user))
+                        .chain(self.custom.iter().filter_map(|p| p.0.user_element(user)))
                         .collect(),
                 )
             })
             .collect();
         let query = children(
             BinaryNode::new("query"),
-            self.protocols.iter().map(|p| p.query_element()).collect(),
+            self.protocols
+                .iter()
+                .map(|p| p.query_element())
+                .chain(self.custom.iter().map(|p| p.0.query_element()))
+                .collect(),
         );
         Ok(children(
             BinaryNode::new("iq")
@@ -327,6 +358,15 @@ impl Query {
                 };
                 let mut protocols = IndexMap::new();
                 for content in user.all_children() {
+                    // The last protocol added under a name parses its nodes.
+                    if let Some(protocol) =
+                        self.custom.iter().rev().find(|p| p.0.name() == content.tag)
+                    {
+                        if let Some(value) = protocol.0.parse(content)? {
+                            protocols.insert(content.tag.clone(), Value::Custom(value));
+                        }
+                        continue;
+                    }
                     if let Some(protocol) = self
                         .protocols
                         .iter()
@@ -370,6 +410,8 @@ pub enum Value {
     Status(Status),
     DisappearingMode(DisappearingMode),
     Bot(BotProfile),
+    /// The result of a caller-defined protocol.
+    Custom(serde_json::Value),
 }
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]

@@ -15,13 +15,37 @@ use std::{
 pub struct Config {
     pub ttl: Duration,
     pub capacity: usize,
+    /// Keep device lists in an external store instead of the built-in cache.
+    /// The store applies its own expiry and capacity.
+    pub store: Option<ExternalStore>,
 }
 impl Default for Config {
     fn default() -> Self {
         Self {
             ttl: Duration::from_secs(300),
             capacity: 16384,
+            store: None,
         }
+    }
+}
+/// Storage for per-user device lists, keyed by the user part of the JID.
+/// Calls are made while the cache is locked and must not block for long.
+pub trait Store: Send + Sync {
+    fn get(&self, user: &str) -> Option<Vec<Device>>;
+    fn set(&self, user: &str, devices: Vec<Device>);
+    fn del(&self, user: &str);
+    fn flush_all(&self);
+}
+#[derive(Clone)]
+pub struct ExternalStore(Arc<dyn Store>);
+impl ExternalStore {
+    pub fn new(store: impl Store + 'static) -> Self {
+        Self(Arc::new(store))
+    }
+}
+impl std::fmt::Debug for ExternalStore {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("ExternalStore").finish_non_exhaustive()
     }
 }
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
@@ -97,6 +121,54 @@ struct State {
     entries: HashMap<String, Entry>,
     config: Config,
 }
+impl State {
+    fn purge(&mut self, now: Instant) {
+        self.entries.retain(|_, entry| entry.expires > now);
+    }
+    fn get(&mut self, user: &str, now: Instant) -> Option<Vec<Device>> {
+        if let Some(store) = &self.config.store {
+            return store.0.get(user);
+        }
+        let entry = self.entries.get_mut(user).filter(|e| e.expires > now)?;
+        entry.used = now;
+        Some(entry.devices.clone())
+    }
+    fn set(&mut self, user: &str, devices: Vec<Device>, now: Instant) {
+        if let Some(store) = &self.config.store {
+            return store.0.set(user, devices);
+        }
+        if self.config.capacity == 0 || self.config.ttl.is_zero() {
+            return;
+        }
+        if !self.entries.contains_key(user)
+            && self.entries.len() >= self.config.capacity
+            && let Some(oldest) = self
+                .entries
+                .iter()
+                .min_by_key(|(_, e)| e.used)
+                .map(|(k, _)| k.clone())
+        {
+            self.entries.remove(&oldest);
+        }
+        let expires = now.checked_add(self.config.ttl).unwrap_or(now);
+        self.entries.insert(
+            user.into(),
+            Entry {
+                devices,
+                expires,
+                used: now,
+            },
+        );
+    }
+    fn del(&mut self, user: &str) {
+        match &self.config.store {
+            Some(store) => store.0.del(user),
+            None => {
+                self.entries.remove(user);
+            }
+        }
+    }
+}
 #[derive(Clone)]
 pub struct Cache {
     state: Arc<Mutex<State>>,
@@ -135,11 +207,10 @@ impl Cache {
         }
         let mut state = self.state.lock().map_err(|_| Error::Invalid)?;
         let now = Instant::now();
-        state.entries.retain(|_, entry| entry.expires > now);
+        state.purge(now);
         for (jid, user) in users {
-            if use_cache && let Some(entry) = state.entries.get_mut(&user) {
-                entry.used = now;
-                plan.devices.extend(entry.devices.clone());
+            if use_cache && let Some(devices) = state.get(&user, now) {
+                plan.devices.extend(devices);
             } else {
                 plan.to_fetch.push(jid);
             }
@@ -158,60 +229,34 @@ impl Cache {
         }
         let mut state = self.state.lock().map_err(|_| Error::Invalid)?;
         let now = Instant::now();
-        state.entries.retain(|_, entry| entry.expires > now);
-        if state.config.capacity > 0 && !state.config.ttl.is_zero() {
-            for (user, devices) in &groups {
-                if !state.entries.contains_key(user)
-                    && state.entries.len() >= state.config.capacity
-                    && let Some(oldest) = state
-                        .entries
-                        .iter()
-                        .min_by_key(|(_, e)| e.used)
-                        .map(|(k, _)| k.clone())
-                {
-                    state.entries.remove(&oldest);
-                }
-                let expires = now.checked_add(state.config.ttl).unwrap_or(now);
-                state.entries.insert(
-                    user.clone(),
-                    Entry {
-                        devices: devices.clone(),
-                        expires,
-                        used: now,
-                    },
-                );
-            }
+        state.purge(now);
+        for (user, devices) in &groups {
+            state.set(user, devices.clone(), now);
         }
         Ok(groups)
     }
     /// Unexpired cached devices for one user.
     pub fn cached(&self, user: &str) -> Result<Option<Vec<Device>>, Error> {
-        let state = self.state.lock().map_err(|_| Error::Invalid)?;
-        Ok(state
-            .entries
-            .get(user)
-            .filter(|entry| entry.expires > Instant::now())
-            .map(|entry| entry.devices.clone()))
+        let mut state = self.state.lock().map_err(|_| Error::Invalid)?;
+        Ok(state.get(user, Instant::now()))
     }
     /// Apply one user's device-list notification delta. Users without a cached
     /// baseline are left for a later full USync refresh.
     pub fn apply_change(&self, user: &str, change: Change, devices: &[Jid]) -> Result<(), Error> {
         let mut state = self.state.lock().map_err(|_| Error::Invalid)?;
         let now = Instant::now();
-        state.entries.retain(|_, entry| entry.expires > now);
+        state.purge(now);
         if change == Change::Update {
-            state.entries.remove(user);
+            state.del(user);
             return Ok(());
         }
-        let Some(existing) = state.entries.get(user).filter(|e| !e.devices.is_empty()) else {
+        let Some(existing) = state.get(user, now).filter(|d| !d.is_empty()) else {
             return Ok(());
         };
         // A device-less JID matches no cached device number, as upstream's undefined.
         let mut updated: Vec<_> = existing
-            .devices
-            .iter()
+            .into_iter()
             .filter(|d| !devices.iter().any(|j| j.device == Some(d.device)))
-            .cloned()
             .collect();
         match change {
             Change::Add => updated.extend(devices.iter().cloned().map(Device::from)),
@@ -219,33 +264,25 @@ impl Cache {
             _ => return Ok(()),
         }
         if updated.is_empty() {
-            state.entries.remove(user);
+            state.del(user);
         } else {
-            let expires = now.checked_add(state.config.ttl).unwrap_or(now);
-            state.entries.insert(
-                user.into(),
-                Entry {
-                    devices: updated,
-                    expires,
-                    used: now,
-                },
-            );
+            state.set(user, updated, now);
         }
         Ok(())
     }
     pub fn invalidate_users(&self, users: &[String]) -> Result<(), Error> {
         let mut state = self.state.lock().map_err(|_| Error::Invalid)?;
         for user in users {
-            state.entries.remove(user);
+            state.del(user);
         }
         Ok(())
     }
     pub fn clear(&self) -> Result<(), Error> {
-        self.state
-            .lock()
-            .map_err(|_| Error::Invalid)?
-            .entries
-            .clear();
+        let mut state = self.state.lock().map_err(|_| Error::Invalid)?;
+        match &state.config.store {
+            Some(store) => store.0.flush_all(),
+            None => state.entries.clear(),
+        }
         Ok(())
     }
 }

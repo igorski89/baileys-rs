@@ -122,3 +122,109 @@ fn rejects_empty_protocols_stanza_errors_and_malformed_keys() {
     assert!(matches!(username,Some(usync::Value::Text(s)) if s=="sample"));
     assert!(Protocol::Username.user_element(&User::default()).is_none());
 }
+// A caller-defined protocol, shaped like upstream's USyncQueryProtocol objects.
+struct Picture;
+impl usync::CustomProtocol for Picture {
+    fn name(&self) -> &str {
+        "picture"
+    }
+    fn query_element(&self) -> BinaryNode {
+        BinaryNode::new("picture").attr("type", "preview")
+    }
+    fn user_element(&self, user: &User) -> Option<BinaryNode> {
+        user.lid
+            .as_ref()
+            .map(|lid| BinaryNode::new("picture").attr("for", lid))
+    }
+    fn parse(&self, node: &BinaryNode) -> Result<Option<Value>, usync::Error> {
+        Ok(node.attrs.get("id").map(|id| json!({"id": id})))
+    }
+}
+// Replaces the built-in status parser under the same name.
+struct RawStatus;
+impl usync::CustomProtocol for RawStatus {
+    fn name(&self) -> &str {
+        "status"
+    }
+    fn query_element(&self) -> BinaryNode {
+        BinaryNode::new("status").attr("raw", "true")
+    }
+    fn user_element(&self, _: &User) -> Option<BinaryNode> {
+        None
+    }
+    fn parse(&self, node: &BinaryNode) -> Result<Option<Value>, usync::Error> {
+        Ok(Some(json!(node.attrs.get("t"))))
+    }
+}
+#[test]
+fn custom_protocols_extend_requests_and_parse_their_own_results() {
+    let children =
+        |node: BinaryNode, list: Vec<BinaryNode>| node.with_content(NodeContent::Children(list));
+    assert!(Query::default().stanza("sid").is_err());
+    let with_lid = User {
+        id: Some("200@s.whatsapp.net".into()),
+        lid: Some("900@lid".into()),
+        ..Default::default()
+    };
+    let query = Query::default()
+        .with_protocol(Protocol::Status)
+        .with_custom_protocol(Picture)
+        .with_custom_protocol(RawStatus)
+        .with_user(with_lid)
+        .with_user(User::with_id("201@s.whatsapp.net"));
+    let stanza = query.stanza("sid").unwrap();
+    let usync = stanza.child("usync").unwrap();
+    let tags: Vec<_> = usync
+        .child("query")
+        .unwrap()
+        .all_children()
+        .iter()
+        .map(|node| (node.tag.as_str(), node.attrs.len()))
+        .collect();
+    // Built-in protocols come first, then custom ones in the order added.
+    assert_eq!(tags, [("status", 0), ("picture", 1), ("status", 1)]);
+    let users = usync.child("list").unwrap().all_children();
+    assert_eq!(
+        users[0].all_children(),
+        [BinaryNode::new("picture").attr("for", "900@lid")]
+    );
+    assert!(users[1].all_children().is_empty());
+    let response = children(
+        BinaryNode::new("iq").attr("type", "result"),
+        vec![children(
+            BinaryNode::new("usync"),
+            vec![children(
+                BinaryNode::new("list"),
+                vec![
+                    children(
+                        BinaryNode::new("user").attr("jid", "200@s.whatsapp.net"),
+                        vec![
+                            BinaryNode::new("picture").attr("id", "PIC"),
+                            BinaryNode::new("status").attr("t", "1700000000"),
+                            BinaryNode::new("unknown"),
+                        ],
+                    ),
+                    children(
+                        BinaryNode::new("user").attr("jid", "201@s.whatsapp.net"),
+                        vec![BinaryNode::new("picture")],
+                    ),
+                ],
+            )],
+        )],
+    );
+    let parsed = query.parse(&response).unwrap().unwrap();
+    assert_eq!(
+        json!(parsed.list),
+        json!([
+            {"id": "200@s.whatsapp.net", "picture": {"id": "PIC"}, "status": "1700000000"},
+            {"id": "201@s.whatsapp.net"}
+        ])
+    );
+    // A query made only of custom protocols is valid.
+    assert!(
+        Query::default()
+            .with_custom_protocol(Picture)
+            .stanza("sid")
+            .is_ok()
+    );
+}
