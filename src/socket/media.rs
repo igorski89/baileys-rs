@@ -64,12 +64,17 @@ impl Socket {
             .media_http
             .get_or_try_init(|| async { media::HttpClient::new() })
             .await?;
+        // Configured hosts come first, as upstream's customUploadHosts do.
+        let mut options = options.clone();
+        options
+            .custom_hosts
+            .splice(0..0, self.inner.custom_upload_hosts.iter().cloned());
         Ok(media::upload_with(
             client,
             path,
             kind,
             encrypted_hash_base64,
-            options,
+            &options,
             |force| async move {
                 self.refresh_media_connection(force)
                     .await

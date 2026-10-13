@@ -20,13 +20,7 @@ impl Socket {
             "regular",
         ]
         .map(str::to_owned);
-        let options = self
-            .inner
-            .app_state_options
-            .lock()
-            .map_err(|_| Error::Config)?
-            .clone();
-        self.resync_app_state(&collections, true, &options).await?;
+        self.resync_app_state(&collections, true).await?;
         self.inner.events.initial_sync_complete()?;
         let (reply, response) = tokio::sync::oneshot::channel();
         self.inner
@@ -93,13 +87,7 @@ impl Socket {
         let provider = app_state::KeyProvider::from_store(self.inner.store.clone());
         let (initial, encoded) = {
             let _serial = self.inner.app_state_patch_lock.lock().await;
-            let options = self
-                .inner
-                .app_state_options
-                .lock()
-                .map_err(|_| Error::Config)?
-                .clone();
-            self.resync_app_state(std::slice::from_ref(&name), false, &options)
+            self.resync_app_state(std::slice::from_ref(&name), false)
                 .await?;
             let store = self.inner.store.clone();
             let id = name.clone();
@@ -277,17 +265,11 @@ impl Socket {
     pub async fn sync_app_state(
         &self,
         collections: &[String],
-        options: &app_state::SyncOptions,
     ) -> Result<app_state::SyncResult, Error> {
-        *self
-            .inner
-            .app_state_options
-            .lock()
-            .map_err(|_| Error::Config)? = options.clone();
         Ok(self
             .app_state_synchronizer()
             .await?
-            .resync(collections, options)
+            .resync(collections, &self.inner.app_state_options)
             .await?)
     }
     /// Synchronize collection state, then publish chat/contact/settings actions.
@@ -295,19 +277,17 @@ impl Socket {
         &self,
         collections: &[String],
         initial_sync: bool,
-        options: &app_state::SyncOptions,
     ) -> Result<app_state::SyncResult, Error> {
-        self.with_buffered_events(self.resync_app_state_inner(collections, initial_sync, options))
+        self.with_buffered_events(self.resync_app_state_inner(collections, initial_sync))
             .await
     }
     async fn resync_app_state_inner(
         &self,
         collections: &[String],
         initial_sync: bool,
-        options: &app_state::SyncOptions,
     ) -> Result<app_state::SyncResult, Error> {
         let _serial = self.inner.app_state_apply_lock.lock().await;
-        let result = self.sync_app_state(collections, options).await?;
+        let result = self.sync_app_state(collections).await?;
         self.apply_app_state_actions(&result.mutations, initial_sync)
             .await?;
         Ok(result)
@@ -416,14 +396,11 @@ impl Socket {
         if collections.is_empty() {
             return;
         }
-        let Ok(options) = self.inner.app_state_options.lock().map(|o| o.clone()) else {
-            return;
-        };
         let weak = std::sync::Arc::downgrade(&self.inner);
         tokio::spawn(async move {
             let Some(inner) = weak.upgrade() else { return };
             let socket = Socket { inner };
-            if let Err(error) = socket.resync_app_state(&collections, false, &options).await {
+            if let Err(error) = socket.resync_app_state(&collections, false).await {
                 tracing::warn!(?error, "blocked app-state collection resync failed");
             }
         });
@@ -436,13 +413,12 @@ impl Socket {
     }
     /// Explicitly retry parked collections after keys arrive. This starts a fresh
     /// key cache and removes the parked set before retrying, as upstream does.
-    pub async fn retry_blocked_app_state(
-        &self,
-        options: &app_state::SyncOptions,
-    ) -> Result<app_state::SyncResult, Error> {
+    pub async fn retry_blocked_app_state(&self) -> Result<app_state::SyncResult, Error> {
         let sync = self.app_state_synchronizer().await?;
         let collections = sync.take_blocked_collections().await;
-        Ok(sync.resync(&collections, options).await?)
+        Ok(sync
+            .resync(&collections, &self.inner.app_state_options)
+            .await?)
     }
     /// Fetch collections and download their snapshots. Callers must verify and
     /// persist state and repeat requests while more patches are available.

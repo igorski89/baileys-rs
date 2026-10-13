@@ -167,7 +167,7 @@ fn device_list_notifications_match_original_cache_and_session_effects() {
                     .as_array()
                     .unwrap()
                     .iter()
-                    .map(|e| json!({"user": e["user"], "server": e["server"], "device": e["device"].as_u64().unwrap_or(0)}))
+                    .map(|e| json!({"user": e["user"], "server": e["server"], "device": e["device"].as_u64()}))
                     .collect::<Vec<_>>()
             });
             assert_eq!(actual, wanted, "{user} {case}");

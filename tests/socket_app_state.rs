@@ -1,7 +1,6 @@
 #[path = "support/socket_peer.rs"]
 mod socket_peer;
 use baileys_rs::{
-    app_state::SyncOptions,
     auth::{KeyCategory, KeyMutation, KeyStore, KeyValue, SqliteAuthStore},
     binary::{BinaryNode, NodeContent},
     crypto::KeyPair,
@@ -118,7 +117,7 @@ async fn phone_key_share_automatically_resyncs_parked_collections_and_emits_acti
         });
         let (socket, mut events) = Socket::connect(config, store.clone()).await.unwrap();
         let blocked = socket
-            .resync_app_state(&["regular".into()], false, &options())
+            .resync_app_state(&["regular".into()], false)
             .await
             .unwrap();
         assert_eq!(blocked.blocked, ["regular"]);
@@ -193,6 +192,10 @@ async fn setup() -> (TcpListener, Config) {
             ..Default::default()
         },
         query_timeout: Duration::from_secs(3),
+        app_state_mac_verification: baileys_rs::socket::MacVerification {
+            patch: true,
+            snapshot: true,
+        },
         ..Default::default()
     };
     (listener, config)
@@ -235,13 +238,6 @@ fn put_key(store: &SqliteAuthStore) {
         )])
         .unwrap();
 }
-fn options() -> SyncOptions {
-    SyncOptions {
-        verify_snapshot: true,
-        verify_patch: true,
-        ..Default::default()
-    }
-}
 #[tokio::test]
 async fn pagination_commits_once_and_keeps_encrypted_queries_responsive() {
     timeout(Duration::from_secs(8),async {
@@ -257,7 +253,7 @@ async fn pagination_commits_once_and_keeps_encrypted_queries_responsive() {
             peer.closed().await;
         });
         let (socket,_events)=Socket::connect(config,store.clone()).await.unwrap();
-        let client=socket.clone();let task=tokio::spawn(async move{client.sync_app_state(&["regular".into()],&options()).await});
+        let client=socket.clone();let task=tokio::spawn(async move{client.sync_app_state(&["regular".into()]).await});
         ready.await.unwrap();assert!(store.get(KeyCategory::AppStateSyncVersion,&["regular".into()]).unwrap().is_empty());
         socket.query(BinaryNode::new("iq").attr("xmlns","probe").attr("type","get"),None).await.unwrap();
         let result=task.await.unwrap().unwrap();assert_eq!(result.states["regular"].version,3);assert_eq!(result.mutations.len(),3);assert!(result.blocked.is_empty());
@@ -284,10 +280,7 @@ async fn missing_keys_park_then_explicit_key_retry_resumes_saved_state() {
             peer.closed().await;
         });
         let (socket, _events) = Socket::connect(config, store.clone()).await.unwrap();
-        let blocked = socket
-            .sync_app_state(&["regular".into()], &options())
-            .await
-            .unwrap();
+        let blocked = socket.sync_app_state(&["regular".into()]).await.unwrap();
         assert_eq!(blocked.blocked, ["regular"]);
         assert_eq!(blocked.attempts["regular"], 2);
         assert_eq!(socket.blocked_app_state_collections().await, ["regular"]);
@@ -298,13 +291,13 @@ async fn missing_keys_park_then_explicit_key_retry_resumes_saved_state() {
                 .is_empty()
         );
         put_key(&store);
-        let retry = socket.retry_blocked_app_state(&options()).await.unwrap();
+        let retry = socket.retry_blocked_app_state().await.unwrap();
         assert!(retry.blocked.is_empty());
         assert_eq!(retry.states["regular"].version, 1);
         assert_eq!(retry.mutations.len(), 1);
         assert!(
             socket
-                .retry_blocked_app_state(&options())
+                .retry_blocked_app_state()
                 .await
                 .unwrap()
                 .mutations
@@ -493,8 +486,8 @@ async fn automatic_message_and_sync_scopes_flush_success_failure_and_cancellatio
         assert!(socket.is_buffering_events());
         tokio::time::sleep(Duration::from_millis(120)).await;
         assert!(!socket.is_buffering_events());
-        let collections=["regular".into()];let options=SyncOptions::default();
-        let mut operation=Box::pin(socket.resync_app_state(&collections,false,&options));
+        let collections=["regular".into()];
+        let mut operation=Box::pin(socket.resync_app_state(&collections,false));
         tokio::select!{result=&mut operation=>panic!("sync unexpectedly completed: success={}",result.is_ok()),result=sync_seen=>result.unwrap()}
         assert!(socket.is_buffering_events());drop(operation);
         tokio::time::sleep(Duration::from_millis(120)).await;
@@ -519,7 +512,7 @@ async fn connection_close_clears_parked_app_state_collections() {
         });
         let (socket, _) = Socket::connect(config, store).await.unwrap();
         let result = socket
-            .resync_app_state(&["regular".into()], false, &options())
+            .resync_app_state(&["regular".into()], false)
             .await
             .unwrap();
         assert_eq!(result.blocked, ["regular"]);

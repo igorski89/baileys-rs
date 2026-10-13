@@ -32,7 +32,6 @@ Not gaps, but worth knowing: like upstream, the socket does not reconnect by its
 
 ### Groups and communities
 - V4 invite: the account embedded in the stub message is serialized in the native field order.
-- V4 invite: an invite without a group JID fails after the request has been sent, and the chatless stub message stays in the event buffer until the next flush. Upstream's outcome is not pinned.
 - V4 invite: an invite without an expiration is a typed error raised before the request.
 
 ### App state and chats
@@ -60,7 +59,7 @@ Not gaps, but worth knowing: like upstream, the socket does not reconnect by its
 - The external device store is synchronous and is called while the cache is locked; upstream's cache interface is asynchronous and has an optional batched read.
 
 ### Configuration
-- Custom upload hosts, app-state MAC verification and commit retries are options of the individual calls (`UploadOptions`, `SyncOptions`), not socket configuration fields.
+- `Config::transaction` (upstream's `transactionOpts`) retries only the commit that ends an app-state synchronization; every other storage write is one SQLite transaction without retries.
 - Cached group metadata is passed per send as a value; upstream takes one lookup callback in the configuration.
 
 ### Exported helpers
@@ -74,9 +73,6 @@ Not gaps, but worth knowing: like upstream, the socket does not reconnect by its
 
 ### WAM
 - The event tables are generated from one upstream revision (`scripts/generate-wam-constants.mjs`) and must be regenerated when upstream updates them.
-
-### Events
-- Device-less JIDs in the device cache are stored with device zero where upstream stores an undefined device.
 
 ## Performance and robustness (deferred by decision: parity first)
 

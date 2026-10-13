@@ -219,6 +219,12 @@ pub struct Config {
     pub link_previews: LinkPreviewConfig,
     pub emit_own_events: bool,
     pub media_http: Option<crate::media::HttpClient>,
+    /// Upload hosts tried before the ones the server lists.
+    pub custom_upload_hosts: Vec<crate::media::UploadHost>,
+    /// Verify the LTHash MACs of app-state patches and snapshots. Off by default.
+    pub app_state_mac_verification: MacVerification,
+    /// Retries of the storage commit that ends an app-state synchronization.
+    pub transaction: TransactionOptions,
     pub media_preparation_hooks: crate::media::PreparationHooks,
     pub history_policy: crate::history::Policy,
     pub history_downloader: Option<crate::history::Downloader>,
@@ -262,9 +268,30 @@ impl Default for Config {
             link_previews: Default::default(),
             emit_own_events: true,
             media_http: None,
+            custom_upload_hosts: vec![],
+            app_state_mac_verification: Default::default(),
+            transaction: Default::default(),
             media_preparation_hooks: Default::default(),
             history_policy: Default::default(),
             history_downloader: None,
+        }
+    }
+}
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
+pub struct MacVerification {
+    pub patch: bool,
+    pub snapshot: bool,
+}
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct TransactionOptions {
+    pub max_commit_retries: usize,
+    pub delay_between_tries: Duration,
+}
+impl Default for TransactionOptions {
+    fn default() -> Self {
+        Self {
+            max_commit_retries: 10,
+            delay_between_tries: Duration::from_secs(3),
         }
     }
 }
@@ -521,7 +548,8 @@ struct Inner {
     app_state_sync: tokio::sync::OnceCell<crate::app_state::Synchronizer>,
     app_state_apply_lock: tokio::sync::Mutex<()>,
     app_state_patch_lock: tokio::sync::Mutex<()>,
-    app_state_options: std::sync::Mutex<crate::app_state::SyncOptions>,
+    app_state_options: crate::app_state::SyncOptions,
+    custom_upload_hosts: Vec<crate::media::UploadHost>,
     history_policy: crate::history::Policy,
     history_downloader: tokio::sync::OnceCell<crate::history::Downloader>,
     media_preparation_hooks: crate::media::PreparationHooks,
@@ -774,7 +802,13 @@ impl Socket {
             app_state_sync: tokio::sync::OnceCell::new(),
             app_state_apply_lock: tokio::sync::Mutex::new(()),
             app_state_patch_lock: tokio::sync::Mutex::new(()),
-            app_state_options: std::sync::Mutex::new(Default::default()),
+            app_state_options: crate::app_state::SyncOptions {
+                verify_snapshot: config.app_state_mac_verification.snapshot,
+                verify_patch: config.app_state_mac_verification.patch,
+                max_commit_attempts: config.transaction.max_commit_retries,
+                commit_retry_delay: config.transaction.delay_between_tries,
+            },
+            custom_upload_hosts: config.custom_upload_hosts.clone(),
             history_policy: config.history_policy.clone(),
             history_downloader: tokio::sync::OnceCell::new_with(config.history_downloader.clone()),
             media_preparation_hooks: config.media_preparation_hooks.clone(),
@@ -1201,7 +1235,10 @@ impl Socket {
                 crate::auth::KeyMutation::put(
                     user,
                     crate::auth::KeyValue::DeviceList(
-                        devices.iter().map(|d| d.device.to_string()).collect(),
+                        devices
+                            .iter()
+                            .map(|d| d.device.unwrap_or(0).to_string())
+                            .collect(),
                     ),
                 )
             })

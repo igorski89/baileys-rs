@@ -454,13 +454,7 @@ impl Socket {
                 .get("name")
                 .ok_or(app_state::Error::Input("notification collection name"))?
                 .clone();
-            let options = self
-                .inner
-                .app_state_options
-                .lock()
-                .map_err(|_| Error::Config)?
-                .clone();
-            self.resync_app_state(&[name], false, &options).await?;
+            self.resync_app_state(&[name], false).await?;
         }
         Ok(())
     }

@@ -52,7 +52,9 @@ impl std::fmt::Debug for ExternalStore {
 #[serde(rename_all = "camelCase")]
 pub struct Device {
     pub user: String,
-    pub device: u16,
+    /// Absent for a JID without a device part, as upstream's undefined device.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub device: Option<u16>,
     pub jid: String,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub server: Option<String>,
@@ -64,7 +66,7 @@ impl From<Jid> for Device {
         Self {
             jid: jid::encode(&jid.user, &jid.server, jid.device, None),
             user: jid.user,
-            device: jid.device.unwrap_or(0),
+            device: jid.device,
             server: Some(jid.server),
             domain_type: Some(jid.domain_type),
         }
@@ -196,7 +198,7 @@ impl Cache {
             if let Some(device) = jid.device {
                 plan.devices.push(Device {
                     user: jid.user,
-                    device,
+                    device: Some(device),
                     jid: input.clone(),
                     server: None,
                     domain_type: None,
@@ -253,10 +255,10 @@ impl Cache {
         let Some(existing) = state.get(user, now).filter(|d| !d.is_empty()) else {
             return Ok(());
         };
-        // A device-less JID matches no cached device number, as upstream's undefined.
+        // A device-less JID only matches a cached entry that has no device either.
         let mut updated: Vec<_> = existing
             .into_iter()
-            .filter(|d| !devices.iter().any(|j| j.device == Some(d.device)))
+            .filter(|d| !devices.iter().any(|j| j.device == d.device))
             .collect();
         match change {
             Change::Add => updated.extend(devices.iter().cloned().map(Device::from)),

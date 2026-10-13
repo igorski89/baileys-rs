@@ -357,14 +357,14 @@ async fn device_discovery_cache_and_session_assertions_use_lid_addresses() {
         let devices = socket.get_usync_devices(&["100:7@s.whatsapp.net".into(), "200@s.whatsapp.net".into()], true, false).await.unwrap();
         assert_eq!(devices.iter().map(|d| d.jid.as_str()).collect::<Vec<_>>(), ["100:7@s.whatsapp.net", "200@s.whatsapp.net", "200:1@s.whatsapp.net"]);
         let cached = socket.get_usync_devices(&["200@s.whatsapp.net".into()], true, true).await.unwrap();
-        assert_eq!(cached[0].device, 0); // Cached source filtering does not change with ignoreZero.
+        assert_eq!(cached[0].device, Some(0)); // Cached source filtering does not change with ignoreZero.
         assert!(!socket.assert_sessions(&["200@s.whatsapp.net".into(), "200@s.whatsapp.net".into()], false).await.unwrap());
         assert!(socket.assert_sessions(&["200:1@s.whatsapp.net".into()], false).await.unwrap());
         assert!(!socket.assert_sessions(&["200:1@s.whatsapp.net".into()], false).await.unwrap());
         assert!(socket.assert_sessions(&["800:1@lid".into(), "800:1@lid".into()], true).await.unwrap());
         socket.invalidate_user_devices(&["200@s.whatsapp.net".into()]).unwrap();
         let refreshed = socket.get_usync_devices(&["200@s.whatsapp.net".into()], true, true).await.unwrap();
-        assert_eq!(refreshed.iter().map(|d| d.device).collect::<Vec<_>>(), [1]);
+        assert_eq!(refreshed.iter().map(|d| d.device).collect::<Vec<_>>(), [Some(1)]);
         assert!(matches!(store.get(KeyCategory::DeviceList, &["200".into()]).unwrap().get("200"), Some(KeyValue::DeviceList(devices)) if devices == &["1"]));
         assert!(socket.assert_sessions(&["300:1@s.whatsapp.net".into()], true).await.unwrap());
         assert!(!socket.assert_sessions(&["300:1@s.whatsapp.net".into()], false).await.unwrap());

@@ -693,3 +693,56 @@ async fn published_media_update_is_retained_when_connection_closes_before_waiter
         assert_eq!(message.message.unwrap().document_message.unwrap().direct_path.as_deref(),Some("/new"));server.await.unwrap();
     }).await.unwrap();
 }
+#[tokio::test]
+async fn configured_upload_hosts_are_tried_before_the_listed_ones() {
+    timeout(Duration::from_secs(10), async {
+        let (listener, mut config) = setup().await;
+        // A plain listener: the TLS handshake fails, which moves on to the next host.
+        let custom = TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let second = TcpListener::bind("127.0.0.1:0").await.unwrap();
+        config.custom_upload_hosts = vec![baileys_rs::media::UploadHost {
+            hostname: custom.local_addr().unwrap().to_string(),
+            max_content_length_bytes: 0.0,
+        }];
+        let listed = second.local_addr().unwrap().to_string();
+        let (done, finish) = tokio::sync::oneshot::channel();
+        let server = tokio::spawn(async move {
+            let mut peer = Peer::accept(listener.accept().await.unwrap().0).await;
+            let request = peer.read().await;
+            check_query(request.clone());
+            peer.send(reply(&request, "60", "auth", &[&listed])).await;
+            finish.await.unwrap();
+        });
+        let order = tokio::spawn(async move {
+            let mut order = vec![];
+            for _ in 0..2 {
+                tokio::select! {
+                    stream = custom.accept() => { drop(stream.unwrap()); order.push("custom") }
+                    stream = second.accept() => { drop(stream.unwrap()); order.push("listed") }
+                }
+            }
+            order
+        });
+        let (socket, _events) = Socket::connect(config, SqliteAuthStore::in_memory().unwrap())
+            .await
+            .unwrap();
+        let file = std::env::temp_dir().join(format!("baileys-upload-{}", std::process::id()));
+        std::fs::write(&file, b"media").unwrap();
+        let result = socket
+            .upload_media(
+                &file,
+                baileys_rs::media::MediaType::Image,
+                "hash",
+                &Default::default(),
+            )
+            .await;
+        std::fs::remove_file(&file).unwrap();
+        assert!(result.is_err());
+        assert_eq!(order.await.unwrap(), ["custom", "listed"]);
+        socket.close().await.unwrap();
+        done.send(()).unwrap();
+        server.await.unwrap();
+    })
+    .await
+    .unwrap();
+}

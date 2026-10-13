@@ -33,7 +33,7 @@ fn cache_planning_and_devices_match_upstream_operations() {
                     json!(
                         devices
                             .iter()
-                            .map(|d| d.device.to_string())
+                            .map(|d| d.device.unwrap_or(0).to_string())
                             .collect::<Vec<_>>()
                     ),
                 );

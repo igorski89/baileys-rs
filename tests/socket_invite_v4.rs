@@ -95,24 +95,23 @@ async fn v4_invite_acceptance_matches_original_requests_updates_and_stub_message
             } else {
                 socket.community_accept_invite_v4(&key, &invite).await
             };
-            // The fixture stubs upsertMessage; natively a stub message without a chat
-            // cannot be published, so an invite without a group fails after the request.
+            // The fixture stubs upsertMessage. Upstream's own getChatId rejects a stub
+            // without a chat after the request, the update and the upsert have gone out,
+            // and the buffered function still flushes; the same events are expected here.
             if invite.group_jid.is_none() && !case["error"].as_bool().unwrap() {
-                assert!(result.is_err(), "{case}");
-                // Let the events of the failed call flush before the next case starts.
-                while timeout(Duration::from_millis(200), events.recv())
-                    .await
-                    .is_ok()
-                {}
-                continue;
+                assert!(
+                    matches!(&result, Err(e) if e.to_string().contains("missing chat JID")),
+                    "{result:?} {case}"
+                );
+            } else {
+                assert_eq!(
+                    result.is_err(),
+                    case["error"].as_bool().unwrap(),
+                    "{result:?} {case}"
+                );
+                let Ok(joined) = &result else { continue };
+                assert_eq!(joined.as_deref(), case["expected"].as_str(), "{case}");
             }
-            assert_eq!(
-                result.is_err(),
-                case["error"].as_bool().unwrap(),
-                "{result:?} {case}"
-            );
-            let Ok(joined) = result else { continue };
-            assert_eq!(joined.as_deref(), case["expected"].as_str(), "{case}");
             let (mut updates, mut upserts) = (vec![], vec![]);
             // Buffered events are released shortly after the call returns.
             let expected_updates: usize = case["updates"]
@@ -138,13 +137,7 @@ async fn v4_invite_acceptance_matches_original_requests_updates_and_stub_message
                     ),
                     Event::MessagesUpserted(upsert) => {
                         assert_eq!(upsert.kind, UpsertKind::Notify);
-                        // Chatless stub messages of the preceding failed cases may still drain.
-                        upserts.extend(upsert.messages.into_iter().filter(|message| {
-                            message
-                                .key
-                                .as_ref()
-                                .is_some_and(|key| key.remote_jid.is_some())
-                        }));
+                        upserts.extend(upsert.messages);
                     }
                     _ => {}
                 }

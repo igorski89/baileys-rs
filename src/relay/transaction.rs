@@ -260,7 +260,7 @@ pub fn sender_key_recipients(
             .is_some_and(|j| j.is_hosted_lid_user() || j.is_hosted_pn_user());
         if (!memory.get(&device.jid).copied().unwrap_or(false) || force)
             && !hosted
-            && device.device != 99
+            && device.device != Some(99)
         {
             recipients.push(device.jid.clone());
             memory.insert(device.jid.clone(), true);
