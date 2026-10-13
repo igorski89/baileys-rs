@@ -275,6 +275,28 @@ impl RawFile {
         })
     }
 }
+/// Hash an input and upload it unencrypted, as catalog images and cover photos are.
+/// The upload is addressed by the base64 SHA-256 of the content.
+pub async fn upload_raw(
+    input: &Input,
+    kind: MediaType,
+    http: &HttpClient,
+    uploader: &dyn MediaUploader,
+    options: &PrepareOptions,
+) -> Result<UploadResponse, Error> {
+    let reader = input.open(http, options).await?;
+    let file = tokio::task::spawn_blocking(move || RawFile::copy(reader))
+        .await
+        .map_err(|_| Error::Task)??;
+    uploader
+        .upload_media(
+            file.file.path().to_owned(),
+            kind,
+            STANDARD.encode(file.hash),
+            options.upload.clone(),
+        )
+        .await
+}
 enum File {
     Raw(RawFile),
     Encrypted(EncryptedFile),

@@ -1,0 +1,1050 @@
+{
+ "operations": [
+  {
+   "method": "updateBussinesProfile",
+   "args": [
+    {
+     "address": "1 Example Street",
+     "email": "shop@example.com",
+     "description": "We sell things 💚",
+     "websites": [
+      "https://example.com",
+      "https://shop.example.com"
+     ],
+     "hours": {
+      "timezone": "Europe/Berlin",
+      "days": [
+       {
+        "day": "mon",
+        "mode": "specific_hours",
+        "openTimeInMinutes": "540",
+        "closeTimeInMinutes": "1020"
+       },
+       {
+        "day": "sat",
+        "mode": "open_24h"
+       },
+       {
+        "day": "sun",
+        "mode": "appointment_only"
+       }
+      ]
+     }
+    }
+   ],
+   "requests": [
+    "00f8081911fa0003045a16ec78f801f806ec2351a2fc0d6d75746174696f6e5f74797065ec58f806f802e0fc1031204578616d706c6520537472656574f802ec27fafc0473686f70fc0b6578616d706c652e636f6df802b7fc1357652073656c6c207468696e677320f09f929af802ec28fc1368747470733a2f2f6578616d706c652e636f6df802ec28fc1868747470733a2f2f73686f702e6578616d706c652e636f6df804b8dafc0d4575726f70652f4265726c696ef803f8092f52ec4d6a5b6fec1b67ec8af8052f52ec5e6ac3f8052f52ec886adf"
+   ],
+   "responses": [
+    "00f80419041400"
+   ],
+   "uploads": [],
+   "uploaded": null,
+   "expected": {
+    "tag": "iq",
+    "attrs": {
+     "type": "result"
+    },
+    "content": []
+   },
+   "error": false
+  },
+  {
+   "method": "updateBussinesProfile",
+   "args": [
+    {}
+   ],
+   "requests": [
+    "00f8081911fa0003045a16ec78f801f806ec2351a2fc0d6d75746174696f6e5f74797065ec5800"
+   ],
+   "responses": [
+    "00f80419041400"
+   ],
+   "uploads": [],
+   "uploaded": null,
+   "expected": {
+    "tag": "iq",
+    "attrs": {
+     "type": "result"
+    },
+    "content": []
+   },
+   "error": false
+  },
+  {
+   "method": "updateBussinesProfile",
+   "args": [
+    {
+     "description": "",
+     "websites": [],
+     "hours": {
+      "timezone": "UTC",
+      "days": []
+     }
+    }
+   ],
+   "requests": [
+    "00f8081911fa0003045a16ec78f801f806ec2351a2fc0d6d75746174696f6e5f74797065ec58f802f802b7fc00f804b8dafc0355544300"
+   ],
+   "responses": [
+    "00f804190414f801f80165"
+   ],
+   "uploads": [],
+   "uploaded": null,
+   "expected": {
+    "tag": "iq",
+    "attrs": {
+     "type": "result"
+    },
+    "content": [
+     {
+      "tag": "profile",
+      "attrs": {}
+     }
+    ]
+   },
+   "error": false
+  },
+  {
+   "method": "updateBussinesProfile",
+   "args": [
+    {
+     "address": null,
+     "email": "only@example.com"
+    }
+   ],
+   "requests": [
+    "00f8081911fa0003045a16ec78f801f806ec2351a2fc0d6d75746174696f6e5f74797065ec58f801f802ec27fafc046f6e6c79fc0b6578616d706c652e636f6d"
+   ],
+   "responses": [
+    "00f80419041400"
+   ],
+   "uploads": [],
+   "uploaded": null,
+   "expected": {
+    "tag": "iq",
+    "attrs": {
+     "type": "result"
+    },
+    "content": []
+   },
+   "error": false
+  },
+  {
+   "method": "updateCoverPhoto",
+   "args": [
+    {
+     "bytes": "Y292ZXIgcGhvdG8gYnl0ZXM="
+    }
+   ],
+   "requests": [
+    "00f8081911fa0003045a16ec78f801f806ec2351a2fc0d6d75746174696f6e5f74797065ec58f801f809ec1308ff081234567890123456fc026f7078c5fc0a484d41432d544f4b454e73ff051700000000"
+   ],
+   "responses": [
+    "00f80419041400"
+   ],
+   "uploads": [
+    {
+     "mediaType": "biz-cover-photo",
+     "hash": "I0zYg2Ww1WSeDKmE5RVVtaq6AgYFlfAcKjwrjbrcymU=",
+     "timeoutMs": null
+    }
+   ],
+   "uploaded": {
+    "meta_hmac": "HMAC-TOKEN",
+    "fbid": 1234567890123456,
+    "ts": 1700000000
+   },
+   "expected": 1234567890123456,
+   "error": false
+  },
+  {
+   "method": "updateCoverPhoto",
+   "args": [
+    {
+     "bytes": "c2Vjb25kIGNvdmVy"
+    }
+   ],
+   "requests": [
+    "00f8081911fa0003045a16ec78f801f806ec2351a2fc0d6d75746174696f6e5f74797065ec58f801f807ec1308ee52fc026f707873ff061700000001b5"
+   ],
+   "responses": [
+    "00f80419041400"
+   ],
+   "uploads": [
+    {
+     "mediaType": "biz-cover-photo",
+     "hash": "9ok4I7BskSdJEeYvN3IcFr2mGxOPnFynHqBkPp3uGGM=",
+     "timeoutMs": null
+    }
+   ],
+   "uploaded": {
+    "fbid": 42,
+    "ts": 1700000001.5
+   },
+   "expected": 42,
+   "error": false
+  },
+  {
+   "method": "updateCoverPhoto",
+   "args": [
+    {
+     "bytes": "dGhpcmQgY292ZXI="
+    }
+   ],
+   "requests": [
+    "00f8081911fa0003045a16ec78f801f806ec2351a2fc0d6d75746174696f6e5f74797065ec58f801f809ec1308fc09756e646566696e6564fc026f7078c5fc015473fc09756e646566696e6564"
+   ],
+   "responses": [
+    "00f80419041400"
+   ],
+   "uploads": [
+    {
+     "mediaType": "biz-cover-photo",
+     "hash": "1BA8PBgEVDFjrKAR9Luae2lY3WwMPnkAOBCZdwkWZpY=",
+     "timeoutMs": null
+    }
+   ],
+   "uploaded": {
+    "meta_hmac": "T"
+   },
+   "expected": null,
+   "error": false
+  },
+  {
+   "method": "removeCoverPhoto",
+   "args": [
+    "1234567890123456"
+   ],
+   "requests": [
+    "00f8081911fa0003045a16ec78f801f806ec2351a2fc0d6d75746174696f6e5f74797065ec58f801f805ec13fc026f70ec5208ff081234567890123456"
+   ],
+   "responses": [
+    "00f80419041400"
+   ],
+   "uploads": [],
+   "uploaded": null,
+   "expected": {
+    "tag": "iq",
+    "attrs": {
+     "type": "result"
+    },
+    "content": []
+   },
+   "error": false
+  },
+  {
+   "method": "getCatalog",
+   "args": [
+    {}
+   ],
+   "requests": [
+    "00f8081911fa0003042916fc0d773a62697a3a636174616c6f67f801f806fc0f70726f647563745f636174616c6f670cfaec3303fc11616c6c6f775f73686f705f736f757263659bf803f802fc056c696d6974fc023130f802edd5fc03313030f802edb0fc03313030"
+   ],
+   "responses": [
+    "00f804190414f801f802fc0f70726f647563745f636174616c6f67f806f802eea5f809f80208fc03313030f80237f801f80243f802f802ecebfc2368747470733a2f2f6d656469612e6578616d706c652f7265717565737465642f313030f802ece2fc2268747470733a2f2f6d656469612e6578616d706c652f6f726967696e616c2f313030f802ee64f802f8020bfc08415050524f564544f802fc0a63616e5f61707065616cfc0566616c7365f80289fc1050726f647563742031303020f09f929af802fc0b72657461696c65725f6964fc07534b552d313030f802d2fc1368747470733a2f2f77612e6d652f702f313030f802b7fc124465736372697074696f6e206f6620313030f802fc057072696365fc0731323530303030f802fc0863757272656e6379fc03455552f804eea5ef849bf809f80208fc03313031f80237f801f80243f802f802ecebfc2368747470733a2f2f6d656469612e6578616d706c652f7265717565737465642f313031f802ece2fc2268747470733a2f2f6d656469612e6578616d706c652f6f726967696e616c2f313031f802ee64f802f8020bfc08415050524f564544f802fc0a63616e5f61707065616cfc0566616c7365f80289fc1050726f647563742031303120f09f929af802fc0b72657461696c65725f6964fc07534b552d313031f802d2fc1368747470733a2f2f77612e6d652f702f313031f802b7fc124465736372697074696f6e206f6620313031f802fc057072696365fc0731323530303030f802fc0863757272656e6379fc03455552f804eea5ef849bf802f80237f801f80143f802fc057072696365fc0c6e6f742061206e756d626572f803eea5ef84ec0ff801ed77f802fc06706167696e67f801f802fc056166746572fc0b4e4558542d435552534f52"
+   ],
+   "uploads": [],
+   "uploaded": null,
+   "expected": {
+    "products": [
+     {
+      "id": "100",
+      "imageUrls": {
+       "requested": "https://media.example/requested/100",
+       "original": "https://media.example/original/100"
+      },
+      "reviewStatus": {
+       "whatsapp": "APPROVED"
+      },
+      "availability": "in stock",
+      "name": "Product 100 💚",
+      "retailerId": "SKU-100",
+      "url": "https://wa.me/p/100",
+      "description": "Description of 100",
+      "price": 1250000,
+      "currency": "EUR",
+      "isHidden": false
+     },
+     {
+      "id": "101",
+      "imageUrls": {
+       "requested": "https://media.example/requested/101",
+       "original": "https://media.example/original/101"
+      },
+      "reviewStatus": {
+       "whatsapp": "APPROVED"
+      },
+      "availability": "in stock",
+      "name": "Product 101 💚",
+      "retailerId": "SKU-101",
+      "url": "https://wa.me/p/101",
+      "description": "Description of 101",
+      "price": 1250000,
+      "currency": "EUR",
+      "isHidden": true
+     },
+     {
+      "imageUrls": {},
+      "reviewStatus": {},
+      "availability": "in stock",
+      "price": null,
+      "isHidden": true
+     },
+     {
+      "imageUrls": {},
+      "reviewStatus": {},
+      "availability": "in stock",
+      "price": null,
+      "isHidden": false
+     }
+    ],
+    "nextPageCursor": "NEXT-CURSOR"
+   },
+   "error": false
+  },
+  {
+   "method": "getCatalog",
+   "args": [
+    {
+     "jid": "555:3@s.whatsapp.net",
+     "limit": 5,
+     "cursor": "CURSOR"
+    }
+   ],
+   "requests": [
+    "00f8081911fa0003042916fc0d773a62697a3a636174616c6f67f801f806fc0f70726f647563745f636174616c6f670cfaff82555f03fc11616c6c6f775f73686f705f736f757263659bf804f802fc056c696d6974fc0135f802edd5fc03313030f802edb0fc03313030f802fc056166746572fc06435552534f52"
+   ],
+   "responses": [
+    "00f804190414f801f802fc0f70726f647563745f636174616c6f67f806f802eea5f809f80208fc03313030f80237f801f80243f802f802ecebfc2368747470733a2f2f6d656469612e6578616d706c652f7265717565737465642f313030f802ece2fc2268747470733a2f2f6d656469612e6578616d706c652f6f726967696e616c2f313030f802ee64f802f8020bfc08415050524f564544f802fc0a63616e5f61707065616cfc0566616c7365f80289fc1050726f647563742031303020f09f929af802fc0b72657461696c65725f6964fc07534b552d313030f802d2fc1368747470733a2f2f77612e6d652f702f313030f802b7fc124465736372697074696f6e206f6620313030f802fc057072696365fc0731323530303030f802fc0863757272656e6379fc03455552f804eea5ef849bf809f80208fc03313031f80237f801f80243f802f802ecebfc2368747470733a2f2f6d656469612e6578616d706c652f7265717565737465642f313031f802ece2fc2268747470733a2f2f6d656469612e6578616d706c652f6f726967696e616c2f313031f802ee64f802f8020bfc08415050524f564544f802fc0a63616e5f61707065616cfc0566616c7365f80289fc1050726f647563742031303120f09f929af802fc0b72657461696c65725f6964fc07534b552d313031f802d2fc1368747470733a2f2f77612e6d652f702f313031f802b7fc124465736372697074696f6e206f6620313031f802fc057072696365fc0731323530303030f802fc0863757272656e6379fc03455552f804eea5ef849bf802f80237f801f80143f802fc057072696365fc0c6e6f742061206e756d626572f803eea5ef84ec0ff801ed77f802fc06706167696e67f801f802fc056166746572fc0b4e4558542d435552534f52"
+   ],
+   "uploads": [],
+   "uploaded": null,
+   "expected": {
+    "products": [
+     {
+      "id": "100",
+      "imageUrls": {
+       "requested": "https://media.example/requested/100",
+       "original": "https://media.example/original/100"
+      },
+      "reviewStatus": {
+       "whatsapp": "APPROVED"
+      },
+      "availability": "in stock",
+      "name": "Product 100 💚",
+      "retailerId": "SKU-100",
+      "url": "https://wa.me/p/100",
+      "description": "Description of 100",
+      "price": 1250000,
+      "currency": "EUR",
+      "isHidden": false
+     },
+     {
+      "id": "101",
+      "imageUrls": {
+       "requested": "https://media.example/requested/101",
+       "original": "https://media.example/original/101"
+      },
+      "reviewStatus": {
+       "whatsapp": "APPROVED"
+      },
+      "availability": "in stock",
+      "name": "Product 101 💚",
+      "retailerId": "SKU-101",
+      "url": "https://wa.me/p/101",
+      "description": "Description of 101",
+      "price": 1250000,
+      "currency": "EUR",
+      "isHidden": true
+     },
+     {
+      "imageUrls": {},
+      "reviewStatus": {},
+      "availability": "in stock",
+      "price": null,
+      "isHidden": true
+     },
+     {
+      "imageUrls": {},
+      "reviewStatus": {},
+      "availability": "in stock",
+      "price": null,
+      "isHidden": false
+     }
+    ],
+    "nextPageCursor": "NEXT-CURSOR"
+   },
+   "error": false
+  },
+  {
+   "method": "getCatalog",
+   "args": [
+    {
+     "jid": "",
+     "limit": 0,
+     "cursor": ""
+    }
+   ],
+   "requests": [
+    "00f8081911fa0003042916fc0d773a62697a3a636174616c6f67f801f806fc0f70726f647563745f636174616c6f670cfaec3303fc11616c6c6f775f73686f705f736f757263659bf803f802fc056c696d6974fc023130f802edd5fc03313030f802edb0fc03313030"
+   ],
+   "responses": [
+    "00f804190414f801f802fc0f70726f647563745f636174616c6f67f801f801fc06706167696e67"
+   ],
+   "uploads": [],
+   "uploaded": null,
+   "expected": {
+    "products": []
+   },
+   "error": false
+  },
+  {
+   "method": "getCatalog",
+   "args": [
+    {
+     "jid": "777@lid",
+     "limit": 250
+    }
+   ],
+   "requests": [
+    "00f8081911fa0003042916fc0d773a62697a3a636174616c6f67f801f806fc0f70726f647563745f636174616c6f670cfaef7e76fc11616c6c6f775f73686f705f736f757263659bf803f802fc056c696d6974fc03323530f802edd5fc03313030f802edb0fc03313030"
+   ],
+   "responses": [
+    "00f804190414f801f801fc0f70726f647563745f636174616c6f67"
+   ],
+   "uploads": [],
+   "uploaded": null,
+   "expected": {
+    "products": []
+   },
+   "error": false
+  },
+  {
+   "method": "getCatalog",
+   "args": [
+    {}
+   ],
+   "requests": [
+    "00f8081911fa0003042916fc0d773a62697a3a636174616c6f67f801f806fc0f70726f647563745f636174616c6f670cfaec3303fc11616c6c6f775f73686f705f736f757263659bf803f802fc056c696d6974fc023130f802edd5fc03313030f802edb0fc03313030"
+   ],
+   "responses": [
+    "00f80419041400"
+   ],
+   "uploads": [],
+   "uploaded": null,
+   "expected": {
+    "products": []
+   },
+   "error": false
+  },
+  {
+   "method": "getCollections",
+   "args": [],
+   "requests": [
+    "00f80a1911fa0003042916fc0d773a62697a3a636174616c6f67ed0dee0ff801f804fc0b636f6c6c656374696f6e73fc0762697a5f6a6964faec3303f804f802fc10636f6c6c656374696f6e5f6c696d6974fc023531f802fc0a6974656d5f6c696d6974fc023531f802edd5fc03313030f802edb0fc03313030"
+   ],
+   "responses": [
+    "00f804190414f801f802fc0b636f6c6c656374696f6e73f804f802ec5bf805f80208fc024331f80289fc0f436f6c6c656374696f6e20f09f929af802eea5f809f80208fc03313030f80237f801f80243f802f802ecebfc2368747470733a2f2f6d656469612e6578616d706c652f7265717565737465642f313030f802ece2fc2268747470733a2f2f6d656469612e6578616d706c652f6f726967696e616c2f313030f802ee64f802f8020bfc08415050524f564544f802fc0a63616e5f61707065616cfc0566616c7365f80289fc1050726f647563742031303020f09f929af802fc0b72657461696c65725f6964fc07534b552d313030f802d2fc1368747470733a2f2f77612e6d652f702f313030f802b7fc124465736372697074696f6e206f6620313030f802fc057072696365fc0731323530303030f802fc0863757272656e6379fc03455552f804eea5ef849bf802f80237f801f80143f802fc057072696365fc0c6e6f742061206e756d626572f802ee64f802f8020bfc08415050524f564544f802fc0a63616e5f61707065616cfc0474727565f802ec5bf801f802ee64f801f802fc0a63616e5f61707065616cfc0566616c7365f801ec5bf801ed77"
+   ],
+   "uploads": [],
+   "uploaded": null,
+   "expected": {
+    "collections": [
+     {
+      "id": "C1",
+      "name": "Collection 💚",
+      "products": [
+       {
+        "id": "100",
+        "imageUrls": {
+         "requested": "https://media.example/requested/100",
+         "original": "https://media.example/original/100"
+        },
+        "reviewStatus": {
+         "whatsapp": "APPROVED"
+        },
+        "availability": "in stock",
+        "name": "Product 100 💚",
+        "retailerId": "SKU-100",
+        "url": "https://wa.me/p/100",
+        "description": "Description of 100",
+        "price": 1250000,
+        "currency": "EUR",
+        "isHidden": false
+       },
+       {
+        "imageUrls": {},
+        "reviewStatus": {},
+        "availability": "in stock",
+        "price": null,
+        "isHidden": true
+       }
+      ],
+      "status": {
+       "status": "APPROVED",
+       "canAppeal": true
+      }
+     },
+     {
+      "products": [],
+      "status": {
+       "canAppeal": false
+      }
+     },
+     {
+      "products": [],
+      "status": {
+       "canAppeal": false
+      }
+     }
+    ]
+   },
+   "error": false
+  },
+  {
+   "method": "getCollections",
+   "args": [
+    "555:3@s.whatsapp.net",
+    3
+   ],
+   "requests": [
+    "00f80a1911fa0003042916fc0d773a62697a3a636174616c6f67ed0dee0ff801f804fc0b636f6c6c656374696f6e73fc0762697a5f6a6964faff82555f03f804f802fc10636f6c6c656374696f6e5f6c696d6974fc0133f802fc0a6974656d5f6c696d6974fc0133f802edd5fc03313030f802edb0fc03313030"
+   ],
+   "responses": [
+    "00f804190414f801f801fc0b636f6c6c656374696f6e73"
+   ],
+   "uploads": [],
+   "uploaded": null,
+   "expected": {
+    "collections": []
+   },
+   "error": false
+  },
+  {
+   "method": "getCollections",
+   "args": [
+    "",
+    7
+   ],
+   "requests": [
+    "00f80a1911fa0003042916fc0d773a62697a3a636174616c6f67ed0dee0ff801f804fc0b636f6c6c656374696f6e73fc0762697a5f6a6964faec3303f804f802fc10636f6c6c656374696f6e5f6c696d6974fc0137f802fc0a6974656d5f6c696d6974fc0137f802edd5fc03313030f802edb0fc03313030"
+   ],
+   "responses": [
+    "00f80419041400"
+   ],
+   "uploads": [],
+   "uploaded": null,
+   "expected": {
+    "collections": []
+   },
+   "error": false
+  },
+  {
+   "method": "getOrderDetails",
+   "args": [
+    "ORDER-1",
+    "dG9rZW4="
+   ],
+   "requests": [
+    "00f80a1911fa0003042916ed07ed0dec79f801f806edb3fc026f702908fc074f524445522d31f802f802fc10696d6167655f64696d656e73696f6e73f802f802edd5fc03313030f802edb0fc03313030f802c5fc08644739725a57343d"
+   ],
+   "responses": [
+    "00f804190414f801f802edb3f803f802eea5f806f80208fc03313030f80289fc0c4f72646572656420f09f929af80243f801f802d2fc1f68747470733a2f2f6d656469612e6578616d706c652f6f726465722f313030f802fc057072696365fc0731323530303030f802fc0863757272656e6379fc03455552f802fc087175616e74697479fc0132f802eea5f801f802fc087175616e74697479fc0178f802fc057072696365f802f802fc05746f74616cfc0732353030303030f802fc0863757272656e6379fc03455552"
+   ],
+   "uploads": [],
+   "uploaded": null,
+   "expected": {
+    "price": {
+     "total": 2500000,
+     "currency": "EUR"
+    },
+    "products": [
+     {
+      "id": "100",
+      "name": "Ordered 💚",
+      "imageUrl": "https://media.example/order/100",
+      "price": 1250000,
+      "currency": "EUR",
+      "quantity": 2
+     },
+     {
+      "price": null,
+      "quantity": null
+     }
+    ]
+   },
+   "error": false
+  },
+  {
+   "method": "getOrderDetails",
+   "args": [
+    "ORDER-2",
+    "dG9rZW4="
+   ],
+   "requests": [
+    "00f80a1911fa0003042916ed07ed0dec79f801f806edb3fc026f702908fc074f524445522d32f802f802fc10696d6167655f64696d656e73696f6e73f802f802edd5fc03313030f802edb0fc03313030f802c5fc08644739725a57343d"
+   ],
+   "responses": [
+    "00f804190414f801f801edb3"
+   ],
+   "uploads": [],
+   "uploaded": null,
+   "expected": {
+    "price": {
+     "total": null
+    },
+    "products": []
+   },
+   "error": false
+  },
+  {
+   "method": "getOrderDetails",
+   "args": [
+    "ORDER-3",
+    "dG9rZW4="
+   ],
+   "requests": [
+    "00f80a1911fa0003042916ed07ed0dec79f801f806edb3fc026f702908fc074f524445522d33f802f802fc10696d6167655f64696d656e73696f6e73f802f802edd5fc03313030f802edb0fc03313030f802c5fc08644739725a57343d"
+   ],
+   "responses": [
+    "00f80419041400"
+   ],
+   "uploads": [],
+   "uploaded": null,
+   "expected": {
+    "price": {
+     "total": null
+    },
+    "products": []
+   },
+   "error": false
+  },
+  {
+   "method": "productUpdate",
+   "args": [
+    "100",
+    {
+     "name": "Name 💚",
+     "description": "Description\nline",
+     "retailerId": "SKU-1",
+     "price": 1250000,
+     "currency": "EUR",
+     "isHidden": true,
+     "images": [
+      {
+       "url": "https://mmg.whatsapp.net/v/t/existing.jpg"
+      },
+      {
+       "bytes": "bmV3IGltYWdl"
+      },
+      {
+       "url": "https://scontent.whatsapp.net/second.jpg"
+      }
+     ]
+    }
+   ],
+   "requests": [
+    "00f8081911fa0003045a16fc0d773a62697a3a636174616c6f67f801f804fc1470726f647563745f636174616c6f675f656469745155f803f804eea5ef849bf807f80208fc03313030f80289fc094e616d6520f09f929af802b7fc104465736372697074696f6e0a6c696e65f802fc0b72657461696c65725f6964fc05534b552d31f80237f803f80243f801f802d2fc2968747470733a2f2f6d6d672e77686174736170702e6e65742f762f742f6578697374696e672e6a7067f80243f801f802d2fc2968747470733a2f2f6d6d672e77686174736170702e6e65742f762f742f343163303462336632643063f80243f801f802d2fc2868747470733a2f2f73636f6e74656e742e77686174736170702e6e65742f7365636f6e642e6a7067f802fc057072696365fc0731323530303030f802fc0863757272656e6379fc03455552f802edd5ec33f802edb0ec33"
+   ],
+   "responses": [
+    "00f804190414f801f802fc1470726f647563745f636174616c6f675f65646974f801f802eea5f809f80208fc03313030f80237f801f80243f802f802ecebfc2368747470733a2f2f6d656469612e6578616d706c652f7265717565737465642f313030f802ece2fc2268747470733a2f2f6d656469612e6578616d706c652f6f726967696e616c2f313030f802ee64f802f8020bfc08415050524f564544f802fc0a63616e5f61707065616cfc0566616c7365f80289fc1050726f647563742031303020f09f929af802fc0b72657461696c65725f6964fc07534b552d313030f802d2fc1368747470733a2f2f77612e6d652f702f313030f802b7fc124465736372697074696f6e206f6620313030f802fc057072696365fc0731323530303030f802fc0863757272656e6379fc03455552"
+   ],
+   "uploads": [
+    {
+     "mediaType": "product-catalog-image",
+     "hash": "QcBLPy0MaaZklPqpbwW2InCTefOlJRB44M05+pxE1n4=",
+     "timeoutMs": 30000
+    }
+   ],
+   "uploaded": null,
+   "expected": {
+    "id": "100",
+    "imageUrls": {
+     "requested": "https://media.example/requested/100",
+     "original": "https://media.example/original/100"
+    },
+    "reviewStatus": {
+     "whatsapp": "APPROVED"
+    },
+    "availability": "in stock",
+    "name": "Product 100 💚",
+    "retailerId": "SKU-100",
+    "url": "https://wa.me/p/100",
+    "description": "Description of 100",
+    "price": 1250000,
+    "currency": "EUR",
+    "isHidden": false
+   },
+   "error": false
+  },
+  {
+   "method": "productUpdate",
+   "args": [
+    "100",
+    {
+     "images": []
+    }
+   ],
+   "requests": [
+    "00f8081911fa0003045a16fc0d773a62697a3a636174616c6f67f801f804fc1470726f647563745f636174616c6f675f656469745155f803f802eea5f801f80208fc03313030f802edd5ec33f802edb0ec33"
+   ],
+   "responses": [
+    "00f804190414f801f802fc1470726f647563745f636174616c6f675f65646974f801f804eea5ef849bf802f80237f801f80143f802fc057072696365fc0c6e6f742061206e756d626572"
+   ],
+   "uploads": [],
+   "uploaded": null,
+   "expected": {
+    "imageUrls": {},
+    "reviewStatus": {},
+    "availability": "in stock",
+    "price": null,
+    "isHidden": true
+   },
+   "error": false
+  },
+  {
+   "method": "productUpdate",
+   "args": [
+    "100",
+    {
+     "name": "Renamed",
+     "isHidden": false,
+     "images": [
+      {
+       "bytes": "b25l"
+      },
+      {
+       "bytes": "dHdv"
+      },
+      {
+       "bytes": "dGhyZWU="
+      }
+     ]
+    }
+   ],
+   "requests": [
+    "00f8081911fa0003045a16fc0d773a62697a3a636174616c6f67f801f804fc1470726f647563745f636174616c6f675f656469745155f803f804eea5ef84ec0ff803f80208fc03313030f80289fc0752656e616d6564f80237f803f80243f801f802d2fc2968747470733a2f2f6d6d672e77686174736170702e6e65742f762f742f373639326333616433353430f80243f801f802d2fc2968747470733a2f2f6d6d672e77686174736170702e6e65742f762f742f336663346363666537343538f80243f801f802d2fc2968747470733a2f2f6d6d672e77686174736170702e6e65742f762f742f386235623964623063313364f802edd5ec33f802edb0ec33"
+   ],
+   "responses": [
+    "00f804190414f801f802fc1470726f647563745f636174616c6f675f65646974f801f803eea5ef84ec0f"
+   ],
+   "uploads": [
+    {
+     "mediaType": "product-catalog-image",
+     "hash": "P8TM/nRYcOLA2Z9x8w/wZWyN7dQcwdfT03aw2+aF4vM=",
+     "timeoutMs": 30000
+    },
+    {
+     "mediaType": "product-catalog-image",
+     "hash": "dpLDrTVAu4A8Ags67mbNiIcSMjTqDG5xQ8Ct1z/0Me0=",
+     "timeoutMs": 30000
+    },
+    {
+     "mediaType": "product-catalog-image",
+     "hash": "i1udsME9skJWyCmqNkqpDG0uujGLkjKkq5MTuVTTVV8=",
+     "timeoutMs": 30000
+    }
+   ],
+   "uploaded": null,
+   "expected": {
+    "imageUrls": {},
+    "reviewStatus": {},
+    "availability": "in stock",
+    "price": null,
+    "isHidden": false
+   },
+   "error": false
+  },
+  {
+   "method": "productUpdate",
+   "args": [
+    "100",
+    {
+     "price": 0,
+     "currency": "",
+     "description": "",
+     "retailerId": "",
+     "name": "",
+     "images": [
+      {
+       "url": "https://mmg.whatsapp.net/v/t/existing.jpg"
+      }
+     ]
+    }
+   ],
+   "requests": [
+    "00f8081911fa0003045a16fc0d773a62697a3a636174616c6f67f801f804fc1470726f647563745f636174616c6f675f656469745155f803f802eea5f807f80208fc03313030f80289fc00f802b7fc00f802fc0b72657461696c65725f6964fc00f80237f801f80243f801f802d2fc2968747470733a2f2f6d6d672e77686174736170702e6e65742f762f742f6578697374696e672e6a7067f802fc057072696365fc0130f802fc0863757272656e6379fc00f802edd5ec33f802edb0ec33"
+   ],
+   "responses": [
+    "00f804190414f801f801fc1470726f647563745f636174616c6f675f65646974"
+   ],
+   "uploads": [],
+   "uploaded": null,
+   "expected": null,
+   "error": true
+  },
+  {
+   "method": "productUpdate",
+   "args": [
+    "100",
+    {
+     "images": []
+    }
+   ],
+   "requests": [
+    "00f8081911fa0003045a16fc0d773a62697a3a636174616c6f67f801f804fc1470726f647563745f636174616c6f675f656469745155f803f802eea5f801f80208fc03313030f802edd5ec33f802edb0ec33"
+   ],
+   "responses": [
+    "00f80419041400"
+   ],
+   "uploads": [],
+   "uploaded": null,
+   "expected": null,
+   "error": true
+  },
+  {
+   "method": "productCreate",
+   "args": [
+    {
+     "name": "Name 💚",
+     "description": "Description\nline",
+     "retailerId": "SKU-1",
+     "price": 1250000,
+     "currency": "EUR",
+     "originCountryCode": "IN",
+     "images": [
+      {
+       "bytes": "Y3JlYXRlZCBpbWFnZQ=="
+      }
+     ]
+    }
+   ],
+   "requests": [
+    "00f8081911fa0003045a16fc0d773a62697a3a636174616c6f67f801f804fc1370726f647563745f636174616c6f675f6164645155f803f804eea5ef84ec0ff807f80289fc094e616d6520f09f929af802b7fc104465736372697074696f6e0a6c696e65f802fc0b72657461696c65725f6964fc05534b552d31f80237f801f80243f801f802d2fc2968747470733a2f2f6d6d672e77686174736170702e6e65742f762f742f633939303739363462366562f802fc057072696365fc0731323530303030f802fc0863757272656e6379fc03455552f802fc0f636f6d706c69616e63655f696e666ff801f802fc13636f756e7472795f636f64655f6f726967696efc02494ef802edd5ec33f802edb0ec33"
+   ],
+   "responses": [
+    "00f804190414f801f802fc1370726f647563745f636174616c6f675f616464f801f802eea5f809f80208fc03323030f80237f801f80243f802f802ecebfc2368747470733a2f2f6d656469612e6578616d706c652f7265717565737465642f323030f802ece2fc2268747470733a2f2f6d656469612e6578616d706c652f6f726967696e616c2f323030f802ee64f802f8020bfc08415050524f564544f802fc0a63616e5f61707065616cfc0566616c7365f80289fc1050726f647563742032303020f09f929af802fc0b72657461696c65725f6964fc07534b552d323030f802d2fc1368747470733a2f2f77612e6d652f702f323030f802b7fc124465736372697074696f6e206f6620323030f802fc057072696365fc0731323530303030f802fc0863757272656e6379fc03455552"
+   ],
+   "uploads": [
+    {
+     "mediaType": "product-catalog-image",
+     "hash": "yZB5ZLbr2FeGMNuQCohXVlZJgzd1kZs2upg8XuPhhP8=",
+     "timeoutMs": 30000
+    }
+   ],
+   "uploaded": null,
+   "expected": {
+    "id": "200",
+    "imageUrls": {
+     "requested": "https://media.example/requested/200",
+     "original": "https://media.example/original/200"
+    },
+    "reviewStatus": {
+     "whatsapp": "APPROVED"
+    },
+    "availability": "in stock",
+    "name": "Product 200 💚",
+    "retailerId": "SKU-200",
+    "url": "https://wa.me/p/200",
+    "description": "Description of 200",
+    "price": 1250000,
+    "currency": "EUR",
+    "isHidden": false
+   },
+   "error": false
+  },
+  {
+   "method": "productCreate",
+   "args": [
+    {
+     "name": "Name 💚",
+     "description": "Description\nline",
+     "retailerId": "SKU-1",
+     "price": 1250000,
+     "currency": "EUR",
+     "isHidden": true,
+     "images": [
+      {
+       "url": "https://mmg.whatsapp.net/v/t/existing.jpg"
+      }
+     ]
+    }
+   ],
+   "requests": [
+    "00f8081911fa0003045a16fc0d773a62697a3a636174616c6f67f801f804fc1370726f647563745f636174616c6f675f6164645155f803f806eea5fc13636f6d706c69616e63655f63617465676f7279fc15434f554e5452595f4f524947494e5f4558454d5054ef849bf806f80289fc094e616d6520f09f929af802b7fc104465736372697074696f6e0a6c696e65f802fc0b72657461696c65725f6964fc05534b552d31f80237f801f80243f801f802d2fc2968747470733a2f2f6d6d672e77686174736170702e6e65742f762f742f6578697374696e672e6a7067f802fc057072696365fc0731323530303030f802fc0863757272656e6379fc03455552f802edd5ec33f802edb0ec33"
+   ],
+   "responses": [
+    "00f804190414f801f802fc1370726f647563745f636174616c6f675f616464f801f804eea5ef849bf809f80208fc03323031f80237f801f80243f802f802ecebfc2368747470733a2f2f6d656469612e6578616d706c652f7265717565737465642f323031f802ece2fc2268747470733a2f2f6d656469612e6578616d706c652f6f726967696e616c2f323031f802ee64f802f8020bfc08415050524f564544f802fc0a63616e5f61707065616cfc0566616c7365f80289fc1050726f647563742032303120f09f929af802fc0b72657461696c65725f6964fc07534b552d323031f802d2fc1368747470733a2f2f77612e6d652f702f323031f802b7fc124465736372697074696f6e206f6620323031f802fc057072696365fc0731323530303030f802fc0863757272656e6379fc03455552"
+   ],
+   "uploads": [],
+   "uploaded": null,
+   "expected": {
+    "id": "201",
+    "imageUrls": {
+     "requested": "https://media.example/requested/201",
+     "original": "https://media.example/original/201"
+    },
+    "reviewStatus": {
+     "whatsapp": "APPROVED"
+    },
+    "availability": "in stock",
+    "name": "Product 201 💚",
+    "retailerId": "SKU-201",
+    "url": "https://wa.me/p/201",
+    "description": "Description of 201",
+    "price": 1250000,
+    "currency": "EUR",
+    "isHidden": true
+   },
+   "error": false
+  },
+  {
+   "method": "productCreate",
+   "args": [
+    {
+     "name": "Minimal",
+     "images": []
+    }
+   ],
+   "requests": [
+    "00f8081911fa0003045a16fc0d773a62697a3a636174616c6f67f801f804fc1370726f647563745f636174616c6f675f6164645155f803f806eea5fc13636f6d706c69616e63655f63617465676f7279fc15434f554e5452595f4f524947494e5f4558454d5054ef84ec0ff801f80289fc074d696e696d616cf802edd5ec33f802edb0ec33"
+   ],
+   "responses": [
+    "00f804190414f801f802fc1370726f647563745f636174616c6f675f616464f801f804eea5ef849bf802f80237f801f80143f802fc057072696365fc0c6e6f742061206e756d626572"
+   ],
+   "uploads": [],
+   "uploaded": null,
+   "expected": {
+    "imageUrls": {},
+    "reviewStatus": {},
+    "availability": "in stock",
+    "price": null,
+    "isHidden": true
+   },
+   "error": false
+  },
+  {
+   "method": "productCreate",
+   "args": [
+    {
+     "name": "Name 💚",
+     "description": "Description\nline",
+     "retailerId": "SKU-1",
+     "price": 1250000,
+     "currency": "EUR",
+     "images": []
+    }
+   ],
+   "requests": [
+    "00f8081911fa0003045a16fc0d773a62697a3a636174616c6f67f801f804fc1370726f647563745f636174616c6f675f6164645155f803f806eea5fc13636f6d706c69616e63655f63617465676f7279fc15434f554e5452595f4f524947494e5f4558454d5054ef84ec0ff805f80289fc094e616d6520f09f929af802b7fc104465736372697074696f6e0a6c696e65f802fc0b72657461696c65725f6964fc05534b552d31f802fc057072696365fc0731323530303030f802fc0863757272656e6379fc03455552f802edd5ec33f802edb0ec33"
+   ],
+   "responses": [
+    "00f804190414f801f801ed77"
+   ],
+   "uploads": [],
+   "uploaded": null,
+   "expected": null,
+   "error": true
+  },
+  {
+   "method": "productDelete",
+   "args": [
+    [
+     "100",
+     "101"
+    ]
+   ],
+   "requests": [
+    "00f8081911fa0003045a16fc0d773a62697a3a636174616c6f67f801f804fc1670726f647563745f636174616c6f675f64656c6574655155f802f802eea5f801f80208fc03313030f802eea5f801f80208fc03313031"
+   ],
+   "responses": [
+    "00f804190414f801f803fc1670726f647563745f636174616c6f675f64656c657465fc0d64656c657465645f636f756e7445"
+   ],
+   "uploads": [],
+   "uploaded": null,
+   "expected": {
+    "deleted": 2
+   },
+   "error": false
+  },
+  {
+   "method": "productDelete",
+   "args": [
+    []
+   ],
+   "requests": [
+    "00f8081911fa0003045a16fc0d773a62697a3a636174616c6f67f801f804fc1670726f647563745f636174616c6f675f64656c657465515500"
+   ],
+   "responses": [
+    "00f804190414f801f801fc1670726f647563745f636174616c6f675f64656c657465"
+   ],
+   "uploads": [],
+   "uploaded": null,
+   "expected": {
+    "deleted": 0
+   },
+   "error": false
+  },
+  {
+   "method": "productDelete",
+   "args": [
+    [
+     "100"
+    ]
+   ],
+   "requests": [
+    "00f8081911fa0003045a16fc0d773a62697a3a636174616c6f67f801f804fc1670726f647563745f636174616c6f675f64656c6574655155f801f802eea5f801f80208fc03313030"
+   ],
+   "responses": [
+    "00f804190414f801f803fc1670726f647563745f636174616c6f675f64656c657465fc0d64656c657465645f636f756e74fc046d616e79"
+   ],
+   "uploads": [],
+   "uploaded": null,
+   "expected": {
+    "deleted": null
+   },
+   "error": false
+  },
+  {
+   "method": "productDelete",
+   "args": [
+    [
+     "100"
+    ]
+   ],
+   "requests": [
+    "00f8081911fa0003045a16fc0d773a62697a3a636174616c6f67f801f804fc1670726f647563745f636174616c6f675f64656c6574655155f801f802eea5f801f80208fc03313030"
+   ],
+   "responses": [
+    "00f804190414f801f803fc1670726f647563745f636174616c6f675f64656c657465fc0d64656c657465645f636f756e74fc00"
+   ],
+   "uploads": [],
+   "uploaded": null,
+   "expected": {
+    "deleted": 0
+   },
+   "error": false
+  },
+  {
+   "method": "productDelete",
+   "args": [
+    [
+     "100"
+    ]
+   ],
+   "requests": [
+    "00f8081911fa0003045a16fc0d773a62697a3a636174616c6f67f801f804fc1670726f647563745f636174616c6f675f64656c6574655155f801f802eea5f801f80208fc03313030"
+   ],
+   "responses": [
+    "00f80419041400"
+   ],
+   "uploads": [],
+   "uploaded": null,
+   "expected": {
+    "deleted": 0
+   },
+   "error": false
+  }
+ ]
+}

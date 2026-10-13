@@ -2,9 +2,11 @@
 pub mod acks;
 mod actor;
 mod app_state;
+mod business;
 mod calls;
 mod chats;
 mod communities;
+pub use business::{ProductCreate, ProductUpdate};
 pub mod dispatch;
 mod event_responses;
 mod events;
@@ -123,6 +125,8 @@ pub enum Error {
     Task,
     #[error("pre-key upload failed")]
     PreKeyUpload,
+    #[error("catalog result has no product")]
+    MissingProduct,
     #[error("message tag counter exhausted")]
     TagExhausted,
 }
