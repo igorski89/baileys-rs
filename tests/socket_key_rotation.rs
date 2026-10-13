@@ -174,3 +174,55 @@ async fn key_bundle_digest_check_reuploads_pre_keys_when_the_server_has_no_bundl
     .await
     .unwrap();
 }
+#[tokio::test]
+async fn pre_key_upload_waiters_time_out_while_the_upload_itself_continues() {
+    timeout(Duration::from_secs(10), async {
+        let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let mut config = config(&listener);
+        config.pre_key_upload_timeout = Duration::from_millis(300);
+        let store = store();
+        let before = store.load_credentials().unwrap().next_pre_key_id;
+        let (timed_out_tx, timed_out_rx) = tokio::sync::oneshot::channel::<()>();
+        let server = tokio::spawn(async move {
+            let mut peer = Peer::accept(listener.accept().await.unwrap().0).await;
+            peer.send(BinaryNode::new("success")).await;
+            assert!(peer.read().await.child("unified_session").is_some());
+            // The first upload is answered only after its caller has given up.
+            let slow = peer.read().await;
+            assert_eq!(slow.child("list").unwrap().all_children().len(), 5);
+            timed_out_rx.await.unwrap();
+            peer.result(&slow).await;
+            let next = peer.read().await;
+            assert_eq!(next.child("list").unwrap().all_children().len(), 5);
+            peer.result(&next).await;
+            peer.closed().await;
+        });
+        let (socket, _events) = Socket::connect(config, store.clone()).await.unwrap();
+        socket.wait_for_open(Duration::from_secs(2)).await.unwrap();
+        let started = std::time::Instant::now();
+        let error = socket.upload_pre_keys(5).await.unwrap_err();
+        assert!(matches!(error, Error::PreKeyUploadTimeout), "{error:?}");
+        assert_eq!(error.status_code(), Some(408));
+        assert_eq!(error.to_string(), "Pre-key upload timeout");
+        assert!(started.elapsed() >= Duration::from_millis(300));
+        assert!(started.elapsed() < Duration::from_secs(2));
+        timed_out_tx.send(()).unwrap();
+        // The abandoned upload still completes once the server answers.
+        while store
+            .load_credentials()
+            .unwrap()
+            .first_unuploaded_pre_key_id
+            != before + 5
+        {
+            tokio::time::sleep(Duration::from_millis(10)).await;
+        }
+        // A later upload starts afresh and succeeds.
+        socket.upload_pre_keys(5).await.unwrap();
+        let after = store.load_credentials().unwrap();
+        assert_eq!(after.next_pre_key_id, before + 10);
+        socket.close().await.unwrap();
+        server.await.unwrap();
+    })
+    .await
+    .unwrap();
+}

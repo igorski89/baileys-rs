@@ -127,6 +127,8 @@ pub enum Error {
     Task,
     #[error("pre-key upload failed")]
     PreKeyUpload,
+    #[error("Pre-key upload timeout")]
+    PreKeyUploadTimeout,
     #[error("encrypt/get digest returned no digest node")]
     DigestMissing,
     #[error("invite message has no expiration")]
@@ -139,7 +141,7 @@ pub enum Error {
 impl Error {
     pub fn status_code(&self) -> Option<u16> {
         match self {
-            Self::Timeout => Some(408),
+            Self::Timeout | Self::PreKeyUploadTimeout => Some(408),
             Self::History(crate::history::Error::Media(error)) => error.status_code(),
             Self::AppState(crate::app_state::Error::Media(error)) => error.status_code(),
             Self::AppState(crate::app_state::Error::Transport { status_code, .. }) => *status_code,
@@ -204,6 +206,9 @@ pub struct Config {
     pub process_messages: bool,
     pub send_active_receipts: bool,
     pub retry_request_delay: Duration,
+    /// Time allowed for a pre-key upload with its retries before whatever waits
+    /// on it moves on; the upload itself is not cancelled.
+    pub pre_key_upload_timeout: Duration,
     pub process_media_notifications: bool,
     pub process_app_state_notifications: bool,
     /// Automatically process group, picture, account-sync and device-list notifications,
@@ -248,6 +253,7 @@ impl Default for Config {
             process_messages: true,
             send_active_receipts: false,
             retry_request_delay: Duration::from_millis(250),
+            pre_key_upload_timeout: defaults::UPLOAD_TIMEOUT,
             process_media_notifications: true,
             process_app_state_notifications: true,
             process_notifications: true,

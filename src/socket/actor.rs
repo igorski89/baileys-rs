@@ -59,6 +59,7 @@ struct Actor<'a> {
     close_reply: Option<oneshot::Sender<Result<(), Error>>>,
     upload_retry: Option<(Instant, u32, u8, After)>,
     upload_waiters: Vec<oneshot::Sender<Result<(), Error>>>,
+    upload_deadline: Option<Instant>,
     initializing: bool,
     server_time_offset_ms: i128,
 }
@@ -107,6 +108,7 @@ pub(super) async fn run(
         close_reply: None,
         upload_retry: None,
         upload_waiters: vec![],
+        upload_deadline: None,
         initializing: false,
         server_time_offset_ms: 0,
     };
@@ -941,6 +943,9 @@ impl Actor<'_> {
         Ok(())
     }
     async fn upload(&mut self, count: u32, attempt: u8, after: After) -> Result<(), Error> {
+        if attempt == 0 {
+            self.upload_deadline = Some(Instant::now() + self.config.pre_key_upload_timeout);
+        }
         let store = self.store.clone();
         let (batch, keys, credentials) = tokio::task::spawn_blocking(move || {
             store.transaction(|tx| {
@@ -1005,6 +1010,7 @@ impl Actor<'_> {
     }
     /// Continue startup after its upload, and release callers waiting for any upload.
     async fn finish_upload(&mut self, after: After, uploaded: bool) -> Result<(), Error> {
+        self.upload_deadline = None;
         for waiter in self.upload_waiters.drain(..) {
             let _ = waiter.send(if uploaded {
                 Ok(())
@@ -1132,6 +1138,28 @@ impl Actor<'_> {
         {
             let (_, count, attempt, after) = self.upload_retry.take().expect("checked above");
             self.upload(count, attempt, after).await?;
+        }
+        if self.upload_deadline.is_some_and(|t| t <= Instant::now()) {
+            self.upload_deadline = None;
+            // As upstream, the upload and its retries keep running; only what
+            // waits on it moves on.
+            let mut after = After::Waiters;
+            if let Some((.., pending)) = &mut self.upload_retry {
+                after = std::mem::replace(pending, After::Waiters);
+            }
+            for pending in self.pending.values_mut() {
+                if let PendingKind::InitUpload { after: pending, .. } = &mut pending.kind {
+                    after = std::mem::replace(pending, After::Waiters);
+                }
+            }
+            for waiter in self.upload_waiters.drain(..) {
+                let _ = waiter.send(Err(Error::PreKeyUploadTimeout));
+            }
+            match after {
+                After::Open => self.open().await?,
+                After::Active => self.active().await?,
+                After::Waiters => {}
+            }
         }
         if self.qr_deadline.is_some_and(|t| t <= Instant::now()) {
             self.next_qr()?;

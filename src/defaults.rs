@@ -11,3 +11,5 @@ pub const WA_VERSION: [u32; 3] = [2, 3000, 1043857760];
 pub const DEFAULT_ORIGIN: &str = "https://web.whatsapp.com";
 pub const DEFAULT_WEBSOCKET_URL: &str = "wss://web.whatsapp.com/ws/chat";
 pub const MIN_PREKEY_COUNT: u32 = 5;
+/// Time callers wait for a pre-key upload, including its retries.
+pub const UPLOAD_TIMEOUT: std::time::Duration = std::time::Duration::from_secs(30);
