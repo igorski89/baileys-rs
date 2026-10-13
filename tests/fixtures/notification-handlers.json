@@ -1,0 +1,3985 @@
+{
+ "now": 1800000000,
+ "me": {
+  "id": "100:7@s.whatsapp.net",
+  "lid": "900:7@lid"
+ },
+ "prekeys": [
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "E1",
+     "type": "encrypt",
+     "t": "1700000000",
+     "from": "@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "count",
+      "attrs": {
+       "value": "0"
+      }
+     }
+    ]
+   },
+   "seed": {},
+   "error": false,
+   "log": [
+    {
+     "call": "uploadPreKeys"
+    }
+   ],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "E1",
+     "type": "encrypt",
+     "t": "1700000000",
+     "from": "@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "count",
+      "attrs": {
+       "value": "4"
+      }
+     }
+    ]
+   },
+   "seed": {},
+   "error": false,
+   "log": [
+    {
+     "call": "uploadPreKeys"
+    }
+   ],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "E1",
+     "type": "encrypt",
+     "t": "1700000000",
+     "from": "@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "count",
+      "attrs": {
+       "value": "5"
+      }
+     }
+    ]
+   },
+   "seed": {},
+   "error": false,
+   "log": [],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "E1",
+     "type": "encrypt",
+     "t": "1700000000",
+     "from": "@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "count",
+      "attrs": {
+       "value": "100"
+      }
+     }
+    ]
+   },
+   "seed": {},
+   "error": false,
+   "log": [],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "E1",
+     "type": "encrypt",
+     "t": "1700000000",
+     "from": "@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "count",
+      "attrs": {
+       "value": "4.9"
+      }
+     }
+    ]
+   },
+   "seed": {},
+   "error": false,
+   "log": [
+    {
+     "call": "uploadPreKeys"
+    }
+   ],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "E1",
+     "type": "encrypt",
+     "t": "1700000000",
+     "from": "@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "count",
+      "attrs": {
+       "value": ""
+      }
+     }
+    ]
+   },
+   "seed": {},
+   "error": false,
+   "log": [
+    {
+     "call": "uploadPreKeys"
+    }
+   ],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "E1",
+     "type": "encrypt",
+     "t": "1700000000",
+     "from": "@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "count",
+      "attrs": {
+       "value": "many"
+      }
+     }
+    ]
+   },
+   "seed": {},
+   "error": false,
+   "log": [],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "E1",
+     "type": "encrypt",
+     "t": "1700000000",
+     "from": "@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "count",
+      "attrs": {}
+     }
+    ]
+   },
+   "seed": {},
+   "error": false,
+   "log": [],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "E1",
+     "type": "encrypt",
+     "t": "1700000000",
+     "from": "@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "count",
+      "attrs": {
+       "value": "-1"
+      }
+     }
+    ]
+   },
+   "seed": {},
+   "error": false,
+   "log": [
+    {
+     "call": "uploadPreKeys"
+    }
+   ],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "E1",
+     "type": "encrypt",
+     "t": "1700000000",
+     "from": "@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "count",
+      "attrs": {
+       "value": " 3 "
+      }
+     }
+    ]
+   },
+   "seed": {},
+   "error": false,
+   "log": [
+    {
+     "call": "uploadPreKeys"
+    }
+   ],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "E1",
+     "type": "encrypt",
+     "t": "1700000000",
+     "from": "@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "count",
+      "attrs": {
+       "value": "0x2"
+      }
+     }
+    ]
+   },
+   "seed": {},
+   "error": false,
+   "log": [
+    {
+     "call": "uploadPreKeys"
+    }
+   ],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "E1",
+     "type": "encrypt",
+     "t": "1700000000",
+     "from": "@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "count",
+      "attrs": {
+       "value": "1e1"
+      }
+     }
+    ]
+   },
+   "seed": {},
+   "error": false,
+   "log": [],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "E1",
+     "type": "encrypt",
+     "t": "1700000000",
+     "from": "@s.whatsapp.net"
+    },
+    "content": []
+   },
+   "seed": {},
+   "error": true,
+   "log": [],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "type": "encrypt",
+     "t": "1700000000",
+     "from": "@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "count",
+      "attrs": {
+       "value": "1"
+      }
+     }
+    ]
+   },
+   "seed": {},
+   "error": false,
+   "log": [
+    {
+     "call": "uploadPreKeys"
+    }
+   ],
+   "events": [],
+   "tokens": {}
+  }
+ ],
+ "identities": [
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "E1",
+     "type": "encrypt",
+     "t": "1700000000"
+    },
+    "content": [
+     {
+      "tag": "identity",
+      "attrs": {}
+     }
+    ]
+   },
+   "seed": {},
+   "error": false,
+   "log": [],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "E1",
+     "type": "encrypt",
+     "t": "1700000000",
+     "from": ""
+    },
+    "content": [
+     {
+      "tag": "identity",
+      "attrs": {}
+     }
+    ]
+   },
+   "seed": {},
+   "error": false,
+   "log": [],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "E1",
+     "type": "encrypt",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net"
+    },
+    "content": []
+   },
+   "seed": {
+    "sessions": [
+     "200@s.whatsapp.net"
+    ]
+   },
+   "error": false,
+   "log": [],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "E1",
+     "type": "encrypt",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "other",
+      "attrs": {}
+     }
+    ]
+   },
+   "seed": {
+    "sessions": [
+     "200@s.whatsapp.net"
+    ]
+   },
+   "error": false,
+   "log": [],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "E1",
+     "type": "encrypt",
+     "t": "1700000000",
+     "from": "200:4@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "identity",
+      "attrs": {}
+     }
+    ]
+   },
+   "seed": {
+    "sessions": [
+     "200:4@s.whatsapp.net"
+    ]
+   },
+   "error": false,
+   "log": [],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "E1",
+     "type": "encrypt",
+     "t": "1700000000",
+     "from": "200:0@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "identity",
+      "attrs": {}
+     }
+    ]
+   },
+   "seed": {
+    "sessions": [
+     "200:0@s.whatsapp.net"
+    ]
+   },
+   "error": false,
+   "log": [
+    {
+     "call": "assertSessions",
+     "jids": [
+      "200:0@s.whatsapp.net"
+     ],
+     "force": true
+    }
+   ],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "E1",
+     "type": "encrypt",
+     "t": "1700000000",
+     "from": "100@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "identity",
+      "attrs": {}
+     }
+    ]
+   },
+   "seed": {
+    "sessions": [
+     "100@s.whatsapp.net"
+    ]
+   },
+   "error": false,
+   "log": [],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "E1",
+     "type": "encrypt",
+     "t": "1700000000",
+     "from": "900@lid"
+    },
+    "content": [
+     {
+      "tag": "identity",
+      "attrs": {}
+     }
+    ]
+   },
+   "seed": {
+    "sessions": [
+     "900@lid"
+    ]
+   },
+   "error": false,
+   "log": [],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "E1",
+     "type": "encrypt",
+     "t": "1700000000",
+     "from": "300@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "identity",
+      "attrs": {}
+     }
+    ]
+   },
+   "seed": {},
+   "error": false,
+   "log": [],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "E1",
+     "type": "encrypt",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net",
+     "offline": "1"
+    },
+    "content": [
+     {
+      "tag": "identity",
+      "attrs": {}
+     }
+    ]
+   },
+   "seed": {
+    "sessions": [
+     "200@s.whatsapp.net"
+    ]
+   },
+   "error": false,
+   "log": [],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "E1",
+     "type": "encrypt",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net",
+     "offline": ""
+    },
+    "content": [
+     {
+      "tag": "identity",
+      "attrs": {}
+     }
+    ]
+   },
+   "seed": {
+    "sessions": [
+     "200@s.whatsapp.net"
+    ]
+   },
+   "error": false,
+   "log": [
+    {
+     "call": "assertSessions",
+     "jids": [
+      "200@s.whatsapp.net"
+     ],
+     "force": true
+    }
+   ],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "E1",
+     "type": "encrypt",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "identity",
+      "attrs": {}
+     }
+    ]
+   },
+   "seed": {
+    "sessions": [
+     "200@s.whatsapp.net"
+    ]
+   },
+   "error": false,
+   "log": [
+    {
+     "call": "assertSessions",
+     "jids": [
+      "200@s.whatsapp.net"
+     ],
+     "force": true
+    }
+   ],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "E1",
+     "type": "encrypt",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "identity",
+      "attrs": {}
+     }
+    ]
+   },
+   "seed": {
+    "sessions": [
+     "200@s.whatsapp.net"
+    ],
+    "assertFails": true
+   },
+   "error": false,
+   "log": [
+    {
+     "call": "assertSessions",
+     "jids": [
+      "200@s.whatsapp.net"
+     ],
+     "force": true
+    }
+   ],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "E1",
+     "type": "encrypt",
+     "t": "1700000000",
+     "from": "2000@lid"
+    },
+    "content": [
+     {
+      "tag": "identity",
+      "attrs": {}
+     }
+    ]
+   },
+   "seed": {
+    "sessions": [
+     "2000@lid"
+    ],
+    "lids": {
+     "200@s.whatsapp.net": "2000@lid"
+    }
+   },
+   "error": false,
+   "log": [
+    {
+     "call": "assertSessions",
+     "jids": [
+      "2000@lid"
+     ],
+     "force": true
+    }
+   ],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "E1",
+     "type": "encrypt",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "identity",
+      "attrs": {}
+     }
+    ]
+   },
+   "seed": {
+    "sessions": [
+     "200@s.whatsapp.net"
+    ],
+    "tokens": {
+     "200@s.whatsapp.net": {
+      "token": {
+       "type": "Buffer",
+       "data": "aGVsZA=="
+      },
+      "timestamp": "1800000000",
+      "senderTimestamp": 1800000000
+     }
+    }
+   },
+   "error": false,
+   "log": [
+    {
+     "call": "assertSessions",
+     "jids": [
+      "200@s.whatsapp.net"
+     ],
+     "force": true
+    },
+    {
+     "call": "issuePrivacyTokens",
+     "jids": [
+      "200@s.whatsapp.net"
+     ],
+     "timestamp": 1800000000
+    },
+    {
+     "call": "track",
+     "jid": "200@s.whatsapp.net"
+    }
+   ],
+   "events": [],
+   "tokens": {
+    "200@s.whatsapp.net": {
+     "token": {
+      "type": "Buffer",
+      "data": "aXNzdWVkIGZvciAyMDBAcy53aGF0c2FwcC5uZXQ="
+     },
+     "timestamp": "1800000000",
+     "senderTimestamp": 1800000000
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "E1",
+     "type": "encrypt",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "identity",
+      "attrs": {}
+     }
+    ]
+   },
+   "seed": {
+    "sessions": [
+     "200@s.whatsapp.net"
+    ],
+    "tokens": {
+     "200@s.whatsapp.net": {
+      "token": {
+       "type": "Buffer",
+       "data": "aGVsZA=="
+      },
+      "timestamp": "1800000000",
+      "senderTimestamp": 1794816000
+     }
+    }
+   },
+   "error": false,
+   "log": [
+    {
+     "call": "assertSessions",
+     "jids": [
+      "200@s.whatsapp.net"
+     ],
+     "force": true
+    }
+   ],
+   "events": [],
+   "tokens": {
+    "200@s.whatsapp.net": {
+     "token": {
+      "type": "Buffer",
+      "data": "aGVsZA=="
+     },
+     "timestamp": "1800000000",
+     "senderTimestamp": 1794816000
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "E1",
+     "type": "encrypt",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "identity",
+      "attrs": {}
+     }
+    ]
+   },
+   "seed": {
+    "sessions": [
+     "200@s.whatsapp.net"
+    ],
+    "tokens": {
+     "200@s.whatsapp.net": {
+      "token": {
+       "type": "Buffer",
+       "data": "aGVsZA=="
+      },
+      "timestamp": "1800000000"
+     }
+    }
+   },
+   "error": false,
+   "log": [
+    {
+     "call": "assertSessions",
+     "jids": [
+      "200@s.whatsapp.net"
+     ],
+     "force": true
+    }
+   ],
+   "events": [],
+   "tokens": {
+    "200@s.whatsapp.net": {
+     "token": {
+      "type": "Buffer",
+      "data": "aGVsZA=="
+     },
+     "timestamp": "1800000000"
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "E1",
+     "type": "encrypt",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "identity",
+      "attrs": {}
+     }
+    ]
+   },
+   "seed": {
+    "sessions": [
+     "200@s.whatsapp.net"
+    ],
+    "lids": {
+     "200@s.whatsapp.net": "2000@lid"
+    },
+    "tokens": {
+     "2000@lid": {
+      "token": {
+       "type": "Buffer",
+       "data": "aGVsZA=="
+      },
+      "timestamp": "1800000000",
+      "senderTimestamp": 1800000000
+     }
+    }
+   },
+   "error": false,
+   "log": [
+    {
+     "call": "assertSessions",
+     "jids": [
+      "200@s.whatsapp.net"
+     ],
+     "force": true
+    },
+    {
+     "call": "issuePrivacyTokens",
+     "jids": [
+      "200@s.whatsapp.net"
+     ],
+     "timestamp": 1800000000
+    },
+    {
+     "call": "track",
+     "jid": "2000@lid"
+    }
+   ],
+   "events": [],
+   "tokens": {
+    "2000@lid": {
+     "token": {
+      "type": "Buffer",
+      "data": "aXNzdWVkIGZvciAyMDBAcy53aGF0c2FwcC5uZXQ="
+     },
+     "timestamp": "1800000000",
+     "senderTimestamp": 1800000000
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "E1",
+     "type": "encrypt",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "identity",
+      "attrs": {}
+     }
+    ]
+   },
+   "seed": {
+    "sessions": [
+     "200@s.whatsapp.net"
+    ],
+    "lids": {
+     "200@s.whatsapp.net": "2000@lid"
+    },
+    "issueToLid": true,
+    "tokens": {
+     "2000@lid": {
+      "token": {
+       "type": "Buffer",
+       "data": "aGVsZA=="
+      },
+      "timestamp": "1800000000",
+      "senderTimestamp": 1800000000
+     }
+    }
+   },
+   "error": false,
+   "log": [
+    {
+     "call": "assertSessions",
+     "jids": [
+      "200@s.whatsapp.net"
+     ],
+     "force": true
+    },
+    {
+     "call": "issuePrivacyTokens",
+     "jids": [
+      "2000@lid"
+     ],
+     "timestamp": 1800000000
+    },
+    {
+     "call": "track",
+     "jid": "2000@lid"
+    }
+   ],
+   "events": [],
+   "tokens": {
+    "2000@lid": {
+     "token": {
+      "type": "Buffer",
+      "data": "aXNzdWVkIGZvciAyMDAwQGxpZA=="
+     },
+     "timestamp": "1800000000",
+     "senderTimestamp": 1800000000
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "E1",
+     "type": "encrypt",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "identity",
+      "attrs": {}
+     }
+    ]
+   },
+   "seed": {
+    "sessions": [
+     "200@s.whatsapp.net"
+    ],
+    "lids": {
+     "200@s.whatsapp.net": "2000@lid"
+    },
+    "tokens": {
+     "200@s.whatsapp.net": {
+      "token": {
+       "type": "Buffer",
+       "data": "aGVsZA=="
+      },
+      "timestamp": "1800000000",
+      "senderTimestamp": 1800000000
+     }
+    }
+   },
+   "error": false,
+   "log": [
+    {
+     "call": "assertSessions",
+     "jids": [
+      "200@s.whatsapp.net"
+     ],
+     "force": true
+    }
+   ],
+   "events": [],
+   "tokens": {
+    "200@s.whatsapp.net": {
+     "token": {
+      "type": "Buffer",
+      "data": "aGVsZA=="
+     },
+     "timestamp": "1800000000",
+     "senderTimestamp": 1800000000
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "E1",
+     "type": "encrypt",
+     "t": "1700000000",
+     "from": "2000@lid"
+    },
+    "content": [
+     {
+      "tag": "identity",
+      "attrs": {}
+     }
+    ]
+   },
+   "seed": {
+    "sessions": [
+     "2000@lid"
+    ],
+    "lids": {
+     "200@s.whatsapp.net": "2000@lid"
+    },
+    "tokens": {
+     "2000@lid": {
+      "token": {
+       "type": "Buffer",
+       "data": "aGVsZA=="
+      },
+      "timestamp": "1800000000",
+      "senderTimestamp": 1800000000
+     }
+    }
+   },
+   "error": false,
+   "log": [
+    {
+     "call": "assertSessions",
+     "jids": [
+      "2000@lid"
+     ],
+     "force": true
+    },
+    {
+     "call": "issuePrivacyTokens",
+     "jids": [
+      "200@s.whatsapp.net"
+     ],
+     "timestamp": 1800000000
+    },
+    {
+     "call": "track",
+     "jid": "2000@lid"
+    }
+   ],
+   "events": [],
+   "tokens": {
+    "2000@lid": {
+     "token": {
+      "type": "Buffer",
+      "data": "aXNzdWVkIGZvciAyMDBAcy53aGF0c2FwcC5uZXQ="
+     },
+     "timestamp": "1800000000",
+     "senderTimestamp": 1800000000
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "E1",
+     "type": "encrypt",
+     "t": "1700000000",
+     "from": "2000@lid"
+    },
+    "content": [
+     {
+      "tag": "identity",
+      "attrs": {}
+     }
+    ]
+   },
+   "seed": {
+    "sessions": [
+     "2000@lid"
+    ],
+    "lids": {
+     "200@s.whatsapp.net": "2000@lid"
+    },
+    "issueToLid": true,
+    "tokens": {
+     "2000@lid": {
+      "token": {
+       "type": "Buffer",
+       "data": "aGVsZA=="
+      },
+      "timestamp": "1800000000",
+      "senderTimestamp": 1800000000
+     }
+    }
+   },
+   "error": false,
+   "log": [
+    {
+     "call": "assertSessions",
+     "jids": [
+      "2000@lid"
+     ],
+     "force": true
+    },
+    {
+     "call": "issuePrivacyTokens",
+     "jids": [
+      "2000@lid"
+     ],
+     "timestamp": 1800000000
+    },
+    {
+     "call": "track",
+     "jid": "2000@lid"
+    }
+   ],
+   "events": [],
+   "tokens": {
+    "2000@lid": {
+     "token": {
+      "type": "Buffer",
+      "data": "aXNzdWVkIGZvciAyMDAwQGxpZA=="
+     },
+     "timestamp": "1800000000",
+     "senderTimestamp": 1800000000
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "E1",
+     "type": "encrypt",
+     "t": "1700000000",
+     "from": "3000@lid"
+    },
+    "content": [
+     {
+      "tag": "identity",
+      "attrs": {}
+     }
+    ]
+   },
+   "seed": {
+    "sessions": [
+     "3000@lid"
+    ],
+    "tokens": {
+     "3000@lid": {
+      "token": {
+       "type": "Buffer",
+       "data": "aGVsZA=="
+      },
+      "timestamp": "1800000000",
+      "senderTimestamp": 1800000000
+     }
+    }
+   },
+   "error": false,
+   "log": [
+    {
+     "call": "assertSessions",
+     "jids": [
+      "3000@lid"
+     ],
+     "force": true
+    },
+    {
+     "call": "issuePrivacyTokens",
+     "jids": [
+      "3000@lid"
+     ],
+     "timestamp": 1800000000
+    },
+    {
+     "call": "track",
+     "jid": "3000@lid"
+    }
+   ],
+   "events": [],
+   "tokens": {
+    "3000@lid": {
+     "token": {
+      "type": "Buffer",
+      "data": "aXNzdWVkIGZvciAzMDAwQGxpZA=="
+     },
+     "timestamp": "1800000000",
+     "senderTimestamp": 1800000000
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "E1",
+     "type": "encrypt",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "identity",
+      "attrs": {}
+     }
+    ]
+   },
+   "seed": {
+    "sessions": [
+     "200@s.whatsapp.net"
+    ],
+    "issueFails": true,
+    "tokens": {
+     "200@s.whatsapp.net": {
+      "token": {
+       "type": "Buffer",
+       "data": "aGVsZA=="
+      },
+      "timestamp": "1800000000",
+      "senderTimestamp": 1800000000
+     }
+    }
+   },
+   "error": false,
+   "log": [
+    {
+     "call": "assertSessions",
+     "jids": [
+      "200@s.whatsapp.net"
+     ],
+     "force": true
+    },
+    {
+     "call": "issuePrivacyTokens",
+     "jids": [
+      "200@s.whatsapp.net"
+     ],
+     "timestamp": 1800000000
+    }
+   ],
+   "events": [],
+   "tokens": {
+    "200@s.whatsapp.net": {
+     "token": {
+      "type": "Buffer",
+      "data": "aGVsZA=="
+     },
+     "timestamp": "1800000000",
+     "senderTimestamp": 1800000000
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "E1",
+     "type": "encrypt",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "identity",
+      "attrs": {}
+     }
+    ]
+   },
+   "seed": {
+    "sessions": [
+     "200@s.whatsapp.net"
+    ],
+    "assertFails": true,
+    "tokens": {
+     "200@s.whatsapp.net": {
+      "token": {
+       "type": "Buffer",
+       "data": "aGVsZA=="
+      },
+      "timestamp": "1800000000",
+      "senderTimestamp": 1800000000
+     }
+    }
+   },
+   "error": false,
+   "log": [
+    {
+     "call": "assertSessions",
+     "jids": [
+      "200@s.whatsapp.net"
+     ],
+     "force": true
+    },
+    {
+     "call": "issuePrivacyTokens",
+     "jids": [
+      "200@s.whatsapp.net"
+     ],
+     "timestamp": 1800000000
+    },
+    {
+     "call": "track",
+     "jid": "200@s.whatsapp.net"
+    }
+   ],
+   "events": [],
+   "tokens": {
+    "200@s.whatsapp.net": {
+     "token": {
+      "type": "Buffer",
+      "data": "aXNzdWVkIGZvciAyMDBAcy53aGF0c2FwcC5uZXQ="
+     },
+     "timestamp": "1800000000",
+     "senderTimestamp": 1800000000
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "E1",
+     "type": "encrypt",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net",
+     "offline": "1"
+    },
+    "content": [
+     {
+      "tag": "identity",
+      "attrs": {}
+     }
+    ]
+   },
+   "seed": {
+    "sessions": [
+     "200@s.whatsapp.net"
+    ],
+    "tokens": {
+     "200@s.whatsapp.net": {
+      "token": {
+       "type": "Buffer",
+       "data": "aGVsZA=="
+      },
+      "timestamp": "1800000000",
+      "senderTimestamp": 1800000000
+     }
+    }
+   },
+   "error": false,
+   "log": [],
+   "events": [],
+   "tokens": {
+    "200@s.whatsapp.net": {
+     "token": {
+      "type": "Buffer",
+      "data": "aGVsZA=="
+     },
+     "timestamp": "1800000000",
+     "senderTimestamp": 1800000000
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "E1",
+     "type": "encrypt",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "identity",
+      "attrs": {}
+     }
+    ]
+   },
+   "seed": {
+    "sessions": [
+     "200@s.whatsapp.net"
+    ]
+   },
+   "repeat": true,
+   "error": false,
+   "log": [
+    {
+     "call": "assertSessions",
+     "jids": [
+      "200@s.whatsapp.net"
+     ],
+     "force": true
+    }
+   ],
+   "events": [],
+   "tokens": {}
+  }
+ ],
+ "tokens": [
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "P1",
+     "type": "privacy_token",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "tokens",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "token",
+        "attrs": {
+         "type": "trusted_contact",
+         "t": "1800000000"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "aW5jb21pbmc="
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "seed": {},
+   "error": false,
+   "log": [
+    {
+     "call": "track",
+     "jid": "200@s.whatsapp.net"
+    }
+   ],
+   "events": [],
+   "tokens": {
+    "200@s.whatsapp.net": {
+     "token": {
+      "type": "Buffer",
+      "data": "aW5jb21pbmc="
+     },
+     "timestamp": "1800000000"
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "P1",
+     "type": "privacy_token",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "tokens",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "token",
+        "attrs": {
+         "type": "trusted_contact",
+         "t": "1800000000"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "aW5jb21pbmc="
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "seed": {
+    "lids": {
+     "200@s.whatsapp.net": "2000@lid"
+    }
+   },
+   "error": false,
+   "log": [
+    {
+     "call": "track",
+     "jid": "2000@lid"
+    }
+   ],
+   "events": [],
+   "tokens": {
+    "2000@lid": {
+     "token": {
+      "type": "Buffer",
+      "data": "aW5jb21pbmc="
+     },
+     "timestamp": "1800000000"
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "P1",
+     "type": "privacy_token",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net",
+     "sender_lid": "2000:3@lid"
+    },
+    "content": [
+     {
+      "tag": "tokens",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "token",
+        "attrs": {
+         "type": "trusted_contact",
+         "t": "1800000000"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "aW5jb21pbmc="
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "seed": {},
+   "error": false,
+   "log": [
+    {
+     "call": "track",
+     "jid": "2000@lid"
+    }
+   ],
+   "events": [],
+   "tokens": {
+    "2000@lid": {
+     "token": {
+      "type": "Buffer",
+      "data": "aW5jb21pbmc="
+     },
+     "timestamp": "1800000000"
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "P1",
+     "type": "privacy_token",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net",
+     "sender_lid": "2000@lid"
+    },
+    "content": [
+     {
+      "tag": "tokens",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "token",
+        "attrs": {
+         "type": "trusted_contact",
+         "t": "1800000000"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "aW5jb21pbmc="
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "seed": {
+    "lids": {
+     "200@s.whatsapp.net": "2999@lid"
+    }
+   },
+   "error": false,
+   "log": [
+    {
+     "call": "track",
+     "jid": "2000@lid"
+    }
+   ],
+   "events": [],
+   "tokens": {
+    "2000@lid": {
+     "token": {
+      "type": "Buffer",
+      "data": "aW5jb21pbmc="
+     },
+     "timestamp": "1800000000"
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "P1",
+     "type": "privacy_token",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net",
+     "sender_lid": "200@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "tokens",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "token",
+        "attrs": {
+         "type": "trusted_contact",
+         "t": "1800000000"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "aW5jb21pbmc="
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "seed": {
+    "lids": {
+     "200@s.whatsapp.net": "2000@lid"
+    }
+   },
+   "error": false,
+   "log": [
+    {
+     "call": "track",
+     "jid": "2000@lid"
+    }
+   ],
+   "events": [],
+   "tokens": {
+    "2000@lid": {
+     "token": {
+      "type": "Buffer",
+      "data": "aW5jb21pbmc="
+     },
+     "timestamp": "1800000000"
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "P1",
+     "type": "privacy_token",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net",
+     "sender_lid": ""
+    },
+    "content": [
+     {
+      "tag": "tokens",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "token",
+        "attrs": {
+         "type": "trusted_contact",
+         "t": "1800000000"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "aW5jb21pbmc="
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "seed": {
+    "lids": {
+     "200@s.whatsapp.net": "2000@lid"
+    }
+   },
+   "error": false,
+   "log": [
+    {
+     "call": "track",
+     "jid": "2000@lid"
+    }
+   ],
+   "events": [],
+   "tokens": {
+    "2000@lid": {
+     "token": {
+      "type": "Buffer",
+      "data": "aW5jb21pbmc="
+     },
+     "timestamp": "1800000000"
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "P1",
+     "type": "privacy_token",
+     "t": "1700000000",
+     "from": "200:5@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "tokens",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "token",
+        "attrs": {
+         "type": "trusted_contact",
+         "t": "1800000000"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "aW5jb21pbmc="
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "seed": {
+    "lids": {
+     "200@s.whatsapp.net": "2000@lid"
+    }
+   },
+   "error": false,
+   "log": [
+    {
+     "call": "track",
+     "jid": "2000@lid"
+    }
+   ],
+   "events": [],
+   "tokens": {
+    "2000@lid": {
+     "token": {
+      "type": "Buffer",
+      "data": "aW5jb21pbmc="
+     },
+     "timestamp": "1800000000"
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "P1",
+     "type": "privacy_token",
+     "t": "1700000000",
+     "from": "2000@lid"
+    },
+    "content": [
+     {
+      "tag": "tokens",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "token",
+        "attrs": {
+         "type": "trusted_contact",
+         "t": "1800000000"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "aW5jb21pbmc="
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "seed": {},
+   "error": false,
+   "log": [
+    {
+     "call": "track",
+     "jid": "2000@lid"
+    }
+   ],
+   "events": [],
+   "tokens": {
+    "2000@lid": {
+     "token": {
+      "type": "Buffer",
+      "data": "aW5jb21pbmc="
+     },
+     "timestamp": "1800000000"
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "P1",
+     "type": "privacy_token",
+     "t": "1700000000",
+     "from": "2000:9@lid"
+    },
+    "content": [
+     {
+      "tag": "tokens",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "token",
+        "attrs": {
+         "type": "trusted_contact",
+         "t": "1800000000"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "aW5jb21pbmc="
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "seed": {},
+   "error": false,
+   "log": [
+    {
+     "call": "track",
+     "jid": "2000@lid"
+    }
+   ],
+   "events": [],
+   "tokens": {
+    "2000@lid": {
+     "token": {
+      "type": "Buffer",
+      "data": "aW5jb21pbmc="
+     },
+     "timestamp": "1800000000"
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "P1",
+     "type": "privacy_token",
+     "t": "1700000000",
+     "from": "0@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "tokens",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "token",
+        "attrs": {
+         "type": "trusted_contact",
+         "t": "1800000000"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "aW5jb21pbmc="
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "seed": {},
+   "error": false,
+   "log": [],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "P1",
+     "type": "privacy_token",
+     "t": "1700000000",
+     "from": "13135551234@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "tokens",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "token",
+        "attrs": {
+         "type": "trusted_contact",
+         "t": "1800000000"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "aW5jb21pbmc="
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "seed": {},
+   "error": false,
+   "log": [],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "P1",
+     "type": "privacy_token",
+     "t": "1700000000",
+     "from": "13165550012@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "tokens",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "token",
+        "attrs": {
+         "type": "trusted_contact",
+         "t": "1800000000"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "aW5jb21pbmc="
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "seed": {},
+   "error": false,
+   "log": [],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "P1",
+     "type": "privacy_token",
+     "t": "1700000000",
+     "from": "123@bot"
+    },
+    "content": [
+     {
+      "tag": "tokens",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "token",
+        "attrs": {
+         "type": "trusted_contact",
+         "t": "1800000000"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "aW5jb21pbmc="
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "seed": {},
+   "error": false,
+   "log": [],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "P1",
+     "type": "privacy_token",
+     "t": "1700000000",
+     "from": "group@g.us"
+    },
+    "content": [
+     {
+      "tag": "tokens",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "token",
+        "attrs": {
+         "type": "trusted_contact",
+         "t": "1800000000"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "aW5jb21pbmc="
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "seed": {},
+   "error": false,
+   "log": [],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "P1",
+     "type": "privacy_token",
+     "t": "1700000000",
+     "from": "200@c.us"
+    },
+    "content": [
+     {
+      "tag": "tokens",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "token",
+        "attrs": {
+         "type": "trusted_contact",
+         "t": "1800000000"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "aW5jb21pbmc="
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "seed": {},
+   "error": false,
+   "log": [
+    {
+     "call": "track",
+     "jid": "200@s.whatsapp.net"
+    }
+   ],
+   "events": [],
+   "tokens": {
+    "200@s.whatsapp.net": {
+     "token": {
+      "type": "Buffer",
+      "data": "aW5jb21pbmc="
+     },
+     "timestamp": "1800000000"
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "P1",
+     "type": "privacy_token",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net"
+    },
+    "content": []
+   },
+   "seed": {},
+   "error": false,
+   "log": [],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "P1",
+     "type": "privacy_token",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "tokens",
+      "attrs": {}
+     }
+    ]
+   },
+   "seed": {},
+   "error": false,
+   "log": [],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "P1",
+     "type": "privacy_token",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "tokens",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "token",
+        "attrs": {
+         "type": "other",
+         "t": "1800000000"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "aW5jb21pbmc="
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "seed": {},
+   "error": false,
+   "log": [],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "P1",
+     "type": "privacy_token",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "tokens",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "token",
+        "attrs": {
+         "t": "1800000000"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "aW5jb21pbmc="
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "seed": {},
+   "error": false,
+   "log": [],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "P1",
+     "type": "privacy_token",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "tokens",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "token",
+        "attrs": {
+         "type": "trusted_contact",
+         "t": "1800000000"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "aW5jb21pbmc="
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "seed": {},
+   "error": false,
+   "log": [
+    {
+     "call": "track",
+     "jid": "200@s.whatsapp.net"
+    }
+   ],
+   "events": [],
+   "tokens": {
+    "200@s.whatsapp.net": {
+     "token": {
+      "type": "Buffer",
+      "data": "aW5jb21pbmc="
+     },
+     "timestamp": "1800000000"
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "P1",
+     "type": "privacy_token",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "tokens",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "token",
+        "attrs": {
+         "type": "trusted_contact",
+         "t": "1800000000"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": ""
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "seed": {},
+   "error": false,
+   "log": [
+    {
+     "call": "track",
+     "jid": "200@s.whatsapp.net"
+    }
+   ],
+   "events": [],
+   "tokens": {
+    "200@s.whatsapp.net": {
+     "token": {
+      "type": "Buffer",
+      "data": ""
+     },
+     "timestamp": "1800000000"
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "P1",
+     "type": "privacy_token",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "tokens",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "token",
+        "attrs": {
+         "type": "trusted_contact"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "aW5jb21pbmc="
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "seed": {},
+   "error": false,
+   "log": [],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "P1",
+     "type": "privacy_token",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "tokens",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "token",
+        "attrs": {
+         "type": "trusted_contact",
+         "t": "0"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "aW5jb21pbmc="
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "seed": {},
+   "error": false,
+   "log": [],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "P1",
+     "type": "privacy_token",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "tokens",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "token",
+        "attrs": {
+         "type": "trusted_contact",
+         "t": ""
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "aW5jb21pbmc="
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "seed": {},
+   "error": false,
+   "log": [],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "P1",
+     "type": "privacy_token",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "tokens",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "token",
+        "attrs": {
+         "type": "trusted_contact",
+         "t": "soon"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "aW5jb21pbmc="
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "seed": {},
+   "error": false,
+   "log": [],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "P1",
+     "type": "privacy_token",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "tokens",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "token",
+        "attrs": {
+         "type": "trusted_contact",
+         "t": "1794816000"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "aW5jb21pbmc="
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "seed": {},
+   "error": false,
+   "log": [
+    {
+     "call": "track",
+     "jid": "200@s.whatsapp.net"
+    }
+   ],
+   "events": [],
+   "tokens": {
+    "200@s.whatsapp.net": {
+     "token": {
+      "type": "Buffer",
+      "data": "aW5jb21pbmc="
+     },
+     "timestamp": "1794816000"
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "P1",
+     "type": "privacy_token",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "tokens",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "token",
+        "attrs": {
+         "type": "trusted_contact",
+         "t": "1800000000",
+         "jid": "100:7@s.whatsapp.net"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "aW5jb21pbmc="
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "seed": {},
+   "error": false,
+   "log": [
+    {
+     "call": "track",
+     "jid": "200@s.whatsapp.net"
+    }
+   ],
+   "events": [],
+   "tokens": {
+    "200@s.whatsapp.net": {
+     "token": {
+      "type": "Buffer",
+      "data": "aW5jb21pbmc="
+     },
+     "timestamp": "1800000000"
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "P1",
+     "type": "privacy_token",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "tokens",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "token",
+        "attrs": {
+         "type": "trusted_contact",
+         "t": "1799999990"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "aW5jb21pbmc="
+        }
+       },
+       {
+        "tag": "token",
+        "attrs": {
+         "type": "trusted_contact",
+         "t": "1800000000"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "c2Vjb25k"
+        }
+       },
+       {
+        "tag": "token",
+        "attrs": {
+         "type": "other",
+         "t": "1800000000"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "dGhpcmQ="
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "seed": {},
+   "error": false,
+   "log": [
+    {
+     "call": "track",
+     "jid": "200@s.whatsapp.net"
+    },
+    {
+     "call": "track",
+     "jid": "200@s.whatsapp.net"
+    }
+   ],
+   "events": [],
+   "tokens": {
+    "200@s.whatsapp.net": {
+     "token": {
+      "type": "Buffer",
+      "data": "c2Vjb25k"
+     },
+     "timestamp": "1800000000"
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "P1",
+     "type": "privacy_token",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "tokens",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "token",
+        "attrs": {
+         "type": "trusted_contact",
+         "t": "1800000000"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "aW5jb21pbmc="
+        }
+       },
+       {
+        "tag": "token",
+        "attrs": {
+         "type": "trusted_contact",
+         "t": "1799999990"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "b2xkZXI="
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "seed": {},
+   "error": false,
+   "log": [
+    {
+     "call": "track",
+     "jid": "200@s.whatsapp.net"
+    }
+   ],
+   "events": [],
+   "tokens": {
+    "200@s.whatsapp.net": {
+     "token": {
+      "type": "Buffer",
+      "data": "aW5jb21pbmc="
+     },
+     "timestamp": "1800000000"
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "P1",
+     "type": "privacy_token",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "tokens",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "token",
+        "attrs": {
+         "type": "trusted_contact",
+         "t": "1799999990"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "aW5jb21pbmc="
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "seed": {
+    "tokens": {
+     "200@s.whatsapp.net": {
+      "token": {
+       "type": "Buffer",
+       "data": "aGVsZA=="
+      },
+      "timestamp": "1800000000",
+      "senderTimestamp": 1800000000
+     }
+    }
+   },
+   "error": false,
+   "log": [],
+   "events": [],
+   "tokens": {
+    "200@s.whatsapp.net": {
+     "token": {
+      "type": "Buffer",
+      "data": "aGVsZA=="
+     },
+     "timestamp": "1800000000",
+     "senderTimestamp": 1800000000
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "P1",
+     "type": "privacy_token",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "tokens",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "token",
+        "attrs": {
+         "type": "trusted_contact",
+         "t": "1800000000"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "aW5jb21pbmc="
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "seed": {
+    "tokens": {
+     "200@s.whatsapp.net": {
+      "token": {
+       "type": "Buffer",
+       "data": "aGVsZA=="
+      },
+      "timestamp": "1800000000",
+      "senderTimestamp": 1800000000
+     }
+    }
+   },
+   "error": false,
+   "log": [
+    {
+     "call": "track",
+     "jid": "200@s.whatsapp.net"
+    }
+   ],
+   "events": [],
+   "tokens": {
+    "200@s.whatsapp.net": {
+     "token": {
+      "type": "Buffer",
+      "data": "aW5jb21pbmc="
+     },
+     "timestamp": "1800000000",
+     "senderTimestamp": 1800000000
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "P1",
+     "type": "privacy_token",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "tokens",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "token",
+        "attrs": {
+         "type": "trusted_contact",
+         "t": "1800000000"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "aW5jb21pbmc="
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "seed": {
+    "tokens": {
+     "200@s.whatsapp.net": {
+      "token": {
+       "type": "Buffer",
+       "data": "aGVsZA=="
+      },
+      "timestamp": "1799999990",
+      "senderTimestamp": 1799999980
+     }
+    }
+   },
+   "error": false,
+   "log": [
+    {
+     "call": "track",
+     "jid": "200@s.whatsapp.net"
+    }
+   ],
+   "events": [],
+   "tokens": {
+    "200@s.whatsapp.net": {
+     "token": {
+      "type": "Buffer",
+      "data": "aW5jb21pbmc="
+     },
+     "timestamp": "1800000000",
+     "senderTimestamp": 1799999980
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "P1",
+     "type": "privacy_token",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "tokens",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "token",
+        "attrs": {
+         "type": "trusted_contact",
+         "t": "1800000000"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "aW5jb21pbmc="
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "seed": {
+    "tokens": {
+     "200@s.whatsapp.net": {
+      "token": {
+       "type": "Buffer",
+       "data": ""
+      },
+      "senderTimestamp": 1800000000
+     }
+    }
+   },
+   "error": false,
+   "log": [
+    {
+     "call": "track",
+     "jid": "200@s.whatsapp.net"
+    }
+   ],
+   "events": [],
+   "tokens": {
+    "200@s.whatsapp.net": {
+     "token": {
+      "type": "Buffer",
+      "data": "aW5jb21pbmc="
+     },
+     "senderTimestamp": 1800000000,
+     "timestamp": "1800000000"
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "P1",
+     "type": "privacy_token",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "tokens",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "token",
+        "attrs": {
+         "type": "trusted_contact",
+         "t": "1800000000"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "aW5jb21pbmc="
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "seed": {
+    "lids": {
+     "200@s.whatsapp.net": "2000@lid"
+    },
+    "tokens": {
+     "200@s.whatsapp.net": {
+      "token": {
+       "type": "Buffer",
+       "data": "aGVsZA=="
+      },
+      "timestamp": "1800000005"
+     }
+    }
+   },
+   "error": false,
+   "log": [
+    {
+     "call": "track",
+     "jid": "2000@lid"
+    }
+   ],
+   "events": [],
+   "tokens": {
+    "200@s.whatsapp.net": {
+     "token": {
+      "type": "Buffer",
+      "data": "aGVsZA=="
+     },
+     "timestamp": "1800000005"
+    },
+    "2000@lid": {
+     "token": {
+      "type": "Buffer",
+      "data": "aW5jb21pbmc="
+     },
+     "timestamp": "1800000000"
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "notification",
+    "attrs": {
+     "id": "P1",
+     "type": "privacy_token",
+     "t": "1700000000",
+     "from": "200@s.whatsapp.net"
+    },
+    "content": [
+     {
+      "tag": "tokens",
+      "attrs": {},
+      "content": [
+       {
+        "tag": "token",
+        "attrs": {
+         "type": "trusted_contact",
+         "t": "1800000000"
+        },
+        "content": {
+         "type": "Buffer",
+         "data": "aW5jb21pbmc="
+        }
+       }
+      ]
+     }
+    ]
+   },
+   "seed": {
+    "lids": {
+     "200@s.whatsapp.net": "2000@lid"
+    },
+    "tokens": {
+     "2000@lid": {
+      "token": {
+       "type": "Buffer",
+       "data": "aGVsZA=="
+      },
+      "timestamp": "1800000005"
+     }
+    }
+   },
+   "error": false,
+   "log": [],
+   "events": [],
+   "tokens": {
+    "2000@lid": {
+     "token": {
+      "type": "Buffer",
+      "data": "aGVsZA=="
+     },
+     "timestamp": "1800000005"
+    }
+   }
+  }
+ ],
+ "acks": [
+  {
+   "node": {
+    "tag": "ack",
+    "attrs": {
+     "class": "message",
+     "id": "A1",
+     "from": "200@s.whatsapp.net"
+    }
+   },
+   "seed": {},
+   "error": false,
+   "log": [],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "ack",
+    "attrs": {
+     "class": "message",
+     "id": "A1",
+     "from": "200@s.whatsapp.net",
+     "error": ""
+    }
+   },
+   "seed": {},
+   "error": false,
+   "log": [],
+   "events": [],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "ack",
+    "attrs": {
+     "class": "message",
+     "id": "A1",
+     "from": "200@s.whatsapp.net",
+     "error": "500"
+    }
+   },
+   "seed": {},
+   "error": false,
+   "log": [],
+   "events": [
+    {
+     "name": "messages.update",
+     "data": [
+      {
+       "key": {
+        "remoteJid": "200@s.whatsapp.net",
+        "fromMe": true,
+        "id": "A1"
+       },
+       "update": {
+        "status": 0,
+        "messageStubParameters": [
+         "500"
+        ]
+       }
+      }
+     ]
+    }
+   ],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "ack",
+    "attrs": {
+     "class": "message",
+     "id": "A1",
+     "from": "200@s.whatsapp.net",
+     "error": "479"
+    }
+   },
+   "seed": {},
+   "error": false,
+   "log": [],
+   "events": [
+    {
+     "name": "messages.update",
+     "data": [
+      {
+       "key": {
+        "remoteJid": "200@s.whatsapp.net",
+        "fromMe": true,
+        "id": "A1"
+       },
+       "update": {
+        "status": 0,
+        "messageStubParameters": [
+         "479"
+        ]
+       }
+      }
+     ]
+    }
+   ],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "ack",
+    "attrs": {
+     "class": "message",
+     "id": "A1",
+     "from": "200@s.whatsapp.net",
+     "error": "475"
+    }
+   },
+   "seed": {},
+   "error": false,
+   "log": [],
+   "events": [
+    {
+     "name": "messages.update",
+     "data": [
+      {
+       "key": {
+        "remoteJid": "200@s.whatsapp.net",
+        "fromMe": true,
+        "id": "A1"
+       },
+       "update": {
+        "status": 0,
+        "messageStubParameters": [
+         "475"
+        ]
+       }
+      }
+     ]
+    }
+   ],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "ack",
+    "attrs": {
+     "class": "message",
+     "id": "A1",
+     "from": "200@s.whatsapp.net",
+     "error": "0463"
+    }
+   },
+   "seed": {},
+   "error": false,
+   "log": [],
+   "events": [
+    {
+     "name": "messages.update",
+     "data": [
+      {
+       "key": {
+        "remoteJid": "200@s.whatsapp.net",
+        "fromMe": true,
+        "id": "A1"
+       },
+       "update": {
+        "status": 0,
+        "messageStubParameters": [
+         "0463"
+        ]
+       }
+      }
+     ]
+    }
+   ],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "ack",
+    "attrs": {
+     "class": "message",
+     "id": "A1",
+     "from": "200@s.whatsapp.net",
+     "error": "463"
+    }
+   },
+   "seed": {},
+   "error": false,
+   "log": [
+    {
+     "call": "issuePrivacyTokens",
+     "jids": [
+      "200@s.whatsapp.net"
+     ],
+     "timestamp": 1800000000
+    },
+    {
+     "call": "track",
+     "jid": "200@s.whatsapp.net"
+    }
+   ],
+   "events": [
+    {
+     "name": "messages.update",
+     "data": [
+      {
+       "key": {
+        "remoteJid": "200@s.whatsapp.net",
+        "fromMe": true,
+        "id": "A1"
+       },
+       "update": {
+        "status": 0,
+        "messageStubParameters": [
+         "463",
+         "Your account has been restricted"
+        ]
+       }
+      }
+     ]
+    }
+   ],
+   "tokens": {
+    "200@s.whatsapp.net": {
+     "token": {
+      "type": "Buffer",
+      "data": "aXNzdWVkIGZvciAyMDBAcy53aGF0c2FwcC5uZXQ="
+     },
+     "timestamp": "1800000000"
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "ack",
+    "attrs": {
+     "class": "message",
+     "from": "200@s.whatsapp.net",
+     "error": "463"
+    }
+   },
+   "seed": {},
+   "error": false,
+   "log": [
+    {
+     "call": "issuePrivacyTokens",
+     "jids": [
+      "200@s.whatsapp.net"
+     ],
+     "timestamp": 1800000000
+    },
+    {
+     "call": "track",
+     "jid": "200@s.whatsapp.net"
+    }
+   ],
+   "events": [
+    {
+     "name": "messages.update",
+     "data": [
+      {
+       "key": {
+        "remoteJid": "200@s.whatsapp.net",
+        "fromMe": true
+       },
+       "update": {
+        "status": 0,
+        "messageStubParameters": [
+         "463",
+         "Your account has been restricted"
+        ]
+       }
+      }
+     ]
+    }
+   ],
+   "tokens": {
+    "200@s.whatsapp.net": {
+     "token": {
+      "type": "Buffer",
+      "data": "aXNzdWVkIGZvciAyMDBAcy53aGF0c2FwcC5uZXQ="
+     },
+     "timestamp": "1800000000"
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "ack",
+    "attrs": {
+     "class": "message",
+     "id": "A1",
+     "error": "463"
+    }
+   },
+   "seed": {},
+   "error": false,
+   "log": [],
+   "events": [
+    {
+     "name": "messages.update",
+     "data": [
+      {
+       "key": {
+        "fromMe": true,
+        "id": "A1"
+       },
+       "update": {
+        "status": 0,
+        "messageStubParameters": [
+         "463",
+         "Your account has been restricted"
+        ]
+       }
+      }
+     ]
+    }
+   ],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "ack",
+    "attrs": {
+     "class": "message",
+     "id": "A1",
+     "from": "",
+     "error": "463"
+    }
+   },
+   "seed": {},
+   "error": false,
+   "log": [],
+   "events": [
+    {
+     "name": "messages.update",
+     "data": [
+      {
+       "key": {
+        "remoteJid": "",
+        "fromMe": true,
+        "id": "A1"
+       },
+       "update": {
+        "status": 0,
+        "messageStubParameters": [
+         "463",
+         "Your account has been restricted"
+        ]
+       }
+      }
+     ]
+    }
+   ],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "ack",
+    "attrs": {
+     "class": "message",
+     "id": "A1",
+     "from": "200@s.whatsapp.net",
+     "error": "463"
+    }
+   },
+   "seed": {
+    "lids": {
+     "200@s.whatsapp.net": "2000@lid"
+    }
+   },
+   "error": false,
+   "log": [
+    {
+     "call": "issuePrivacyTokens",
+     "jids": [
+      "200@s.whatsapp.net"
+     ],
+     "timestamp": 1800000000
+    },
+    {
+     "call": "track",
+     "jid": "2000@lid"
+    }
+   ],
+   "events": [
+    {
+     "name": "messages.update",
+     "data": [
+      {
+       "key": {
+        "remoteJid": "200@s.whatsapp.net",
+        "fromMe": true,
+        "id": "A1"
+       },
+       "update": {
+        "status": 0,
+        "messageStubParameters": [
+         "463",
+         "Your account has been restricted"
+        ]
+       }
+      }
+     ]
+    }
+   ],
+   "tokens": {
+    "2000@lid": {
+     "token": {
+      "type": "Buffer",
+      "data": "aXNzdWVkIGZvciAyMDBAcy53aGF0c2FwcC5uZXQ="
+     },
+     "timestamp": "1800000000"
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "ack",
+    "attrs": {
+     "class": "message",
+     "id": "A1",
+     "from": "200@s.whatsapp.net",
+     "error": "463"
+    }
+   },
+   "seed": {
+    "lids": {
+     "200@s.whatsapp.net": "2000@lid"
+    },
+    "issueToLid": true
+   },
+   "error": false,
+   "log": [
+    {
+     "call": "issuePrivacyTokens",
+     "jids": [
+      "2000@lid"
+     ],
+     "timestamp": 1800000000
+    },
+    {
+     "call": "track",
+     "jid": "2000@lid"
+    }
+   ],
+   "events": [
+    {
+     "name": "messages.update",
+     "data": [
+      {
+       "key": {
+        "remoteJid": "200@s.whatsapp.net",
+        "fromMe": true,
+        "id": "A1"
+       },
+       "update": {
+        "status": 0,
+        "messageStubParameters": [
+         "463",
+         "Your account has been restricted"
+        ]
+       }
+      }
+     ]
+    }
+   ],
+   "tokens": {
+    "2000@lid": {
+     "token": {
+      "type": "Buffer",
+      "data": "aXNzdWVkIGZvciAyMDAwQGxpZA=="
+     },
+     "timestamp": "1800000000"
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "ack",
+    "attrs": {
+     "class": "message",
+     "id": "A1",
+     "from": "2000@lid",
+     "error": "463"
+    }
+   },
+   "seed": {
+    "lids": {
+     "200@s.whatsapp.net": "2000@lid"
+    }
+   },
+   "error": false,
+   "log": [
+    {
+     "call": "issuePrivacyTokens",
+     "jids": [
+      "200@s.whatsapp.net"
+     ],
+     "timestamp": 1800000000
+    },
+    {
+     "call": "track",
+     "jid": "2000@lid"
+    }
+   ],
+   "events": [
+    {
+     "name": "messages.update",
+     "data": [
+      {
+       "key": {
+        "remoteJid": "2000@lid",
+        "fromMe": true,
+        "id": "A1"
+       },
+       "update": {
+        "status": 0,
+        "messageStubParameters": [
+         "463",
+         "Your account has been restricted"
+        ]
+       }
+      }
+     ]
+    }
+   ],
+   "tokens": {
+    "2000@lid": {
+     "token": {
+      "type": "Buffer",
+      "data": "aXNzdWVkIGZvciAyMDBAcy53aGF0c2FwcC5uZXQ="
+     },
+     "timestamp": "1800000000"
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "ack",
+    "attrs": {
+     "class": "message",
+     "id": "A1",
+     "from": "2000@lid",
+     "error": "463"
+    }
+   },
+   "seed": {
+    "lids": {
+     "200@s.whatsapp.net": "2000@lid"
+    },
+    "issueToLid": true
+   },
+   "error": false,
+   "log": [
+    {
+     "call": "issuePrivacyTokens",
+     "jids": [
+      "2000@lid"
+     ],
+     "timestamp": 1800000000
+    },
+    {
+     "call": "track",
+     "jid": "2000@lid"
+    }
+   ],
+   "events": [
+    {
+     "name": "messages.update",
+     "data": [
+      {
+       "key": {
+        "remoteJid": "2000@lid",
+        "fromMe": true,
+        "id": "A1"
+       },
+       "update": {
+        "status": 0,
+        "messageStubParameters": [
+         "463",
+         "Your account has been restricted"
+        ]
+       }
+      }
+     ]
+    }
+   ],
+   "tokens": {
+    "2000@lid": {
+     "token": {
+      "type": "Buffer",
+      "data": "aXNzdWVkIGZvciAyMDAwQGxpZA=="
+     },
+     "timestamp": "1800000000"
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "ack",
+    "attrs": {
+     "class": "message",
+     "id": "A1",
+     "from": "3000@lid",
+     "error": "463"
+    }
+   },
+   "seed": {},
+   "error": false,
+   "log": [
+    {
+     "call": "issuePrivacyTokens",
+     "jids": [
+      "3000@lid"
+     ],
+     "timestamp": 1800000000
+    },
+    {
+     "call": "track",
+     "jid": "3000@lid"
+    }
+   ],
+   "events": [
+    {
+     "name": "messages.update",
+     "data": [
+      {
+       "key": {
+        "remoteJid": "3000@lid",
+        "fromMe": true,
+        "id": "A1"
+       },
+       "update": {
+        "status": 0,
+        "messageStubParameters": [
+         "463",
+         "Your account has been restricted"
+        ]
+       }
+      }
+     ]
+    }
+   ],
+   "tokens": {
+    "3000@lid": {
+     "token": {
+      "type": "Buffer",
+      "data": "aXNzdWVkIGZvciAzMDAwQGxpZA=="
+     },
+     "timestamp": "1800000000"
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "ack",
+    "attrs": {
+     "class": "message",
+     "id": "A1",
+     "from": "200@s.whatsapp.net",
+     "error": "463"
+    }
+   },
+   "seed": {
+    "issueFails": true
+   },
+   "error": false,
+   "log": [
+    {
+     "call": "issuePrivacyTokens",
+     "jids": [
+      "200@s.whatsapp.net"
+     ],
+     "timestamp": 1800000000
+    }
+   ],
+   "events": [
+    {
+     "name": "messages.update",
+     "data": [
+      {
+       "key": {
+        "remoteJid": "200@s.whatsapp.net",
+        "fromMe": true,
+        "id": "A1"
+       },
+       "update": {
+        "status": 0,
+        "messageStubParameters": [
+         "463",
+         "Your account has been restricted"
+        ]
+       }
+      }
+     ]
+    }
+   ],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "ack",
+    "attrs": {
+     "class": "message",
+     "id": "A1",
+     "from": "200@s.whatsapp.net",
+     "error": "463"
+    }
+   },
+   "seed": {
+    "tokens": {
+     "200@s.whatsapp.net": {
+      "token": {
+       "type": "Buffer",
+       "data": "aGVsZA=="
+      },
+      "timestamp": "1799999990",
+      "senderTimestamp": 1799999980
+     }
+    }
+   },
+   "error": false,
+   "log": [
+    {
+     "call": "issuePrivacyTokens",
+     "jids": [
+      "200@s.whatsapp.net"
+     ],
+     "timestamp": 1800000000
+    },
+    {
+     "call": "track",
+     "jid": "200@s.whatsapp.net"
+    }
+   ],
+   "events": [
+    {
+     "name": "messages.update",
+     "data": [
+      {
+       "key": {
+        "remoteJid": "200@s.whatsapp.net",
+        "fromMe": true,
+        "id": "A1"
+       },
+       "update": {
+        "status": 0,
+        "messageStubParameters": [
+         "463",
+         "Your account has been restricted"
+        ]
+       }
+      }
+     ]
+    }
+   ],
+   "tokens": {
+    "200@s.whatsapp.net": {
+     "token": {
+      "type": "Buffer",
+      "data": "aXNzdWVkIGZvciAyMDBAcy53aGF0c2FwcC5uZXQ="
+     },
+     "timestamp": "1800000000",
+     "senderTimestamp": 1799999980
+    }
+   }
+  },
+  {
+   "node": {
+    "tag": "ack",
+    "attrs": {
+     "class": "message",
+     "id": "A1",
+     "from": "group@g.us",
+     "error": "463",
+     "participant": "200@s.whatsapp.net"
+    }
+   },
+   "seed": {},
+   "error": false,
+   "log": [
+    {
+     "call": "issuePrivacyTokens",
+     "jids": [
+      "group@g.us"
+     ],
+     "timestamp": 1800000000
+    }
+   ],
+   "events": [
+    {
+     "name": "messages.update",
+     "data": [
+      {
+       "key": {
+        "remoteJid": "group@g.us",
+        "fromMe": true,
+        "id": "A1"
+       },
+       "update": {
+        "status": 0,
+        "messageStubParameters": [
+         "463",
+         "Your account has been restricted"
+        ]
+       }
+      }
+     ]
+    }
+   ],
+   "tokens": {}
+  },
+  {
+   "node": {
+    "tag": "ack",
+    "attrs": {
+     "class": "message",
+     "id": "A1",
+     "from": "group@g.us",
+     "error": "500",
+     "participant": "200@s.whatsapp.net",
+     "phash": "2:abc"
+    }
+   },
+   "seed": {},
+   "error": false,
+   "log": [],
+   "events": [
+    {
+     "name": "messages.update",
+     "data": [
+      {
+       "key": {
+        "remoteJid": "group@g.us",
+        "fromMe": true,
+        "id": "A1"
+       },
+       "update": {
+        "status": 0,
+        "messageStubParameters": [
+         "500"
+        ]
+       }
+      }
+     ]
+    }
+   ],
+   "tokens": {}
+  }
+ ]
+}

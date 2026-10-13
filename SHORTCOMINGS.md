@@ -85,5 +85,5 @@ Not gaps, but worth knowing: like upstream, the socket does not reconnect by its
 
 ## Test coverage gaps
 
-- The encrypt, privacy-token and bad-ack notification handlers have mock-server tests but no upstream-generated fixtures.
+- In the handler fixtures (`notification-handlers.json`) upstream's session refresh, pre-key upload and token issuance are stubs; the replay compares them with the requests the port puts on the wire, and always fails the key-bundle request, so a successful refresh is covered only by the session tests.
 - Fixture generators depend on Node's experimental `stripTypeScriptTypes` and on slicing upstream sources by text markers, so they are tied to upstream commit `0af2386292`.

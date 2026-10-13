@@ -342,6 +342,16 @@ impl Repository {
                 tx.set(&[KeyMutation::put(&jid, KeyValue::Tctoken(entry))])?;
                 stored.push(jid);
             }
+            // Stored JIDs are tracked for pruning, as upstream's onNewJidStored does.
+            if !stored.is_empty() {
+                let index = read_index(
+                    tx.get(KeyCategory::Tctoken, &[INDEX_KEY.into()])?
+                        .get(INDEX_KEY),
+                );
+                tx.set(&[index_write(
+                    index.into_iter().chain(stored.iter().cloned()),
+                )?])?;
+            }
             Ok(stored)
         })
     }
