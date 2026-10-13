@@ -261,6 +261,14 @@ impl Socket {
             .child("community")
             .and_then(|n| n.attrs.get("jid").cloned()))
     }
+    /// Accept a V4 invite to a community; see [`Socket::group_accept_invite_v4`].
+    pub async fn community_accept_invite_v4(
+        &self,
+        key: &crate::proto::MessageKey,
+        invite: &crate::proto::message::GroupInviteMessage,
+    ) -> Result<Option<String>, Error> {
+        self.group_accept_invite_v4(key, invite).await
+    }
     pub async fn community_revoke_invite_v4(
         &self,
         community_jid: &str,

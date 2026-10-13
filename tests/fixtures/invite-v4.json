@@ -1,0 +1,1029 @@
+{
+ "me": {
+  "id": "100:7@s.whatsapp.net",
+  "name": "Me 💚",
+  "lid": "900:7@lid"
+ },
+ "cases": [
+  {
+   "kind": "group",
+   "key": "300@s.whatsapp.net",
+   "invite": "0a0a313233343540672e7573120b494e564954452d434f444518c0b1f4aa06220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734000",
+   "requests": [
+    "00f80819045a16ed3311faff8312345f1cf801f807ec6270fc0b494e564954452d434f4445bbff051700600000ec56fabe03"
+   ],
+   "response": "00f80519041406faff8312345f1c",
+   "updates": [],
+   "upserts": [
+    {
+     "type": "notify",
+     "wire": "0a2c0a0a313233343540672e757310001a0846495845442d4944221233303040732e77686174736170702e6e65741880e2cfaa062a1233303040732e77686174736170702e6e6574c0011bd201407b226964223a223130303a3740732e77686174736170702e6e6574222c226e616d65223a224d6520f09f929a222c226c6964223a223930303a37406c6964227d"
+    }
+   ],
+   "expected": "12345@g.us",
+   "error": false
+  },
+  {
+   "kind": "group",
+   "key": "300@s.whatsapp.net",
+   "invite": "0a0a313233343540672e7573120b494e564954452d434f444518c0b1f4aa06220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734000",
+   "requests": [
+    "00f80819045a16ed3311faff8312345f1cf801f807ec6270fc0b494e564954452d434f4445bbff051700600000ec56fabe03"
+   ],
+   "response": "00f803190414",
+   "updates": [],
+   "upserts": [
+    {
+     "type": "notify",
+     "wire": "0a2c0a0a313233343540672e757310001a0846495845442d4944221233303040732e77686174736170702e6e65741880e2cfaa062a1233303040732e77686174736170702e6e6574c0011bd201407b226964223a223130303a3740732e77686174736170702e6e6574222c226e616d65223a224d6520f09f929a222c226c6964223a223930303a37406c6964227d"
+    }
+   ],
+   "expected": null,
+   "error": false
+  },
+  {
+   "kind": "group",
+   "key": {
+    "remoteJid": "300@s.whatsapp.net",
+    "fromMe": false,
+    "id": "INVITE-MSG-1"
+   },
+   "invite": "0a0a313233343540672e7573120b494e564954452d434f444518c0b1f4aa06220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734000",
+   "requests": [
+    "00f80819045a16ed3311faff8312345f1cf801f807ec6270fc0b494e564954452d434f4445bbff051700600000ec56fabe03"
+   ],
+   "response": "00f80519041406faff8312345f1c",
+   "updates": [
+    [
+     {
+      "key": {
+       "remoteJid": "300@s.whatsapp.net",
+       "fromMe": false,
+       "id": "INVITE-MSG-1"
+      },
+      "message": "e2012d0a0a313233343540672e757312001800220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734000"
+     }
+    ]
+   ],
+   "upserts": [
+    {
+     "type": "notify",
+     "wire": "0a2c0a0a313233343540672e757310001a0846495845442d4944221233303040732e77686174736170702e6e65741880e2cfaa062a1233303040732e77686174736170702e6e6574c0011bd201407b226964223a223130303a3740732e77686174736170702e6e6574222c226e616d65223a224d6520f09f929a222c226c6964223a223930303a37406c6964227d"
+    }
+   ],
+   "expected": "12345@g.us",
+   "error": false
+  },
+  {
+   "kind": "group",
+   "key": {
+    "remoteJid": "300@s.whatsapp.net",
+    "fromMe": false,
+    "id": "INVITE-MSG-1"
+   },
+   "invite": "0a0a313233343540672e7573120b494e564954452d434f444518c0b1f4aa06220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734000",
+   "requests": [
+    "00f80819045a16ed3311faff8312345f1cf801f807ec6270fc0b494e564954452d434f4445bbff051700600000ec56fabe03"
+   ],
+   "response": "00f803190414",
+   "updates": [
+    [
+     {
+      "key": {
+       "remoteJid": "300@s.whatsapp.net",
+       "fromMe": false,
+       "id": "INVITE-MSG-1"
+      },
+      "message": "e2012d0a0a313233343540672e757312001800220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734000"
+     }
+    ]
+   ],
+   "upserts": [
+    {
+     "type": "notify",
+     "wire": "0a2c0a0a313233343540672e757310001a0846495845442d4944221233303040732e77686174736170702e6e65741880e2cfaa062a1233303040732e77686174736170702e6e6574c0011bd201407b226964223a223130303a3740732e77686174736170702e6e6574222c226e616d65223a224d6520f09f929a222c226c6964223a223930303a37406c6964227d"
+    }
+   ],
+   "expected": null,
+   "error": false
+  },
+  {
+   "kind": "group",
+   "key": {
+    "remoteJid": "300@s.whatsapp.net"
+   },
+   "invite": "0a0a313233343540672e7573120b494e564954452d434f444518c0b1f4aa06220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734000",
+   "requests": [
+    "00f80819045a16ed3311faff8312345f1cf801f807ec6270fc0b494e564954452d434f4445bbff051700600000ec56fabe03"
+   ],
+   "response": "00f80519041406faff8312345f1c",
+   "updates": [],
+   "upserts": [
+    {
+     "type": "notify",
+     "wire": "0a2c0a0a313233343540672e757310001a0846495845442d4944221233303040732e77686174736170702e6e65741880e2cfaa062a1233303040732e77686174736170702e6e6574c0011bd201407b226964223a223130303a3740732e77686174736170702e6e6574222c226e616d65223a224d6520f09f929a222c226c6964223a223930303a37406c6964227d"
+    }
+   ],
+   "expected": "12345@g.us",
+   "error": false
+  },
+  {
+   "kind": "group",
+   "key": {
+    "remoteJid": "300@s.whatsapp.net"
+   },
+   "invite": "0a0a313233343540672e7573120b494e564954452d434f444518c0b1f4aa06220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734000",
+   "requests": [
+    "00f80819045a16ed3311faff8312345f1cf801f807ec6270fc0b494e564954452d434f4445bbff051700600000ec56fabe03"
+   ],
+   "response": "00f803190414",
+   "updates": [],
+   "upserts": [
+    {
+     "type": "notify",
+     "wire": "0a2c0a0a313233343540672e757310001a0846495845442d4944221233303040732e77686174736170702e6e65741880e2cfaa062a1233303040732e77686174736170702e6e6574c0011bd201407b226964223a223130303a3740732e77686174736170702e6e6574222c226e616d65223a224d6520f09f929a222c226c6964223a223930303a37406c6964227d"
+    }
+   ],
+   "expected": null,
+   "error": false
+  },
+  {
+   "kind": "group",
+   "key": {
+    "remoteJid": "300@s.whatsapp.net",
+    "fromMe": false,
+    "id": "INVITE-MSG-1",
+    "participant": "400@lid"
+   },
+   "invite": "0a0a313233343540672e7573120b494e564954452d434f444518c0b1f4aa06220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734000",
+   "requests": [
+    "00f80819045a16ed3311faff8312345f1cf801f807ec6270fc0b494e564954452d434f4445bbff051700600000ec56fabe03"
+   ],
+   "response": "00f80519041406faff8312345f1c",
+   "updates": [
+    [
+     {
+      "key": {
+       "remoteJid": "300@s.whatsapp.net",
+       "fromMe": false,
+       "id": "INVITE-MSG-1",
+       "participant": "400@lid"
+      },
+      "message": "e2012d0a0a313233343540672e757312001800220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734000"
+     }
+    ]
+   ],
+   "upserts": [
+    {
+     "type": "notify",
+     "wire": "0a2c0a0a313233343540672e757310001a0846495845442d4944221233303040732e77686174736170702e6e65741880e2cfaa062a1233303040732e77686174736170702e6e6574c0011bd201407b226964223a223130303a3740732e77686174736170702e6e6574222c226e616d65223a224d6520f09f929a222c226c6964223a223930303a37406c6964227d"
+    }
+   ],
+   "expected": "12345@g.us",
+   "error": false
+  },
+  {
+   "kind": "group",
+   "key": {
+    "remoteJid": "300@s.whatsapp.net",
+    "fromMe": false,
+    "id": "INVITE-MSG-1",
+    "participant": "400@lid"
+   },
+   "invite": "0a0a313233343540672e7573120b494e564954452d434f444518c0b1f4aa06220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734000",
+   "requests": [
+    "00f80819045a16ed3311faff8312345f1cf801f807ec6270fc0b494e564954452d434f4445bbff051700600000ec56fabe03"
+   ],
+   "response": "00f803190414",
+   "updates": [
+    [
+     {
+      "key": {
+       "remoteJid": "300@s.whatsapp.net",
+       "fromMe": false,
+       "id": "INVITE-MSG-1",
+       "participant": "400@lid"
+      },
+      "message": "e2012d0a0a313233343540672e757312001800220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734000"
+     }
+    ]
+   ],
+   "upserts": [
+    {
+     "type": "notify",
+     "wire": "0a2c0a0a313233343540672e757310001a0846495845442d4944221233303040732e77686174736170702e6e65741880e2cfaa062a1233303040732e77686174736170702e6e6574c0011bd201407b226964223a223130303a3740732e77686174736170702e6e6574222c226e616d65223a224d6520f09f929a222c226c6964223a223930303a37406c6964227d"
+    }
+   ],
+   "expected": null,
+   "error": false
+  },
+  {
+   "kind": "group",
+   "key": {
+    "id": "ONLY-ID"
+   },
+   "invite": "0a0a313233343540672e7573120b494e564954452d434f444518c0b1f4aa06220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734000",
+   "requests": [
+    "00f80819045a16ed3311faff8312345f1cf801f805ec6270fc0b494e564954452d434f4445bbff051700600000"
+   ],
+   "response": "00f80519041406faff8312345f1c",
+   "updates": [
+    [
+     {
+      "key": {
+       "id": "ONLY-ID"
+      },
+      "message": "e2012d0a0a313233343540672e757312001800220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734000"
+     }
+    ]
+   ],
+   "upserts": [
+    {
+     "type": "notify",
+     "wire": "0a180a0a313233343540672e757310001a0846495845442d49441880e2cfaa06c0011bd201407b226964223a223130303a3740732e77686174736170702e6e6574222c226e616d65223a224d6520f09f929a222c226c6964223a223930303a37406c6964227d"
+    }
+   ],
+   "expected": "12345@g.us",
+   "error": false
+  },
+  {
+   "kind": "group",
+   "key": {
+    "id": "ONLY-ID"
+   },
+   "invite": "0a0a313233343540672e7573120b494e564954452d434f444518c0b1f4aa06220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734000",
+   "requests": [
+    "00f80819045a16ed3311faff8312345f1cf801f805ec6270fc0b494e564954452d434f4445bbff051700600000"
+   ],
+   "response": "00f803190414",
+   "updates": [
+    [
+     {
+      "key": {
+       "id": "ONLY-ID"
+      },
+      "message": "e2012d0a0a313233343540672e757312001800220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734000"
+     }
+    ]
+   ],
+   "upserts": [
+    {
+     "type": "notify",
+     "wire": "0a180a0a313233343540672e757310001a0846495845442d49441880e2cfaa06c0011bd201407b226964223a223130303a3740732e77686174736170702e6e6574222c226e616d65223a224d6520f09f929a222c226c6964223a223930303a37406c6964227d"
+    }
+   ],
+   "expected": null,
+   "error": false
+  },
+  {
+   "kind": "group",
+   "key": {
+    "remoteJid": "300@s.whatsapp.net",
+    "id": ""
+   },
+   "invite": "0a0a313233343540672e7573120b494e564954452d434f444518c0b1f4aa06220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734000",
+   "requests": [
+    "00f80819045a16ed3311faff8312345f1cf801f807ec6270fc0b494e564954452d434f4445bbff051700600000ec56fabe03"
+   ],
+   "response": "00f80519041406faff8312345f1c",
+   "updates": [],
+   "upserts": [
+    {
+     "type": "notify",
+     "wire": "0a2c0a0a313233343540672e757310001a0846495845442d4944221233303040732e77686174736170702e6e65741880e2cfaa062a1233303040732e77686174736170702e6e6574c0011bd201407b226964223a223130303a3740732e77686174736170702e6e6574222c226e616d65223a224d6520f09f929a222c226c6964223a223930303a37406c6964227d"
+    }
+   ],
+   "expected": "12345@g.us",
+   "error": false
+  },
+  {
+   "kind": "group",
+   "key": {
+    "remoteJid": "300@s.whatsapp.net",
+    "id": ""
+   },
+   "invite": "0a0a313233343540672e7573120b494e564954452d434f444518c0b1f4aa06220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734000",
+   "requests": [
+    "00f80819045a16ed3311faff8312345f1cf801f807ec6270fc0b494e564954452d434f4445bbff051700600000ec56fabe03"
+   ],
+   "response": "00f803190414",
+   "updates": [],
+   "upserts": [
+    {
+     "type": "notify",
+     "wire": "0a2c0a0a313233343540672e757310001a0846495845442d4944221233303040732e77686174736170702e6e65741880e2cfaa062a1233303040732e77686174736170702e6e6574c0011bd201407b226964223a223130303a3740732e77686174736170702e6e6574222c226e616d65223a224d6520f09f929a222c226c6964223a223930303a37406c6964227d"
+    }
+   ],
+   "expected": null,
+   "error": false
+  },
+  {
+   "kind": "group",
+   "key": {
+    "remoteJid": "300@s.whatsapp.net",
+    "fromMe": false,
+    "id": "INVITE-MSG-1"
+   },
+   "invite": "0a0a313233343540672e7573",
+   "requests": [],
+   "response": "00f80519041406faff8312345f1c",
+   "updates": [],
+   "upserts": [],
+   "expected": null,
+   "error": true
+  },
+  {
+   "kind": "group",
+   "key": {
+    "remoteJid": "300@s.whatsapp.net",
+    "fromMe": false,
+    "id": "INVITE-MSG-1"
+   },
+   "invite": "0a0a313233343540672e7573",
+   "requests": [],
+   "response": "00f803190414",
+   "updates": [],
+   "upserts": [],
+   "expected": null,
+   "error": true
+  },
+  {
+   "kind": "group",
+   "key": "300@s.whatsapp.net",
+   "invite": "0a0a313233343540672e757312001800",
+   "requests": [
+    "00f80819045a16ed3311faff8312345f1cf801f807ec6270fc00bb2dec56fabe03"
+   ],
+   "response": "00f80519041406faff8312345f1c",
+   "updates": [],
+   "upserts": [
+    {
+     "type": "notify",
+     "wire": "0a2c0a0a313233343540672e757310001a0846495845442d4944221233303040732e77686174736170702e6e65741880e2cfaa062a1233303040732e77686174736170702e6e6574c0011bd201407b226964223a223130303a3740732e77686174736170702e6e6574222c226e616d65223a224d6520f09f929a222c226c6964223a223930303a37406c6964227d"
+    }
+   ],
+   "expected": "12345@g.us",
+   "error": false
+  },
+  {
+   "kind": "group",
+   "key": "300@s.whatsapp.net",
+   "invite": "0a0a313233343540672e757312001800",
+   "requests": [
+    "00f80819045a16ed3311faff8312345f1cf801f807ec6270fc00bb2dec56fabe03"
+   ],
+   "response": "00f803190414",
+   "updates": [],
+   "upserts": [
+    {
+     "type": "notify",
+     "wire": "0a2c0a0a313233343540672e757310001a0846495845442d4944221233303040732e77686174736170702e6e65741880e2cfaa062a1233303040732e77686174736170702e6e6574c0011bd201407b226964223a223130303a3740732e77686174736170702e6e6574222c226e616d65223a224d6520f09f929a222c226c6964223a223930303a37406c6964227d"
+    }
+   ],
+   "expected": null,
+   "error": false
+  },
+  {
+   "kind": "group",
+   "key": {
+    "remoteJid": "300@s.whatsapp.net",
+    "fromMe": false,
+    "id": "INVITE-MSG-1"
+   },
+   "invite": "12084e4f2d47524f55501805",
+   "requests": [
+    "00f80619045a16ed33f801f807ec6270fc084e4f2d47524f5550bbec79ec56fabe03"
+   ],
+   "response": "00f80519041406fafc066a6f696e65641c",
+   "updates": [
+    [
+     {
+      "key": {
+       "remoteJid": "300@s.whatsapp.net",
+       "fromMe": false,
+       "id": "INVITE-MSG-1"
+      },
+      "message": "e2010412001800"
+     }
+    ]
+   ],
+   "upserts": [
+    {
+     "type": "notify",
+     "wire": "0a2010001a0846495845442d4944221233303040732e77686174736170702e6e65741880e2cfaa062a1233303040732e77686174736170702e6e6574c0011bd201407b226964223a223130303a3740732e77686174736170702e6e6574222c226e616d65223a224d6520f09f929a222c226c6964223a223930303a37406c6964227d"
+    }
+   ],
+   "expected": "joined@g.us",
+   "error": false
+  },
+  {
+   "kind": "group",
+   "key": {
+    "remoteJid": "300@s.whatsapp.net",
+    "fromMe": false,
+    "id": "INVITE-MSG-1"
+   },
+   "invite": "12084e4f2d47524f55501805",
+   "requests": [
+    "00f80619045a16ed33f801f807ec6270fc084e4f2d47524f5550bbec79ec56fabe03"
+   ],
+   "response": "00f803190414",
+   "updates": [
+    [
+     {
+      "key": {
+       "remoteJid": "300@s.whatsapp.net",
+       "fromMe": false,
+       "id": "INVITE-MSG-1"
+      },
+      "message": "e2010412001800"
+     }
+    ]
+   ],
+   "upserts": [
+    {
+     "type": "notify",
+     "wire": "0a2010001a0846495845442d4944221233303040732e77686174736170702e6e65741880e2cfaa062a1233303040732e77686174736170702e6e6574c0011bd201407b226964223a223130303a3740732e77686174736170702e6e6574222c226e616d65223a224d6520f09f929a222c226c6964223a223930303a37406c6964227d"
+    }
+   ],
+   "expected": null,
+   "error": false
+  },
+  {
+   "kind": "group",
+   "key": {
+    "remoteJid": "300@s.whatsapp.net",
+    "fromMe": false,
+    "id": "INVITE-MSG-1"
+   },
+   "invite": "0a0a313233343540672e7573120b494e564954452d434f4445188180808080808010220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734001",
+   "requests": [
+    "00f80819045a16ed3311faff8312345f1cf801f807ec6270fc0b494e564954452d434f4445bbff089007199254740993ec56fabe03"
+   ],
+   "response": "00f80519041406faff8312345f1c",
+   "updates": [
+    [
+     {
+      "key": {
+       "remoteJid": "300@s.whatsapp.net",
+       "fromMe": false,
+       "id": "INVITE-MSG-1"
+      },
+      "message": "e2012d0a0a313233343540672e757312001800220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734001"
+     }
+    ]
+   ],
+   "upserts": [
+    {
+     "type": "notify",
+     "wire": "0a2c0a0a313233343540672e757310001a0846495845442d4944221233303040732e77686174736170702e6e65741880e2cfaa062a1233303040732e77686174736170702e6e6574c0011bd201407b226964223a223130303a3740732e77686174736170702e6e6574222c226e616d65223a224d6520f09f929a222c226c6964223a223930303a37406c6964227d"
+    }
+   ],
+   "expected": "12345@g.us",
+   "error": false
+  },
+  {
+   "kind": "group",
+   "key": {
+    "remoteJid": "300@s.whatsapp.net",
+    "fromMe": false,
+    "id": "INVITE-MSG-1"
+   },
+   "invite": "0a0a313233343540672e7573120b494e564954452d434f4445188180808080808010220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734001",
+   "requests": [
+    "00f80819045a16ed3311faff8312345f1cf801f807ec6270fc0b494e564954452d434f4445bbff089007199254740993ec56fabe03"
+   ],
+   "response": "00f803190414",
+   "updates": [
+    [
+     {
+      "key": {
+       "remoteJid": "300@s.whatsapp.net",
+       "fromMe": false,
+       "id": "INVITE-MSG-1"
+      },
+      "message": "e2012d0a0a313233343540672e757312001800220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734001"
+     }
+    ]
+   ],
+   "upserts": [
+    {
+     "type": "notify",
+     "wire": "0a2c0a0a313233343540672e757310001a0846495845442d4944221233303040732e77686174736170702e6e65741880e2cfaa062a1233303040732e77686174736170702e6e6574c0011bd201407b226964223a223130303a3740732e77686174736170702e6e6574222c226e616d65223a224d6520f09f929a222c226c6964223a223930303a37406c6964227d"
+    }
+   ],
+   "expected": null,
+   "error": false
+  },
+  {
+   "kind": "community",
+   "key": "300@s.whatsapp.net",
+   "invite": "0a0a313233343540672e7573120b494e564954452d434f444518c0b1f4aa06220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734000",
+   "requests": [
+    "00f80819045a16ed3311faff8312345f1cf801f807ec6270fc0b494e564954452d434f4445bbff051700600000ec56fabe03"
+   ],
+   "response": "00f80519041406faff8312345f1c",
+   "updates": [],
+   "upserts": [
+    {
+     "type": "notify",
+     "wire": "0a2c0a0a313233343540672e757310001a0846495845442d4944221233303040732e77686174736170702e6e65741880e2cfaa062a1233303040732e77686174736170702e6e6574c0011bd201407b226964223a223130303a3740732e77686174736170702e6e6574222c226e616d65223a224d6520f09f929a222c226c6964223a223930303a37406c6964227d"
+    }
+   ],
+   "expected": "12345@g.us",
+   "error": false
+  },
+  {
+   "kind": "community",
+   "key": "300@s.whatsapp.net",
+   "invite": "0a0a313233343540672e7573120b494e564954452d434f444518c0b1f4aa06220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734000",
+   "requests": [
+    "00f80819045a16ed3311faff8312345f1cf801f807ec6270fc0b494e564954452d434f4445bbff051700600000ec56fabe03"
+   ],
+   "response": "00f803190414",
+   "updates": [],
+   "upserts": [
+    {
+     "type": "notify",
+     "wire": "0a2c0a0a313233343540672e757310001a0846495845442d4944221233303040732e77686174736170702e6e65741880e2cfaa062a1233303040732e77686174736170702e6e6574c0011bd201407b226964223a223130303a3740732e77686174736170702e6e6574222c226e616d65223a224d6520f09f929a222c226c6964223a223930303a37406c6964227d"
+    }
+   ],
+   "expected": null,
+   "error": false
+  },
+  {
+   "kind": "community",
+   "key": {
+    "remoteJid": "300@s.whatsapp.net",
+    "fromMe": false,
+    "id": "INVITE-MSG-1"
+   },
+   "invite": "0a0a313233343540672e7573120b494e564954452d434f444518c0b1f4aa06220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734000",
+   "requests": [
+    "00f80819045a16ed3311faff8312345f1cf801f807ec6270fc0b494e564954452d434f4445bbff051700600000ec56fabe03"
+   ],
+   "response": "00f80519041406faff8312345f1c",
+   "updates": [
+    [
+     {
+      "key": {
+       "remoteJid": "300@s.whatsapp.net",
+       "fromMe": false,
+       "id": "INVITE-MSG-1"
+      },
+      "message": "e2012d0a0a313233343540672e757312001800220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734000"
+     }
+    ]
+   ],
+   "upserts": [
+    {
+     "type": "notify",
+     "wire": "0a2c0a0a313233343540672e757310001a0846495845442d4944221233303040732e77686174736170702e6e65741880e2cfaa062a1233303040732e77686174736170702e6e6574c0011bd201407b226964223a223130303a3740732e77686174736170702e6e6574222c226e616d65223a224d6520f09f929a222c226c6964223a223930303a37406c6964227d"
+    }
+   ],
+   "expected": "12345@g.us",
+   "error": false
+  },
+  {
+   "kind": "community",
+   "key": {
+    "remoteJid": "300@s.whatsapp.net",
+    "fromMe": false,
+    "id": "INVITE-MSG-1"
+   },
+   "invite": "0a0a313233343540672e7573120b494e564954452d434f444518c0b1f4aa06220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734000",
+   "requests": [
+    "00f80819045a16ed3311faff8312345f1cf801f807ec6270fc0b494e564954452d434f4445bbff051700600000ec56fabe03"
+   ],
+   "response": "00f803190414",
+   "updates": [
+    [
+     {
+      "key": {
+       "remoteJid": "300@s.whatsapp.net",
+       "fromMe": false,
+       "id": "INVITE-MSG-1"
+      },
+      "message": "e2012d0a0a313233343540672e757312001800220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734000"
+     }
+    ]
+   ],
+   "upserts": [
+    {
+     "type": "notify",
+     "wire": "0a2c0a0a313233343540672e757310001a0846495845442d4944221233303040732e77686174736170702e6e65741880e2cfaa062a1233303040732e77686174736170702e6e6574c0011bd201407b226964223a223130303a3740732e77686174736170702e6e6574222c226e616d65223a224d6520f09f929a222c226c6964223a223930303a37406c6964227d"
+    }
+   ],
+   "expected": null,
+   "error": false
+  },
+  {
+   "kind": "community",
+   "key": {
+    "remoteJid": "300@s.whatsapp.net"
+   },
+   "invite": "0a0a313233343540672e7573120b494e564954452d434f444518c0b1f4aa06220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734000",
+   "requests": [
+    "00f80819045a16ed3311faff8312345f1cf801f807ec6270fc0b494e564954452d434f4445bbff051700600000ec56fabe03"
+   ],
+   "response": "00f80519041406faff8312345f1c",
+   "updates": [],
+   "upserts": [
+    {
+     "type": "notify",
+     "wire": "0a2c0a0a313233343540672e757310001a0846495845442d4944221233303040732e77686174736170702e6e65741880e2cfaa062a1233303040732e77686174736170702e6e6574c0011bd201407b226964223a223130303a3740732e77686174736170702e6e6574222c226e616d65223a224d6520f09f929a222c226c6964223a223930303a37406c6964227d"
+    }
+   ],
+   "expected": "12345@g.us",
+   "error": false
+  },
+  {
+   "kind": "community",
+   "key": {
+    "remoteJid": "300@s.whatsapp.net"
+   },
+   "invite": "0a0a313233343540672e7573120b494e564954452d434f444518c0b1f4aa06220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734000",
+   "requests": [
+    "00f80819045a16ed3311faff8312345f1cf801f807ec6270fc0b494e564954452d434f4445bbff051700600000ec56fabe03"
+   ],
+   "response": "00f803190414",
+   "updates": [],
+   "upserts": [
+    {
+     "type": "notify",
+     "wire": "0a2c0a0a313233343540672e757310001a0846495845442d4944221233303040732e77686174736170702e6e65741880e2cfaa062a1233303040732e77686174736170702e6e6574c0011bd201407b226964223a223130303a3740732e77686174736170702e6e6574222c226e616d65223a224d6520f09f929a222c226c6964223a223930303a37406c6964227d"
+    }
+   ],
+   "expected": null,
+   "error": false
+  },
+  {
+   "kind": "community",
+   "key": {
+    "remoteJid": "300@s.whatsapp.net",
+    "fromMe": false,
+    "id": "INVITE-MSG-1",
+    "participant": "400@lid"
+   },
+   "invite": "0a0a313233343540672e7573120b494e564954452d434f444518c0b1f4aa06220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734000",
+   "requests": [
+    "00f80819045a16ed3311faff8312345f1cf801f807ec6270fc0b494e564954452d434f4445bbff051700600000ec56fabe03"
+   ],
+   "response": "00f80519041406faff8312345f1c",
+   "updates": [
+    [
+     {
+      "key": {
+       "remoteJid": "300@s.whatsapp.net",
+       "fromMe": false,
+       "id": "INVITE-MSG-1",
+       "participant": "400@lid"
+      },
+      "message": "e2012d0a0a313233343540672e757312001800220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734000"
+     }
+    ]
+   ],
+   "upserts": [
+    {
+     "type": "notify",
+     "wire": "0a2c0a0a313233343540672e757310001a0846495845442d4944221233303040732e77686174736170702e6e65741880e2cfaa062a1233303040732e77686174736170702e6e6574c0011bd201407b226964223a223130303a3740732e77686174736170702e6e6574222c226e616d65223a224d6520f09f929a222c226c6964223a223930303a37406c6964227d"
+    }
+   ],
+   "expected": "12345@g.us",
+   "error": false
+  },
+  {
+   "kind": "community",
+   "key": {
+    "remoteJid": "300@s.whatsapp.net",
+    "fromMe": false,
+    "id": "INVITE-MSG-1",
+    "participant": "400@lid"
+   },
+   "invite": "0a0a313233343540672e7573120b494e564954452d434f444518c0b1f4aa06220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734000",
+   "requests": [
+    "00f80819045a16ed3311faff8312345f1cf801f807ec6270fc0b494e564954452d434f4445bbff051700600000ec56fabe03"
+   ],
+   "response": "00f803190414",
+   "updates": [
+    [
+     {
+      "key": {
+       "remoteJid": "300@s.whatsapp.net",
+       "fromMe": false,
+       "id": "INVITE-MSG-1",
+       "participant": "400@lid"
+      },
+      "message": "e2012d0a0a313233343540672e757312001800220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734000"
+     }
+    ]
+   ],
+   "upserts": [
+    {
+     "type": "notify",
+     "wire": "0a2c0a0a313233343540672e757310001a0846495845442d4944221233303040732e77686174736170702e6e65741880e2cfaa062a1233303040732e77686174736170702e6e6574c0011bd201407b226964223a223130303a3740732e77686174736170702e6e6574222c226e616d65223a224d6520f09f929a222c226c6964223a223930303a37406c6964227d"
+    }
+   ],
+   "expected": null,
+   "error": false
+  },
+  {
+   "kind": "community",
+   "key": {
+    "id": "ONLY-ID"
+   },
+   "invite": "0a0a313233343540672e7573120b494e564954452d434f444518c0b1f4aa06220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734000",
+   "requests": [
+    "00f80819045a16ed3311faff8312345f1cf801f805ec6270fc0b494e564954452d434f4445bbff051700600000"
+   ],
+   "response": "00f80519041406faff8312345f1c",
+   "updates": [
+    [
+     {
+      "key": {
+       "id": "ONLY-ID"
+      },
+      "message": "e2012d0a0a313233343540672e757312001800220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734000"
+     }
+    ]
+   ],
+   "upserts": [
+    {
+     "type": "notify",
+     "wire": "0a180a0a313233343540672e757310001a0846495845442d49441880e2cfaa06c0011bd201407b226964223a223130303a3740732e77686174736170702e6e6574222c226e616d65223a224d6520f09f929a222c226c6964223a223930303a37406c6964227d"
+    }
+   ],
+   "expected": "12345@g.us",
+   "error": false
+  },
+  {
+   "kind": "community",
+   "key": {
+    "id": "ONLY-ID"
+   },
+   "invite": "0a0a313233343540672e7573120b494e564954452d434f444518c0b1f4aa06220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734000",
+   "requests": [
+    "00f80819045a16ed3311faff8312345f1cf801f805ec6270fc0b494e564954452d434f4445bbff051700600000"
+   ],
+   "response": "00f803190414",
+   "updates": [
+    [
+     {
+      "key": {
+       "id": "ONLY-ID"
+      },
+      "message": "e2012d0a0a313233343540672e757312001800220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734000"
+     }
+    ]
+   ],
+   "upserts": [
+    {
+     "type": "notify",
+     "wire": "0a180a0a313233343540672e757310001a0846495845442d49441880e2cfaa06c0011bd201407b226964223a223130303a3740732e77686174736170702e6e6574222c226e616d65223a224d6520f09f929a222c226c6964223a223930303a37406c6964227d"
+    }
+   ],
+   "expected": null,
+   "error": false
+  },
+  {
+   "kind": "community",
+   "key": {
+    "remoteJid": "300@s.whatsapp.net",
+    "id": ""
+   },
+   "invite": "0a0a313233343540672e7573120b494e564954452d434f444518c0b1f4aa06220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734000",
+   "requests": [
+    "00f80819045a16ed3311faff8312345f1cf801f807ec6270fc0b494e564954452d434f4445bbff051700600000ec56fabe03"
+   ],
+   "response": "00f80519041406faff8312345f1c",
+   "updates": [],
+   "upserts": [
+    {
+     "type": "notify",
+     "wire": "0a2c0a0a313233343540672e757310001a0846495845442d4944221233303040732e77686174736170702e6e65741880e2cfaa062a1233303040732e77686174736170702e6e6574c0011bd201407b226964223a223130303a3740732e77686174736170702e6e6574222c226e616d65223a224d6520f09f929a222c226c6964223a223930303a37406c6964227d"
+    }
+   ],
+   "expected": "12345@g.us",
+   "error": false
+  },
+  {
+   "kind": "community",
+   "key": {
+    "remoteJid": "300@s.whatsapp.net",
+    "id": ""
+   },
+   "invite": "0a0a313233343540672e7573120b494e564954452d434f444518c0b1f4aa06220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734000",
+   "requests": [
+    "00f80819045a16ed3311faff8312345f1cf801f807ec6270fc0b494e564954452d434f4445bbff051700600000ec56fabe03"
+   ],
+   "response": "00f803190414",
+   "updates": [],
+   "upserts": [
+    {
+     "type": "notify",
+     "wire": "0a2c0a0a313233343540672e757310001a0846495845442d4944221233303040732e77686174736170702e6e65741880e2cfaa062a1233303040732e77686174736170702e6e6574c0011bd201407b226964223a223130303a3740732e77686174736170702e6e6574222c226e616d65223a224d6520f09f929a222c226c6964223a223930303a37406c6964227d"
+    }
+   ],
+   "expected": null,
+   "error": false
+  },
+  {
+   "kind": "community",
+   "key": {
+    "remoteJid": "300@s.whatsapp.net",
+    "fromMe": false,
+    "id": "INVITE-MSG-1"
+   },
+   "invite": "0a0a313233343540672e7573",
+   "requests": [],
+   "response": "00f80519041406faff8312345f1c",
+   "updates": [],
+   "upserts": [],
+   "expected": null,
+   "error": true
+  },
+  {
+   "kind": "community",
+   "key": {
+    "remoteJid": "300@s.whatsapp.net",
+    "fromMe": false,
+    "id": "INVITE-MSG-1"
+   },
+   "invite": "0a0a313233343540672e7573",
+   "requests": [],
+   "response": "00f803190414",
+   "updates": [],
+   "upserts": [],
+   "expected": null,
+   "error": true
+  },
+  {
+   "kind": "community",
+   "key": "300@s.whatsapp.net",
+   "invite": "0a0a313233343540672e757312001800",
+   "requests": [
+    "00f80819045a16ed3311faff8312345f1cf801f807ec6270fc00bb2dec56fabe03"
+   ],
+   "response": "00f80519041406faff8312345f1c",
+   "updates": [],
+   "upserts": [
+    {
+     "type": "notify",
+     "wire": "0a2c0a0a313233343540672e757310001a0846495845442d4944221233303040732e77686174736170702e6e65741880e2cfaa062a1233303040732e77686174736170702e6e6574c0011bd201407b226964223a223130303a3740732e77686174736170702e6e6574222c226e616d65223a224d6520f09f929a222c226c6964223a223930303a37406c6964227d"
+    }
+   ],
+   "expected": "12345@g.us",
+   "error": false
+  },
+  {
+   "kind": "community",
+   "key": "300@s.whatsapp.net",
+   "invite": "0a0a313233343540672e757312001800",
+   "requests": [
+    "00f80819045a16ed3311faff8312345f1cf801f807ec6270fc00bb2dec56fabe03"
+   ],
+   "response": "00f803190414",
+   "updates": [],
+   "upserts": [
+    {
+     "type": "notify",
+     "wire": "0a2c0a0a313233343540672e757310001a0846495845442d4944221233303040732e77686174736170702e6e65741880e2cfaa062a1233303040732e77686174736170702e6e6574c0011bd201407b226964223a223130303a3740732e77686174736170702e6e6574222c226e616d65223a224d6520f09f929a222c226c6964223a223930303a37406c6964227d"
+    }
+   ],
+   "expected": null,
+   "error": false
+  },
+  {
+   "kind": "community",
+   "key": {
+    "remoteJid": "300@s.whatsapp.net",
+    "fromMe": false,
+    "id": "INVITE-MSG-1"
+   },
+   "invite": "12084e4f2d47524f55501805",
+   "requests": [
+    "00f80619045a16ed33f801f807ec6270fc084e4f2d47524f5550bbec79ec56fabe03"
+   ],
+   "response": "00f80519041406fafc066a6f696e65641c",
+   "updates": [
+    [
+     {
+      "key": {
+       "remoteJid": "300@s.whatsapp.net",
+       "fromMe": false,
+       "id": "INVITE-MSG-1"
+      },
+      "message": "e2010412001800"
+     }
+    ]
+   ],
+   "upserts": [
+    {
+     "type": "notify",
+     "wire": "0a2010001a0846495845442d4944221233303040732e77686174736170702e6e65741880e2cfaa062a1233303040732e77686174736170702e6e6574c0011bd201407b226964223a223130303a3740732e77686174736170702e6e6574222c226e616d65223a224d6520f09f929a222c226c6964223a223930303a37406c6964227d"
+    }
+   ],
+   "expected": "joined@g.us",
+   "error": false
+  },
+  {
+   "kind": "community",
+   "key": {
+    "remoteJid": "300@s.whatsapp.net",
+    "fromMe": false,
+    "id": "INVITE-MSG-1"
+   },
+   "invite": "12084e4f2d47524f55501805",
+   "requests": [
+    "00f80619045a16ed33f801f807ec6270fc084e4f2d47524f5550bbec79ec56fabe03"
+   ],
+   "response": "00f803190414",
+   "updates": [
+    [
+     {
+      "key": {
+       "remoteJid": "300@s.whatsapp.net",
+       "fromMe": false,
+       "id": "INVITE-MSG-1"
+      },
+      "message": "e2010412001800"
+     }
+    ]
+   ],
+   "upserts": [
+    {
+     "type": "notify",
+     "wire": "0a2010001a0846495845442d4944221233303040732e77686174736170702e6e65741880e2cfaa062a1233303040732e77686174736170702e6e6574c0011bd201407b226964223a223130303a3740732e77686174736170702e6e6574222c226e616d65223a224d6520f09f929a222c226c6964223a223930303a37406c6964227d"
+    }
+   ],
+   "expected": null,
+   "error": false
+  },
+  {
+   "kind": "community",
+   "key": {
+    "remoteJid": "300@s.whatsapp.net",
+    "fromMe": false,
+    "id": "INVITE-MSG-1"
+   },
+   "invite": "0a0a313233343540672e7573120b494e564954452d434f4445188180808080808010220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734001",
+   "requests": [
+    "00f80819045a16ed3311faff8312345f1cf801f807ec6270fc0b494e564954452d434f4445bbff089007199254740993ec56fabe03"
+   ],
+   "response": "00f80519041406faff8312345f1c",
+   "updates": [
+    [
+     {
+      "key": {
+       "remoteJid": "300@s.whatsapp.net",
+       "fromMe": false,
+       "id": "INVITE-MSG-1"
+      },
+      "message": "e2012d0a0a313233343540672e757312001800220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734001"
+     }
+    ]
+   ],
+   "upserts": [
+    {
+     "type": "notify",
+     "wire": "0a2c0a0a313233343540672e757310001a0846495845442d4944221233303040732e77686174736170702e6e65741880e2cfaa062a1233303040732e77686174736170702e6e6574c0011bd201407b226964223a223130303a3740732e77686174736170702e6e6574222c226e616d65223a224d6520f09f929a222c226c6964223a223930303a37406c6964227d"
+    }
+   ],
+   "expected": "12345@g.us",
+   "error": false
+  },
+  {
+   "kind": "community",
+   "key": {
+    "remoteJid": "300@s.whatsapp.net",
+    "fromMe": false,
+    "id": "INVITE-MSG-1"
+   },
+   "invite": "0a0a313233343540672e7573120b494e564954452d434f4445188180808080808010220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734001",
+   "requests": [
+    "00f80819045a16ed3311faff8312345f1cf801f807ec6270fc0b494e564954452d434f4445bbff089007199254740993ec56fabe03"
+   ],
+   "response": "00f803190414",
+   "updates": [
+    [
+     {
+      "key": {
+       "remoteJid": "300@s.whatsapp.net",
+       "fromMe": false,
+       "id": "INVITE-MSG-1"
+      },
+      "message": "e2012d0a0a313233343540672e757312001800220a47726f757020f09f929a2a04ffd8010232074a6f696e2075734001"
+     }
+    ]
+   ],
+   "upserts": [
+    {
+     "type": "notify",
+     "wire": "0a2c0a0a313233343540672e757310001a0846495845442d4944221233303040732e77686174736170702e6e65741880e2cfaa062a1233303040732e77686174736170702e6e6574c0011bd201407b226964223a223130303a3740732e77686174736170702e6e6574222c226e616d65223a224d6520f09f929a222c226c6964223a223930303a37406c6964227d"
+    }
+   ],
+   "expected": null,
+   "error": false
+  }
+ ]
+}

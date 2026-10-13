@@ -308,6 +308,14 @@ impl Actor<'_> {
                     self.finish_upload(After::Waiters, false).await?;
                 }
             }
+            Command::SignedPreKey { key, reply } => {
+                self.credentials.signed_pre_key = *key;
+                let result = self.persist().await;
+                if result.is_ok() {
+                    self.emit(Event::CredentialsUpdated);
+                }
+                let _ = reply.send(result);
+            }
             Command::DisappearingMode { mode, reply } => {
                 self.credentials.account_settings.default_disappearing_mode = Some(mode);
                 let result = self.persist().await;

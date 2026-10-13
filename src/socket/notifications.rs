@@ -233,6 +233,68 @@ impl Socket {
             .map_err(|_| Error::Closed(428))?;
         response.await.map_err(|_| Error::Closed(428))?
     }
+    /// Check that the server still holds our key bundle. Without one, pre-keys
+    /// are uploaded again and the check still fails, as upstream does.
+    pub async fn digest_key_bundle(&self) -> Result<(), Error> {
+        let result = self
+            .query(
+                BinaryNode::new("iq")
+                    .attr("to", crate::jid::S_WHATSAPP_NET)
+                    .attr("type", "get")
+                    .attr("xmlns", "encrypt")
+                    .with_content(crate::binary::NodeContent::Children(vec![BinaryNode::new(
+                        "digest",
+                    )])),
+                None,
+            )
+            .await?;
+        if result.child("digest").is_none() {
+            self.upload_pre_keys(crate::defaults::MIN_PREKEY_COUNT)
+                .await?;
+            return Err(Error::DigestMissing);
+        }
+        Ok(())
+    }
+    /// Replace the signed pre-key on the server with a new one under the next
+    /// key ID, then store it in the credentials.
+    pub async fn rotate_signed_pre_key(&self) -> Result<(), Error> {
+        use crate::binary::NodeContent;
+        let credentials = super::load_credentials(self.inner.store.clone()).await?;
+        let key = crate::crypto::signed_key_pair(
+            &credentials.signed_identity_key,
+            credentials.signed_pre_key.key_id + 1,
+        )?;
+        let bytes = |tag: &str, value: Vec<u8>| {
+            BinaryNode::new(tag).with_content(NodeContent::Bytes(value))
+        };
+        self.query(
+            BinaryNode::new("iq")
+                .attr("to", crate::jid::S_WHATSAPP_NET)
+                .attr("type", "set")
+                .attr("xmlns", "encrypt")
+                .with_content(NodeContent::Children(vec![
+                    BinaryNode::new("rotate").with_content(NodeContent::Children(vec![
+                        BinaryNode::new("skey").with_content(NodeContent::Children(vec![
+                            bytes("id", key.key_id.to_be_bytes()[1..].to_vec()),
+                            bytes("value", key.key_pair.public.to_vec()),
+                            bytes("signature", key.signature.clone()),
+                        ])),
+                    ])),
+                ])),
+            None,
+        )
+        .await?;
+        let (reply, response) = tokio::sync::oneshot::channel();
+        self.inner
+            .commands
+            .send(Command::SignedPreKey {
+                key: Box::new(key),
+                reply,
+            })
+            .await
+            .map_err(|_| Error::Closed(428))?;
+        response.await.map_err(|_| Error::Closed(428))?
+    }
     /// Refresh the session of a contact whose primary-device identity changed.
     pub async fn handle_identity_change(&self, node: &BinaryNode) -> Result<IdentityChange, Error> {
         let Some(from) = node.attrs.get("from").filter(|s| !s.is_empty()).cloned() else {

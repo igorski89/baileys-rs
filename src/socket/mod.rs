@@ -125,6 +125,10 @@ pub enum Error {
     Task,
     #[error("pre-key upload failed")]
     PreKeyUpload,
+    #[error("encrypt/get digest returned no digest node")]
+    DigestMissing,
+    #[error("invite message has no expiration")]
+    InviteExpiration,
     #[error("catalog result has no product")]
     MissingProduct,
     #[error("message tag counter exhausted")]
@@ -534,6 +538,10 @@ enum Command {
     },
     DisappearingMode {
         mode: auth::DisappearingMode,
+        reply: oneshot::Sender<Result<(), Error>>,
+    },
+    SignedPreKey {
+        key: Box<crypto::SignedKeyPair>,
         reply: oneshot::Sender<Result<(), Error>>,
     },
     RecordHistory {
