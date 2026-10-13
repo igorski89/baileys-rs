@@ -211,3 +211,120 @@ async fn chat_modifications_require_an_app_state_key_and_valid_input() {
     .await
     .unwrap();
 }
+#[tokio::test]
+async fn rejected_patch_upload_leaves_the_stored_version_and_the_retry_resyncs_again() {
+    timeout(Duration::from_secs(10), async {
+        let (listener, config, store) = setup(true).await;
+        let server_store = store.clone();
+        let server = tokio::spawn(async move {
+            let mut peer = Peer::accept(listener.accept().await.unwrap().0).await;
+            peer.send(BinaryNode::new("success")).await;
+            assert!(peer.read().await.child("unified_session").is_some());
+            // Another device muted a chat: one patch ahead of what is stored.
+            let provider = KeyProvider::from_store(server_store);
+            let remote = app_state::encode_patch(
+                &app_state::chat_modification_patch(
+                    ChatModification::Mute(Some(1_900_000_000_000)),
+                    "300@s.whatsapp.net",
+                    1_700_000_000_000,
+                )
+                .unwrap(),
+                "AQID",
+                &app_state::new_lthash_state(),
+                &provider,
+            )
+            .await
+            .unwrap();
+            let mut patch = remote.patch;
+            patch.version = Some(proto::SyncdVersion { version: Some(1) });
+            for accept in [false, true] {
+                // The resynced version is not stored before the upload succeeds, so the
+                // second attempt asks from the beginning again.
+                let resync = peer.read().await;
+                let requested = collection(&resync);
+                assert_eq!(requested.attrs["version"], "0");
+                assert_eq!(requested.attrs["return_snapshot"], "true");
+                peer.send(
+                    BinaryNode::new("iq")
+                        .attr("id", &resync.attrs["id"])
+                        .attr("type", "result")
+                        .with_content(NodeContent::Children(vec![
+                            BinaryNode::new("sync").with_content(NodeContent::Children(vec![
+                                BinaryNode::new("collection")
+                                    .attr("name", "regular_high")
+                                    .attr("version", "1")
+                                    .with_content(NodeContent::Children(vec![
+                                        BinaryNode::new("patches").with_content(
+                                            NodeContent::Children(vec![
+                                                BinaryNode::new("patch").with_content(
+                                                    NodeContent::Bytes(patch.encode_to_vec()),
+                                                ),
+                                            ]),
+                                        ),
+                                    ])),
+                            ])),
+                        ])),
+                )
+                .await;
+                // The upload builds on the resynced version either way.
+                let upload = peer.read().await;
+                assert_eq!(collection(&upload).attrs["version"], "1");
+                if accept {
+                    peer.result(&upload).await;
+                } else {
+                    peer.send(
+                        BinaryNode::new("iq")
+                            .attr("id", &upload.attrs["id"])
+                            .attr("type", "error")
+                            .with_content(NodeContent::Children(vec![
+                                BinaryNode::new("error")
+                                    .attr("code", "409")
+                                    .attr("text", "conflict"),
+                            ])),
+                    )
+                    .await;
+                }
+            }
+            peer.closed().await;
+        });
+        let (socket, mut events) = Socket::connect(config, store.clone()).await.unwrap();
+        socket.wait_for_open(Duration::from_secs(2)).await.unwrap();
+        let stored = || {
+            let values = store
+                .get(KeyCategory::AppStateSyncVersion, &["regular_high".into()])
+                .unwrap();
+            match values.get("regular_high") {
+                Some(KeyValue::AppStateSyncVersion(state)) => Some(state.version),
+                _ => None,
+            }
+        };
+        let jid = "200@s.whatsapp.net";
+        let rejected = socket
+            .chat_modify(ChatModification::Mute(Some(1_900_000_000_000)), jid)
+            .await
+            .unwrap_err();
+        assert_eq!(rejected.status_code(), Some(409));
+        assert_eq!(stored(), None);
+        // Let the failed call's events flush so the two resyncs are not merged.
+        tokio::time::sleep(Duration::from_millis(250)).await;
+        socket
+            .chat_modify(ChatModification::Mute(Some(1_900_000_000_000)), jid)
+            .await
+            .unwrap();
+        assert_eq!(stored(), Some(2));
+        // The other device's mute is published by both resyncs, as upstream re-emits it.
+        let mut remote = 0;
+        while remote < 2 {
+            if let Event::ChatsUpdated(updates) = events.recv().await.unwrap() {
+                remote += updates
+                    .iter()
+                    .filter(|update| update.id == "300@s.whatsapp.net")
+                    .count();
+            }
+        }
+        socket.close().await.unwrap();
+        server.await.unwrap();
+    })
+    .await
+    .unwrap();
+}

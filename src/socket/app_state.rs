@@ -68,8 +68,8 @@ impl Socket {
             })
             .await
     }
-    /// Send one app-state patch: resynchronise its collection, encode against the stored
-    /// version, upload, persist the new version and, when own events are enabled,
+    /// Send one app-state patch: resynchronise its collection, encode against the
+    /// resulting version, upload, persist the new version and, when own events are enabled,
     /// publish the patch's own effects.
     pub async fn app_patch(&self, patch: app_state::PatchCreate) -> Result<(), Error> {
         use crate::{
@@ -87,20 +87,33 @@ impl Socket {
         let provider = app_state::KeyProvider::from_store(self.inner.store.clone());
         let (initial, encoded) = {
             let _serial = self.inner.app_state_patch_lock.lock().await;
-            self.resync_app_state(std::slice::from_ref(&name), false)
+            // Upstream runs the resync and the upload in one key transaction, so the
+            // resynced version is only stored together with the uploaded one; a failed
+            // upload leaves the stored version where it was.
+            let mut synced = self
+                .with_buffered_events(self.resync_app_state_inner(
+                    std::slice::from_ref(&name),
+                    false,
+                    false,
+                ))
                 .await?;
-            let store = self.inner.store.clone();
-            let id = name.clone();
-            let initial = tokio::task::spawn_blocking(move || {
-                store
-                    .get(KeyCategory::AppStateSyncVersion, std::slice::from_ref(&id))
-                    .map(|mut values| match values.remove(&id) {
-                        Some(KeyValue::AppStateSyncVersion(state)) => state,
-                        _ => app_state::new_lthash_state(),
+            let initial = match synced.states.shift_remove(&name) {
+                Some(state) => state,
+                None => {
+                    let store = self.inner.store.clone();
+                    let id = name.clone();
+                    tokio::task::spawn_blocking(move || {
+                        store
+                            .get(KeyCategory::AppStateSyncVersion, std::slice::from_ref(&id))
+                            .map(|mut values| match values.remove(&id) {
+                                Some(KeyValue::AppStateSyncVersion(state)) => state,
+                                _ => app_state::new_lthash_state(),
+                            })
                     })
-            })
-            .await
-            .map_err(|_| Error::Task)??;
+                    .await
+                    .map_err(|_| Error::Task)??
+                }
+            };
             let encoded = app_state::encode_patch(&patch, &key_id, &initial, &provider).await?;
             let node = BinaryNode::new("iq")
                 .attr("to", crate::jid::S_WHATSAPP_NET)
@@ -120,14 +133,30 @@ impl Socket {
                     ])),
                 ]));
             self.query(node, None).await?;
-            let store = self.inner.store.clone();
-            let state = encoded.state.clone();
-            let id = name.clone();
-            tokio::task::spawn_blocking(move || {
-                store.set(&[KeyMutation::put(id, KeyValue::AppStateSyncVersion(state))])
-            })
-            .await
-            .map_err(|_| Error::Task)??;
+            // The transaction commit, with upstream's retries.
+            let options = &self.inner.app_state_options;
+            let mut attempt = 0;
+            loop {
+                attempt += 1;
+                let store = self.inner.store.clone();
+                let state = encoded.state.clone();
+                let id = name.clone();
+                match tokio::task::spawn_blocking(move || {
+                    store.set(&[KeyMutation::put(id, KeyValue::AppStateSyncVersion(state))])
+                })
+                .await
+                .map_err(|_| Error::Task)?
+                {
+                    Ok(()) => break,
+                    Err(error) if attempt >= options.max_commit_attempts.max(1) => {
+                        return Err(error.into());
+                    }
+                    Err(error) => {
+                        tracing::warn!(attempt, ?error, "retrying app-state patch commit");
+                        tokio::time::sleep(options.commit_retry_delay).await;
+                    }
+                }
+            }
             (initial, encoded)
         };
         if self.inner.own_messages.is_some() {
@@ -266,11 +295,20 @@ impl Socket {
         &self,
         collections: &[String],
     ) -> Result<app_state::SyncResult, Error> {
-        Ok(self
-            .app_state_synchronizer()
-            .await?
-            .resync(collections, &self.inner.app_state_options)
-            .await?)
+        self.sync_app_state_with(collections, true).await
+    }
+    async fn sync_app_state_with(
+        &self,
+        collections: &[String],
+        commit: bool,
+    ) -> Result<app_state::SyncResult, Error> {
+        let sync = self.app_state_synchronizer().await?;
+        let options = &self.inner.app_state_options;
+        Ok(if commit {
+            sync.resync(collections, options).await?
+        } else {
+            sync.resync_staged(collections, options).await?
+        })
     }
     /// Synchronize collection state, then publish chat/contact/settings actions.
     pub async fn resync_app_state(
@@ -278,16 +316,17 @@ impl Socket {
         collections: &[String],
         initial_sync: bool,
     ) -> Result<app_state::SyncResult, Error> {
-        self.with_buffered_events(self.resync_app_state_inner(collections, initial_sync))
+        self.with_buffered_events(self.resync_app_state_inner(collections, initial_sync, true))
             .await
     }
     async fn resync_app_state_inner(
         &self,
         collections: &[String],
         initial_sync: bool,
+        commit: bool,
     ) -> Result<app_state::SyncResult, Error> {
         let _serial = self.inner.app_state_apply_lock.lock().await;
-        let result = self.sync_app_state(collections).await?;
+        let result = self.sync_app_state_with(collections, commit).await?;
         self.apply_app_state_actions(&result.mutations, initial_sync)
             .await?;
         Ok(result)

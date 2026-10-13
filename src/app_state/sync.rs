@@ -99,6 +99,24 @@ impl Synchronizer {
         collections: &[String],
         options: &SyncOptions,
     ) -> Result<SyncResult, Error> {
+        self.resync_with(collections, options, true).await
+    }
+    /// Synchronize without persisting the new versions; they are returned in
+    /// `SyncResult::states` for a caller whose own write decides the outcome,
+    /// as a resync nested in an upstream transaction.
+    pub async fn resync_staged(
+        &self,
+        collections: &[String],
+        options: &SyncOptions,
+    ) -> Result<SyncResult, Error> {
+        self.resync_with(collections, options, false).await
+    }
+    async fn resync_with(
+        &self,
+        collections: &[String],
+        options: &SyncOptions,
+        commit: bool,
+    ) -> Result<SyncResult, Error> {
         let _serial = self.run_lock.lock().await;
         let mut remaining: IndexSet<String> = collections.iter().cloned().collect();
         let mut cached_states: HashMap<String, Option<LtHashState>> = HashMap::new();
@@ -243,7 +261,7 @@ impl Synchronizer {
                 }
             }
         }
-        if !staged.is_empty() {
+        if commit && !staged.is_empty() {
             let writes: Vec<_> = staged
                 .iter()
                 .map(|(name, state)| {

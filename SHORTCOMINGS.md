@@ -36,7 +36,6 @@ Not gaps, but worth knowing: like upstream, the socket does not reconnect by its
 
 ### App state and chats
 - Typed chat modifications cannot express an empty or unknown modification object, or NaN timestamps.
-- The app-state patch upload is not wrapped in a storage transaction; the new version is written after the server accepts it. Upstream's transaction also discards the collection state fetched by the preceding resync when the upload fails; the port keeps it.
 
 ### Keys and sessions
 - Privacy tokens are pruned once a day when coming online, as upstream does, but the index of tracked JIDs is written with each token rather than on a debounce timer.
@@ -59,7 +58,7 @@ Not gaps, but worth knowing: like upstream, the socket does not reconnect by its
 - The external device store is synchronous and is called while the cache is locked; upstream's cache interface is asynchronous and has an optional batched read.
 
 ### Configuration
-- `Config::transaction` (upstream's `transactionOpts`) retries only the commit that ends an app-state synchronization; every other storage write is one SQLite transaction without retries.
+- `Config::transaction` (upstream's `transactionOpts`) retries only the commits that end an app-state synchronization or patch upload; every other storage write is one SQLite transaction without retries.
 - Cached group metadata is passed per send as a value; upstream takes one lookup callback in the configuration.
 
 ### Exported helpers
