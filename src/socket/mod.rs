@@ -20,6 +20,7 @@ mod newsletters;
 mod notifications;
 pub mod presence;
 mod protocol_messages;
+mod proxy;
 mod receipts;
 mod relay;
 mod retries;
@@ -113,6 +114,8 @@ pub enum Error {
     Protobuf(#[from] prost::DecodeError),
     #[error("websocket operation failed: {0}")]
     WebSocket(#[from] tungstenite::Error),
+    #[error("proxy connection failed: {0}")]
+    Proxy(String),
     #[error("operation timed out")]
     Timeout,
     #[error("connection closed ({0})")]
@@ -171,6 +174,9 @@ impl Error {
 #[derive(Debug, Clone)]
 pub struct Config {
     pub url: String,
+    /// Reach the WebSocket through this proxy: `http://`, `socks5://` or `socks5h://`,
+    /// optionally with `user:password@`. Media requests use `media_http` instead.
+    pub proxy: Option<String>,
     pub origin: String,
     pub headers: BTreeMap<String, String>,
     pub payload: PayloadConfig,
@@ -239,6 +245,7 @@ impl Default for Config {
     fn default() -> Self {
         Self {
             url: defaults::DEFAULT_WEBSOCKET_URL.into(),
+            proxy: None,
             origin: defaults::DEFAULT_ORIGIN.into(),
             headers: BTreeMap::new(),
             payload: PayloadConfig::default(),
@@ -709,7 +716,15 @@ impl Socket {
             );
         }
         let ((mut ws, _), mut noise) = timeout(config.connect_timeout, async {
-            let (mut ws, response) = tokio_tungstenite::connect_async(request).await?;
+            let (mut ws, response) = match &config.proxy {
+                Some(proxy) => {
+                    let host = url.host_str().ok_or(Error::Config)?;
+                    let port = url.port_or_known_default().ok_or(Error::Config)?;
+                    let stream = proxy::connect(proxy, host, port).await?;
+                    tokio_tungstenite::client_async_tls(request, stream).await?
+                }
+                None => tokio_tungstenite::connect_async(request).await?,
+            };
             let ephemeral = crypto::KeyPair::generate()?;
             let public = ephemeral.public;
             let mut noise_config = config.noise.clone();

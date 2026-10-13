@@ -10,6 +10,7 @@
 //! `PHONE` (digits only, with country code) is needed only while unpaired: enter
 //! the printed code on the phone under Linked devices > Link with phone number.
 //! Use a spare account; unofficial clients can get a number banned.
+//! `PROXY` (`http://` or `socks5://`, optionally with credentials) tunnels the connection.
 //!
 //! The protocol version in `defaults::WA_VERSION` matched upstream's
 //! `baileys-version.json` when this was written. A stale version is rejected at
@@ -30,7 +31,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut sent = false;
     loop {
         let paired = store.load_credentials()?.me.is_some();
-        let (socket, mut events) = Socket::connect(Config::default(), store.clone()).await?;
+        let config = Config {
+            proxy: std::env::var("PROXY").ok(),
+            ..Default::default()
+        };
+        let (socket, mut events) = Socket::connect(config, store.clone()).await?;
         if !paired {
             let phone = std::env::var("PHONE")
                 .map_err(|_| "set PHONE to the account's number to pair this device")?;

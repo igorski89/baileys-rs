@@ -6,7 +6,6 @@ Known gaps and deliberate deviations from upstream Baileys, kept here so they ca
 
 - **Live validation.** Nothing has run against a real account yet. `examples/live.rs` is ready (pairing-code login, event log, one outgoing text).
 - **Type-level audit.** `scripts/audit-socket-api.mjs` (150 socket methods) and `scripts/audit-utils-api.mjs` (157 utility exports covered, 38 without a counterpart on purpose, none missing) match by identifier only. Upstream's exported types (`src/Types`) were compared by hand for the socket configuration and the event map only.
-- **Proxy agents.** Upstream accepts proxy agents for the WebSocket and for fetches. The port takes a caller-supplied HTTP client for media, which can carry a proxy; the WebSocket connects directly.
 
 Not gaps, but worth knowing: like upstream, the socket does not reconnect by itself (`examples/live.rs` shows the loop), and EXIF orientation is ignored when making thumbnails (sharp is used without `rotate()` upstream too).
 
@@ -58,6 +57,7 @@ Not gaps, but worth knowing: like upstream, the socket does not reconnect by its
 - The external device store holds the encoded JID with each device; upstream recomputes it on every read.
 
 ### Configuration
+- Proxies are given as a URL in `Config::proxy` (HTTP CONNECT or SOCKS5, for the WebSocket) and through the caller's `media_http` client (for media and link previews); upstream takes agent objects. An HTTPS proxy (TLS to the proxy itself) is not supported for the WebSocket, and no test crosses a real proxy.
 - The caches a caller can supply are typed (`cache::Cache<u64>` for retry counters, `Cache<Option<Envelope>>` for placeholder resends, `Cache<Vec<u8>>` for prepared media, `devices::Store`, `calls::Cache`) where upstream has one untyped `CacheStore`. Their calls cannot fail, except the call-offer cache's.
 - `Config::transaction` (upstream's `transactionOpts`) retries only the commits that end an app-state synchronization or patch upload; every other storage write is one SQLite transaction without retries.
 - Cached group metadata is passed per send as a value; upstream takes one lookup callback in the configuration.
