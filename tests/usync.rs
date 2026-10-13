@@ -181,8 +181,23 @@ fn custom_protocols_extend_requests_and_parse_their_own_results() {
         .iter()
         .map(|node| (node.tag.as_str(), node.attrs.len()))
         .collect();
-    // Built-in protocols come first, then custom ones in the order added.
+    // Protocols keep the order they were added in.
     assert_eq!(tags, [("status", 0), ("picture", 1), ("status", 1)]);
+    let interleaved = Query::default()
+        .with_custom_protocol(Picture)
+        .with_custom_protocol(RawStatus)
+        .with_protocol(Protocol::Status)
+        .with_user(User::with_id("200@s.whatsapp.net"));
+    let stanza = interleaved.stanza("sid").unwrap();
+    let tags: Vec<_> = stanza
+        .child("usync")
+        .and_then(|usync| usync.child("query"))
+        .unwrap()
+        .all_children()
+        .iter()
+        .map(|node| (node.tag.as_str(), node.attrs.len()))
+        .collect();
+    assert_eq!(tags, [("picture", 1), ("status", 1), ("status", 0)]);
     let users = usync.child("list").unwrap().all_children();
     assert_eq!(
         users[0].all_children(),
@@ -219,6 +234,12 @@ fn custom_protocols_extend_requests_and_parse_their_own_results() {
             {"id": "200@s.whatsapp.net", "picture": {"id": "PIC"}, "status": "1700000000"},
             {"id": "201@s.whatsapp.net"}
         ])
+    );
+    // The last protocol added under a name parses its nodes: here the built-in status.
+    let parsed = interleaved.parse(&response).unwrap().unwrap();
+    assert_eq!(
+        json!(parsed.list[0]),
+        json!({"id": "200@s.whatsapp.net", "picture": {"id": "PIC"}, "status": {"status": null, "setAt": 1700000000000u64}})
     );
     // A query made only of custom protocols is valid.
     assert!(

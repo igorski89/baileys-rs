@@ -187,14 +187,16 @@ async fn pre_key_upload_waiters_time_out_while_the_upload_itself_continues() {
             let mut peer = Peer::accept(listener.accept().await.unwrap().0).await;
             peer.send(BinaryNode::new("success")).await;
             assert!(peer.read().await.child("unified_session").is_some());
-            // The first upload is answered only after its caller has given up.
+            // The first upload stays unanswered while its caller gives up and a second
+            // caller starts an upload of its own, as upstream allows.
             let slow = peer.read().await;
             assert_eq!(slow.child("list").unwrap().all_children().len(), 5);
             timed_out_rx.await.unwrap();
-            peer.result(&slow).await;
             let next = peer.read().await;
-            assert_eq!(next.child("list").unwrap().all_children().len(), 5);
+            assert_eq!(next.child("list").unwrap().all_children().len(), 7);
             peer.result(&next).await;
+            // The abandoned upload still completes once the server answers.
+            peer.result(&slow).await;
             peer.closed().await;
         });
         let (socket, _events) = Socket::connect(config, store.clone()).await.unwrap();
@@ -207,19 +209,12 @@ async fn pre_key_upload_waiters_time_out_while_the_upload_itself_continues() {
         assert!(started.elapsed() >= Duration::from_millis(300));
         assert!(started.elapsed() < Duration::from_secs(2));
         timed_out_tx.send(()).unwrap();
-        // The abandoned upload still completes once the server answers.
-        while store
-            .load_credentials()
-            .unwrap()
-            .first_unuploaded_pre_key_id
-            != before + 5
-        {
-            tokio::time::sleep(Duration::from_millis(10)).await;
-        }
-        // A later upload starts afresh and succeeds.
-        socket.upload_pre_keys(5).await.unwrap();
+        // A later upload does not wait for the abandoned one.
+        socket.upload_pre_keys(7).await.unwrap();
+        // Keys the server has not confirmed are offered again, so seven keys add two.
         let after = store.load_credentials().unwrap();
-        assert_eq!(after.next_pre_key_id, before + 10);
+        assert_eq!(after.next_pre_key_id, before + 7);
+        assert_eq!(after.first_unuploaded_pre_key_id, before + 7);
         socket.close().await.unwrap();
         server.await.unwrap();
     })

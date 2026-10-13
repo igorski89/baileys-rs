@@ -16,13 +16,13 @@ Not gaps, but worth knowing: like upstream, the socket does not reconnect by its
 - Opt-in through `Config::link_previews.enabled`. Upstream generates previews whenever its optional `link-preview-js` dependency is installed.
 - Page parsing is a reimplementation of `link-preview-js` on the `scraper` crate (html5ever), pinned by 126 upstream cases. A new upstream release of that package would need the fixtures regenerated; the generator needs `link-preview-js` installed in `.cache/fixture-tools`.
 - Relative image URLs are resolved with WHATWG rules, not Node's legacy `url.resolve`.
-- Custom request headers and proxy settings are not passed to the page fetch.
+- Request headers and proxy settings come from the caller-supplied `Config::media_http` client, not from per-request fetch options.
 - No test fetches a real page over TLS.
 
 ### Newsletters and MEX
 - The reach-out timelock state is its own event (`ReachoutTimelockUpdated`), not part of the connection event.
 - Newsletter metadata and untyped MEX results are returned as JSON values.
-- `newsletter_update_picture` is not replayed against upstream fixtures.
+- `newsletter_update_picture` is tested against a mock server (request shape, 640×640 JPEG); it cannot be replayed byte for byte because the JPEG encoder differs from sharp's.
 - Identifiers in MEX notification payloads are taken as strings.
 - A plaintext newsletter message whose final string field is truncated is rejected; protobufjs accepts it.
 
@@ -37,7 +37,7 @@ Not gaps, but worth knowing: like upstream, the socket does not reconnect by its
 
 ### App state and chats
 - Typed chat modifications cannot express an empty or unknown modification object, or NaN timestamps.
-- The app-state patch upload is not wrapped in a storage transaction; the new version is written after the server accepts it.
+- The app-state patch upload is not wrapped in a storage transaction; the new version is written after the server accepts it. Upstream's transaction also discards the collection state fetched by the preceding resync when the upload fails; the port keeps it.
 
 ### Keys and sessions
 - Privacy tokens are pruned once a day when coming online, as upstream does, but the index of tracked JIDs is written with each token rather than on a debounce timer.
@@ -46,8 +46,7 @@ Not gaps, but worth knowing: like upstream, the socket does not reconnect by its
 - Rotating the signed pre-key discards the previous one, as upstream does; there is no signed-prekey history.
 
 ### Relay
-- A member label cut inside an astral character drops that character; upstream keeps half of it, which encodes as a replacement character.
-- `update_member_label` has a test of its message and stanza child only, not of a group relay.
+- A member label cut inside an astral character drops that character; upstream keeps half of it and sends it as invalid UTF-8, which a Rust string cannot hold.
 - The asynchronous patch hook is awaited on the relay blocking worker (`Handle::block_on`); it must not wait on the relay it is patching.
 
 ### Media
@@ -57,12 +56,8 @@ Not gaps, but worth knowing: like upstream, the socket does not reconnect by its
 - The remote download limit counts received bytes exactly; upstream counts each chunk twice, so its effective limit is lower and depends on chunk sizes.
 
 ### USync and device cache
-- Custom USync protocols always follow the built-in ones in the request, whatever order they were added in.
-- A custom USync protocol always parses the result nodes of its name, even when a built-in protocol of the same name was added after it; upstream lets the last one added win.
+- A USync query assembled through its public fields rather than the builder methods lists built-in protocols before custom ones.
 - The external device store is synchronous and is called while the cache is locked; upstream's cache interface is asynchronous and has an optional batched read.
-
-### Pre-key upload
-- After the upload timeout a new upload request joins the one still running instead of starting a second one, as upstream would.
 
 ### Configuration
 - Custom upload hosts, app-state MAC verification and commit retries are options of the individual calls (`UploadOptions`, `SyncOptions`), not socket configuration fields.

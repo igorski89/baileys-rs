@@ -30,6 +30,8 @@ enum After {
     Active,
     /// A server-requested upload; only its waiters are notified.
     Waiters,
+    /// An upload that outlived its timeout: it runs on, but nothing waits for it.
+    Detached,
 }
 struct Pending {
     kind: PendingKind,
@@ -57,7 +59,7 @@ struct Actor<'a> {
     qr_deadline: Option<Instant>,
     qr_first: bool,
     close_reply: Option<oneshot::Sender<Result<(), Error>>>,
-    upload_retry: Option<(Instant, u32, u8, After)>,
+    upload_retry: Vec<(Instant, u32, u8, After)>,
     upload_waiters: Vec<oneshot::Sender<Result<(), Error>>>,
     upload_deadline: Option<Instant>,
     last_token_prune: Option<Instant>,
@@ -107,7 +109,7 @@ pub(super) async fn run(
         qr_deadline: None,
         qr_first: true,
         close_reply: None,
-        upload_retry: None,
+        upload_retry: vec![],
         upload_waiters: vec![],
         upload_deadline: None,
         last_token_prune: None,
@@ -301,11 +303,14 @@ impl Actor<'_> {
             }
             Command::UploadPreKeys { count, reply } => {
                 // A caller arriving during an upload waits for it instead of starting another.
-                let busy = self.upload_retry.is_some()
-                    || self
-                        .pending
-                        .values()
-                        .any(|p| matches!(p.kind, PendingKind::InitUpload { .. }));
+                // An upload that outlived its timeout no longer counts, as upstream.
+                let busy = self
+                    .upload_retry
+                    .iter()
+                    .any(|(.., after)| !matches!(after, After::Detached))
+                    || self.pending.values().any(|p| {
+                        matches!(&p.kind, PendingKind::InitUpload { after, .. } if !matches!(after, After::Detached))
+                    });
                 self.upload_waiters.push(reply);
                 if !busy && let Err(error) = self.upload(count, 0, After::Waiters).await {
                     tracing::warn!(?error, "pre-key upload preparation failed");
@@ -1012,6 +1017,10 @@ impl Actor<'_> {
     }
     /// Continue startup after its upload, and release callers waiting for any upload.
     async fn finish_upload(&mut self, after: After, uploaded: bool) -> Result<(), Error> {
+        if matches!(after, After::Detached) {
+            // Whoever waited on this upload was released when it timed out.
+            return Ok(());
+        }
         self.upload_deadline = None;
         for waiter in self.upload_waiters.drain(..) {
             let _ = waiter.send(if uploaded {
@@ -1023,12 +1032,12 @@ impl Actor<'_> {
         match after {
             After::Open => self.open().await,
             After::Active => self.active().await,
-            After::Waiters => Ok(()),
+            After::Waiters | After::Detached => Ok(()),
         }
     }
     async fn retry_upload(&mut self, count: u32, attempt: u8, after: After) -> Result<(), Error> {
         if attempt < 3 {
-            self.upload_retry = Some((
+            self.upload_retry.push((
                 Instant::now() + Duration::from_secs(1 << attempt),
                 count,
                 attempt + 1,
@@ -1156,12 +1165,12 @@ impl Actor<'_> {
         Ok(())
     }
     async fn maintain(&mut self) -> Result<(), Error> {
-        if self
+        while let Some(index) = self
             .upload_retry
-            .as_ref()
-            .is_some_and(|(deadline, ..)| *deadline <= Instant::now())
+            .iter()
+            .position(|(deadline, ..)| *deadline <= Instant::now())
         {
-            let (_, count, attempt, after) = self.upload_retry.take().expect("checked above");
+            let (_, count, attempt, after) = self.upload_retry.remove(index);
             self.upload(count, attempt, after).await?;
         }
         if self.upload_deadline.is_some_and(|t| t <= Instant::now()) {
@@ -1169,12 +1178,14 @@ impl Actor<'_> {
             // As upstream, the upload and its retries keep running; only what
             // waits on it moves on.
             let mut after = After::Waiters;
-            if let Some((.., pending)) = &mut self.upload_retry {
-                after = std::mem::replace(pending, After::Waiters);
-            }
-            for pending in self.pending.values_mut() {
-                if let PendingKind::InitUpload { after: pending, .. } = &mut pending.kind {
-                    after = std::mem::replace(pending, After::Waiters);
+            let retries = self.upload_retry.iter_mut().map(|(.., after)| after);
+            let sent = self.pending.values_mut().filter_map(|p| match &mut p.kind {
+                PendingKind::InitUpload { after, .. } => Some(after),
+                _ => None,
+            });
+            for pending in retries.chain(sent) {
+                if !matches!(pending, After::Detached) {
+                    after = std::mem::replace(pending, After::Detached);
                 }
             }
             for waiter in self.upload_waiters.drain(..) {
@@ -1183,7 +1194,7 @@ impl Actor<'_> {
             match after {
                 After::Open => self.open().await?,
                 After::Active => self.active().await?,
-                After::Waiters => {}
+                After::Waiters | After::Detached => {}
             }
         }
         if self.qr_deadline.is_some_and(|t| t <= Instant::now()) {

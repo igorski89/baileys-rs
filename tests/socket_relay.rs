@@ -378,6 +378,36 @@ async fn relay_discovers_devices_encrypts_direct_group_status_retry_and_peer_and
                     .as_deref(),
                 Some("987654@lid")
             );
+            // A member label is an ordinary group relay with one extra stanza child.
+            let query = peer.read().await;
+            assert_eq!(query.attrs["xmlns"], "w:g2");
+            peer.send(group_query_result(&query)).await;
+            let label = peer.read().await;
+            assert_eq!(label.attrs["to"], "group@g.us");
+            assert_eq!(label.attrs["addressing_mode"], "lid");
+            assert!(label.child("participants").is_none());
+            assert_eq!(
+                label.child("meta"),
+                Some(
+                    &BinaryNode::new("meta")
+                        .attr("tag_reason", "user_update")
+                        .attr("appdata", "member_tag")
+                )
+            );
+            let bytes = groups
+                .decrypt(&group_sender, label.child_buffer("enc").unwrap())
+                .unwrap();
+            let change = proto::Message::decode(messages::unpad(&bytes).unwrap())
+                .unwrap()
+                .protocol_message
+                .unwrap();
+            assert_eq!(
+                change.r#type,
+                Some(proto::message::protocol_message::Type::GroupMemberLabelChange as i32)
+            );
+            let member_label = change.member_label.unwrap();
+            assert_eq!(member_label.label.as_deref(), Some("Team lead 💚"));
+            assert!(member_label.label_timestamp.unwrap() > 1_700_000_000);
             peer.closed().await;
         });
         let (socket, _) = Socket::connect(config, store.clone()).await.unwrap();
@@ -478,6 +508,11 @@ async fn relay_discovers_devices_encrypts_direct_group_status_retry_and_peer_and
                 .protocol_message
                 .is_some()
         );
+        let label_id = socket
+            .update_member_label("group@g.us", "Team lead 💚")
+            .await
+            .unwrap();
+        assert!(!label_id.is_empty());
         let (tx, rx) = tokio::sync::oneshot::channel::<()>();
         retry_manager
             .schedule_phone_request(

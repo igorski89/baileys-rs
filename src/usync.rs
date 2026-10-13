@@ -264,12 +264,51 @@ impl std::fmt::Debug for Custom {
         f.debug_tuple("Custom").field(&self.0.name()).finish()
     }
 }
+#[derive(Debug, Clone, Copy)]
+enum Slot {
+    BuiltIn(usize),
+    Custom(usize),
+}
+enum Entry<'a> {
+    BuiltIn(&'a Protocol),
+    Custom(&'a dyn CustomProtocol),
+}
+impl Entry<'_> {
+    fn name(&self) -> &str {
+        match self {
+            Self::BuiltIn(protocol) => protocol.name(),
+            Self::Custom(protocol) => protocol.name(),
+        }
+    }
+    fn query_element(&self) -> BinaryNode {
+        match self {
+            Self::BuiltIn(protocol) => protocol.query_element(),
+            Self::Custom(protocol) => protocol.query_element(),
+        }
+    }
+    fn user_element(&self, user: &User) -> Option<BinaryNode> {
+        match self {
+            Self::BuiltIn(protocol) => protocol.user_element(user),
+            Self::Custom(protocol) => protocol.user_element(user),
+        }
+    }
+    fn parse(&self, node: &BinaryNode) -> Result<Option<Value>, Error> {
+        match self {
+            Self::BuiltIn(protocol) => protocol.parse(node),
+            Self::Custom(protocol) => Ok(protocol.parse(node)?.map(Value::Custom)),
+        }
+    }
+}
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Query {
     pub protocols: Vec<Protocol>,
-    /// Caller-defined protocols; they follow the built-in ones in the request.
+    /// Caller-defined protocols.
     #[serde(skip)]
     pub custom: Vec<Custom>,
+    /// The order the builder methods added protocols in. A query assembled through its
+    /// fields instead lists the built-in protocols first.
+    #[serde(skip)]
+    order: Vec<Slot>,
     pub users: Vec<User>,
     pub context: String,
     pub mode: String,
@@ -279,6 +318,7 @@ impl Default for Query {
         Self {
             protocols: vec![],
             custom: vec![],
+            order: vec![],
             users: vec![],
             context: "interactive".into(),
             mode: "query".into(),
@@ -287,19 +327,48 @@ impl Default for Query {
 }
 impl Query {
     pub fn with_protocol(mut self, protocol: Protocol) -> Self {
+        self.order.push(Slot::BuiltIn(self.protocols.len()));
         self.protocols.push(protocol);
         self
     }
     pub fn with_custom_protocol(mut self, protocol: impl CustomProtocol + 'static) -> Self {
+        self.order.push(Slot::Custom(self.custom.len()));
         self.custom.push(Custom(std::sync::Arc::new(protocol)));
         self
+    }
+    /// Every protocol in the order it was added.
+    fn entries(&self) -> Vec<Entry<'_>> {
+        let built_in = |index: usize| self.protocols.get(index).map(Entry::BuiltIn);
+        let custom = |index: usize| {
+            self.custom
+                .get(index)
+                .map(|protocol| Entry::Custom(protocol.0.as_ref()))
+        };
+        if self.order.len() == self.protocols.len() + self.custom.len() {
+            let entries: Option<Vec<_>> = self
+                .order
+                .iter()
+                .map(|slot| match *slot {
+                    Slot::BuiltIn(index) => built_in(index),
+                    Slot::Custom(index) => custom(index),
+                })
+                .collect();
+            if let Some(entries) = entries {
+                return entries;
+            }
+        }
+        (0..self.protocols.len())
+            .filter_map(built_in)
+            .chain((0..self.custom.len()).filter_map(custom))
+            .collect()
     }
     pub fn with_user(mut self, user: User) -> Self {
         self.users.push(user);
         self
     }
     pub fn stanza(&self, sid: &str) -> Result<BinaryNode, Error> {
-        if self.protocols.is_empty() && self.custom.is_empty() {
+        let entries = self.entries();
+        if entries.is_empty() {
             return Err(Error::NoProtocol);
         }
         let users = self
@@ -314,21 +383,16 @@ impl Query {
                 }
                 children(
                     node,
-                    self.protocols
+                    entries
                         .iter()
                         .filter_map(|p| p.user_element(user))
-                        .chain(self.custom.iter().filter_map(|p| p.0.user_element(user)))
                         .collect(),
                 )
             })
             .collect();
         let query = children(
             BinaryNode::new("query"),
-            self.protocols
-                .iter()
-                .map(|p| p.query_element())
-                .chain(self.custom.iter().map(|p| p.0.query_element()))
-                .collect(),
+            entries.iter().map(|p| p.query_element()).collect(),
         );
         Ok(children(
             BinaryNode::new("iq")
@@ -350,6 +414,7 @@ impl Query {
         if !node.attrs.get("type").is_some_and(|s| s == "result") {
             return Ok(None);
         }
+        let entries = self.entries();
         let mut list = vec![];
         if let Some(users) = node.child("usync").and_then(|n| n.child("list")) {
             for user in users.all_children() {
@@ -359,19 +424,7 @@ impl Query {
                 let mut protocols = IndexMap::new();
                 for content in user.all_children() {
                     // The last protocol added under a name parses its nodes.
-                    if let Some(protocol) =
-                        self.custom.iter().rev().find(|p| p.0.name() == content.tag)
-                    {
-                        if let Some(value) = protocol.0.parse(content)? {
-                            protocols.insert(content.tag.clone(), Value::Custom(value));
-                        }
-                        continue;
-                    }
-                    if let Some(protocol) = self
-                        .protocols
-                        .iter()
-                        .rev()
-                        .find(|p| p.name() == content.tag)
+                    if let Some(protocol) = entries.iter().rev().find(|p| p.name() == content.tag)
                         && let Some(value) = protocol.parse(content)?
                     {
                         protocols.insert(content.tag.clone(), value);

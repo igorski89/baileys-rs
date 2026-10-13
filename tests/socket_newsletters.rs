@@ -530,3 +530,66 @@ async fn newsletter_and_mex_notifications_publish_events_store_mappings_and_ack(
     .await
     .unwrap();
 }
+#[tokio::test]
+async fn newsletter_picture_update_sends_a_square_jpeg_in_the_update_request() {
+    timeout(Duration::from_secs(20), async {
+        let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let config = config(&listener);
+        let (checked_tx, checked_rx) = tokio::sync::oneshot::channel::<()>();
+        let server = tokio::spawn(async move {
+            let mut peer = Peer::accept(listener.accept().await.unwrap().0).await;
+            peer.send(BinaryNode::new("success")).await;
+            assert!(peer.read().await.child("unified_session").is_some());
+            let mut request = peer.read().await;
+            request.attrs.shift_remove("id");
+            let body: Value =
+                serde_json::from_slice(request.child_buffer("query").unwrap()).unwrap();
+            let picture = body["variables"]["updates"]["picture"].as_str().unwrap();
+            // Apart from the picture itself the request is an ordinary metadata update.
+            let update = Update {
+                picture: Some(picture.into()),
+                ..Default::default()
+            };
+            let mut expected = newsletters::query(
+                &update.variables("123@newsletter"),
+                newsletters::query_id::UPDATE_METADATA,
+            );
+            expected.attrs.shift_remove("id");
+            assert_eq!(request, expected);
+            let jpeg = STANDARD.decode(picture).unwrap();
+            let decoded =
+                image::load_from_memory_with_format(&jpeg, image::ImageFormat::Jpeg).unwrap();
+            assert_eq!((decoded.width(), decoded.height()), (640, 640));
+            // The wide red source is cropped to the centre and scaled up.
+            let pixel = decoded.to_rgb8().get_pixel(320, 320).0;
+            assert!(
+                pixel[0] > 200 && pixel[1] < 60 && pixel[2] < 60,
+                "{pixel:?}"
+            );
+            checked_tx.send(()).unwrap();
+            peer.closed().await;
+        });
+        let (socket, _events) = Socket::connect(config, store()).await.unwrap();
+        socket.wait_for_open(Duration::from_secs(2)).await.unwrap();
+        let mut png = std::io::Cursor::new(Vec::new());
+        image::RgbImage::from_pixel(64, 16, image::Rgb([230, 20, 20]))
+            .write_to(&mut png, image::ImageFormat::Png)
+            .unwrap();
+        let input = baileys_rs::media::Input::Bytes(png.into_inner().into());
+        // The server never answers; the request it received is what is under test.
+        let pending = tokio::spawn({
+            let socket = socket.clone();
+            async move {
+                socket
+                    .newsletter_update_picture("123@newsletter", &input)
+                    .await
+            }
+        });
+        checked_rx.await.unwrap();
+        pending.abort();
+        socket.close().await.unwrap();
+        server.await.unwrap();
+    })
+    .await
+    .unwrap();
+}
