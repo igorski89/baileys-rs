@@ -99,6 +99,11 @@ async fn v4_invite_acceptance_matches_original_requests_updates_and_stub_message
             // cannot be published, so an invite without a group fails after the request.
             if invite.group_jid.is_none() && !case["error"].as_bool().unwrap() {
                 assert!(result.is_err(), "{case}");
+                // Let the events of the failed call flush before the next case starts.
+                while timeout(Duration::from_millis(200), events.recv())
+                    .await
+                    .is_ok()
+                {}
                 continue;
             }
             assert_eq!(

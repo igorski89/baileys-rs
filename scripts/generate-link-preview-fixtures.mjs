@@ -1,4 +1,5 @@
 // Run the MIT-licensed Baileys getUrlInfo with its link-preview-js dependency against synthetic pages served by a fetch stub.
+// Requires upstream's optional peer dependency: npm install --ignore-scripts link-preview-js@^3 in .cache/fixture-tools.
 import {stripTypeScriptTypes,createRequire} from 'node:module'
 import {readFile,writeFile,mkdtemp,rm} from 'node:fs/promises'
 import {join,resolve} from 'node:path'

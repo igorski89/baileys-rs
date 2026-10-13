@@ -272,9 +272,11 @@ impl crate::link_preview::Source for SocketContentHooks<'_> {
         use crate::link_preview::Error;
         Box::pin(async move {
             let http = self.socket.link_preview_http().await?;
-            let image = http
-                .get(url, Default::default())
+            // The image request has the same time allowance as the page request.
+            let limit = self.socket.inner.link_previews.timeout;
+            let image = tokio::time::timeout(limit, http.get(url, Default::default()))
                 .await
+                .map_err(|_| Error::Image("request timed out".into()))?
                 .map_err(|error| Error::Image(error.to_string()))?
                 .bytes()
                 .await

@@ -175,4 +175,4 @@ Each upstream public export and socket operation must map to implemented Rust fu
 
 ## Next step
 
-Write a runnable pairing example and validate against a live account. Remaining gaps listed above (media format audit, history media handling, custom USync extensions, the aggregate pre-key upload timeout) follow. The full goal remains active.
+Run examples/live.rs against a live account (pairing-code login, event logging, one outgoing text) and fix what it finds. Remaining gaps listed above (media format audit, history media handling, custom USync extensions, the aggregate pre-key upload timeout) follow. The full goal remains active.
