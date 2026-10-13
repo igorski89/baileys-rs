@@ -6,6 +6,7 @@ pub mod group_effects;
 pub mod incoming;
 pub mod own;
 pub mod protocol;
+pub mod updates;
 use crate::{
     binary::{BinaryNode, NodeContent},
     crypto,

@@ -27,6 +27,32 @@ pub enum Error {
     #[error("signed prekey ID exceeds wire range")]
     PreKeyId,
 }
+/// The kernel release (`uname -r`, or the version `ver` prints on Windows); empty when unavailable.
+fn os_release() -> String {
+    let run = |program: &str, args: &[&str]| {
+        let output = std::process::Command::new(program)
+            .args(args)
+            .output()
+            .ok()?;
+        String::from_utf8(output.stdout).ok()
+    };
+    if cfg!(windows) {
+        run("cmd", &["/c", "ver"])
+            .and_then(|text| {
+                let version = text.rsplit("Version ").next()?.trim();
+                Some(version.trim_end_matches(']').to_owned())
+            })
+            .unwrap_or_default()
+    } else {
+        run("uname", &["-r"])
+            .map(|text| text.trim().to_owned())
+            .unwrap_or_default()
+    }
+}
+/// Whether a credential platform is one of the WhatsApp Business apps.
+pub fn is_business_platform(platform: &str) -> bool {
+    platform == "smbi" || platform == "smba"
+}
 #[derive(Debug, Clone, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
 pub struct Browser(pub String, pub String, pub String);
 impl Browser {
@@ -44,6 +70,20 @@ impl Browser {
     }
     pub fn android(device: impl Into<String>) -> Self {
         Self(device.into(), "Android".into(), String::new())
+    }
+    /// The platform this process runs on and its kernel release, as upstream's `appropriate`.
+    pub fn appropriate(browser: impl Into<String>) -> Self {
+        let platform = match std::env::consts::OS {
+            "aix" => "AIX",
+            "macos" => "Mac OS",
+            "windows" => "Windows",
+            "android" => "Android",
+            "freebsd" => "FreeBSD",
+            "openbsd" => "OpenBSD",
+            "solaris" | "illumos" => "Solaris",
+            _ => "Ubuntu",
+        };
+        Self(platform.into(), browser.into(), os_release())
     }
     pub fn companion_platform_id(&self) -> u8 {
         match self.1.as_str() {

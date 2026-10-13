@@ -169,7 +169,10 @@ pub struct HttpClient {
 impl HttpClient {
     pub fn new() -> Result<Self, Error> {
         Ok(Self {
-            download: reqwest::Client::builder().build()?,
+            // Node's fetch follows up to twenty redirects.
+            download: reqwest::Client::builder()
+                .redirect(reqwest::redirect::Policy::limited(20))
+                .build()?,
             upload: reqwest::Client::builder()
                 .redirect(reqwest::redirect::Policy::none())
                 .build()?,

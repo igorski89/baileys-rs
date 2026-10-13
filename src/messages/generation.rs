@@ -87,6 +87,24 @@ pub fn content_type(message: Option<&proto::Message>) -> Option<&'static str> {
     Field::first(message?, true).map(Field::name)
 }
 
+/// The file extension upstream derives for a media message: the MIME subtype, or `.jpeg`
+/// (with the dot, as upstream has it) for location and product thumbnails.
+pub fn media_extension(message: &proto::Message) -> Option<String> {
+    let mimetype = match Field::first(message, false)?.name() {
+        "locationMessage" | "liveLocationMessage" | "productMessage" => {
+            return Some(".jpeg".into());
+        }
+        "imageMessage" => message.image_message.as_ref()?.mimetype.as_deref(),
+        "videoMessage" => message.video_message.as_ref()?.mimetype.as_deref(),
+        "ptvMessage" => message.ptv_message.as_ref()?.mimetype.as_deref(),
+        "audioMessage" => message.audio_message.as_ref()?.mimetype.as_deref(),
+        "documentMessage" => message.document_message.as_ref()?.mimetype.as_deref(),
+        "stickerMessage" => message.sticker_message.as_ref()?.mimetype.as_deref(),
+        _ => None,
+    }?;
+    let kind = mimetype.split(';').next()?;
+    kind.split('/').nth(1).map(str::to_owned)
+}
 pub fn disappearing_setting(expiration: Option<u32>) -> proto::Message {
     proto::Message {
         ephemeral_message: Some(Box::new(proto::message::FutureProofMessage {

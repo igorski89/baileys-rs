@@ -2,14 +2,13 @@
 
 Known gaps and deliberate deviations from upstream Baileys, kept here so they can be addressed later. `PORT_STATUS.md` is the chronological log; this file is the current list. Add an entry whenever an increment introduces a deviation, and remove it when it is resolved.
 
-Entries marked *(unverified)* come from the earlier log and have not been re-checked against the code.
-
 ## Not yet ported
 
 - **Live validation.** Nothing has run against a real account yet. `examples/live.rs` is ready (pairing-code login, event log, one outgoing text).
-- **Public API surface audit beyond the socket.** `scripts/audit-socket-api.mjs` checks every method the upstream socket layers return against Rust function names (150 covered, none missing). It matches by name only, and upstream's exported utilities and types (`src/Utils`, `src/Types`) have not been audited.
+- **Type-level audit.** `scripts/audit-socket-api.mjs` (150 socket methods) and `scripts/audit-utils-api.mjs` (157 utility exports covered, 38 without a counterpart on purpose, none missing) match by identifier only. Upstream's exported types (`src/Types`) were compared by hand for the socket configuration and the event map only.
+- **Pluggable caches and agents.** Upstream accepts caller-supplied stores for the retry counters, placeholder resends and uploaded media, and proxy agents for the WebSocket and for fetches. The port takes a caller-supplied HTTP client for media, a device-cache store and a call-offer cache; the rest is built in.
 
-Not gaps, but worth knowing: like upstream, the socket does not reconnect by itself (`examples/live.rs` shows the loop), and EXIF orientation is ignored when making thumbnails.
+Not gaps, but worth knowing: like upstream, the socket does not reconnect by itself (`examples/live.rs` shows the loop), and EXIF orientation is ignored when making thumbnails (sharp is used without `rotate()` upstream too).
 
 ## Deviations from upstream behaviour
 
@@ -17,7 +16,6 @@ Not gaps, but worth knowing: like upstream, the socket does not reconnect by its
 - Opt-in through `Config::link_previews.enabled`. Upstream generates previews whenever its optional `link-preview-js` dependency is installed.
 - Page parsing is a reimplementation of `link-preview-js` on the `scraper` crate (html5ever), pinned by 126 upstream cases. A new upstream release of that package would need the fixtures regenerated; the generator needs `link-preview-js` installed in `.cache/fixture-tools`.
 - Relative image URLs are resolved with WHATWG rules, not Node's legacy `url.resolve`.
-- Redirects follow the HTTP client's limit of ten, not fetch's twenty.
 - Custom request headers and proxy settings are not passed to the page fetch.
 - No test fetches a real page over TLS.
 
@@ -51,7 +49,6 @@ Not gaps, but worth knowing: like upstream, the socket does not reconnect by its
 - A member label cut inside an astral character drops that character; upstream keeps half of it, which encodes as a replacement character.
 - `update_member_label` has a test of its message and stanza child only, not of a group relay.
 - The asynchronous patch hook is awaited on the relay blocking worker (`Handle::block_on`); it must not wait on the relay it is patching.
-- Per-recipient patches suppress reporting tokens. *(unverified)*
 
 ### Media
 - AVIF images and JPEG-compressed (YCbCr) TIFF images cannot be decoded for thumbnails or profile pictures; sharp handles both.
@@ -67,12 +64,24 @@ Not gaps, but worth knowing: like upstream, the socket does not reconnect by its
 ### Pre-key upload
 - After the upload timeout a new upload request joins the one still running instead of starting a second one, as upstream would.
 
+### Configuration
+- Custom upload hosts, app-state MAC verification and commit retries are options of the individual calls (`UploadOptions`, `SyncOptions`), not socket configuration fields.
+- Cached group metadata is passed per send as a value; upstream takes one lookup callback in the configuration.
+
+### Exported helpers
+- `aggregate_event_responses` reads the decrypted responses the socket publishes. Upstream reads a runtime `eventResponse` property that its own events never set.
+- The message update and aggregation helpers identify authors by the key's participant or chat; the alternate PN/LID key fields upstream prefers are not part of the protobuf key.
+- `update_with_receipt` keeps stored device lists when the receipt's lists are empty.
+- `media_extension` returns nothing where upstream throws (a message without a MIME type).
+- `BinaryNode::dictionary` keeps insertion order and skips children without a name or value; JavaScript lists integer-like keys first.
+- `Browser::appropriate` reads the kernel release from `uname -r` (or `ver` on Windows) and leaves it empty when that fails.
+- The version lookups take a `reqwest::Client` instead of fetch options, and versions above the 32-bit range are treated as unparsable.
+
 ### WAM
 - The event tables are generated from one upstream revision (`scripts/generate-wam-constants.mjs`) and must be regenerated when upstream updates them.
 
 ### Events
 - Device-less JIDs in the device cache are stored with device zero where upstream stores an undefined device.
-- Cache expiry is purged on access, not by idle timers. *(unverified)*
 
 ## Performance and robustness (deferred by decision: parity first)
 
