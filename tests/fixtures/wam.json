@@ -1,0 +1,676 @@
+{
+ "cases": [
+  {
+   "input": {
+    "events": []
+   },
+   "wire": "57414d0501000000",
+   "error": null
+  },
+  {
+   "input": {
+    "sequence": 1,
+    "events": []
+   },
+   "wire": "57414d0501000100",
+   "error": null
+  },
+  {
+   "input": {
+    "sequence": 65535,
+    "protocolVersion": 7,
+    "events": []
+   },
+   "wire": "57414d0701ffff00",
+   "error": null
+  },
+  {
+   "input": {
+    "events": [
+     {
+      "WamDroppedEvent": {
+       "props": {},
+       "globals": {}
+      }
+     }
+    ]
+   },
+   "wire": "57414d05010000003d0611ff",
+   "error": null
+  },
+  {
+   "input": {
+    "events": [
+     {
+      "WamDroppedEvent": {
+       "props": {
+        "droppedEventCode": 5,
+        "droppedEventCount": 300,
+        "isFromWamsys": true
+       },
+       "globals": {}
+      }
+     }
+    ]
+   },
+   "wire": "57414d0501000000390611ff31010541022c012603",
+   "error": null
+  },
+  {
+   "input": {
+    "events": [
+     {
+      "WamDroppedEvent": {
+       "props": {
+        "isFromWamsys": false,
+        "droppedEventCount": 0,
+        "droppedEventCode": 1
+       },
+       "globals": {}
+      }
+     }
+    ]
+   },
+   "wire": "57414d0501000000390611ff110311022601",
+   "error": null
+  },
+  {
+   "input": {
+    "events": [
+     {
+      "WamDroppedEvent": {
+       "props": {
+        "droppedEventCode": null
+       },
+       "globals": {}
+      }
+     }
+    ]
+   },
+   "wire": null,
+   "error": "missing"
+  },
+  {
+   "input": {
+    "events": [
+     {
+      "WamDroppedEvent": {
+       "props": {
+        "droppedEventCode": 1,
+        "droppedEventCount": null
+       },
+       "globals": {}
+      }
+     }
+    ]
+   },
+   "wire": null,
+   "error": "missing"
+  },
+  {
+   "input": {
+    "events": [
+     {
+      "WamDroppedEvent": {
+       "props": {
+        "notAField": 1
+       },
+       "globals": {}
+      }
+     }
+    ]
+   },
+   "wire": "57414d0501000000390611ff2e0000",
+   "error": null
+  },
+  {
+   "input": {
+    "events": [
+     {
+      "NotAnEvent": {
+       "props": {},
+       "globals": {}
+      }
+     }
+    ]
+   },
+   "wire": null,
+   "error": "TypeError"
+  },
+  {
+   "input": {
+    "events": [
+     {
+      "WamDroppedEvent": {
+       "props": {},
+       "globals": {
+        "notAGlobal": 1
+       }
+      }
+     }
+    ]
+   },
+   "wire": null,
+   "error": "TypeError"
+  },
+  {
+   "input": {
+    "events": [
+     {
+      "WamDroppedEvent": {
+       "props": {
+        "droppedEventCode": -1
+       },
+       "globals": {}
+      }
+     }
+    ]
+   },
+   "wire": "57414d0501000000390611ff3601ff",
+   "error": null
+  },
+  {
+   "input": {
+    "events": [
+     {
+      "WamDroppedEvent": {
+       "props": {
+        "droppedEventCode": -128
+       },
+       "globals": {}
+      }
+     }
+    ]
+   },
+   "wire": "57414d0501000000390611ff360180",
+   "error": null
+  },
+  {
+   "input": {
+    "events": [
+     {
+      "WamDroppedEvent": {
+       "props": {
+        "droppedEventCode": -129
+       },
+       "globals": {}
+      }
+     }
+    ]
+   },
+   "wire": "57414d0501000000390611ff46017fff",
+   "error": null
+  },
+  {
+   "input": {
+    "events": [
+     {
+      "WamDroppedEvent": {
+       "props": {
+        "droppedEventCode": 127
+       },
+       "globals": {}
+      }
+     }
+    ]
+   },
+   "wire": "57414d0501000000390611ff36017f",
+   "error": null
+  },
+  {
+   "input": {
+    "events": [
+     {
+      "WamDroppedEvent": {
+       "props": {
+        "droppedEventCode": 128
+       },
+       "globals": {}
+      }
+     }
+    ]
+   },
+   "wire": "57414d0501000000390611ff46018000",
+   "error": null
+  },
+  {
+   "input": {
+    "events": [
+     {
+      "WamDroppedEvent": {
+       "props": {
+        "droppedEventCode": -32768
+       },
+       "globals": {}
+      }
+     }
+    ]
+   },
+   "wire": "57414d0501000000390611ff46010080",
+   "error": null
+  },
+  {
+   "input": {
+    "events": [
+     {
+      "WamDroppedEvent": {
+       "props": {
+        "droppedEventCode": -32769
+       },
+       "globals": {}
+      }
+     }
+    ]
+   },
+   "wire": "57414d0501000000390611ff5601ff7fffff",
+   "error": null
+  },
+  {
+   "input": {
+    "events": [
+     {
+      "WamDroppedEvent": {
+       "props": {
+        "droppedEventCode": 32767
+       },
+       "globals": {}
+      }
+     }
+    ]
+   },
+   "wire": "57414d0501000000390611ff4601ff7f",
+   "error": null
+  },
+  {
+   "input": {
+    "events": [
+     {
+      "WamDroppedEvent": {
+       "props": {
+        "droppedEventCode": 32768
+       },
+       "globals": {}
+      }
+     }
+    ]
+   },
+   "wire": "57414d0501000000390611ff560100800000",
+   "error": null
+  },
+  {
+   "input": {
+    "events": [
+     {
+      "WamDroppedEvent": {
+       "props": {
+        "droppedEventCode": -2147483648
+       },
+       "globals": {}
+      }
+     }
+    ]
+   },
+   "wire": "57414d0501000000390611ff560100000080",
+   "error": null
+  },
+  {
+   "input": {
+    "events": [
+     {
+      "WamDroppedEvent": {
+       "props": {
+        "droppedEventCode": -2147483649
+       },
+       "globals": {}
+      }
+     }
+    ]
+   },
+   "wire": "57414d0501000000390611ff7601000020000000e0c1",
+   "error": null
+  },
+  {
+   "input": {
+    "events": [
+     {
+      "WamDroppedEvent": {
+       "props": {
+        "droppedEventCode": 2147483647
+       },
+       "globals": {}
+      }
+     }
+    ]
+   },
+   "wire": "57414d0501000000390611ff5601ffffff7f",
+   "error": null
+  },
+  {
+   "input": {
+    "events": [
+     {
+      "WamDroppedEvent": {
+       "props": {
+        "droppedEventCode": 2147483648
+       },
+       "globals": {}
+      }
+     }
+    ]
+   },
+   "wire": "57414d0501000000390611ff7601000000000000e041",
+   "error": null
+  },
+  {
+   "input": {
+    "events": [
+     {
+      "WamDroppedEvent": {
+       "props": {
+        "droppedEventCode": 9007199254740991
+       },
+       "globals": {}
+      }
+     }
+    ]
+   },
+   "wire": "57414d0501000000390611ff7601ffffffffffff3f43",
+   "error": null
+  },
+  {
+   "input": {
+    "events": [
+     {
+      "WamDroppedEvent": {
+       "props": {
+        "droppedEventCode": 1.5
+       },
+       "globals": {}
+      }
+     }
+    ]
+   },
+   "wire": "57414d0501000000390611ff7601000000000000f83f",
+   "error": null
+  },
+  {
+   "input": {
+    "events": [
+     {
+      "WamDroppedEvent": {
+       "props": {
+        "droppedEventCode": -0.25
+       },
+       "globals": {}
+      }
+     }
+    ]
+   },
+   "wire": "57414d0501000000390611ff7601000000000000d0bf",
+   "error": null
+  },
+  {
+   "input": {
+    "events": [
+     {
+      "WamDroppedEvent": {
+       "props": {
+        "droppedEventCode": 0
+       },
+       "globals": {}
+      }
+     }
+    ]
+   },
+   "wire": "57414d0501000000390611ff1601",
+   "error": null
+  },
+  {
+   "input": {
+    "events": [
+     {
+      "WamDroppedEvent": {
+       "props": {
+        "droppedEventCode": 1e+300
+       },
+       "globals": {}
+      }
+     }
+    ]
+   },
+   "wire": "57414d0501000000390611ff76019c7500883ce4377e",
+   "error": null
+  },
+  {
+   "input": {
+    "special": "NaN",
+    "events": [
+     {
+      "WamDroppedEvent": {
+       "props": {
+        "droppedEventCode": null
+       },
+       "globals": {}
+      }
+     }
+    ]
+   },
+   "wire": "57414d0501000000390611ff7601000000000000f87f",
+   "error": null
+  },
+  {
+   "input": {
+    "special": "Infinity",
+    "events": [
+     {
+      "WamDroppedEvent": {
+       "props": {
+        "droppedEventCode": null
+       },
+       "globals": {}
+      }
+     }
+    ]
+   },
+   "wire": "57414d0501000000390611ff7601000000000000f07f",
+   "error": null
+  },
+  {
+   "input": {
+    "special": "-Infinity",
+    "events": [
+     {
+      "WamDroppedEvent": {
+       "props": {
+        "droppedEventCode": null
+       },
+       "globals": {}
+      }
+     }
+    ]
+   },
+   "wire": "57414d0501000000390611ff7601000000000000f0ff",
+   "error": null
+  },
+  {
+   "input": {
+    "events": [
+     {
+      "MetaVerifiedInteraction": {
+       "props": {
+        "businessOwnerJid": ""
+       },
+       "globals": {}
+      }
+     }
+    ]
+   },
+   "wire": "57414d0501000000390613ff860100",
+   "error": null
+  },
+  {
+   "input": {
+    "events": [
+     {
+      "MetaVerifiedInteraction": {
+       "props": {
+        "businessOwnerJid": "a"
+       },
+       "globals": {}
+      }
+     }
+    ]
+   },
+   "wire": "57414d0501000000390613ff86010161",
+   "error": null
+  },
+  {
+   "input": {
+    "events": [
+     {
+      "MetaVerifiedInteraction": {
+       "props": {
+        "businessOwnerJid": "💚 text"
+       },
+       "globals": {}
+      }
+     }
+    ]
+   },
+   "wire": "57414d0501000000390613ff860109f09f929a2074657874",
+   "error": null
+  },
+  {
+   "input": {
+    "events": [
+     {
+      "MetaVerifiedInteraction": {
+       "props": {
+        "businessOwnerJid": "ééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééé"
+       },
+       "globals": {}
+      }
+     }
+    ]
+   },
+   "sha256": "1147cfd1bb9d5bb9e73af051ff9723fd25739d7564b408c37589f96c2a23c23d",
+   "error": null
+  },
+  {
+   "input": {
+    "events": [
+     {
+      "MetaVerifiedInteraction": {
+       "props": {
+        "businessOwnerJid": "éééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééééé"
+       },
+       "globals": {}
+      }
+     }
+    ]
+   },
+   "sha256": "7cbfbf5683a1e2d05887c376e2855badbc7943e203459d795a934f8310864134",
+   "error": null
+  },
+  {
+   "input": {
+    "events": [
+     {
+      "MetaVerifiedInteraction": {
+       "props": {
+        "businessOwnerJid": {
+         "repeat": "é",
+         "count": 32767
+        }
+       },
+       "globals": {}
+      }
+     }
+    ]
+   },
+   "sha256": "13cb78c0b8306eb963940221dbaf3025629cb555e65faeceb2c88de658e2b529",
+   "error": null
+  },
+  {
+   "input": {
+    "events": [
+     {
+      "MetaVerifiedInteraction": {
+       "props": {
+        "businessOwnerJid": {
+         "repeat": "é",
+         "count": 32768
+        }
+       },
+       "globals": {}
+      }
+     }
+    ]
+   },
+   "sha256": "e91a89abf82bb5e8c9c63a6bfacb9b7f78115614fe07324da84ed48a6132cbbe",
+   "error": null
+  },
+  {
+   "input": {
+    "events": [
+     {
+      "MetaVerifiedInteraction": {
+       "props": {
+        "businessOwnerJid": "100@s.whatsapp.net",
+        "businessOwnerPlatform": 2,
+        "metaVerifiedInteractionAction": 19
+       },
+       "globals": {
+        "appVersion": "2.3000.1",
+        "appIsBetaRelease": false,
+        "abKey2": null,
+        "beaconSessionId": 123456789,
+        "appBuild": 4
+       }
+      }
+     }
+    ]
+   },
+   "wire": "57414d0501000000801108322e333030302e31101508791158614815cd5b0738790604390613ff81011231303040732e77686174736170702e6e6574310202360313",
+   "error": null
+  },
+  {
+   "input": {
+    "sequence": 3,
+    "events": [
+     {
+      "WamDroppedEvent": {
+       "props": {
+        "droppedEventCode": 1
+       },
+       "globals": {
+        "appIsBetaRelease": true
+       }
+      }
+     },
+     {
+      "WamDroppedEvent": {
+       "props": {},
+       "globals": {
+        "browser": "Chrome"
+       }
+      }
+     },
+     {
+      "MetaVerifiedInteraction": {
+       "props": {
+        "businessOwnerJid": "x"
+       },
+       "globals": {}
+      }
+     }
+    ]
+   },
+   "wire": "57414d05010003002015390611ff2601880b03064368726f6d653d0611ff390613ff86010178",
+   "error": null
+  }
+ ],
+ "events": 313,
+ "globals": 48,
+ "tables": "9440e7e4390b660660b525df621628dff41d323c20ae80ef6bd635569f351fd4"
+}

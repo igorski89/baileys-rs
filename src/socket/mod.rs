@@ -68,6 +68,8 @@ pub enum Error {
     #[error(transparent)]
     Mex(#[from] crate::newsletters::Error),
     #[error(transparent)]
+    Wam(#[from] crate::wam::Error),
+    #[error(transparent)]
     EventBuffer(#[from] crate::event_buffer::Error),
     #[error(transparent)]
     EventJson(#[from] crate::proto_json::Error),

@@ -201,3 +201,28 @@ impl Socket {
         self.clean_dirty_bits("groups", None).await
     }
 }
+impl Socket {
+    /// Send an encoded WAM telemetry buffer to the server.
+    pub async fn send_wam_buffer(
+        &self,
+        buffer: Vec<u8>,
+    ) -> Result<crate::binary::BinaryNode, Error> {
+        let now = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .map_err(|_| Error::Config)?;
+        // Seconds rounded to nearest, as Math.round(Date.now() / 1000).
+        let seconds = (now.as_millis() + 500) / 1000;
+        self.query(
+            crate::binary::BinaryNode::new("iq")
+                .attr("to", crate::jid::S_WHATSAPP_NET)
+                .attr("xmlns", "w:stats")
+                .with_content(crate::binary::NodeContent::Children(vec![
+                    crate::binary::BinaryNode::new("add")
+                        .attr("t", seconds.to_string())
+                        .with_content(crate::binary::NodeContent::Bytes(buffer)),
+                ])),
+            None,
+        )
+        .await
+    }
+}
