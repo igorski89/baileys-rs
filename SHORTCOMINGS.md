@@ -7,10 +7,6 @@ Entries marked *(unverified)* come from the earlier log and have not been re-che
 ## Not yet ported
 
 - **Live validation.** Nothing has run against a real account yet. `examples/live.rs` is ready (pairing-code login, event log, one outgoing text).
-- **Custom USync protocol extensions and external device-cache adapters.** Only the built-in protocols and the in-memory device cache exist.
-- **History media handling and the remote-size policy** for media downloads.
-- **Image and audio format audit.** Decoder and encoder output has not been compared with upstream's sharp/jimp and audio-decode across formats.
-- **Aggregate pre-key upload timeout.** Upstream bounds the whole upload at 30 seconds; here only the three backoff retries are bounded.
 - **Privacy-token index scheduling** (tctoken prune scheduling and automatic AB-prop fetching). *(unverified)*
 - **Automatic reconnection.** As upstream, the socket does not reconnect by itself; the example shows the loop.
 - **Public API surface audit.** No source-to-port coverage audit of every upstream export, and no documented list of intentional API differences beyond this file.
@@ -53,6 +49,20 @@ Entries marked *(unverified)* come from the earlier log and have not been re-che
 ### Relay
 - The asynchronous patch hook is awaited on the relay blocking worker (`Handle::block_on`); it must not wait on the relay it is patching.
 - Per-recipient patches suppress reporting tokens. *(unverified)*
+
+### Media
+- AVIF images and JPEG-compressed (YCbCr) TIFF images cannot be decoded for thumbnails or profile pictures; sharp handles both.
+- Thumbnails and profile pictures are not byte-identical to sharp's: resampling and JPEG encoding differ. On the audit picture the mean channel difference is about 4 to 7 out of 255 (1 for greyscale).
+- Waveforms are produced for AAC, M4A and non-16-bit WAV, where upstream's decoder yields none. Lossy formats may differ by one level per bin.
+- The remote download limit counts received bytes exactly; upstream counts each chunk twice, so its effective limit is lower and depends on chunk sizes.
+- EXIF orientation is ignored, as upstream does.
+
+### USync and device cache
+- Custom USync protocols always follow the built-in ones in the request, whatever order they were added in.
+- The external device store is synchronous and is called while the cache is locked; upstream's cache interface is asynchronous and has an optional batched read.
+
+### Pre-key upload
+- After the upload timeout a new upload request joins the one still running instead of starting a second one, as upstream would.
 
 ### WAM
 - The event tables are generated from one upstream revision (`scripts/generate-wam-constants.mjs`) and must be regenerated when upstream updates them.
