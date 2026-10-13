@@ -152,6 +152,9 @@ pub struct PrepareOptions {
     pub media_type_override: Option<MediaType>,
     pub upload: UploadOptions,
     pub cache: bool,
+    /// Largest body accepted when the input is fetched over HTTP; larger
+    /// downloads fail while encrypting.
+    pub max_content_length: Option<u64>,
     /// Explicit null/empty-list fields, overriding template values.
     /// Invalid fields fail before input, upload or cache hooks run.
     pub clear_fields: Vec<MediaField>,
@@ -244,6 +247,20 @@ impl std::fmt::Debug for PreparationHooks {
     }
 }
 
+// Fails a remote download once it exceeds the configured size.
+struct Limited {
+    input: Box<dyn Read + Send>,
+    remaining: u64,
+}
+impl Read for Limited {
+    fn read(&mut self, buffer: &mut [u8]) -> std::io::Result<usize> {
+        let read = self.input.read(buffer)?;
+        self.remaining = self.remaining.checked_sub(read as u64).ok_or_else(|| {
+            std::io::Error::other("content length exceeded when encrypting \"remote\"")
+        })?;
+        Ok(read)
+    }
+}
 struct RawFile {
     file: tempfile::NamedTempFile,
     hash: [u8; 32],
@@ -446,6 +463,14 @@ pub async fn prepare(
         _ => false,
     };
     let input = request.input.open(http, options).await?;
+    let remote = matches!(&request.input, Input::Url(url) if url.starts_with("http://") || url.starts_with("https://"));
+    let input: Box<dyn Read + Send> = match options.max_content_length {
+        Some(limit) if remote && limit != 0 => Box::new(Limited {
+            input,
+            remaining: limit,
+        }),
+        _ => input,
+    };
     let cipher_kind = options.media_type_override.unwrap_or(kind);
     let file = if raw {
         tokio::task::spawn_blocking(move || RawFile::copy(input).map(File::Raw))

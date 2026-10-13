@@ -21,6 +21,21 @@ pub struct ImageThumbnail {
 
 /// Decode an image and resize to the requested width, preserving aspect ratio.
 /// Uses quality-50 JPEG; codec/resampler bytes may differ from Sharp/Jimp.
+// JPEG has no alpha: like sharp, transparent pixels are flattened onto black.
+fn flatten(image: image::DynamicImage) -> image::DynamicImage {
+    if !image.color().has_alpha() {
+        return image;
+    }
+    let mut rgba = image.to_rgba8();
+    for pixel in rgba.pixels_mut() {
+        let alpha = u32::from(pixel[3]);
+        for channel in &mut pixel.0[..3] {
+            *channel = ((u32::from(*channel) * alpha + 127) / 255) as u8;
+        }
+        pixel[3] = 255;
+    }
+    image::DynamicImage::ImageRgb8(image::DynamicImage::ImageRgba8(rgba).to_rgb8())
+}
 pub fn extract_image_thumb(mut input: impl Read, width: u32) -> Result<ImageThumbnail, Error> {
     if width == 0 {
         return Err(Error::Input("zero image width"));
@@ -31,6 +46,7 @@ pub fn extract_image_thumb(mut input: impl Read, width: u32) -> Result<ImageThum
         .with_guessed_format()?
         .decode()?;
     let (original_width, original_height) = image.dimensions();
+    let image = flatten(image);
     let height =
         ((original_height as f64 * width as f64 / original_width as f64).round() as u32).max(1);
     let resized = image
@@ -63,7 +79,7 @@ pub async fn generate_profile_picture(
         let image = ImageReader::new(Cursor::new(bytes))
             .with_guessed_format()?
             .decode()?;
-        let resized = image
+        let resized = flatten(image)
             .resize_to_fill(width, height, FilterType::Lanczos3)
             .to_rgb8();
         let mut jpeg = Vec::new();

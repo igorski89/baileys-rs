@@ -118,11 +118,19 @@ async fn compressed_audio_and_video_hooks_process_real_files() {
             "{} duration",
             case["format"]
         );
-        let wave = processor
-            .waveform(Some(file.path().into()))
-            .await
-            .unwrap()
-            .unwrap();
+        let wave = processor.waveform(Some(file.path().into())).await.unwrap();
+        // Upstream's decoder yields no waveform for AAC and non-16-bit WAV; the
+        // native decoder may still produce one.
+        if case["waveform"].is_null() {
+            println!(
+                "{} ({}): native waveform {}",
+                case["format"],
+                case["codec"],
+                if wave.is_some() { "present" } else { "absent" }
+            );
+            continue;
+        }
+        let wave = wave.unwrap();
         let expected = hex(&case["waveform"]);
         // Lossy decoder implementations can round normalized bin levels differently.
         let tolerance = if case["format"] == "flac" { 0 } else { 1 };
@@ -287,4 +295,65 @@ async fn default_preparation_generates_real_image_and_audio_metadata() {
     .audio_message
     .unwrap();
     assert!(audio.waveform.is_none());
+}
+// Mean absolute channel difference between two RGB images of equal size.
+fn difference(actual: &image::RgbImage, expected: &[u8]) -> f64 {
+    assert_eq!(actual.as_raw().len(), expected.len());
+    let total: u64 = actual
+        .as_raw()
+        .iter()
+        .zip(expected)
+        .map(|(a, b)| u64::from(a.abs_diff(*b)))
+        .sum();
+    total as f64 / expected.len() as f64
+}
+#[tokio::test]
+async fn image_format_audit_against_original_thumbnails() {
+    let http = HttpClient::new().unwrap();
+    let cases = fixtures()["formats"].as_array().unwrap().clone();
+    assert_eq!(cases.len(), 17);
+    for case in &cases {
+        let name = case["name"].as_str().unwrap();
+        let bytes = hex(&case["input"]);
+        let thumb = extract_image_thumb(Cursor::new(&bytes), 32);
+        // Encodings the native decoder lacks: AVIF, and JPEG-compressed (YCbCr) TIFF.
+        if matches!(name, "avif" | "tiff") {
+            assert!(thumb.is_err(), "{name} is now supported; compare it");
+            continue;
+        }
+        let thumb = thumb.unwrap_or_else(|error| panic!("{name}: {error}"));
+        let original = &case["original"];
+        assert_eq!(u64::from(thumb.original_width), original["width"], "{name}");
+        assert_eq!(
+            u64::from(thumb.original_height),
+            original["height"],
+            "{name}"
+        );
+        let expected = &case["thumbnail"];
+        assert_eq!(expected["channels"], 3);
+        let decoded = image::load_from_memory(&thumb.jpeg).unwrap().to_rgb8();
+        assert_eq!(u64::from(decoded.width()), expected["width"], "{name}");
+        assert_eq!(u64::from(decoded.height()), expected["height"], "{name}");
+        // Resampling and JPEG encoding differ from sharp; the pictures must still agree.
+        let thumbnail = difference(&decoded, &hex(&expected["pixels"]));
+        assert!(
+            thumbnail < 8.0,
+            "{name} thumbnail differs by {thumbnail:.2}"
+        );
+        let profile = generate_profile_picture(
+            &Input::bytes(bytes),
+            Some((24, 24)),
+            &http,
+            &PrepareOptions::default(),
+        )
+        .await
+        .unwrap();
+        let profile = image::load_from_memory(&profile).unwrap().to_rgb8();
+        assert_eq!(profile.dimensions(), (24, 24));
+        let profile = difference(&profile, &hex(&case["profile"]["pixels"]));
+        assert!(
+            profile < 10.0,
+            "{name} profile picture differs by {profile:.2}"
+        );
+    }
 }

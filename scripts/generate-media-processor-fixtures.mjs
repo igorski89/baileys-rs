@@ -37,12 +37,21 @@ try {
  const compressed=[]
  // audio-decode's FLAC loader overwrites its MP3 cache entry; isolate MP3 first.
  // Nonpooled buffers avoid its buffer-offset bug. Both partial/full final FLAC frames are covered.
- for(const [format,codec,flacCount=8011] of [['mp3','libmp3lame'],['flac','flac'],['flac','flac',7680],['ogg','vorbis'],['opus','libopus']]) {
+ for(const [format,codec,flacCount=8011] of [['mp3','libmp3lame'],['flac','flac'],['flac','flac',7680],['ogg','vorbis'],['opus','libopus'],['m4a','aac'],['aac','aac'],['wav','pcm_s24le'],['wav','pcm_mulaw']]) {
   const sourcePath=format==='flac'?join(temp,'flac-input.wav'):path;if(format==='flac')await writeFile(sourcePath,wav(flacCount,2,16,false,'varying'));
-  const output=join(temp,'audio.'+format);execFileSync('ffmpeg',['-v','error','-i',sourcePath,'-c:a',codec,'-strict','-2','-y',output]);const read=await readFile(output),input=Buffer.alloc(read.length);read.copy(input);const wave=await helpers.getAudioWaveform(input),duration=await helpers.getAudioDuration(input)
-  compressed.push({format,input:hex(input),duration,waveform:wave?hex(wave):null})
+  const output=join(temp,'out-'+codec+'.'+format);execFileSync('ffmpeg',['-v','error','-i',sourcePath,'-c:a',codec,'-strict','-2','-y',output]);const read=await readFile(output),input=Buffer.alloc(read.length);read.copy(input);let wave=null,duration=null,waveError=null,durationError=null;try{wave=await helpers.getAudioWaveform(input)}catch(e){waveError=String(e.message??e)}try{duration=await helpers.getAudioDuration(input)}catch(e){durationError=String(e.message??e)}
+  compressed.push({format,codec,input:hex(input),duration:duration??null,waveform:wave?hex(wave):null,...(waveError?{waveError}:{}),...(durationError?{durationError}:{})})
  }
  const videoPath=join(temp,'video.mp4');execFileSync('ffmpeg',['-v','error','-f','lavfi','-i','color=red:s=64x32:r=1','-t','1','-c:v','mpeg4','-y',videoPath]);const video=await helpers.generateThumbnail(videoPath,'video',{});
- await writeFile('tests/fixtures/media_processors.json',JSON.stringify({images,audios,compressed,video:{input:hex(await readFile(videoPath)),jpeg:hex(Buffer.from(video.thumbnail,'base64'))}},null,2)+'\n')
+ // Format audit: one picture in every input encoding sharp can write, with the decoded pixels of the original thumbnail.
+ const formats=[],fw=48,fh=32,rgba=Buffer.alloc(fw*fh*4)
+ for(let y=0;y<fh;y++)for(let x=0;x<fw;x++){const i=(y*fw+x)*4;rgba[i]=Math.round(255*x/(fw-1));rgba[i+1]=Math.round(255*y/(fh-1));rgba[i+2]=x<fw/2?40:210;rgba[i+3]=x>=fw*2/3&&y<fh/2?96:255}
+ const picture=()=>sharp(rgba,{raw:{width:fw,height:fh,channels:4}}),opaque=()=>picture().removeAlpha()
+ const encodings=[['jpeg',()=>opaque().jpeg({quality:92})],['jpeg-progressive',()=>opaque().jpeg({quality:92,progressive:true})],['jpeg-grey',()=>opaque().greyscale().jpeg({quality:92})],['jpeg-rotated',()=>opaque().withMetadata({orientation:6}).jpeg({quality:92})],
+  ['png-rgb',()=>opaque().png()],['png-rgba',()=>picture().png()],['png-grey',()=>opaque().greyscale().png()],['png-palette',()=>opaque().png({palette:true})],['png-16bit',()=>opaque().toColourspace('rgb16').png()],['png-interlaced',()=>opaque().png({progressive:true})],
+  ['webp-lossless',()=>opaque().webp({lossless:true})],['webp-lossy',()=>opaque().webp({quality:92})],['webp-alpha',()=>picture().webp({lossless:true})],['gif',()=>opaque().gif()],['tiff',()=>opaque().tiff()],['tiff-lzw',()=>opaque().tiff({compression:'lzw'})],['avif',()=>opaque().avif()]]
+ for(const [name,encode] of encodings){const input=await encode().toBuffer(),thumb=await helpers.extractImageThumb(input),decoded=await sharp(thumb.buffer).raw().toBuffer({resolveWithObject:true}),profile=await helpers.generateProfilePicture(input,{width:24,height:24}),profilePixels=await sharp(profile.img).raw().toBuffer({resolveWithObject:true})
+  formats.push({name,input:hex(input),original:thumb.original,thumbnail:{width:decoded.info.width,height:decoded.info.height,channels:decoded.info.channels,pixels:hex(decoded.data)},profile:{width:profilePixels.info.width,height:profilePixels.info.height,channels:profilePixels.info.channels,pixels:hex(profilePixels.data)}})}
+ await writeFile('tests/fixtures/media_processors.json',JSON.stringify({images,formats,audios,compressed,video:{input:hex(await readFile(videoPath)),jpeg:hex(Buffer.from(video.thumbnail,'base64'))}},null,2)+'\n')
  console.log(`Generated ${images.length} image, ${audios.length} PCM, ${compressed.length} compressed-audio and one video processor fixtures`)
 }finally {await rm(temp,{recursive:true,force:true})}

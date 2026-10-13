@@ -598,3 +598,74 @@ async fn invalid_clear_fields_fail_before_external_work_and_clears_override_temp
     assert_eq!(output.url, None);
     assert_eq!(output.file_name.as_deref(), Some("file"));
 }
+#[tokio::test]
+async fn remote_inputs_larger_than_the_configured_limit_fail_before_upload() {
+    use tokio::io::{AsyncReadExt, AsyncWriteExt};
+    let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+    let url = format!("http://{}/file", listener.local_addr().unwrap());
+    let server = tokio::spawn(async move {
+        loop {
+            let (mut stream, _) = listener.accept().await.unwrap();
+            let mut request = vec![0; 2048];
+            let _ = stream.read(&mut request).await.unwrap();
+            let body = [7u8; 1000];
+            let head = format!(
+                "HTTP/1.1 200 OK\r\nContent-Length: {}\r\nConnection: close\r\n\r\n",
+                body.len()
+            );
+            stream.write_all(head.as_bytes()).await.unwrap();
+            stream.write_all(&body).await.unwrap();
+            let _ = stream.shutdown().await;
+        }
+    });
+    let hooks = Hooks::new("ok");
+    let http = HttpClient::new().unwrap();
+    let request = Request {
+        input: Input::Url(url),
+        payload: Payload::Document(Box::default()),
+        video_note: false,
+    };
+    let attempt = |limit: Option<u64>| {
+        let (request, http, hooks) = (&request, &http, &hooks);
+        async move {
+            let uploader = Uploader::default();
+            let options = PrepareOptions {
+                max_content_length: limit,
+                ..Default::default()
+            };
+            let result = prepare(request, &options, http, &uploader, hooks).await;
+            let uploads = uploader.calls.lock().unwrap().len();
+            (result, uploads)
+        }
+    };
+    let (result, uploads) = attempt(Some(999)).await;
+    assert!(
+        result
+            .unwrap_err()
+            .to_string()
+            .contains("content length exceeded when encrypting \"remote\"")
+    );
+    assert_eq!(uploads, 0);
+    for limit in [Some(1000), Some(0), None] {
+        let (result, uploads) = attempt(limit).await;
+        assert_eq!(
+            result.unwrap().document_message.unwrap().file_length,
+            Some(1000)
+        );
+        assert_eq!(uploads, 1);
+    }
+    // Inputs that are not fetched over HTTP are never limited.
+    let local = Request {
+        input: Input::bytes(vec![1u8; 64]),
+        payload: Payload::Document(Box::default()),
+        video_note: false,
+    };
+    let options = PrepareOptions {
+        max_content_length: Some(8),
+        ..Default::default()
+    };
+    prepare(&local, &options, &http, &Uploader::default(), &hooks)
+        .await
+        .unwrap();
+    server.abort();
+}
