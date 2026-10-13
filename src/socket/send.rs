@@ -309,7 +309,7 @@ impl crate::link_preview::Source for SocketContentHooks<'_> {
             };
             let message = self
                 .socket
-                .prepare_media_message(&request, &options, self.media)
+                .prepare_media(&request, &options, self.media, false)
                 .await
                 .map_err(|error| crate::link_preview::Error::Image(error.to_string()))?;
             Ok(message.image_message.map(|image| *image))

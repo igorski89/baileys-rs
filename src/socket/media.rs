@@ -115,6 +115,17 @@ impl Socket {
         options: &crate::media::PrepareOptions,
         hooks: &dyn crate::media::PrepareHooks,
     ) -> Result<crate::proto::Message, Error> {
+        self.prepare_media(request, options, hooks, true).await
+    }
+    /// `cached` is off for link-preview thumbnails, which upstream prepares
+    /// without its media cache.
+    pub(super) async fn prepare_media(
+        &self,
+        request: &crate::media::Request,
+        options: &crate::media::PrepareOptions,
+        hooks: &dyn crate::media::PrepareHooks,
+        cached: bool,
+    ) -> Result<crate::proto::Message, Error> {
         let http = self
             .inner
             .media_http
@@ -125,7 +136,7 @@ impl Socket {
         // A configured media cache applies to every preparation, as upstream's mediaCache.
         let configured;
         let options = match (&options.media_cache, &self.inner.media_store) {
-            (None, Some(store)) => {
+            (None, Some(store)) if cached => {
                 configured = crate::media::PrepareOptions {
                     media_cache: Some(store.clone()),
                     ..options.clone()
