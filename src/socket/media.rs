@@ -122,6 +122,18 @@ impl Socket {
             .await?;
         let uploader: &dyn crate::media::MediaUploader =
             options.uploader.as_ref().map(|u| u.get()).unwrap_or(self);
+        // A configured media cache applies to every preparation, as upstream's mediaCache.
+        let configured;
+        let options = match (&options.media_cache, &self.inner.media_store) {
+            (None, Some(store)) => {
+                configured = crate::media::PrepareOptions {
+                    media_cache: Some(store.clone()),
+                    ..options.clone()
+                };
+                &configured
+            }
+            _ => options,
+        };
         Ok(crate::media::prepare(request, options, http, uploader, hooks).await?)
     }
 }

@@ -151,9 +151,8 @@ impl Socket {
                 if !matches!(
                     *self.inner.state.borrow(),
                     super::ConnectionState::Closed { .. }
-                ) && let Err(error) = self
-                    .send_retry_request(node, node.child("enc").is_none())
-                    .await
+                ) && let Err(error) =
+                    Box::pin(self.send_retry_request(node, node.child("enc").is_none())).await
                 {
                     tracing::debug!(?error, "incoming decrypt retry failed");
                 }

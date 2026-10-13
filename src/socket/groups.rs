@@ -222,7 +222,8 @@ impl Socket {
         key: &crate::proto::MessageKey,
         invite: &crate::proto::message::GroupInviteMessage,
     ) -> Result<Option<String>, Error> {
-        self.with_buffered_events(self.accept_invite_v4(key, invite))
+        // Boxed: the stub publication makes this future large.
+        self.with_buffered_events(Box::pin(self.accept_invite_v4(key, invite)))
             .await
     }
     async fn accept_invite_v4(
@@ -297,8 +298,7 @@ impl Socket {
             sender: author.clone(),
             author,
         };
-        self.upsert_message(&envelope, crate::messages::own::UpsertKind::Notify)
-            .await?;
+        Box::pin(self.upsert_message(&envelope, crate::messages::own::UpsertKind::Notify)).await?;
         Ok(result.attrs.get("from").cloned())
     }
     pub async fn group_revoke_invite_v4(

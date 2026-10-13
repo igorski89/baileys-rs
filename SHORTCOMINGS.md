@@ -6,7 +6,7 @@ Known gaps and deliberate deviations from upstream Baileys, kept here so they ca
 
 - **Live validation.** Nothing has run against a real account yet. `examples/live.rs` is ready (pairing-code login, event log, one outgoing text).
 - **Type-level audit.** `scripts/audit-socket-api.mjs` (150 socket methods) and `scripts/audit-utils-api.mjs` (157 utility exports covered, 38 without a counterpart on purpose, none missing) match by identifier only. Upstream's exported types (`src/Types`) were compared by hand for the socket configuration and the event map only.
-- **Pluggable caches and agents.** Upstream accepts caller-supplied stores for the retry counters, placeholder resends and uploaded media, and proxy agents for the WebSocket and for fetches. The port takes a caller-supplied HTTP client for media, a device-cache store and a call-offer cache; the rest is built in.
+- **Proxy agents.** Upstream accepts proxy agents for the WebSocket and for fetches. The port takes a caller-supplied HTTP client for media, which can carry a proxy; the WebSocket connects directly.
 
 Not gaps, but worth knowing: like upstream, the socket does not reconnect by itself (`examples/live.rs` shows the loop), and EXIF orientation is ignored when making thumbnails (sharp is used without `rotate()` upstream too).
 
@@ -55,9 +55,10 @@ Not gaps, but worth knowing: like upstream, the socket does not reconnect by its
 
 ### USync and device cache
 - A USync query assembled through its public fields rather than the builder methods lists built-in protocols before custom ones.
-- The external device store's calls cannot fail; upstream propagates an exception thrown by a cache. It stores the encoded JID with each device, which upstream recomputes on every read.
+- The external device store holds the encoded JID with each device; upstream recomputes it on every read.
 
 ### Configuration
+- The caches a caller can supply are typed (`cache::Cache<u64>` for retry counters, `Cache<Option<Envelope>>` for placeholder resends, `Cache<Vec<u8>>` for prepared media, `devices::Store`, `calls::Cache`) where upstream has one untyped `CacheStore`. Their calls cannot fail, except the call-offer cache's.
 - `Config::transaction` (upstream's `transactionOpts`) retries only the commits that end an app-state synchronization or patch upload; every other storage write is one SQLite transaction without retries.
 - Cached group metadata is passed per send as a value; upstream takes one lookup callback in the configuration.
 
@@ -80,6 +81,7 @@ Not gaps, but worth knowing: like upstream, the socket does not reconnect by its
 - Slow event subscribers lose events when the broadcast channel lags; the capacity is 256 by default.
 - Receive and worker queues are unbounded.
 - Storage calls hop through `spawn_blocking`.
+- Several socket futures are tens of kilobytes (sending, receipts, notifications). The deepest are boxed after a debug-build stack overflow on a 2 MiB test thread, but there is little headroom; `-Zprint-type-sizes` shows the sizes.
 
 ## Test coverage gaps
 

@@ -669,3 +669,46 @@ async fn remote_inputs_larger_than_the_configured_limit_fail_before_upload() {
         .unwrap();
     server.abort();
 }
+#[tokio::test]
+async fn a_media_cache_store_replaces_the_cache_hooks_without_the_cache_flag() {
+    use baileys_rs::cache::{Cache, CacheStore, MemoryStore};
+    let hooks = Hooks::new("ok");
+    let http = HttpClient::new().unwrap();
+    let store = std::sync::Arc::new(MemoryStore::<Vec<u8>>::new(std::time::Duration::from_secs(
+        60,
+    )));
+    let request = Request {
+        input: Input::Url("data:;base64,AAECAwQFBgcICQoLDA0ODxA=".into()),
+        payload: Payload::Document(Box::default()),
+        video_note: false,
+    };
+    let options = PrepareOptions {
+        media_cache: Some(Cache::from_arc(store.clone())),
+        ..Default::default()
+    };
+    let first = prepare(&request, &options, &http, &Uploader::default(), &hooks)
+        .await
+        .unwrap();
+    let key = "document:data:;base64,AAECAwQFBgcICQoLDA0ODxA=";
+    assert_eq!(store.get(key).await.unwrap(), first.encode_to_vec());
+    // The second preparation is served from the store; its uploader would fail.
+    let failing = Uploader {
+        fail: true,
+        ..Default::default()
+    };
+    let second = prepare(&request, &options, &http, &failing, &hooks)
+        .await
+        .unwrap();
+    assert_eq!(
+        first.document_message.unwrap().media_key,
+        second.document_message.unwrap().media_key
+    );
+    assert!(
+        !hooks
+            .calls
+            .lock()
+            .unwrap()
+            .iter()
+            .any(|call| call.to_string().contains("cache"))
+    );
+}

@@ -142,7 +142,7 @@ impl Socket {
                         .and_then(|k| k.id.as_deref())
                         .filter(|s| !s.is_empty())
                     {
-                        self.resolve_placeholder_resend(id)?
+                        Box::pin(self.resolve_placeholder_resend(id)).await?
                     } else {
                         None
                     };

@@ -50,9 +50,10 @@ impl Socket {
             ) {
                 let counter = format!("{id}:{participant}");
                 if parsed.key.from_me == Some(true)
-                    && self.inner.retry_requests.count(&counter)? < self.inner.max_msg_retry_count
+                    && self.inner.retry_requests.count(&counter).await
+                        < self.inner.max_msg_retry_count
                 {
-                    self.inner.retry_requests.increment(&counter)?;
+                    self.inner.retry_requests.increment(&counter).await;
                     if let Err(error) = self
                         .send_messages_again(&parsed.key, &parsed.ids, node)
                         .await
@@ -186,8 +187,9 @@ impl Socket {
         for (id, message) in ids.iter().zip(messages) {
             if let (Some(id), Some(message)) = (id.as_deref().filter(|s| !s.is_empty()), message) {
                 let counter = format!("{id}:{participant}");
-                if self.inner.retry_requests.count(&counter)? < self.inner.max_msg_retry_count {
-                    self.inner.retry_requests.increment(&counter)?;
+                if self.inner.retry_requests.count(&counter).await < self.inner.max_msg_retry_count
+                {
+                    self.inner.retry_requests.increment(&counter).await;
                     let mut options = RelayOptions {
                         message_id: Some(id.into()),
                         ..Default::default()

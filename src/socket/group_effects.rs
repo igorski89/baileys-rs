@@ -61,8 +61,10 @@ impl Socket {
         metadata: Option<messages::EnvelopeMetadata>,
         kind: own::UpsertKind,
     ) -> Result<(), Error> {
-        self.with_buffered_events(self.publish_message_inner(message, metadata, kind))
-            .await
+        self.with_buffered_events(Box::pin(
+            self.publish_message_inner(message, metadata, kind),
+        ))
+        .await
     }
     async fn publish_message_inner(
         &self,

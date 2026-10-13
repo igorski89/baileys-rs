@@ -4,6 +4,7 @@ pub mod app_state;
 pub mod auth;
 pub mod binary;
 pub mod business;
+pub mod cache;
 pub mod calls;
 pub mod chats;
 pub mod communities;

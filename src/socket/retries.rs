@@ -1,56 +1,53 @@
 use super::{Command, Error, RelayOptions, Socket, load_credentials};
 use crate::{jid, messages, proto, relay};
-use std::{
-    collections::HashMap,
-    sync::{Arc, Mutex},
-    time::{Duration, Instant},
-};
+use std::{sync::Arc, time::Duration};
 use tokio::sync::oneshot;
-#[derive(Clone)]
-struct Placeholder {
-    data: Option<messages::Envelope>,
-    expires: Instant,
-}
-#[derive(Default)]
-struct Cache {
-    counts: HashMap<String, (u64, Instant)>,
-    placeholders: HashMap<String, Placeholder>,
-}
-#[derive(Default)]
+/// Retry counters and pending placeholder resends. Built-in stores are emptied
+/// when the connection ends; caller-supplied ones are left alone.
 pub(super) struct RetryRequests {
-    cache: Mutex<Cache>,
+    counts: crate::cache::Cache<u64>,
+    placeholders: crate::cache::Cache<Option<messages::Envelope>>,
+    own_counts: Option<Arc<crate::cache::MemoryStore<u64>>>,
+    own_placeholders: Option<Arc<crate::cache::MemoryStore<Option<messages::Envelope>>>>,
     pub serial: tokio::sync::Mutex<()>,
 }
 impl RetryRequests {
-    pub(super) fn clear(&self) {
-        if let Ok(mut c) = self.cache.lock() {
-            c.counts.clear();
-            c.placeholders.clear();
+    pub(super) fn new(
+        counts: Option<crate::cache::Cache<u64>>,
+        placeholders: Option<crate::cache::Cache<Option<messages::Envelope>>>,
+    ) -> Self {
+        use crate::cache::{Cache, MemoryStore};
+        let ttl = Duration::from_secs(3600);
+        let own_counts = counts.is_none().then(|| Arc::new(MemoryStore::new(ttl)));
+        let own_placeholders = placeholders
+            .is_none()
+            .then(|| Arc::new(MemoryStore::new(ttl)));
+        Self {
+            counts: counts
+                .or_else(|| own_counts.clone().map(|store| Cache::from_arc(store)))
+                .expect("a retry counter store"),
+            placeholders: placeholders
+                .or_else(|| own_placeholders.clone().map(|store| Cache::from_arc(store)))
+                .expect("a placeholder store"),
+            own_counts,
+            own_placeholders,
+            serial: Default::default(),
         }
     }
-    pub(super) fn count(&self, key: &str) -> Result<u64, Error> {
-        let mut cache = self.cache.lock().map_err(|_| Error::Task)?;
-        cache
-            .counts
-            .retain(|_, (_, expires)| *expires > Instant::now());
-        Ok(cache.counts.get(key).map(|(c, _)| *c).unwrap_or(0))
+    pub(super) fn clear(&self) {
+        if let Some(store) = &self.own_counts {
+            store.clear();
+        }
+        if let Some(store) = &self.own_placeholders {
+            store.clear();
+        }
     }
-    pub(super) fn increment(&self, key: &str) -> Result<(), Error> {
-        let mut cache = self.cache.lock().map_err(|_| Error::Task)?;
-        cache
-            .counts
-            .retain(|_, (_, expires)| *expires > Instant::now());
-        let count = cache
-            .counts
-            .get(key)
-            .map(|(c, _)| *c)
-            .unwrap_or(0)
-            .saturating_add(1);
-        cache.counts.insert(
-            key.into(),
-            (count, Instant::now() + Duration::from_secs(3600)),
-        );
-        Ok(())
+    pub(super) async fn count(&self, key: &str) -> u64 {
+        self.counts.get(key).await.unwrap_or(0)
+    }
+    pub(super) async fn increment(&self, key: &str) {
+        let count = self.count(key).await.saturating_add(1);
+        self.counts.set(key, count).await;
     }
 }
 impl Socket {
@@ -115,27 +112,13 @@ impl Socket {
             .filter(|id| !id.is_empty())
             .ok_or(messages::Error::Envelope("missing id"))?
             .to_owned();
-        {
-            let mut cache = self
-                .inner
-                .retry_requests
-                .cache
-                .lock()
-                .map_err(|_| Error::Task)?;
-            cache.placeholders.retain(|_, v| v.expires > Instant::now());
-            if cache.placeholders.contains_key(&id) {
-                return Ok(None);
-            }
-            cache.placeholders.insert(
-                id.clone(),
-                Placeholder {
-                    data,
-                    expires: Instant::now() + Duration::from_secs(3600),
-                },
-            );
+        let placeholders = &self.inner.retry_requests.placeholders;
+        if placeholders.get(&id).await.is_some() {
+            return Ok(None);
         }
+        placeholders.set(&id, data).await;
         tokio::time::sleep(Duration::from_secs(2)).await;
-        if !self.has_pending_placeholder_resend(&id)? {
+        if !self.has_pending_placeholder_resend(&id).await? {
             return Ok(Some("RESOLVED".into()));
         }
         let state = Arc::downgrade(&self.inner.retry_requests);
@@ -143,41 +126,40 @@ impl Socket {
         tokio::spawn(async move {
             tokio::time::sleep(Duration::from_secs(8)).await;
             if let Some(state) = state.upgrade()
-                && let Ok(mut cache) = state.cache.lock()
+                && state.placeholders.get(&expiry_id).await.is_some()
             {
-                cache.placeholders.remove(&expiry_id);
+                state.placeholders.del(&expiry_id).await;
             }
         });
         let request=proto::message::PeerDataOperationRequestMessage {
             peer_data_operation_request_type:Some(proto::message::PeerDataOperationRequestType::PlaceholderMessageResend as i32),
             placeholder_message_resend_request:vec![proto::message::peer_data_operation_request_message::PlaceholderMessageResendRequest {message_key:Some(key.clone())}],..Default::default()
         };
-        Ok(Some(self.send_peer_data_operation_message(request).await?))
+        Ok(Some(
+            Box::pin(self.send_peer_data_operation_message(request)).await?,
+        ))
     }
     /// Remove a pending placeholder when the original message or PDO response arrives.
     /// The optional metadata is returned for the incoming-processing layer to merge.
-    pub fn resolve_placeholder_resend(
+    pub async fn resolve_placeholder_resend(
         &self,
         id: &str,
     ) -> Result<Option<messages::Envelope>, Error> {
-        let mut cache = self
-            .inner
-            .retry_requests
-            .cache
-            .lock()
-            .map_err(|_| Error::Task)?;
-        cache.placeholders.retain(|_, p| p.expires > Instant::now());
-        Ok(cache.placeholders.remove(id).and_then(|p| p.data))
+        let placeholders = &self.inner.retry_requests.placeholders;
+        let Some(data) = placeholders.get(id).await else {
+            return Ok(None);
+        };
+        placeholders.del(id).await;
+        Ok(data)
     }
-    pub fn has_pending_placeholder_resend(&self, id: &str) -> Result<bool, Error> {
-        let mut cache = self
+    pub async fn has_pending_placeholder_resend(&self, id: &str) -> Result<bool, Error> {
+        Ok(self
             .inner
             .retry_requests
-            .cache
-            .lock()
-            .map_err(|_| Error::Task)?;
-        cache.placeholders.retain(|_, p| p.expires > Instant::now());
-        Ok(cache.placeholders.contains_key(id))
+            .placeholders
+            .get(id)
+            .await
+            .is_some())
     }
     /// Send a retry receipt, with source limits, session recreation and phone scheduling.
     /// Count/prekey state is retained after an ambiguous transport failure.
@@ -217,32 +199,19 @@ impl Socket {
             }
             manager.increment_retry_count(id)?
         } else {
-            let mut cache = self
-                .inner
-                .retry_requests
-                .cache
-                .lock()
-                .map_err(|_| Error::Task)?;
-            cache
-                .counts
-                .retain(|_, (_, expires)| *expires > Instant::now());
-            let count = cache.counts.get(&composite).map(|(c, _)| *c).unwrap_or(0);
+            let counts = &self.inner.retry_requests.counts;
+            let count = counts.get(&composite).await.unwrap_or(0);
             if count >= self.inner.max_msg_retry_count {
-                cache.counts.remove(&composite);
+                counts.del(&composite).await;
                 return Ok(());
             }
             count.saturating_add(1)
         };
         self.inner
             .retry_requests
-            .cache
-            .lock()
-            .map_err(|_| Error::Task)?
             .counts
-            .insert(
-                composite,
-                (count, Instant::now() + Duration::from_secs(3600)),
-            );
+            .set(&composite, count)
+            .await;
         if self.inner.enable_auto_session_recreation
             && count > 1
             && let Some(manager) = &self.inner.retry_manager
@@ -291,7 +260,7 @@ impl Socket {
                     None,
                 )?;
             } else {
-                self.request_placeholder_resend(&key, None).await?;
+                Box::pin(self.request_placeholder_resend(&key, None)).await?;
             }
         }
         let (reply, receiver) = oneshot::channel();

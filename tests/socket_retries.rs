@@ -320,7 +320,7 @@ async fn scheduled_resend_and_resolved_placeholder_and_failed_key_preparation() 
                 .unwrap()
         });
         timeout(Duration::from_secs(2), async {
-            while !socket.has_pending_placeholder_resend("WAIT").unwrap() {
+            while !socket.has_pending_placeholder_resend("WAIT").await.unwrap() {
                 tokio::task::yield_now().await;
             }
         })
@@ -334,7 +334,7 @@ async fn scheduled_resend_and_resolved_placeholder_and_failed_key_preparation() 
                 .is_none()
         );
         assert_eq!(
-            socket.resolve_placeholder_resend("WAIT").unwrap(),
+            socket.resolve_placeholder_resend("WAIT").await.unwrap(),
             Some(data)
         );
         assert_eq!(request.await.unwrap().as_deref(), Some("RESOLVED"));
@@ -423,9 +423,19 @@ async fn scheduled_resend_and_resolved_placeholder_and_failed_key_preparation() 
                 .unwrap()
                 .is_empty()
         );
-        assert!(socket.has_pending_placeholder_resend("SCHEDULED").unwrap());
+        assert!(
+            socket
+                .has_pending_placeholder_resend("SCHEDULED")
+                .await
+                .unwrap()
+        );
         socket.close().await.unwrap();
-        assert!(!socket.has_pending_placeholder_resend("SCHEDULED").unwrap());
+        assert!(
+            !socket
+                .has_pending_placeholder_resend("SCHEDULED")
+                .await
+                .unwrap()
+        );
         server.await.unwrap();
     })
     .await

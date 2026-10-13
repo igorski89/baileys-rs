@@ -115,7 +115,7 @@ async fn phone_keys_pdo_restoration_and_lid_sync_match_original_processor() {
             while events.try_recv().is_ok() {}
             let mut pending=vec![];
             for(id,value)in case["cached"].as_object().unwrap(){let data=cached(value);let key=data.message.key.clone().unwrap();let copy=socket.clone();pending.push(tokio::spawn(async move{copy.request_placeholder_resend(&key,Some(data)).await}));
-                timeout(Duration::from_secs(1),async{while !socket.has_pending_placeholder_resend(id).unwrap(){tokio::task::yield_now().await;}}).await.unwrap();}
+                timeout(Duration::from_secs(1),async{while !socket.has_pending_placeholder_resend(id).await.unwrap(){tokio::task::yield_now().await;}}).await.unwrap();}
             let input=proto::WebMessageInfo::decode(bytes(&case["input"]).as_slice()).unwrap();let node=stanza("PHONE",if case["fromMe"]==true{"100:2@s.whatsapp.net"}else{"300@s.whatsapp.net"},input.message.unwrap());socket.buffer_events();let result=socket.handle_message(&node).await;assert_eq!(result.is_err(),case.get("error").is_some(),"{case}");socket.flush_events().unwrap();
             let mut actual=vec![];while let Ok(event)=events.try_recv(){match event{
                 Event::CredentialsUpdated=>actual.push(json!({"name":"creds.update","data":{"myAppStateKeyId":auth.load_credentials().unwrap().my_app_state_key_id.clone()}})),
@@ -125,7 +125,7 @@ async fn phone_keys_pdo_restoration_and_lid_sync_match_original_processor() {
             for(id,expected)in case["keys"].as_object().unwrap(){let values=auth.get(KeyCategory::AppStateSyncKey,std::slice::from_ref(id)).unwrap();let actual=values.get(id).map(|v|match v{KeyValue::AppStateSyncKey(data)=>wire(data.encode_to_vec()),_=>panic!()});assert_eq!(json!(actual),*expected,"{case}");}
             let repository=direct::Repository::new(auth.clone());for pair in case["maps"].as_array().unwrap(){// Later duplicate PN entries overwrite earlier pairs.
                 let pn=pair["pn"].as_str().unwrap();let expected=case["maps"].as_array().unwrap().iter().rev().find(|p|p["pn"]==pn).unwrap()["lid"].as_str().unwrap();assert_eq!(repository.lid_mapping().get_lid_for_pn(pn).unwrap().as_deref(),Some(expected),"{case}");}
-            for id in case["deleted"].as_array().unwrap(){assert!(!socket.has_pending_placeholder_resend(id.as_str().unwrap()).unwrap(),"{case}");}
+            for id in case["deleted"].as_array().unwrap(){assert!(!socket.has_pending_placeholder_resend(id.as_str().unwrap()).await.unwrap(),"{case}");}
             for request in pending{request.abort();let _=request.await;}
             socket.close().await.unwrap();server.await.unwrap();
             if case["kind"]=="share"&&case["variant"]=="malformed"&&case["fromMe"]==true{let reopened=SqliteAuthStore::open(temp.path()).unwrap();assert!(reopened.get(KeyCategory::AppStateSyncKey,&["+/8=".into(),"AQI=".into()]).unwrap().is_empty());assert!(reopened.load_credentials().unwrap().my_app_state_key_id.is_none());}

@@ -203,6 +203,12 @@ pub struct Config {
     /// Optional asynchronous offer cache. External providers remain owned by the caller
     /// and are never closed or cleared when the socket closes.
     pub call_offer_cache: Option<crate::calls::Cache>,
+    /// Prepared media fetched from a URL is kept here so it is not uploaded again.
+    pub media_cache: Option<crate::cache::Cache<Vec<u8>>>,
+    /// Retry counters kept in a caller-supplied store instead of the built-in one.
+    pub msg_retry_counter_cache: Option<crate::cache::Cache<u64>>,
+    /// Pending placeholder resends, each with the message data it was requested for.
+    pub placeholder_resend_cache: Option<crate::cache::Cache<Option<crate::messages::Envelope>>>,
     pub process_messages: bool,
     pub send_active_receipts: bool,
     pub retry_request_delay: Duration,
@@ -256,6 +262,9 @@ impl Default for Config {
             process_receipts: true,
             process_calls: true,
             call_offer_cache: None,
+            media_cache: None,
+            msg_retry_counter_cache: None,
+            placeholder_resend_cache: None,
             process_messages: true,
             send_active_receipts: false,
             retry_request_delay: Duration::from_millis(250),
@@ -544,6 +553,7 @@ struct Inner {
     active_receipts: std::sync::atomic::AtomicBool,
     retry_request_delay: Duration,
     media_cache: tokio::sync::Mutex<media::MediaCache>,
+    media_store: Option<crate::cache::Cache<Vec<u8>>>,
     media_http: tokio::sync::OnceCell<crate::media::HttpClient>,
     app_state_sync: tokio::sync::OnceCell<crate::app_state::Synchronizer>,
     app_state_apply_lock: tokio::sync::Mutex<()>,
@@ -772,7 +782,10 @@ impl Socket {
             .enable_recent_message_cache
             .then(|| crate::retry::Manager::new(config.max_msg_retry_count));
         let actor_retry_manager = retry_manager.clone();
-        let retry_requests = Arc::new(retries::RetryRequests::default());
+        let retry_requests = Arc::new(retries::RetryRequests::new(
+            config.msg_retry_counter_cache.clone(),
+            config.placeholder_resend_cache.clone(),
+        ));
         let actor_retry_requests = retry_requests.clone();
         let (receipt_sender, mut receipt_receiver) =
             mpsc::unbounded_channel::<dispatch::OnlineNode>();
@@ -798,6 +811,7 @@ impl Socket {
             active_receipts: std::sync::atomic::AtomicBool::new(config.send_active_receipts),
             retry_request_delay: config.retry_request_delay,
             media_cache: tokio::sync::Mutex::new(Default::default()),
+            media_store: config.media_cache.clone(),
             media_http: tokio::sync::OnceCell::new_with(config.media_http.clone()),
             app_state_sync: tokio::sync::OnceCell::new(),
             app_state_apply_lock: tokio::sync::Mutex::new(()),

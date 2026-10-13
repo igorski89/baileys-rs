@@ -152,6 +152,9 @@ pub struct PrepareOptions {
     pub media_type_override: Option<MediaType>,
     pub upload: UploadOptions,
     pub cache: bool,
+    /// Store for prepared URL media; when set it is used instead of the cache hooks,
+    /// whether or not `cache` is on.
+    pub media_cache: Option<crate::cache::Cache<Vec<u8>>>,
     /// Largest body accepted when the input is fetched over HTTP; larger
     /// downloads fail while encrypting.
     pub max_content_length: Option<u64>,
@@ -431,7 +434,7 @@ pub async fn prepare(
     super::fields::clear(&mut payload, &options.clear_fields)?;
     payload.defaults();
     let kind = payload.kind();
-    let cache_key = if options.cache {
+    let cache_key = if options.cache || options.media_cache.is_some() {
         match &request.input {
             Input::Url(url) if !url.is_empty() => Some(format!("{}:{url}", kind.as_str())),
             _ => None,
@@ -440,7 +443,10 @@ pub async fn prepare(
         None
     };
     if let Some(key) = &cache_key
-        && let Some(bytes) = hooks.cache_get(key.clone()).await?
+        && let Some(bytes) = match &options.media_cache {
+            Some(store) => store.get(key).await,
+            None => hooks.cache_get(key.clone()).await?,
+        }
     {
         let mut message = proto::Message::decode(bytes.as_slice())?;
         super::overlay::apply(&mut message, &payload, &options.clear_fields)?;
@@ -543,7 +549,10 @@ pub async fn prepare(
     }
     let message = payload.message(request.video_note);
     if let Some(key) = cache_key {
-        hooks.cache_set(key, message.encode_to_vec()).await?;
+        match &options.media_cache {
+            Some(store) => store.set(&key, message.encode_to_vec()).await,
+            None => hooks.cache_set(key, message.encode_to_vec()).await?,
+        }
     }
     Ok(message)
 }
