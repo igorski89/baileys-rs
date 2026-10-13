@@ -23,7 +23,8 @@ impl Socket {
         };
         self.finish_app_state_notification(node, result).await
     }
-    /// Dispatch a server_sync, group, picture or account-sync notification once.
+    /// Dispatch a server_sync, group, picture, account-sync, device, encrypt,
+    /// privacy-token, newsletter or MEX notification once.
     /// Returns false for other stanzas. The ACK is attempted after success or failure.
     pub async fn handle_notification(&self, node: &BinaryNode) -> Result<bool, Error> {
         let kind = node.attrs.get("type").map(String::as_str);
