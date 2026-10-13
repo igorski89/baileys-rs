@@ -1,0 +1,1804 @@
+{
+ "pages": {
+  "https://example.com/og": {
+   "body": "<!doctype html><html><head><title>Fallback title</title><meta property=\"og:title\" content=\"Open Graph &amp; title 💚\"><meta name=\"description\" content=\"Plain description\"><meta property=\"og:description\" content=\"OG description\"><meta property=\"og:image\" content=\"/images/cover.jpg\"><meta property=\"og:image\" content=\"https://cdn.example.com/second.png\"></head><body></body></html>",
+   "type": "text/html; charset=utf-8"
+  },
+  "https://example.com/title-only": {
+   "body": "<!doctype html><html><head><title> Title &lt;only&gt; </title></head><body></body></html>",
+   "type": "text/html; charset=utf-8"
+  },
+  "https://example.com/name-title": {
+   "body": "<!doctype html><html><head><title>Fallback</title><meta name=\"og:title\" content=\"Named title\"><meta name=\"Description\" content=\"Capital description\"><meta name=\"og:image\" content=\"named.jpg\"></head><body></body></html>",
+   "type": "text/html; charset=utf-8"
+  },
+  "https://example.com/empty-og": {
+   "body": "<!doctype html><html><head><title>Used title</title><meta property=\"og:title\" content=\"\"><meta name=\"description\" content=\"\"><meta property=\"og:description\" content=\"Fallback description\"><meta property=\"og:image\" content=\"\"><link rel=\"image_src\" href=\"../rel.png\"></head><body></body></html>",
+   "type": "text/html; charset=utf-8"
+  },
+  "https://example.com/first-meta-wins": {
+   "body": "<!doctype html><html><head><meta property=\"og:title\"><meta property=\"og:title\" content=\"Second title\"><title>Fallback</title><meta name=\"description\"><meta name=\"description\" content=\"Second description\"></head><body></body></html>",
+   "type": "text/html; charset=utf-8"
+  },
+  "https://example.com/no-title": {
+   "body": "<!doctype html><html><head><meta name=\"description\" content=\"No title here\"><meta property=\"og:image\" content=\"/x.jpg\"></head><body></body></html>",
+   "type": "text/html; charset=utf-8"
+  },
+  "https://example.com/body-title": {
+   "body": "<!doctype html><html><head></head><body><title>Body title</title><p>text</p></body></html>",
+   "type": "text/html; charset=utf-8"
+  },
+  "https://example.com/two-titles": {
+   "body": "<html><head><title>One</title><title>Two</title></head></html>",
+   "type": "text/html; charset=utf-8"
+  },
+  "https://example.com/a/b/imgs": {
+   "body": "<!doctype html><html><head><title>Images</title></head><body><img src=\"one.png\"><img><img src=\"/two.png\"><img src=\"one.png\"><img src=\"//cdn.example.com/three.png\"><img src=\"https://other.example/four.png?a=1&amp;b=2\"></body></html>",
+   "type": "text/html; charset=utf-8"
+  },
+  "https://example.com/rel-case": {
+   "body": "<!doctype html><html><head><title>Rel</title><link rel=\"IMAGE_SRC\" href=\"upper.png\"></head><body><img src=\"fallback.png\"></body></html>",
+   "type": "text/html; charset=utf-8"
+  },
+  "https://example.com/attr-case": {
+   "body": "<!doctype html><html><head><TITLE>Upper tags</TITLE><META PROPERTY=\"og:image\" CONTENT=\"upper-meta.png\"><meta property=\"OG:TITLE\" content=\"Ignored upper value\"></head><body></body></html>",
+   "type": "text/html; charset=utf-8"
+  },
+  "https://example.com/no-description": {
+   "body": "<!doctype html><html><head><title>No description</title><meta property=\"og:image\" content=\"https://cdn.example.com/unreachable.jpg\"></head><body></body></html>",
+   "type": "text/html; charset=utf-8"
+  },
+  "https://example.com/empty-description": {
+   "body": "<!doctype html><html><head><title>Empty description</title><meta property=\"og:description\" content=\"\"></head><body></body></html>",
+   "type": "text/html; charset=utf-8"
+  },
+  "https://example.com/plain-hq": {
+   "body": "<!doctype html><html><head><title>Plain upload</title><meta property=\"og:image\" content=\"https://cdn.example.com/plain.jpg\"></head><body></body></html>",
+   "type": "text/html; charset=utf-8"
+  },
+  "https://example.com/nothumb-hq": {
+   "body": "<!doctype html><html><head><title>No thumb upload</title><meta property=\"og:image\" content=\"https://cdn.example.com/nothumb.jpg\"></head><body></body></html>",
+   "type": "text/html; charset=utf-8"
+  },
+  "https://example.com/script": {
+   "body": "<!doctype html><html><head><script>var t=\"<title>Script title</title>\"</script><title>Real title</title><!-- <meta property=\"og:title\" content=\"Commented\"> --></head><body></body></html>",
+   "type": "text/html; charset=utf-8"
+  },
+  "https://example.com/text": {
+   "body": "Just plain text with <title>Inline title</title>",
+   "type": "text/plain"
+  },
+  "https://example.com/unknown-type": {
+   "body": "<!doctype html><html><head><title>Unknown type</title></head><body></body></html>",
+   "type": "x-custom/thing"
+  },
+  "https://example.com/no-type": {
+   "body": "<!doctype html><html><head><title>No content type</title></head><body></body></html>",
+   "type": null
+  },
+  "https://example.com/image.png": {
+   "body": "binary",
+   "type": "image/png"
+  },
+  "https://example.com/video": {
+   "body": "<!doctype html><html><head><title>Video</title></head><body></body></html>",
+   "type": "video/mp4"
+  },
+  "https://example.com/audio": {
+   "body": "<!doctype html><html><head><title>Audio</title></head><body></body></html>",
+   "type": "audio/mpeg; codecs=x"
+  },
+  "https://example.com/json": {
+   "body": "{\"title\":\"x\"}",
+   "type": "application/json"
+  },
+  "https://example.com/xhtml": {
+   "body": "<!doctype html><html><head><title>XHTML</title></head><body></body></html>",
+   "type": "application/xhtml+xml"
+  },
+  "https://example.com/redirect": {
+   "body": "<!doctype html><html><head><title>Redirected</title><meta property=\"og:image\" content=\"img.png\"></head><body></body></html>",
+   "type": "text/html",
+   "url": "https://www.example.com/final/page"
+  },
+  "https://example.com/": {
+   "body": "<!doctype html><html><head><title>Root</title></head><body></body></html>",
+   "type": "text/html; charset=utf-8"
+  },
+  "https://example.com/fragment#section": {
+   "body": "<!doctype html><html><head><title>Fragment</title></head><body></body></html>",
+   "type": "text/html; charset=utf-8"
+  },
+  "https://sub.example.co.uk:8443/path?q=1": {
+   "body": "<!doctype html><html><head><title>Port and query</title></head><body></body></html>",
+   "type": "text/html; charset=utf-8"
+  },
+  "http://example.com/insecure": {
+   "body": "<!doctype html><html><head><title>Insecure</title></head><body></body></html>",
+   "type": "text/html; charset=utf-8"
+  },
+  "https://xn--bcher-kva.example/": {
+   "body": "<!doctype html><html><head><title>Punycode</title></head><body></body></html>",
+   "type": "text/html; charset=utf-8"
+  },
+  "https://8.8.8.8/dns": {
+   "body": "<!doctype html><html><head><title>Public address</title></head><body></body></html>",
+   "type": "text/html; charset=utf-8"
+  }
+ },
+ "cases": [
+  {
+   "text": "https://example.com/og",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "https://example.com/og",
+     "redirect": "follow"
+    }
+   ],
+   "expected": {
+    "canonical-url": "https://example.com/og",
+    "matched-text": "https://example.com/og",
+    "title": "Open Graph & title 💚",
+    "description": "Plain description",
+    "originalThumbnailUrl": "https://example.com/images/cover.jpg",
+    "jpegThumbnail": {
+     "type": "Buffer",
+     "data": "dGh1bWJuYWlsOmh0dHBzOi8vZXhhbXBsZS5jb20vaW1hZ2VzL2NvdmVyLmpwZzoxOTI="
+    }
+   },
+   "error": null
+  },
+  {
+   "text": "https://example.com/title-only",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "https://example.com/title-only",
+     "redirect": "follow"
+    }
+   ],
+   "expected": {
+    "canonical-url": "https://example.com/title-only",
+    "matched-text": "https://example.com/title-only",
+    "title": " Title <only> "
+   },
+   "error": null
+  },
+  {
+   "text": "https://example.com/name-title",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "https://example.com/name-title",
+     "redirect": "follow"
+    }
+   ],
+   "expected": {
+    "canonical-url": "https://example.com/name-title",
+    "matched-text": "https://example.com/name-title",
+    "title": "Named title",
+    "description": "Capital description",
+    "originalThumbnailUrl": "https://example.com/named.jpg",
+    "jpegThumbnail": {
+     "type": "Buffer",
+     "data": "dGh1bWJuYWlsOmh0dHBzOi8vZXhhbXBsZS5jb20vbmFtZWQuanBnOjE5Mg=="
+    }
+   },
+   "error": null
+  },
+  {
+   "text": "https://example.com/empty-og",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "https://example.com/empty-og",
+     "redirect": "follow"
+    }
+   ],
+   "expected": {
+    "canonical-url": "https://example.com/empty-og",
+    "matched-text": "https://example.com/empty-og",
+    "title": "Used title",
+    "description": "Fallback description",
+    "originalThumbnailUrl": "https://example.com/rel.png",
+    "jpegThumbnail": {
+     "type": "Buffer",
+     "data": "dGh1bWJuYWlsOmh0dHBzOi8vZXhhbXBsZS5jb20vcmVsLnBuZzoxOTI="
+    }
+   },
+   "error": null
+  },
+  {
+   "text": "https://example.com/first-meta-wins",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "https://example.com/first-meta-wins",
+     "redirect": "follow"
+    }
+   ],
+   "expected": {
+    "canonical-url": "https://example.com/first-meta-wins",
+    "matched-text": "https://example.com/first-meta-wins",
+    "title": "Fallback"
+   },
+   "error": null
+  },
+  {
+   "text": "https://example.com/no-title",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "https://example.com/no-title",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://example.com/body-title",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "https://example.com/body-title",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://example.com/two-titles",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "https://example.com/two-titles",
+     "redirect": "follow"
+    }
+   ],
+   "expected": {
+    "canonical-url": "https://example.com/two-titles",
+    "matched-text": "https://example.com/two-titles",
+    "title": "OneTwo"
+   },
+   "error": null
+  },
+  {
+   "text": "https://example.com/a/b/imgs",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "https://example.com/a/b/imgs",
+     "redirect": "follow"
+    }
+   ],
+   "expected": {
+    "canonical-url": "https://example.com/a/b/imgs",
+    "matched-text": "https://example.com/a/b/imgs",
+    "title": "Images",
+    "originalThumbnailUrl": "https://example.com/a/b/one.png",
+    "jpegThumbnail": {
+     "type": "Buffer",
+     "data": "dGh1bWJuYWlsOmh0dHBzOi8vZXhhbXBsZS5jb20vYS9iL29uZS5wbmc6MTky"
+    }
+   },
+   "error": null
+  },
+  {
+   "text": "https://example.com/rel-case",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "https://example.com/rel-case",
+     "redirect": "follow"
+    }
+   ],
+   "expected": {
+    "canonical-url": "https://example.com/rel-case",
+    "matched-text": "https://example.com/rel-case",
+    "title": "Rel",
+    "originalThumbnailUrl": "https://example.com/upper.png",
+    "jpegThumbnail": {
+     "type": "Buffer",
+     "data": "dGh1bWJuYWlsOmh0dHBzOi8vZXhhbXBsZS5jb20vdXBwZXIucG5nOjE5Mg=="
+    }
+   },
+   "error": null
+  },
+  {
+   "text": "https://example.com/attr-case",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "https://example.com/attr-case",
+     "redirect": "follow"
+    }
+   ],
+   "expected": {
+    "canonical-url": "https://example.com/attr-case",
+    "matched-text": "https://example.com/attr-case",
+    "title": "Upper tags",
+    "originalThumbnailUrl": "https://example.com/upper-meta.png",
+    "jpegThumbnail": {
+     "type": "Buffer",
+     "data": "dGh1bWJuYWlsOmh0dHBzOi8vZXhhbXBsZS5jb20vdXBwZXItbWV0YS5wbmc6MTky"
+    }
+   },
+   "error": null
+  },
+  {
+   "text": "https://example.com/no-description",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "https://example.com/no-description",
+     "redirect": "follow"
+    }
+   ],
+   "expected": {
+    "canonical-url": "https://example.com/no-description",
+    "matched-text": "https://example.com/no-description",
+    "title": "No description",
+    "originalThumbnailUrl": "https://cdn.example.com/unreachable.jpg"
+   },
+   "error": null
+  },
+  {
+   "text": "https://example.com/empty-description",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "https://example.com/empty-description",
+     "redirect": "follow"
+    }
+   ],
+   "expected": {
+    "canonical-url": "https://example.com/empty-description",
+    "matched-text": "https://example.com/empty-description",
+    "title": "Empty description",
+    "description": ""
+   },
+   "error": null
+  },
+  {
+   "text": "https://example.com/plain-hq",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "https://example.com/plain-hq",
+     "redirect": "follow"
+    }
+   ],
+   "expected": {
+    "canonical-url": "https://example.com/plain-hq",
+    "matched-text": "https://example.com/plain-hq",
+    "title": "Plain upload",
+    "originalThumbnailUrl": "https://cdn.example.com/plain.jpg",
+    "jpegThumbnail": {
+     "type": "Buffer",
+     "data": "dGh1bWJuYWlsOmh0dHBzOi8vY2RuLmV4YW1wbGUuY29tL3BsYWluLmpwZzoxOTI="
+    }
+   },
+   "error": null
+  },
+  {
+   "text": "https://example.com/nothumb-hq",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "https://example.com/nothumb-hq",
+     "redirect": "follow"
+    }
+   ],
+   "expected": {
+    "canonical-url": "https://example.com/nothumb-hq",
+    "matched-text": "https://example.com/nothumb-hq",
+    "title": "No thumb upload",
+    "originalThumbnailUrl": "https://cdn.example.com/nothumb.jpg",
+    "jpegThumbnail": {
+     "type": "Buffer",
+     "data": "dGh1bWJuYWlsOmh0dHBzOi8vY2RuLmV4YW1wbGUuY29tL25vdGh1bWIuanBnOjE5Mg=="
+    }
+   },
+   "error": null
+  },
+  {
+   "text": "https://example.com/script",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "https://example.com/script",
+     "redirect": "follow"
+    }
+   ],
+   "expected": {
+    "canonical-url": "https://example.com/script",
+    "matched-text": "https://example.com/script",
+    "title": "Real title"
+   },
+   "error": null
+  },
+  {
+   "text": "https://example.com/text",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "https://example.com/text",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://example.com/unknown-type",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "https://example.com/unknown-type",
+     "redirect": "follow"
+    }
+   ],
+   "expected": {
+    "canonical-url": "https://example.com/unknown-type",
+    "matched-text": "https://example.com/unknown-type",
+    "title": "Unknown type"
+   },
+   "error": null
+  },
+  {
+   "text": "https://example.com/no-type",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "https://example.com/no-type",
+     "redirect": "follow"
+    }
+   ],
+   "expected": {
+    "canonical-url": "https://example.com/no-type",
+    "matched-text": "https://example.com/no-type",
+    "title": "No content type"
+   },
+   "error": null
+  },
+  {
+   "text": "https://example.com/image.png",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "https://example.com/image.png",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://example.com/video",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "https://example.com/video",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://example.com/audio",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "https://example.com/audio",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://example.com/json",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "https://example.com/json",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://example.com/xhtml",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "https://example.com/xhtml",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://example.com/redirect",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "https://example.com/redirect",
+     "redirect": "follow"
+    }
+   ],
+   "expected": {
+    "canonical-url": "https://www.example.com/final/page",
+    "matched-text": "https://example.com/redirect",
+    "title": "Redirected",
+    "originalThumbnailUrl": "https://www.example.com/final/img.png",
+    "jpegThumbnail": {
+     "type": "Buffer",
+     "data": "dGh1bWJuYWlsOmh0dHBzOi8vd3d3LmV4YW1wbGUuY29tL2ZpbmFsL2ltZy5wbmc6MTky"
+    }
+   },
+   "error": null
+  },
+  {
+   "text": "https://example.com/",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "https://example.com/",
+     "redirect": "follow"
+    }
+   ],
+   "expected": {
+    "canonical-url": "https://example.com/",
+    "matched-text": "https://example.com/",
+    "title": "Root"
+   },
+   "error": null
+  },
+  {
+   "text": "https://example.com/fragment#section",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "https://example.com/fragment#section",
+     "redirect": "follow"
+    }
+   ],
+   "expected": {
+    "canonical-url": "https://example.com/fragment#section",
+    "matched-text": "https://example.com/fragment#section",
+    "title": "Fragment"
+   },
+   "error": null
+  },
+  {
+   "text": "https://sub.example.co.uk:8443/path?q=1",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "https://sub.example.co.uk:8443/path?q=1",
+     "redirect": "follow"
+    }
+   ],
+   "expected": {
+    "canonical-url": "https://sub.example.co.uk:8443/path?q=1",
+    "matched-text": "https://sub.example.co.uk:8443/path?q=1",
+    "title": "Port and query"
+   },
+   "error": null
+  },
+  {
+   "text": "http://example.com/insecure",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "http://example.com/insecure",
+     "redirect": "follow"
+    }
+   ],
+   "expected": {
+    "canonical-url": "http://example.com/insecure",
+    "matched-text": "http://example.com/insecure",
+    "title": "Insecure"
+   },
+   "error": null
+  },
+  {
+   "text": "https://xn--bcher-kva.example/",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "https://xn--bcher-kva.example/",
+     "redirect": "follow"
+    }
+   ],
+   "expected": {
+    "canonical-url": "https://xn--bcher-kva.example/",
+    "matched-text": "https://xn--bcher-kva.example/",
+    "title": "Punycode"
+   },
+   "error": null
+  },
+  {
+   "text": "https://8.8.8.8/dns",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "https://8.8.8.8/dns",
+     "redirect": "follow"
+    }
+   ],
+   "expected": {
+    "canonical-url": "https://8.8.8.8/dns",
+    "matched-text": "https://8.8.8.8/dns",
+    "title": "Public address"
+   },
+   "error": null
+  },
+  {
+   "text": "example.com/og",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "https://example.com/og",
+     "redirect": "follow"
+    }
+   ],
+   "expected": {
+    "canonical-url": "https://example.com/og",
+    "matched-text": "example.com/og",
+    "title": "Open Graph & title 💚",
+    "description": "Plain description",
+    "originalThumbnailUrl": "https://example.com/images/cover.jpg",
+    "jpegThumbnail": {
+     "type": "Buffer",
+     "data": "dGh1bWJuYWlsOmh0dHBzOi8vZXhhbXBsZS5jb20vaW1hZ2VzL2NvdmVyLmpwZzoxOTI="
+    }
+   },
+   "error": null
+  },
+  {
+   "text": "www.example.com",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "https://www.example.com",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": "fetch failed"
+  },
+  {
+   "text": "https://missing.example/page",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "https://missing.example/page",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": "fetch failed"
+  },
+  {
+   "text": "https://10.0.0.1/private",
+   "upload": false,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://127.0.0.1/",
+   "upload": false,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://192.168.1.1/x",
+   "upload": false,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://172.16.0.1/",
+   "upload": false,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://169.254.1.1/",
+   "upload": false,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://224.0.0.1/",
+   "upload": false,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://0.0.0.0/",
+   "upload": false,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://1.2.3.255/",
+   "upload": false,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://300.1.2.3/",
+   "upload": false,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://localhost/x",
+   "upload": false,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://localhost:8080",
+   "upload": false,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://example/x",
+   "upload": false,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://example.c/x",
+   "upload": false,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://user:pass@example.com/og",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "https://user:pass@example.com/og",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": "fetch failed"
+  },
+  {
+   "text": "ftp://example.com/og",
+   "upload": false,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "HTTPS://EXAMPLE.COM/og",
+   "upload": false,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://example.com/og extra words",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "https://example.com/og",
+     "redirect": "follow"
+    }
+   ],
+   "expected": {
+    "canonical-url": "https://example.com/og",
+    "matched-text": "https://example.com/og extra words",
+    "title": "Open Graph & title 💚",
+    "description": "Plain description",
+    "originalThumbnailUrl": "https://example.com/images/cover.jpg",
+    "jpegThumbnail": {
+     "type": "Buffer",
+     "data": "dGh1bWJuYWlsOmh0dHBzOi8vZXhhbXBsZS5jb20vaW1hZ2VzL2NvdmVyLmpwZzoxOTI="
+    }
+   },
+   "error": null
+  },
+  {
+   "text": "first https://example.com/title-only second",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "https://example.com/title-only",
+     "redirect": "follow"
+    }
+   ],
+   "expected": {
+    "canonical-url": "https://example.com/title-only",
+    "matched-text": "first https://example.com/title-only second",
+    "title": " Title <only> "
+   },
+   "error": null
+  },
+  {
+   "text": "line\nhttps://example.com/title-only",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "https://example.com/title-only",
+     "redirect": "follow"
+    }
+   ],
+   "expected": {
+    "canonical-url": "https://example.com/title-only",
+    "matched-text": "line\nhttps://example.com/title-only",
+    "title": " Title <only> "
+   },
+   "error": null
+  },
+  {
+   "text": "https://exa_mple.com/",
+   "upload": false,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://example.com:1/",
+   "upload": false,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://example.com:123456/",
+   "upload": false,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://-bad-.example.com/",
+   "upload": false,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://example.com/pa th",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "https://example.com/pa",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": "fetch failed"
+  },
+  {
+   "text": "https://example.com./",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "https://example.com./",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": "fetch failed"
+  },
+  {
+   "text": "https://bücher.example/",
+   "upload": false,
+   "fetched": [
+    {
+     "url": "https://bücher.example/",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": "fetch failed"
+  },
+  {
+   "text": "",
+   "upload": false,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "   ",
+   "upload": false,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "not a url",
+   "upload": false,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://example.com/og",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "https://example.com/og",
+     "redirect": "follow"
+    }
+   ],
+   "expected": {
+    "canonical-url": "https://example.com/og",
+    "matched-text": "https://example.com/og",
+    "title": "Open Graph & title 💚",
+    "description": "Plain description",
+    "originalThumbnailUrl": "https://example.com/images/cover.jpg",
+    "jpegThumbnail": {
+     "type": "Buffer",
+     "data": "aHE6aHR0cHM6Ly9leGFtcGxlLmNvbS9pbWFnZXMvY292ZXIuanBn"
+    },
+    "highQualityThumbnail": {
+     "url": "https://mmg.whatsapp.net/hq",
+     "directPath": "/hq",
+     "jpegThumbnail": {
+      "type": "Buffer",
+      "data": "aHE6aHR0cHM6Ly9leGFtcGxlLmNvbS9pbWFnZXMvY292ZXIuanBn"
+     },
+     "width": 640,
+     "height": 480
+    }
+   },
+   "error": null
+  },
+  {
+   "text": "https://example.com/title-only",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "https://example.com/title-only",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": "missing image"
+  },
+  {
+   "text": "https://example.com/name-title",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "https://example.com/name-title",
+     "redirect": "follow"
+    }
+   ],
+   "expected": {
+    "canonical-url": "https://example.com/name-title",
+    "matched-text": "https://example.com/name-title",
+    "title": "Named title",
+    "description": "Capital description",
+    "originalThumbnailUrl": "https://example.com/named.jpg",
+    "jpegThumbnail": {
+     "type": "Buffer",
+     "data": "aHE6aHR0cHM6Ly9leGFtcGxlLmNvbS9uYW1lZC5qcGc="
+    },
+    "highQualityThumbnail": {
+     "url": "https://mmg.whatsapp.net/hq",
+     "directPath": "/hq",
+     "jpegThumbnail": {
+      "type": "Buffer",
+      "data": "aHE6aHR0cHM6Ly9leGFtcGxlLmNvbS9uYW1lZC5qcGc="
+     },
+     "width": 640,
+     "height": 480
+    }
+   },
+   "error": null
+  },
+  {
+   "text": "https://example.com/empty-og",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "https://example.com/empty-og",
+     "redirect": "follow"
+    }
+   ],
+   "expected": {
+    "canonical-url": "https://example.com/empty-og",
+    "matched-text": "https://example.com/empty-og",
+    "title": "Used title",
+    "description": "Fallback description",
+    "originalThumbnailUrl": "https://example.com/rel.png",
+    "jpegThumbnail": {
+     "type": "Buffer",
+     "data": "aHE6aHR0cHM6Ly9leGFtcGxlLmNvbS9yZWwucG5n"
+    },
+    "highQualityThumbnail": {
+     "url": "https://mmg.whatsapp.net/hq",
+     "directPath": "/hq",
+     "jpegThumbnail": {
+      "type": "Buffer",
+      "data": "aHE6aHR0cHM6Ly9leGFtcGxlLmNvbS9yZWwucG5n"
+     },
+     "width": 640,
+     "height": 480
+    }
+   },
+   "error": null
+  },
+  {
+   "text": "https://example.com/first-meta-wins",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "https://example.com/first-meta-wins",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": "missing image"
+  },
+  {
+   "text": "https://example.com/no-title",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "https://example.com/no-title",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://example.com/body-title",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "https://example.com/body-title",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://example.com/two-titles",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "https://example.com/two-titles",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": "missing image"
+  },
+  {
+   "text": "https://example.com/a/b/imgs",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "https://example.com/a/b/imgs",
+     "redirect": "follow"
+    }
+   ],
+   "expected": {
+    "canonical-url": "https://example.com/a/b/imgs",
+    "matched-text": "https://example.com/a/b/imgs",
+    "title": "Images",
+    "originalThumbnailUrl": "https://example.com/a/b/one.png",
+    "jpegThumbnail": {
+     "type": "Buffer",
+     "data": "aHE6aHR0cHM6Ly9leGFtcGxlLmNvbS9hL2Ivb25lLnBuZw=="
+    },
+    "highQualityThumbnail": {
+     "url": "https://mmg.whatsapp.net/hq",
+     "directPath": "/hq",
+     "jpegThumbnail": {
+      "type": "Buffer",
+      "data": "aHE6aHR0cHM6Ly9leGFtcGxlLmNvbS9hL2Ivb25lLnBuZw=="
+     },
+     "width": 640,
+     "height": 480
+    }
+   },
+   "error": null
+  },
+  {
+   "text": "https://example.com/rel-case",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "https://example.com/rel-case",
+     "redirect": "follow"
+    }
+   ],
+   "expected": {
+    "canonical-url": "https://example.com/rel-case",
+    "matched-text": "https://example.com/rel-case",
+    "title": "Rel",
+    "originalThumbnailUrl": "https://example.com/upper.png",
+    "jpegThumbnail": {
+     "type": "Buffer",
+     "data": "aHE6aHR0cHM6Ly9leGFtcGxlLmNvbS91cHBlci5wbmc="
+    },
+    "highQualityThumbnail": {
+     "url": "https://mmg.whatsapp.net/hq",
+     "directPath": "/hq",
+     "jpegThumbnail": {
+      "type": "Buffer",
+      "data": "aHE6aHR0cHM6Ly9leGFtcGxlLmNvbS91cHBlci5wbmc="
+     },
+     "width": 640,
+     "height": 480
+    }
+   },
+   "error": null
+  },
+  {
+   "text": "https://example.com/attr-case",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "https://example.com/attr-case",
+     "redirect": "follow"
+    }
+   ],
+   "expected": {
+    "canonical-url": "https://example.com/attr-case",
+    "matched-text": "https://example.com/attr-case",
+    "title": "Upper tags",
+    "originalThumbnailUrl": "https://example.com/upper-meta.png",
+    "jpegThumbnail": {
+     "type": "Buffer",
+     "data": "aHE6aHR0cHM6Ly9leGFtcGxlLmNvbS91cHBlci1tZXRhLnBuZw=="
+    },
+    "highQualityThumbnail": {
+     "url": "https://mmg.whatsapp.net/hq",
+     "directPath": "/hq",
+     "jpegThumbnail": {
+      "type": "Buffer",
+      "data": "aHE6aHR0cHM6Ly9leGFtcGxlLmNvbS91cHBlci1tZXRhLnBuZw=="
+     },
+     "width": 640,
+     "height": 480
+    }
+   },
+   "error": null
+  },
+  {
+   "text": "https://example.com/no-description",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "https://example.com/no-description",
+     "redirect": "follow"
+    }
+   ],
+   "expected": {
+    "canonical-url": "https://example.com/no-description",
+    "matched-text": "https://example.com/no-description",
+    "title": "No description",
+    "originalThumbnailUrl": "https://cdn.example.com/unreachable.jpg",
+    "jpegThumbnail": {
+     "type": "Buffer",
+     "data": "aHE6aHR0cHM6Ly9jZG4uZXhhbXBsZS5jb20vdW5yZWFjaGFibGUuanBn"
+    },
+    "highQualityThumbnail": {
+     "url": "https://mmg.whatsapp.net/hq",
+     "directPath": "/hq",
+     "jpegThumbnail": {
+      "type": "Buffer",
+      "data": "aHE6aHR0cHM6Ly9jZG4uZXhhbXBsZS5jb20vdW5yZWFjaGFibGUuanBn"
+     },
+     "width": 640,
+     "height": 480
+    }
+   },
+   "error": null
+  },
+  {
+   "text": "https://example.com/empty-description",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "https://example.com/empty-description",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": "missing image"
+  },
+  {
+   "text": "https://example.com/plain-hq",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "https://example.com/plain-hq",
+     "redirect": "follow"
+    }
+   ],
+   "expected": {
+    "canonical-url": "https://example.com/plain-hq",
+    "matched-text": "https://example.com/plain-hq",
+    "title": "Plain upload",
+    "originalThumbnailUrl": "https://cdn.example.com/plain.jpg"
+   },
+   "error": null
+  },
+  {
+   "text": "https://example.com/nothumb-hq",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "https://example.com/nothumb-hq",
+     "redirect": "follow"
+    }
+   ],
+   "expected": {
+    "canonical-url": "https://example.com/nothumb-hq",
+    "matched-text": "https://example.com/nothumb-hq",
+    "title": "No thumb upload",
+    "originalThumbnailUrl": "https://cdn.example.com/nothumb.jpg",
+    "highQualityThumbnail": {
+     "url": "https://mmg.whatsapp.net/hq",
+     "directPath": "/hq",
+     "width": 640,
+     "height": 480
+    }
+   },
+   "error": null
+  },
+  {
+   "text": "https://example.com/script",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "https://example.com/script",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": "missing image"
+  },
+  {
+   "text": "https://example.com/text",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "https://example.com/text",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://example.com/unknown-type",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "https://example.com/unknown-type",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": "missing image"
+  },
+  {
+   "text": "https://example.com/no-type",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "https://example.com/no-type",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": "missing image"
+  },
+  {
+   "text": "https://example.com/image.png",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "https://example.com/image.png",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://example.com/video",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "https://example.com/video",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://example.com/audio",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "https://example.com/audio",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://example.com/json",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "https://example.com/json",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://example.com/xhtml",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "https://example.com/xhtml",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://example.com/redirect",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "https://example.com/redirect",
+     "redirect": "follow"
+    }
+   ],
+   "expected": {
+    "canonical-url": "https://www.example.com/final/page",
+    "matched-text": "https://example.com/redirect",
+    "title": "Redirected",
+    "originalThumbnailUrl": "https://www.example.com/final/img.png",
+    "jpegThumbnail": {
+     "type": "Buffer",
+     "data": "aHE6aHR0cHM6Ly93d3cuZXhhbXBsZS5jb20vZmluYWwvaW1nLnBuZw=="
+    },
+    "highQualityThumbnail": {
+     "url": "https://mmg.whatsapp.net/hq",
+     "directPath": "/hq",
+     "jpegThumbnail": {
+      "type": "Buffer",
+      "data": "aHE6aHR0cHM6Ly93d3cuZXhhbXBsZS5jb20vZmluYWwvaW1nLnBuZw=="
+     },
+     "width": 640,
+     "height": 480
+    }
+   },
+   "error": null
+  },
+  {
+   "text": "https://example.com/",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "https://example.com/",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": "missing image"
+  },
+  {
+   "text": "https://example.com/fragment#section",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "https://example.com/fragment#section",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": "missing image"
+  },
+  {
+   "text": "https://sub.example.co.uk:8443/path?q=1",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "https://sub.example.co.uk:8443/path?q=1",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": "missing image"
+  },
+  {
+   "text": "http://example.com/insecure",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "http://example.com/insecure",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": "missing image"
+  },
+  {
+   "text": "https://xn--bcher-kva.example/",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "https://xn--bcher-kva.example/",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": "missing image"
+  },
+  {
+   "text": "https://8.8.8.8/dns",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "https://8.8.8.8/dns",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": "missing image"
+  },
+  {
+   "text": "example.com/og",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "https://example.com/og",
+     "redirect": "follow"
+    }
+   ],
+   "expected": {
+    "canonical-url": "https://example.com/og",
+    "matched-text": "example.com/og",
+    "title": "Open Graph & title 💚",
+    "description": "Plain description",
+    "originalThumbnailUrl": "https://example.com/images/cover.jpg",
+    "jpegThumbnail": {
+     "type": "Buffer",
+     "data": "aHE6aHR0cHM6Ly9leGFtcGxlLmNvbS9pbWFnZXMvY292ZXIuanBn"
+    },
+    "highQualityThumbnail": {
+     "url": "https://mmg.whatsapp.net/hq",
+     "directPath": "/hq",
+     "jpegThumbnail": {
+      "type": "Buffer",
+      "data": "aHE6aHR0cHM6Ly9leGFtcGxlLmNvbS9pbWFnZXMvY292ZXIuanBn"
+     },
+     "width": 640,
+     "height": 480
+    }
+   },
+   "error": null
+  },
+  {
+   "text": "www.example.com",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "https://www.example.com",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": "fetch failed"
+  },
+  {
+   "text": "https://missing.example/page",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "https://missing.example/page",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": "fetch failed"
+  },
+  {
+   "text": "https://10.0.0.1/private",
+   "upload": true,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://127.0.0.1/",
+   "upload": true,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://192.168.1.1/x",
+   "upload": true,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://172.16.0.1/",
+   "upload": true,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://169.254.1.1/",
+   "upload": true,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://224.0.0.1/",
+   "upload": true,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://0.0.0.0/",
+   "upload": true,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://1.2.3.255/",
+   "upload": true,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://300.1.2.3/",
+   "upload": true,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://localhost/x",
+   "upload": true,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://localhost:8080",
+   "upload": true,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://example/x",
+   "upload": true,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://example.c/x",
+   "upload": true,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://user:pass@example.com/og",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "https://user:pass@example.com/og",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": "fetch failed"
+  },
+  {
+   "text": "ftp://example.com/og",
+   "upload": true,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "HTTPS://EXAMPLE.COM/og",
+   "upload": true,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://example.com/og extra words",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "https://example.com/og",
+     "redirect": "follow"
+    }
+   ],
+   "expected": {
+    "canonical-url": "https://example.com/og",
+    "matched-text": "https://example.com/og extra words",
+    "title": "Open Graph & title 💚",
+    "description": "Plain description",
+    "originalThumbnailUrl": "https://example.com/images/cover.jpg",
+    "jpegThumbnail": {
+     "type": "Buffer",
+     "data": "aHE6aHR0cHM6Ly9leGFtcGxlLmNvbS9pbWFnZXMvY292ZXIuanBn"
+    },
+    "highQualityThumbnail": {
+     "url": "https://mmg.whatsapp.net/hq",
+     "directPath": "/hq",
+     "jpegThumbnail": {
+      "type": "Buffer",
+      "data": "aHE6aHR0cHM6Ly9leGFtcGxlLmNvbS9pbWFnZXMvY292ZXIuanBn"
+     },
+     "width": 640,
+     "height": 480
+    }
+   },
+   "error": null
+  },
+  {
+   "text": "first https://example.com/title-only second",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "https://example.com/title-only",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": "missing image"
+  },
+  {
+   "text": "line\nhttps://example.com/title-only",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "https://example.com/title-only",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": "missing image"
+  },
+  {
+   "text": "https://exa_mple.com/",
+   "upload": true,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://example.com:1/",
+   "upload": true,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://example.com:123456/",
+   "upload": true,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://-bad-.example.com/",
+   "upload": true,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "https://example.com/pa th",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "https://example.com/pa",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": "fetch failed"
+  },
+  {
+   "text": "https://example.com./",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "https://example.com./",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": "fetch failed"
+  },
+  {
+   "text": "https://bücher.example/",
+   "upload": true,
+   "fetched": [
+    {
+     "url": "https://bücher.example/",
+     "redirect": "follow"
+    }
+   ],
+   "expected": null,
+   "error": "fetch failed"
+  },
+  {
+   "text": "",
+   "upload": true,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "   ",
+   "upload": true,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  },
+  {
+   "text": "not a url",
+   "upload": true,
+   "fetched": [],
+   "expected": null,
+   "error": null
+  }
+ ]
+}

@@ -15,6 +15,7 @@ pub mod event_buffer;
 pub mod groups;
 pub mod history;
 pub mod jid;
+pub mod link_preview;
 pub mod media;
 pub mod messages;
 pub mod newsletters;

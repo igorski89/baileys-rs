@@ -181,7 +181,29 @@ impl generation::ContentHooks for SocketContentHooks<'_> {
         &self,
         url: String,
     ) -> generation::HookFuture<'_, Option<generation::LinkPreview>> {
-        self.base.link_preview(url)
+        Box::pin(async move {
+            // A configured hook takes precedence over the built-in generator.
+            let provided = self.base.link_preview(url.clone()).await?;
+            let config = &self.socket.inner.link_previews;
+            if provided.is_some() || !config.enabled {
+                return Ok(provided);
+            }
+            let info = crate::link_preview::url_info(
+                &url,
+                config.image_thumbnail_width,
+                config.high_quality,
+                self,
+            )
+            .await
+            .map_err(|error| generation::Error::Hook(error.to_string()))?;
+            Ok(info.map(|info| generation::LinkPreview {
+                matched_text: Some(info.matched_text),
+                jpeg_thumbnail: info.jpeg_thumbnail,
+                description: info.description,
+                title: Some(info.title),
+                high_quality_thumbnail: info.high_quality_thumbnail,
+            }))
+        })
     }
     fn invite_thumbnail(&self, jid: String) -> generation::HookFuture<'_, Option<Vec<u8>>> {
         self.base.invite_thumbnail(jid)
@@ -217,5 +239,89 @@ impl generation::ContentHooks for SocketContentHooks<'_> {
                     })
                 })
         })
+    }
+}
+
+impl crate::link_preview::Source for SocketContentHooks<'_> {
+    fn page<'a>(
+        &'a self,
+        url: &'a str,
+    ) -> futures_util::future::BoxFuture<
+        'a,
+        Result<crate::link_preview::Page, crate::link_preview::Error>,
+    > {
+        use crate::link_preview::{Error, Page};
+        Box::pin(async move {
+            let http = self.socket.link_preview_http().await?;
+            let (url, content_type, body) = http
+                .get_page(url, self.socket.inner.link_previews.timeout)
+                .await
+                .map_err(|error| Error::Fetch(error.to_string()))?;
+            Ok(Page {
+                url,
+                content_type,
+                body,
+            })
+        })
+    }
+    fn thumbnail<'a>(
+        &'a self,
+        url: &'a str,
+        width: u32,
+    ) -> futures_util::future::BoxFuture<'a, Result<Vec<u8>, crate::link_preview::Error>> {
+        use crate::link_preview::Error;
+        Box::pin(async move {
+            let http = self.socket.link_preview_http().await?;
+            let image = http
+                .get(url, Default::default())
+                .await
+                .map_err(|error| Error::Image(error.to_string()))?
+                .bytes()
+                .await
+                .map_err(|error| Error::Image(error.to_string()))?;
+            tokio::task::spawn_blocking(move || {
+                crate::media::extract_image_thumb(std::io::Cursor::new(image), width)
+            })
+            .await
+            .map_err(|error| Error::Image(error.to_string()))?
+            .map(|thumbnail| thumbnail.jpeg)
+            .map_err(|error| Error::Image(error.to_string()))
+        })
+    }
+    fn upload<'a>(
+        &'a self,
+        url: &'a str,
+    ) -> futures_util::future::BoxFuture<
+        'a,
+        Result<Option<crate::proto::message::ImageMessage>, crate::link_preview::Error>,
+    > {
+        Box::pin(async move {
+            let request = crate::media::Request {
+                input: crate::media::Input::Url(url.into()),
+                payload: crate::media::Payload::Image(Default::default()),
+                video_note: false,
+            };
+            let options = crate::media::PrepareOptions {
+                media_type_override: Some(crate::media::MediaType::LinkThumbnail),
+                ..Default::default()
+            };
+            let message = self
+                .socket
+                .prepare_media_message(&request, &options, self.media)
+                .await
+                .map_err(|error| crate::link_preview::Error::Image(error.to_string()))?;
+            Ok(message.image_message.map(|image| *image))
+        })
+    }
+}
+impl Socket {
+    async fn link_preview_http(
+        &self,
+    ) -> Result<&crate::media::HttpClient, crate::link_preview::Error> {
+        self.inner
+            .media_http
+            .get_or_try_init(|| async { crate::media::HttpClient::new() })
+            .await
+            .map_err(|error| crate::link_preview::Error::Fetch(error.to_string()))
     }
 }

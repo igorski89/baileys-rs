@@ -41,6 +41,7 @@ thiserror = "2"
 tempfile = "3"
 image = { version = "0.25", default-features = false, features = ["jpeg", "png", "gif", "webp", "bmp", "tiff"] }
 symphonia = { version = "0.5.5", features = ["all"] }
+scraper = { version = "0.27.0", default-features = false }
 
 [build-dependencies]
 heck = "0.5"

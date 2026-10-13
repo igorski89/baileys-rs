@@ -865,3 +865,115 @@ async fn own_publication_matches_complete_original_buffered_event_sequences() {
     .await
     .unwrap();
 }
+struct PreviewHooks;
+impl generation::ContentHooks for PreviewHooks {
+    fn link_preview(
+        &self,
+        url: String,
+    ) -> generation::HookFuture<'_, Option<generation::LinkPreview>> {
+        Box::pin(async move {
+            Ok(Some(generation::LinkPreview {
+                matched_text: Some(url),
+                title: Some("Hook title".into()),
+                ..Default::default()
+            }))
+        })
+    }
+}
+#[tokio::test]
+async fn built_in_link_preview_is_attempted_when_enabled_and_never_blocks_sending() {
+    timeout(Duration::from_secs(10), async {
+        let temp = tempfile::tempdir().unwrap();
+        let store = store(&temp);
+        let (listener, mut config) = listener().await;
+        // The preview host resolves to a local port that drops every connection.
+        let pages = TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let client = || {
+            reqwest::Client::builder()
+                .resolve("preview.example.com", pages.local_addr().unwrap())
+                .build()
+                .unwrap()
+        };
+        config.media_http = Some(baileys_rs::media::HttpClient::with_clients(
+            client(),
+            client(),
+        ));
+        config.link_previews.enabled = true;
+        let attempts = Arc::new(std::sync::atomic::AtomicUsize::new(0));
+        let counted = attempts.clone();
+        let page_server = tokio::spawn(async move {
+            loop {
+                let (stream, _) = pages.accept().await.unwrap();
+                counted.fetch_add(1, std::sync::atomic::Ordering::SeqCst);
+                drop(stream);
+            }
+        });
+        let (tx, mut rx) = tokio::sync::mpsc::unbounded_channel();
+        let server = tokio::spawn(async move {
+            let mut peer = Peer::accept(listener.accept().await.unwrap().0).await;
+            peer.send(BinaryNode::new("success")).await;
+            assert!(peer.read().await.child("unified_session").is_some());
+            for _ in 0..3 {
+                let node = peer.read().await;
+                let bytes = node.child_buffer("plaintext").unwrap();
+                tx.send(proto::Message::decode(bytes).unwrap()).unwrap();
+            }
+            peer.closed().await;
+        });
+        let (socket, _events) = Socket::connect(config, store).await.unwrap();
+        socket.wait_for_open(Duration::from_secs(2)).await.unwrap();
+        let text = "See https://preview.example.com/page for details";
+        let send = |text: &'static str, hooks: Option<GenerationHooks>| {
+            let socket = socket.clone();
+            async move {
+                socket
+                    .send_message(
+                        "channel@newsletter",
+                        &Content::text(text),
+                        &Modifiers::default(),
+                        SendOptions {
+                            hooks,
+                            ..Default::default()
+                        },
+                    )
+                    .await
+                    .unwrap()
+                    .unwrap();
+            }
+        };
+        // The page cannot be fetched: the text is sent without a preview.
+        send(text, None).await;
+        let sent = rx.recv().await.unwrap().extended_text_message.unwrap();
+        assert_eq!(sent.text.as_deref(), Some(text));
+        assert_eq!(sent.title, None);
+        assert_eq!(sent.matched_text, None);
+        assert!(attempts.load(std::sync::atomic::Ordering::SeqCst) >= 1);
+        // A hook that supplies a preview is used instead of fetching.
+        let before = attempts.load(std::sync::atomic::Ordering::SeqCst);
+        send(text, Some(GenerationHooks::new(PreviewHooks))).await;
+        let sent = rx.recv().await.unwrap().extended_text_message.unwrap();
+        assert_eq!(sent.title.as_deref(), Some("Hook title"));
+        assert_eq!(
+            sent.matched_text.as_deref(),
+            Some("https://preview.example.com/page")
+        );
+        assert_eq!(attempts.load(std::sync::atomic::Ordering::SeqCst), before);
+        // Text without a URL fetches nothing.
+        send("no link here", None).await;
+        assert_eq!(
+            rx.recv()
+                .await
+                .unwrap()
+                .extended_text_message
+                .unwrap()
+                .title,
+            None
+        );
+        assert_eq!(attempts.load(std::sync::atomic::Ordering::SeqCst), before);
+        socket.close().await.unwrap();
+        server.await.unwrap();
+        page_server.abort();
+    })
+    .await
+    .unwrap();
+}

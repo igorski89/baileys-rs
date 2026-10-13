@@ -185,6 +185,29 @@ impl HttpClient {
             upload: upload_without_redirects,
         }
     }
+    /// Fetch a page for a link preview: its final URL, content type and body as UTF-8.
+    /// The timeout covers the request up to the response headers, as upstream's does.
+    pub async fn get_page(
+        &self,
+        url: &str,
+        timeout: Duration,
+    ) -> Result<(String, Option<String>, String), Error> {
+        let response = tokio::time::timeout(timeout, self.download.get(url).send())
+            .await
+            .map_err(|_| Error::Input("link preview request timed out"))??;
+        let content_type = response
+            .headers()
+            .get(CONTENT_TYPE)
+            .and_then(|value| value.to_str().ok())
+            .map(str::to_owned);
+        let url = response.url().to_string();
+        let body = response.bytes().await?;
+        Ok((
+            url,
+            content_type,
+            String::from_utf8_lossy(&body).into_owned(),
+        ))
+    }
     pub async fn get(&self, url: &str, headers: HeaderMap) -> Result<reqwest::Response, Error> {
         let response = self.download.get(url).headers(headers).send().await?;
         if !response.status().is_success() {

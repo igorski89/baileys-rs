@@ -209,6 +209,7 @@ pub struct Config {
     pub process_notifications: bool,
     pub get_message: crate::relay::MessageLookup,
     pub generation_hooks: crate::messages::generation::GenerationHooks,
+    pub link_previews: LinkPreviewConfig,
     pub emit_own_events: bool,
     pub media_http: Option<crate::media::HttpClient>,
     pub media_preparation_hooks: crate::media::PreparationHooks,
@@ -250,11 +251,35 @@ impl Default for Config {
             process_notifications: true,
             get_message: Default::default(),
             generation_hooks: Default::default(),
+            link_previews: Default::default(),
             emit_own_events: true,
             media_http: None,
             media_preparation_hooks: Default::default(),
             history_policy: Default::default(),
             history_downloader: None,
+        }
+    }
+}
+/// Built-in link previews for text messages. Upstream generates them only when
+/// its optional link-preview-js dependency is installed, so they are opt-in here.
+#[derive(Debug, Clone)]
+pub struct LinkPreviewConfig {
+    /// Fetch the first URL of a text message and attach its title and thumbnail.
+    pub enabled: bool,
+    /// Width of the inline JPEG thumbnail.
+    pub image_thumbnail_width: u32,
+    /// Upload the page image as a link thumbnail instead of only inlining it.
+    pub high_quality: bool,
+    /// Time allowed for the page request.
+    pub timeout: Duration,
+}
+impl Default for LinkPreviewConfig {
+    fn default() -> Self {
+        Self {
+            enabled: false,
+            image_thumbnail_width: crate::link_preview::THUMBNAIL_WIDTH_PX,
+            high_quality: false,
+            timeout: Duration::from_secs(3),
         }
     }
 }
@@ -494,6 +519,7 @@ struct Inner {
     media_preparation_hooks: crate::media::PreparationHooks,
     own_messages: Option<mpsc::UnboundedSender<proto::WebMessageInfo>>,
     generation_hooks: crate::messages::generation::GenerationHooks,
+    link_previews: LinkPreviewConfig,
     receipt_lock: tokio::sync::Mutex<()>,
     get_message: crate::relay::MessageLookup,
     retry_requests: Arc<retries::RetryRequests>,
@@ -746,6 +772,7 @@ impl Socket {
             media_preparation_hooks: config.media_preparation_hooks.clone(),
             own_messages: config.emit_own_events.then_some(own_sender),
             generation_hooks: config.generation_hooks.clone(),
+            link_previews: config.link_previews.clone(),
             receipt_lock: tokio::sync::Mutex::new(()),
             get_message: config.get_message.clone(),
             retry_requests,
