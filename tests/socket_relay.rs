@@ -996,3 +996,32 @@ async fn asynchronous_message_patch_is_awaited_before_relay() {
     .await
     .unwrap();
 }
+#[test]
+fn member_label_message_truncates_like_upstream_and_carries_its_meta_node() {
+    let label = |text: &str| {
+        relay::member_label_message(text, 1_700_000_000)
+            .protocol_message
+            .unwrap()
+    };
+    let message = label("Team lead");
+    assert_eq!(
+        message.r#type,
+        Some(proto::message::protocol_message::Type::GroupMemberLabelChange as i32)
+    );
+    let member = message.member_label.unwrap();
+    assert_eq!(member.label.as_deref(), Some("Team lead"));
+    assert_eq!(member.label_timestamp, Some(1_700_000_000));
+    // Thirty UTF-16 units: astral characters count twice and are never split.
+    let long = label(&"x".repeat(40)).member_label.unwrap().label.unwrap();
+    assert_eq!(long.len(), 30);
+    let astral = label(&"💚".repeat(20)).member_label.unwrap().label.unwrap();
+    assert_eq!(astral.chars().count(), 15);
+    let mixed = label(&format!("{}💚", "x".repeat(29)));
+    assert_eq!(mixed.member_label.unwrap().label.unwrap(), "x".repeat(29));
+    assert_eq!(label("").member_label.unwrap().label.as_deref(), Some(""));
+    let meta = relay::member_label_meta();
+    assert_eq!(meta.tag, "meta");
+    assert_eq!(meta.attrs["tag_reason"], "user_update");
+    assert_eq!(meta.attrs["appdata"], "member_tag");
+    assert!(meta.content.is_none());
+}

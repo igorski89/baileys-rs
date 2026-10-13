@@ -118,6 +118,20 @@ impl Socket {
     }
     /// Prepare all cipher state atomically, then send. A transport failure retains
     /// committed counters because bytes may already have reached the peer.
+    /// Set the account's member label in a group.
+    pub async fn update_member_label(&self, jid: &str, label: &str) -> Result<String, Error> {
+        let now = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .map_err(|_| Error::Config)?
+            .as_secs() as i64;
+        let mut options = RelayOptions::default();
+        options
+            .stanza
+            .additional_nodes
+            .push(relay::member_label_meta());
+        self.relay_message(jid, relay::member_label_message(label, now), options)
+            .await
+    }
     pub async fn relay_message(
         &self,
         destination: &str,

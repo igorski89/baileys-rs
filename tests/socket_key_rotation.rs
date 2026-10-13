@@ -226,3 +226,91 @@ async fn pre_key_upload_waiters_time_out_while_the_upload_itself_continues() {
     .await
     .unwrap();
 }
+#[tokio::test]
+async fn expired_privacy_tokens_are_pruned_once_when_coming_online() {
+    use baileys_rs::{
+        auth::{KeyCategory, KeyMutation, KeyStore, KeyValue, TcToken},
+        privacy::Repository,
+        socket::presence::Presence,
+    };
+    timeout(Duration::from_secs(10), async {
+        let listener = TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let config = config(&listener);
+        let store = store();
+        let mut creds = store.load_credentials().unwrap();
+        creds.me.as_mut().unwrap().name = Some("Me".into());
+        store.save_credentials(&creds).unwrap();
+        let now = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap()
+            .as_secs();
+        let token = |timestamp: u64| TcToken {
+            token: vec![1],
+            timestamp: Some(timestamp.into()),
+            sender_timestamp: None,
+            extra: Default::default(),
+        };
+        let seed = |jid: &str, timestamp: u64| {
+            store
+                .set(&[KeyMutation::put(jid, KeyValue::Tctoken(token(timestamp)))])
+                .unwrap();
+            Repository::new(store.clone()).mark_issued(jid, 0).unwrap();
+        };
+        seed("dead@lid", 0);
+        seed("fresh@lid", now);
+        let server = tokio::spawn(async move {
+            let mut peer = Peer::accept(listener.accept().await.unwrap().0).await;
+            peer.send(BinaryNode::new("success")).await;
+            loop {
+                let node = peer.read().await;
+                if node.tag == "iq" && node.child("probe").is_some() {
+                    peer.result(&node).await;
+                    break;
+                }
+            }
+            peer.closed().await;
+        });
+        let (socket, _events) = Socket::connect(config, store.clone()).await.unwrap();
+        socket.wait_for_open(Duration::from_secs(2)).await.unwrap();
+        let held = |jid: &str| {
+            store
+                .get(KeyCategory::Tctoken, &[jid.to_owned()])
+                .unwrap()
+                .contains_key(jid)
+        };
+        assert!(held("dead@lid") && held("fresh@lid"));
+        socket
+            .send_presence_update(Presence::Available, None)
+            .await
+            .unwrap();
+        while held("dead@lid") {
+            tokio::time::sleep(Duration::from_millis(10)).await;
+        }
+        assert!(held("fresh@lid"));
+        assert_eq!(
+            Repository::new(store.clone()).read_index().unwrap(),
+            ["fresh@lid"]
+        );
+        // Coming online again within a day does not prune again.
+        seed("dead@lid", 0);
+        socket
+            .send_presence_update(Presence::Available, None)
+            .await
+            .unwrap();
+        socket
+            .query(
+                BinaryNode::new("iq").attr("type", "get").with_content(
+                    baileys_rs::binary::NodeContent::Children(vec![BinaryNode::new("probe")]),
+                ),
+                None,
+            )
+            .await
+            .unwrap();
+        tokio::time::sleep(Duration::from_millis(100)).await;
+        assert!(held("dead@lid"));
+        socket.close().await.unwrap();
+        server.await.unwrap();
+    })
+    .await
+    .unwrap();
+}

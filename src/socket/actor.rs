@@ -60,6 +60,7 @@ struct Actor<'a> {
     upload_retry: Option<(Instant, u32, u8, After)>,
     upload_waiters: Vec<oneshot::Sender<Result<(), Error>>>,
     upload_deadline: Option<Instant>,
+    last_token_prune: Option<Instant>,
     initializing: bool,
     server_time_offset_ms: i128,
 }
@@ -109,6 +110,7 @@ pub(super) async fn run(
         upload_retry: None,
         upload_waiters: vec![],
         upload_deadline: None,
+        last_token_prune: None,
         initializing: false,
         server_time_offset_ms: 0,
     };
@@ -1093,6 +1095,29 @@ impl Actor<'_> {
             self.emit(Event::Online(
                 presence == super::presence::Presence::Available,
             ));
+            // Expired privacy tokens are pruned when coming online, at most once a day.
+            const DAY: Duration = Duration::from_secs(24 * 60 * 60);
+            if presence == super::presence::Presence::Available
+                && self
+                    .last_token_prune
+                    .is_none_or(|last| last.elapsed() >= DAY)
+            {
+                self.last_token_prune = Some(Instant::now());
+                let store = self.store.clone();
+                tokio::task::spawn_blocking(move || {
+                    let now = std::time::SystemTime::now()
+                        .duration_since(std::time::UNIX_EPOCH)
+                        .map_or(0, |elapsed| elapsed.as_secs());
+                    match crate::privacy::Repository::new(store).prune(&[], now) {
+                        Ok(pruned) => tracing::debug!(
+                            mutated = pruned.mutated,
+                            remaining = pruned.remaining,
+                            "pruned expired tctokens"
+                        ),
+                        Err(error) => tracing::warn!(?error, "failed to prune expired tctokens"),
+                    }
+                });
+            }
             if presence == super::presence::Presence::Available
                 && let Err(error) = self.unified_session().await
             {

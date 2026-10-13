@@ -7,9 +7,9 @@ Entries marked *(unverified)* come from the earlier log and have not been re-che
 ## Not yet ported
 
 - **Live validation.** Nothing has run against a real account yet. `examples/live.rs` is ready (pairing-code login, event log, one outgoing text).
-- **Privacy-token index scheduling** (tctoken prune scheduling and automatic AB-prop fetching). *(unverified)*
-- **Automatic reconnection.** As upstream, the socket does not reconnect by itself; the example shows the loop.
-- **Public API surface audit.** No source-to-port coverage audit of every upstream export, and no documented list of intentional API differences beyond this file.
+- **Public API surface audit beyond the socket.** `scripts/audit-socket-api.mjs` checks every method the upstream socket layers return against Rust function names (150 covered, none missing). It matches by name only, and upstream's exported utilities and types (`src/Utils`, `src/Types`) have not been audited.
+
+Not gaps, but worth knowing: like upstream, the socket does not reconnect by itself (`examples/live.rs` shows the loop), and EXIF orientation is ignored when making thumbnails.
 
 ## Deviations from upstream behaviour
 
@@ -42,11 +42,14 @@ Entries marked *(unverified)* come from the earlier log and have not been re-che
 - The app-state patch upload is not wrapped in a storage transaction; the new version is written after the server accepts it.
 
 ### Keys and sessions
+- Privacy tokens are pruned once a day when coming online, as upstream does, but the index of tracked JIDs is written with each token rather than on a debounce timer.
 - Signed-prekey rotation and the key-bundle digest check have mock-server tests only (upstream never calls rotation itself).
 - Concurrent external credential writers during an active connection are not supported.
 - Rotating the signed pre-key discards the previous one, as upstream does; there is no signed-prekey history.
 
 ### Relay
+- A member label cut inside an astral character drops that character; upstream keeps half of it, which encodes as a replacement character.
+- `update_member_label` has a test of its message and stanza child only, not of a group relay.
 - The asynchronous patch hook is awaited on the relay blocking worker (`Handle::block_on`); it must not wait on the relay it is patching.
 - Per-recipient patches suppress reporting tokens. *(unverified)*
 
@@ -55,10 +58,10 @@ Entries marked *(unverified)* come from the earlier log and have not been re-che
 - Thumbnails and profile pictures are not byte-identical to sharp's: resampling and JPEG encoding differ. On the audit picture the mean channel difference is about 4 to 7 out of 255 (1 for greyscale).
 - Waveforms are produced for AAC, M4A and non-16-bit WAV, where upstream's decoder yields none. Lossy formats may differ by one level per bin.
 - The remote download limit counts received bytes exactly; upstream counts each chunk twice, so its effective limit is lower and depends on chunk sizes.
-- EXIF orientation is ignored, as upstream does.
 
 ### USync and device cache
 - Custom USync protocols always follow the built-in ones in the request, whatever order they were added in.
+- A custom USync protocol always parses the result nodes of its name, even when a built-in protocol of the same name was added after it; upstream lets the last one added win.
 - The external device store is synchronous and is called while the cache is locked; upstream's cache interface is asynchronous and has an optional batched read.
 
 ### Pre-key upload

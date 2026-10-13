@@ -108,6 +108,35 @@ pub enum Patch {
     Shared(Box<proto::Message>),
     PerRecipient(Vec<PatchedMessage>),
 }
+/// The protocol message that sets the sender's member label in a group. The
+/// label is cut to thirty UTF-16 units, as upstream's `slice(0, 30)`.
+pub fn member_label_message(label: &str, timestamp_seconds: i64) -> proto::Message {
+    let mut units = 0;
+    let label: String = label
+        .chars()
+        .take_while(|c| {
+            units += c.len_utf16();
+            units <= 30
+        })
+        .collect();
+    proto::Message {
+        protocol_message: Some(Box::new(proto::message::ProtocolMessage {
+            r#type: Some(proto::message::protocol_message::Type::GroupMemberLabelChange as i32),
+            member_label: Some(proto::MemberLabel {
+                label: Some(label),
+                label_timestamp: Some(timestamp_seconds),
+            }),
+            ..Default::default()
+        })),
+        ..Default::default()
+    }
+}
+/// The stanza child that marks a relay as a member-label update.
+pub fn member_label_meta() -> BinaryNode {
+    BinaryNode::new("meta")
+        .attr("tag_reason", "user_update")
+        .attr("appdata", "member_tag")
+}
 /// Upstream selects the per-recipient wrapper itself for reporting. That wrapper
 /// has no root message context, so per-recipient patches suppress report tokens.
 pub fn reporting_patch_message(patch: Patch) -> Option<proto::Message> {
