@@ -50,7 +50,8 @@ impl Error {
 }
 type PatchCallback =
     dyn Fn(&proto::Message, Option<&[String]>) -> Result<Patch, Error> + Send + Sync;
-/// Synchronous message patch executed on the relay blocking worker.
+/// Message patch executed on the relay blocking worker; see [`MessagePatch::new_async`]
+/// for a hook that awaits.
 /// Group payloads receive `None`; newsletters receive an empty recipient slice.
 /// Do not access the same auth store or re-enter relay from this callback.
 #[derive(Clone)]
@@ -63,6 +64,23 @@ impl MessagePatch {
         + 'static,
     ) -> Self {
         Self(std::sync::Arc::new(callback))
+    }
+    /// An asynchronous patch, as upstream allows the hook to return a promise.
+    /// It is awaited on the relay blocking worker, so it must not wait on the
+    /// relay it is patching.
+    pub fn new_async<F, Fut>(callback: F) -> Self
+    where
+        F: Fn(proto::Message, Option<Vec<String>>) -> Fut + Send + Sync + 'static,
+        Fut: std::future::Future<Output = Result<Patch, Error>>,
+    {
+        Self::new(move |message, recipients| {
+            let runtime = tokio::runtime::Handle::try_current()
+                .map_err(|_| Error::Patch("no async runtime for message patch".into()))?;
+            runtime.block_on(callback(
+                message.clone(),
+                recipients.map(<[String]>::to_vec),
+            ))
+        })
     }
     pub fn apply(
         &self,

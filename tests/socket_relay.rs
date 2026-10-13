@@ -930,3 +930,69 @@ async fn relay_patch_hooks_cover_group_distribution_retry_newsletter_and_rollbac
     .await
     .unwrap();
 }
+
+#[tokio::test]
+async fn asynchronous_message_patch_is_awaited_before_relay() {
+    timeout(Duration::from_secs(8), async {
+        let store = SqliteAuthStore::in_memory().unwrap();
+        let mut creds = store.load_credentials().unwrap();
+        creds.me = Some(Contact {
+            id: "100:7@s.whatsapp.net".into(),
+            ..Default::default()
+        });
+        store.save_credentials(&creds).unwrap();
+        let (listener, mut config) = listener().await;
+        config.patch_message_before_sending =
+            relay::MessagePatch::new_async(|message, recipients| async move {
+                tokio::time::sleep(Duration::from_millis(20)).await;
+                if message.conversation.as_deref() == Some("Reject") {
+                    return Err(relay::Error::Patch("synthetic rejection".into()));
+                }
+                let mut patched = message;
+                patched.conversation = Some(format!(
+                    "{} patched for {:?}",
+                    patched.conversation.unwrap_or_default(),
+                    recipients
+                ));
+                Ok(relay::Patch::Shared(Box::new(patched)))
+            });
+        let server = tokio::spawn(async move {
+            let mut peer = Peer::accept(listener.accept().await.unwrap().0).await;
+            peer.send(BinaryNode::new("success")).await;
+            assert!(peer.read().await.child("unified_session").is_some());
+            let newsletter = peer.read().await;
+            assert_eq!(newsletter.attrs["id"], "ASYNCNEWS");
+            assert_eq!(
+                proto::Message::decode(newsletter.child_buffer("plaintext").unwrap())
+                    .unwrap()
+                    .conversation
+                    .as_deref(),
+                Some("Original patched for Some([])")
+            );
+            peer.closed().await;
+        });
+        let (socket, _events) = Socket::connect(config, store).await.unwrap();
+        socket.wait_for_open(Duration::from_secs(2)).await.unwrap();
+        let message = |text: &str| proto::Message {
+            conversation: Some(text.into()),
+            ..Default::default()
+        };
+        let rejected = socket
+            .relay_message("123@newsletter", message("Reject"), options("REJECTED"))
+            .await;
+        assert!(
+            rejected
+                .unwrap_err()
+                .to_string()
+                .contains("synthetic rejection"),
+        );
+        socket
+            .relay_message("123@newsletter", message("Original"), options("ASYNCNEWS"))
+            .await
+            .unwrap();
+        socket.close().await.unwrap();
+        server.await.unwrap();
+    })
+    .await
+    .unwrap();
+}
