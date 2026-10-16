@@ -360,3 +360,115 @@ async fn default_entropy_and_combined_generation_produce_relay_ready_messages() 
             > 0
     );
 }
+#[tokio::test]
+async fn upstream_content_objects_parse_to_the_same_messages() {
+    let mut checked = 0;
+    for (i, case) in fixture()["cases"].as_array().unwrap().iter().enumerate() {
+        if case["kind"] == "prepared" {
+            continue;
+        }
+        let mut request = case["request"].clone();
+        for (name, value) in case["modifier"].as_object().unwrap() {
+            request[name] = value.clone();
+        }
+        let hooks = Hooks::new(case["hooks"].clone());
+        let o = &case["options"];
+        let options = ContentOptions {
+            media: Default::default(),
+            background_color: o.get("backgroundColor").map(|v| match v {
+                Value::String(s) => Color::Hex(s.clone()),
+                _ => Color::Number(v.as_f64().unwrap()),
+            }),
+            font: o["font"].as_i64().map(|v| v as i32),
+        };
+        let actual = match content_from_json(&request) {
+            Ok((content, modifiers)) => {
+                generation::content(&content, &modifiers, &options, &hooks).await
+            }
+            Err(error) => Err(error),
+        };
+        if !case["error"].is_null() {
+            let error = actual.expect_err(&format!("case {i}: {case}"));
+            assert_eq!(
+                error.status_code(),
+                case["error"]["status"].as_u64().map(|v| v as u16),
+                "case {i}: {case}"
+            );
+        } else {
+            assert_eq!(
+                actual
+                    .unwrap_or_else(|e| panic!("case {i}: {e} {case}"))
+                    .encode_to_vec(),
+                hex(case["output"].as_str().unwrap()),
+                "case {i}: {case}"
+            );
+        }
+        checked += 1;
+    }
+    assert!(checked > 300, "{checked}");
+}
+#[test]
+fn upstream_media_objects_become_media_requests_and_options_parse() {
+    use baileys_rs::media::{Input, Payload};
+    let (content, modifiers) = content_from_json(&json!({
+        "image":{"url":"https://example.com/a.png"},
+        "caption":"look","mimetype":"image/png","viewOnce":true,"mentions":["300@lid"]
+    }))
+    .unwrap();
+    let Content::Media(request) = content else {
+        panic!()
+    };
+    assert!(matches!(&request.input, Input::Url(url) if url == "https://example.com/a.png"));
+    let Payload::Image(image) = &request.payload else {
+        panic!()
+    };
+    assert_eq!(image.caption.as_deref(), Some("look"));
+    assert_eq!(image.mimetype.as_deref(), Some("image/png"));
+    assert_eq!(image.view_once, Some(true));
+    assert!(modifiers.view_once);
+    assert_eq!(modifiers.mentions, vec!["300@lid"]);
+    // Upstream keeps the last media key present in MEDIA_KEYS order.
+    let (content, _) = content_from_json(&json!({
+        "image":{"type":"Buffer","data":[1]},"document":{"type":"Buffer","data":"Ag=="},"fileName":"a.pdf"
+    }))
+    .unwrap();
+    let Content::Media(request) = content else {
+        panic!()
+    };
+    assert!(matches!(&request.input, Input::Bytes(b) if b.as_ref() == [2]));
+    assert!(
+        matches!(&request.payload, Payload::Document(d) if d.file_name.as_deref() == Some("a.pdf"))
+    );
+    // Text takes precedence over media, as in generateWAMessageContent.
+    assert!(matches!(
+        content_from_json(&json!({"text":"hi","image":{"url":"x"}}))
+            .unwrap()
+            .0,
+        Content::Text(_)
+    ));
+    assert!(matches!(
+        content_from_json(&json!({"ptv":true,"video":{"url":"v.mp4"}}))
+            .unwrap()
+            .0,
+        Content::VideoNote(Input::Url(_))
+    ));
+    let error = content_from_json(&json!({"unknown":1})).unwrap_err();
+    assert_eq!(error.to_string(), "Invalid media type");
+    assert_eq!(error.status_code(), Some(400));
+    assert!(content_from_json(&json!("text")).is_err());
+
+    let options = baileys_rs::socket::SendOptions::from_json(&json!({
+        "quoted":{"key":{"remoteJid":"200@s.whatsapp.net","id":"Q","fromMe":false},"message":{"conversation":"q"}},
+        "ephemeralExpiration":"86400","messageId":"ID","timestamp":1_700_000_000_999u64,
+        "statusJidList":["200@s.whatsapp.net"],"font":2
+    }))
+    .unwrap();
+    let quoted = options.quoted.unwrap();
+    assert_eq!(quoted.key.unwrap().id.as_deref(), Some("Q"));
+    assert_eq!(options.ephemeral_expiration, Some(86400));
+    assert_eq!(options.message_id.as_deref(), Some("ID"));
+    assert_eq!(options.timestamp_seconds, Some(1_700_000_000));
+    assert_eq!(options.status_jid_list, vec!["200@s.whatsapp.net"]);
+    assert_eq!(options.content.font, Some(2));
+    assert!(baileys_rs::socket::SendOptions::from_json(&json!({"messageId":5})).is_err());
+}

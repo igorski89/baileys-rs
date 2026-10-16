@@ -200,6 +200,10 @@ macro_rules! context_patch_fields {
         /// Fields that can be explicitly cleared while merging context metadata.
         #[derive(Debug, Clone, Copy, PartialEq, Eq)]
         pub enum ContextField { $($variant,)* }
+        impl ContextField {
+            /// Every field with its protobuf field name.
+            pub const ALL: &'static [(Self, &'static str)] = &[$((Self::$variant, stringify!($field)),)*];
+        }
         impl ContextPatch {
             fn apply(&self, target: &mut proto::ContextInfo) {
                 $(context_patch_fields!(@merge target, self.value, $field, $kind);)*

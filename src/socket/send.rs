@@ -36,6 +36,69 @@ impl Default for SendOptions {
         }
     }
 }
+impl SendOptions {
+    /// Read upstream's `MiscMessageGenerationOptions` object as JSON: `quoted`
+    /// (a full message), `ephemeralExpiration`, `messageId`, `timestamp`
+    /// (milliseconds), `statusJidList`, `backgroundColor`, `font` and
+    /// `useCachedGroupMetadata`. Other fields are ignored, as upstream ignores
+    /// options it does not use.
+    pub fn from_json(value: &serde_json::Value) -> Result<Self, generation::Error> {
+        use crate::proto_json::JsonField;
+        use serde_json::Value;
+        let invalid = |field: &str| generation::Error::Json(format!("invalid option {field}"));
+        let options = value.as_object().ok_or_else(|| invalid("object"))?;
+        let get = |name: &str| options.get(name).filter(|v| !v.is_null());
+        let mut result = Self::default();
+        if let Some(quoted) = get("quoted") {
+            result.quoted = Some(
+                proto::WebMessageInfo::from_value(quoted)
+                    .map_err(|e| generation::Error::Json(format!("quoted: {e}")))?,
+            );
+        }
+        if let Some(expiration) = get("ephemeralExpiration") {
+            let seconds = match expiration {
+                Value::String(s) => s.trim().parse::<f64>().ok(),
+                other => other.as_f64(),
+            }
+            .ok_or_else(|| invalid("ephemeralExpiration"))?;
+            result.ephemeral_expiration = Some(seconds as u32);
+        }
+        if let Some(id) = get("messageId") {
+            result.message_id = Some(id.as_str().ok_or_else(|| invalid("messageId"))?.into());
+        }
+        if let Some(timestamp) = get("timestamp") {
+            let ms = timestamp.as_f64().ok_or_else(|| invalid("timestamp"))?;
+            result.timestamp_seconds = Some((ms / 1000.0).floor() as u64);
+        }
+        if let Some(list) = get("statusJidList") {
+            result.status_jid_list = list
+                .as_array()
+                .ok_or_else(|| invalid("statusJidList"))?
+                .iter()
+                .map(|v| {
+                    v.as_str()
+                        .map(str::to_owned)
+                        .ok_or_else(|| invalid("statusJidList"))
+                })
+                .collect::<Result<_, _>>()?;
+        }
+        if let Some(color) = get("backgroundColor") {
+            result.content.background_color = Some(match color {
+                Value::String(s) => generation::Color::Hex(s.clone()),
+                other => generation::Color::Number(
+                    other.as_f64().ok_or_else(|| invalid("backgroundColor"))?,
+                ),
+            });
+        }
+        if let Some(font) = get("font") {
+            result.content.font = Some(font.as_f64().ok_or_else(|| invalid("font"))? as i32);
+        }
+        if let Some(cached) = options.get("useCachedGroupMetadata") {
+            result.use_cached_group_metadata = cached.as_bool().unwrap_or(false);
+        }
+        Ok(result)
+    }
+}
 /// Source send-message metadata precedence: delete, edit, pin, poll, event.
 pub fn send_metadata(
     content: &generation::Content,

@@ -1,5 +1,6 @@
 //! Typed socket delivery backed by the source event-consolidation algorithm.
 mod projection;
+mod upstream;
 use super::{Error, Event};
 use crate::event_buffer::{Batch, Buffer};
 use std::sync::{Arc, Mutex};

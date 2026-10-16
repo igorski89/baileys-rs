@@ -2,7 +2,9 @@
 use crate::{jid, messages, proto, relay};
 use std::time::{SystemTime, UNIX_EPOCH};
 mod content;
+mod json;
 pub use content::*;
+pub use json::content_from_json;
 
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
@@ -20,6 +22,10 @@ pub enum Error {
     Hook(String),
     #[error(transparent)]
     Message(#[from] messages::Error),
+    #[error("Invalid media type")]
+    InvalidMediaType,
+    #[error("invalid message content: {0}")]
+    Json(String),
 }
 impl Error {
     pub fn status_code(&self) -> Option<u16> {
@@ -28,7 +34,9 @@ impl Error {
             Self::MissingContent
             | Self::InvalidContent
             | Self::EmptyContacts
-            | Self::PollCount { .. } => Some(400),
+            | Self::PollCount { .. }
+            | Self::InvalidMediaType
+            | Self::Json(_) => Some(400),
             Self::Hook(_) => None,
             Self::Message(_) => None,
         }

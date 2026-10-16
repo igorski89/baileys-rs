@@ -49,97 +49,13 @@ async fn listener() -> (TcpListener, Config) {
     };
     (listener, config)
 }
-use messages::group_effects::{Author, Change, GroupEvent};
+use messages::group_effects::GroupEvent;
 use serde_json::{Value, json};
 fn fixture() -> Value {
     serde_json::from_str(include_str!("fixtures/group_effects.json")).unwrap()
 }
 fn wire(bytes: Vec<u8>) -> String {
     bytes.iter().map(|b| format!("{b:02x}")).collect()
-}
-fn author(out: &mut Value, author: Author) {
-    if let Some(v) = author.jid {
-        out["author"] = json!(v);
-    }
-    if let Some(v) = author.pn {
-        out["authorPn"] = json!(v);
-    }
-    if let Some(v) = author.username {
-        out["authorUsername"] = json!(v);
-    }
-}
-fn convert(event: GroupEvent) -> Value {
-    match event {
-        GroupEvent::Participants {
-            id,
-            author: a,
-            action,
-            participants,
-        } => {
-            let mut v = json!({"id":id,"action":action.as_str(),"participants":participants});
-            author(&mut v, a);
-            json!({"name":"group-participants.update","data":v})
-        }
-        GroupEvent::Changed {
-            id,
-            author: a,
-            change,
-        } => {
-            let mut v = json!({"id":id});
-            author(&mut v, a);
-            match change {
-                Change::Announce(x) => v["announce"] = json!(x),
-                Change::Restrict(x) => v["restrict"] = json!(x),
-                Change::Subject(Some(x)) => v["subject"] = json!(x),
-                Change::Description(Some(x)) => v["desc"] = json!(x),
-                Change::InviteCode(Some(x)) => v["inviteCode"] = json!(x),
-                Change::MemberAddMode(x) => v["memberAddMode"] = json!(x),
-                Change::JoinApprovalMode(x) => v["joinApprovalMode"] = json!(x),
-                _ => {}
-            };
-            json!({"name":"groups.update","data":[v]})
-        }
-        GroupEvent::JoinRequest {
-            id,
-            author: a,
-            participant,
-            participant_pn,
-            action,
-            method,
-        } => {
-            let mut v = json!({"id":id});
-            author(&mut v, a);
-            if let Some(x) = participant {
-                v["participant"] = x;
-            }
-            if let Some(x) = participant_pn {
-                v["participantPn"] = x;
-            }
-            if let Some(x) = action {
-                v["action"] = json!(x);
-            }
-            if let Some(x) = method {
-                v["method"] = json!(x);
-            }
-            json!({"name":"group.join-request","data":v})
-        }
-        GroupEvent::MemberTag {
-            group_id,
-            label,
-            participant,
-            participant_alt,
-            message_timestamp,
-        } => {
-            let mut v = json!({"groupId":group_id,"label":label,"messageTimestamp":message_timestamp as i64});
-            if let Some(x) = participant {
-                v["participant"] = json!(x);
-            }
-            if let Some(x) = participant_alt {
-                v["participantAlt"] = json!(x);
-            }
-            json!({"name":"group.member-tag.update","data":v})
-        }
-    }
 }
 fn chat(c: messages::own::ChatUpdate) -> Value {
     let mut v = json!({"id":c.id});
@@ -183,7 +99,7 @@ async fn group_stub_and_member_label_events_match_original_including_partial_fai
         let(listener,config)=listener().await;let server=tokio::spawn(async move{let mut peer=Peer::accept(listener.accept().await.unwrap().0).await;peer.send(BinaryNode::new("success")).await;assert_eq!(peer.read().await.tag,"ib");let finish=peer.read().await;assert!(finish.child("finish").is_some());peer.result(&finish).await;peer.closed().await;});let(socket,mut events)=Socket::connect(config,auth).await.unwrap();socket.wait_for_open(Duration::from_secs(2)).await.unwrap();
         for case in fixture()["cases"].as_array().unwrap(){let message=proto::WebMessageInfo::decode(hex(case["input"].as_str().unwrap()).as_slice()).unwrap();let envelope=messages::Envelope{message,key_metadata:messages::KeyMetadata{participant_alt:case["metadata"]["participantAlt"].as_str().map(str::to_owned),participant_username:case["metadata"]["participantUsername"].as_str().map(str::to_owned),..Default::default()},category:None,retry_count:None,author:"300@lid".into(),sender:"group@g.us".into()};
             socket.buffer_events();let result=socket.upsert_message(&envelope,messages::own::UpsertKind::Append).await;assert_eq!(result.is_err(),case.get("bufferedError").is_some(),"{case}");socket.flush_events().unwrap();let mut actual=vec![];while let Ok(event)=events.try_recv(){match event{
-                Event::GroupEffects(values)=>actual.extend(values.into_iter().map(convert)),Event::ChatsUpdated(values)=>actual.push(json!({"name":"chats.update","data":values.into_iter().map(chat).collect::<Vec<_>>()})),Event::MessageReactions(values)=>actual.push(json!({"name":"messages.reaction","data":values.into_iter().map(|r|json!({"key":r.key.map(|k|wire(k.encode_to_vec())),"reaction":wire(r.reaction.encode_to_vec())})).collect::<Vec<_>>()})),_=>{}
+                Event::GroupEffects(values)=>actual.extend(Event::GroupEffects(values).upstream().unwrap().into_iter().map(|(name,data)|json!({"name":name,"data":data}))),Event::ChatsUpdated(values)=>actual.push(json!({"name":"chats.update","data":values.into_iter().map(chat).collect::<Vec<_>>()})),Event::MessageReactions(values)=>actual.push(json!({"name":"messages.reaction","data":values.into_iter().map(|r|json!({"key":r.key.map(|k|wire(k.encode_to_vec())),"reaction":wire(r.reaction.encode_to_vec())})).collect::<Vec<_>>()})),_=>{}
             }}assert_eq!(json!(actual),case["bufferedEvents"],"{case}");
         }
         socket.query(BinaryNode::new("iq").attr("type","get").with_content(NodeContent::Children(vec![BinaryNode::new("finish")])),None).await.unwrap();socket.close().await.unwrap();server.await.unwrap();

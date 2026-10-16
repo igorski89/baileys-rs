@@ -34,6 +34,7 @@ async fn parsed_actions_publish_source_events_and_persist_credentials_and_mappin
             let mut mutations=MutationMap::new();mutations.insert("test".into(),mutation);socket.apply_app_state_mutations(&mutations,case["mode"]!="normal").await.unwrap();
             let mut observed=Vec::new();
             while let Ok(event)=events.try_recv(){
+                let upstream=(!matches!(event,Event::ChatsUpdated(_)|Event::CredentialsUpdated)).then(||event.upstream().unwrap());
                 let action=match event {
                     Event::ChatsUpdated(mut c)=>ActionEvent::Chat(c.remove(0)),Event::MessagesDeleted(k)=>ActionEvent::DeleteMessages(k),Event::ContactsUpserted(c)=>ActionEvent::Contacts(c),Event::MessagesStarred(s)=>ActionEvent::Stars(s),Event::ChatsDeleted(c)=>ActionEvent::DeleteChats(c),Event::LabelEdited(l)=>ActionEvent::LabelEdit(l),Event::LabelAssociationUpdated(l)=>ActionEvent::LabelAssociation(l),Event::SettingUpdated(s)=>ActionEvent::Setting(s),Event::LidMappingUpdated{lid,pn}=>ActionEvent::LidMapping{lid,pn},Event::ChatLocked(c)=>ActionEvent::Lock(c),
                     Event::CredentialsUpdated=>{
@@ -41,7 +42,9 @@ async fn parsed_actions_publish_source_events_and_persist_credentials_and_mappin
                         let data=if value.push_name_setting.is_some(){serde_json::json!({"me":creds.me})}else{assert!(creds.account_settings.default_disappearing_mode.is_none());serde_json::json!({"accountSettings":{"unarchiveChats":creds.account_settings.unarchive_chats}})};
                         observed.push(serde_json::json!({"event":"creds.update","data":data}));continue;
                     }, _=>continue,
-                };observed.push(actions::normalized(&action,&me));
+                };let normalized=actions::normalized(&action,&me);
+                if let Some(upstream)=upstream{assert_eq!(json_numbers::canonical(&serde_json::json!(upstream.into_iter().map(|(event,data)|serde_json::json!({"event":event,"data":data})).collect::<Vec<_>>())),json_numbers::canonical(&serde_json::json!([normalized])),"upstream {}",case["action"]);}
+                observed.push(normalized);
             }
             assert_eq!(json_numbers::canonical(&serde_json::json!(observed)),json_numbers::canonical(&case["events"]),"{}",case["action"]);
             if value.contact_action.as_ref().and_then(|c|c.full_name.as_deref())==Some("Full") {

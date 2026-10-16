@@ -9,8 +9,8 @@ use crate::{
 use serde::{Serialize, de::DeserializeOwned};
 use serde_json::{Value, json};
 
-const META: &str = "__baileysReceiveMetadata";
-const GROUP: &str = "__baileysGroupEffect";
+pub(super) const META: &str = "__baileysReceiveMetadata";
+pub(super) const GROUP: &str = "__baileysGroupEffect";
 pub(super) enum Action {
     Native(Event),
     Payload(&'static str, Value),

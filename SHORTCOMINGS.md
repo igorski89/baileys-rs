@@ -71,6 +71,11 @@ Not gaps, but worth knowing: like upstream, the socket does not reconnect by its
 - `Browser::appropriate` reads the kernel release from `uname -r` (or `ver` on Windows) and leaves it empty when that fails.
 - The version lookups take a `reqwest::Client` instead of fetch options, and versions above the 32-bit range are treated as unparsable.
 
+### Upstream JSON conversions
+- `Event::upstream()` writes protobuf values in the library's protobuf JSON: bytes as BufferJSON objects, enums as numbers and 64-bit integers (including `messageTimestamp`) as decimal strings. `JSON.stringify` of upstream's values writes base64 strings and enum names for decoded protobuf messages and plain numbers for the timestamps upstream sets itself. Settings payloads, which upstream emits as decoded messages, use enum names as upstream.
+- A closed connection's `lastDisconnect.error` carries only the status code (Boom's enumerable fields, with an empty message), and its `date` is the time of conversion. `creds.update` has an empty payload, and raw stanza events produce no entry.
+- `content_from_json` takes dates (`event.startDate`, `timestamp`) as millisecond numbers, and accepts media as `{ url }` or a BufferJSON buffer; upstream cannot receive a buffer through `JSON.parse` at all, and streams have no JSON form.
+
 ### WAM
 - The event tables are generated from one upstream revision (`scripts/generate-wam-constants.mjs`) and must be regenerated when upstream updates them.
 
