@@ -1,0 +1,308 @@
+{
+  "cases": [
+    {
+      "body": {
+        "id": "e1",
+        "type": "baileys_event",
+        "event": "messages.upsert",
+        "meta": {
+          "type": "notify"
+        },
+        "payload": {
+          "messages": [
+            {
+              "key": {
+                "remoteJid": "1@s.whatsapp.net",
+                "id": "3EB0A",
+                "fromMe": false
+              },
+              "messageTimestamp": "1700000000"
+            }
+          ],
+          "type": "notify"
+        }
+      },
+      "groupId": "1@s.whatsapp.net",
+      "prefix": "messages.upsert:1@s.whatsapp.net:3EB0A",
+      "canonical": "{\"event\":\"messages.upsert\",\"id\":\"e1\",\"meta\":{\"type\":\"notify\"},\"payload\":{\"messages\":[{\"key\":{\"fromMe\":false,\"id\":\"3EB0A\",\"remoteJid\":\"1@s.whatsapp.net\"},\"messageTimestamp\":\"1700000000\"}],\"type\":\"notify\"},\"type\":\"baileys_event\"}",
+      "dedupId": "messages.upsert:1@s.whatsapp.net:3EB0A-a37412e5e8c73f4622f6f9451a9687f45d2d255229ce2157ea17c56ff6f7993e"
+    },
+    {
+      "body": {
+        "id": "e2",
+        "type": "baileys_event",
+        "event": "messages.upsert",
+        "meta": {},
+        "payload": {
+          "messages": [
+            {
+              "key": {
+                "id": "NOJID"
+              }
+            }
+          ],
+          "type": "append"
+        }
+      },
+      "groupId": "messages.upsert",
+      "prefix": "messages.upsert::NOJID",
+      "canonical": "{\"event\":\"messages.upsert\",\"id\":\"e2\",\"meta\":{},\"payload\":{\"messages\":[{\"key\":{\"id\":\"NOJID\"}}],\"type\":\"append\"},\"type\":\"baileys_event\"}",
+      "dedupId": "messages.upsert::NOJID-767328b9147cdb82c83b9d2a2dc4cc51dbf460d22c06c6c4bd190057337f2718"
+    },
+    {
+      "body": {
+        "id": "e3",
+        "type": "baileys_event",
+        "event": "messages.update",
+        "meta": {},
+        "payload": [
+          {
+            "key": {
+              "remoteJid": "120363@g.us",
+              "id": "ID 😀/x"
+            },
+            "update": {
+              "status": 4
+            }
+          }
+        ]
+      },
+      "groupId": "120363@g.us",
+      "prefix": "messages.update:120363@g.us:ID____x:4",
+      "canonical": "{\"event\":\"messages.update\",\"id\":\"e3\",\"meta\":{},\"payload\":[{\"key\":{\"id\":\"ID 😀/x\",\"remoteJid\":\"120363@g.us\"},\"update\":{\"status\":4}}],\"type\":\"baileys_event\"}",
+      "dedupId": "messages.update:120363@g.us:ID____x:4-03c2e28c73563ea8db0bd260d2c3624447809a6df2e51d113fd272dbb2e78d0b"
+    },
+    {
+      "body": {
+        "id": "e4",
+        "type": "baileys_event",
+        "event": "messages.update",
+        "meta": {},
+        "payload": [
+          {
+            "key": {
+              "remoteJid": "1@s.whatsapp.net",
+              "id": "S"
+            },
+            "update": {
+              "starred": true
+            }
+          }
+        ]
+      },
+      "groupId": "1@s.whatsapp.net",
+      "prefix": "messages.update:1@s.whatsapp.net:S:",
+      "canonical": "{\"event\":\"messages.update\",\"id\":\"e4\",\"meta\":{},\"payload\":[{\"key\":{\"id\":\"S\",\"remoteJid\":\"1@s.whatsapp.net\"},\"update\":{\"starred\":true}}],\"type\":\"baileys_event\"}",
+      "dedupId": "messages.update:1@s.whatsapp.net:S:-bc8b2bbfce7871ca0f91b93dd337a279b8dacf5483e9837a93e7e87dc498e711"
+    },
+    {
+      "body": {
+        "id": "e5",
+        "type": "baileys_event",
+        "event": "presence.update",
+        "meta": {},
+        "payload": {
+          "id": "1@s.whatsapp.net",
+          "presences": {
+            "1@s.whatsapp.net": {
+              "lastKnownPresence": "composing"
+            }
+          }
+        }
+      },
+      "groupId": "1@s.whatsapp.net",
+      "prefix": "presence.update:1@s.whatsapp.net",
+      "canonical": "{\"event\":\"presence.update\",\"id\":\"e5\",\"meta\":{},\"payload\":{\"id\":\"1@s.whatsapp.net\",\"presences\":{\"1@s.whatsapp.net\":{\"lastKnownPresence\":\"composing\"}}},\"type\":\"baileys_event\"}",
+      "dedupId": "presence.update:1@s.whatsapp.net-0ec3c2c59e9fe2a5a069a74e113d03a3b69e1d612d916d5dca59dcbcdec6dd85"
+    },
+    {
+      "body": {
+        "id": "e6",
+        "type": "baileys_event",
+        "event": "chats.update",
+        "meta": {},
+        "payload": [
+          {
+            "id": "1@s.whatsapp.net",
+            "unreadCount": 1.5,
+            "b": [
+              1,
+              "two",
+              null,
+              {
+                "z": 1,
+                "a": 2
+              }
+            ]
+          }
+        ]
+      },
+      "groupId": "chats.update",
+      "prefix": "chats.update",
+      "canonical": "{\"event\":\"chats.update\",\"id\":\"e6\",\"meta\":{},\"payload\":[{\"b\":[1,\"two\",null,{\"a\":2,\"z\":1}],\"id\":\"1@s.whatsapp.net\",\"unreadCount\":1.5}],\"type\":\"baileys_event\"}",
+      "dedupId": "chats.update-c3bc24a8fc14fb0619693db94aba2905f5de35cfcb0c837bd218b16e27e91d33"
+    },
+    {
+      "body": {
+        "type": "command_ack",
+        "payload": {
+          "correlation_id": "job #7",
+          "command_type": "send_text",
+          "to": "1@s.whatsapp.net",
+          "ok": true,
+          "message_id": "3EB0"
+        }
+      },
+      "groupId": "1@s.whatsapp.net",
+      "prefix": "command_ack:1@s.whatsapp.net:send_text:job__7",
+      "canonical": "{\"payload\":{\"command_type\":\"send_text\",\"correlation_id\":\"job #7\",\"message_id\":\"3EB0\",\"ok\":true,\"to\":\"1@s.whatsapp.net\"},\"type\":\"command_ack\"}",
+      "dedupId": "command_ack:1@s.whatsapp.net:send_text:job__7-00d714c54b6c869b8408e34aa24ae4d2af9606a02a9e47c3aeb40a65beb485da"
+    },
+    {
+      "body": {
+        "type": "command_ack",
+        "payload": {
+          "command_type": "send_presence",
+          "to": "1@s.whatsapp.net",
+          "ok": true,
+          "message_id": null
+        }
+      },
+      "groupId": "1@s.whatsapp.net",
+      "prefix": "command_ack:1@s.whatsapp.net:send_presence:",
+      "canonical": "{\"payload\":{\"command_type\":\"send_presence\",\"message_id\":null,\"ok\":true,\"to\":\"1@s.whatsapp.net\"},\"type\":\"command_ack\"}",
+      "dedupId": "command_ack:1@s.whatsapp.net:send_presence:-81ab859b29a70bd45ffad8598ed8dc7b4fb29017bdf0e4cf01f87270cada0253"
+    },
+    {
+      "body": {
+        "type": "command_ack",
+        "payload": {
+          "command_type": "send_text",
+          "to": null,
+          "ok": false,
+          "error": "x"
+        }
+      },
+      "groupId": "command_ack",
+      "prefix": "command_ack",
+      "canonical": "{\"payload\":{\"command_type\":\"send_text\",\"error\":\"x\",\"ok\":false,\"to\":null},\"type\":\"command_ack\"}",
+      "dedupId": "command_ack-75a3d2a6d8797d6eebb34b42b193972456f673429298a27e1451fc1b4aaaddad"
+    },
+    {
+      "body": {
+        "type": "qr",
+        "payload": {
+          "qr": "ref,key"
+        }
+      },
+      "groupId": "qr",
+      "prefix": "qr",
+      "canonical": "{\"payload\":{\"qr\":\"ref,key\"},\"type\":\"qr\"}",
+      "dedupId": "qr-5f256463de299cb656e9b37496b498d128cd921202ea23028a7bda79eb530195"
+    },
+    {
+      "body": {
+        "type": "connection",
+        "payload": {
+          "status": "connected"
+        }
+      },
+      "groupId": "connection",
+      "prefix": "connection",
+      "canonical": "{\"payload\":{\"status\":\"connected\"},\"type\":\"connection\"}",
+      "dedupId": "connection-6e78cb15f434dab3282bdf2b7c962f40a17caf1119104079965abe5246f23cf2"
+    },
+    {
+      "body": {
+        "type": "baileys_event",
+        "event": "contacts.upsert",
+        "payload": [
+          {
+            "id": "é@s.whatsapp.net"
+          }
+        ]
+      },
+      "groupId": "contacts.upsert",
+      "prefix": "contacts.upsert",
+      "canonical": "{\"event\":\"contacts.upsert\",\"payload\":[{\"id\":\"é@s.whatsapp.net\"}],\"type\":\"baileys_event\"}",
+      "dedupId": "contacts.upsert-ad27e374b057e8a7386dc20e1aa307ffb5087905b2a4d5b4b5f592eca861c4d9"
+    },
+    {
+      "body": {
+        "id": "e7",
+        "type": "baileys_event",
+        "event": "messages.upsert",
+        "meta": {},
+        "payload": {
+          "messages": [
+            {
+              "key": {
+                "remoteJid": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx@s.whatsapp.net",
+                "id": "LONG"
+              }
+            }
+          ]
+        }
+      },
+      "groupId": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx@s.whatsapp.net",
+      "prefix": "messages.upsert:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx@s.whatsapp.net:LONG",
+      "canonical": "{\"event\":\"messages.upsert\",\"id\":\"e7\",\"meta\":{},\"payload\":{\"messages\":[{\"key\":{\"id\":\"LONG\",\"remoteJid\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx@s.whatsapp.net\"}}]},\"type\":\"baileys_event\"}",
+      "dedupId": "messages.upsert:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-3c29adea19c5e7a85797fcd5995e1eb3fd3386439c67fdbd026db2d154ed25fd"
+    },
+    {
+      "body": {},
+      "groupId": "system",
+      "prefix": "system",
+      "canonical": "{}",
+      "dedupId": "system-44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    }
+  ],
+  "jids": [
+    {
+      "to": "+1 234 567 890",
+      "jid": "1234567890@s.whatsapp.net"
+    },
+    {
+      "to": "1234567890",
+      "jid": "1234567890@s.whatsapp.net"
+    },
+    {
+      "to": "123@g.us",
+      "jid": "123@g.us"
+    },
+    {
+      "to": "\t+49 151 123",
+      "jid": "49151123@s.whatsapp.net"
+    }
+  ],
+  "mimetypes": [
+    {
+      "mimetype": "image/jpeg",
+      "extension": "jpg"
+    },
+    {
+      "mimetype": "audio/ogg; codecs=opus",
+      "extension": "ogg; codecs=opus"
+    },
+    {
+      "mimetype": "application/vnd.ms-excel",
+      "extension": "vnd.ms-excel"
+    },
+    {
+      "mimetype": "text/",
+      "extension": "bin"
+    },
+    {
+      "mimetype": "plain",
+      "extension": "plain"
+    },
+    {
+      "mimetype": null,
+      "extension": "bin"
+    },
+    {
+      "mimetype": "",
+      "extension": "bin"
+    }
+  ]
+}

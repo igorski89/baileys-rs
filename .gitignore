@@ -1,0 +1,4 @@
+/target
+.env
+auth*/
+docker-volumes/

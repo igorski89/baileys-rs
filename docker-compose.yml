@@ -1,0 +1,131 @@
+services:
+  # RusticMQ - SQS-compatible queue server for local development
+  # (a Rust port of ElasticMQ, built from ../rusticmq)
+  rusticmq:
+    container_name: baileys-sqs-rusticmq
+    build: ../rusticmq
+    ports:
+      - "9324:9324"  # SQS API port
+    environment:
+      RUSTICMQ_BASE_URL: http://rusticmq:9324
+    volumes:
+      - ./elasticmq.conf:/opt/elasticmq.conf:ro
+    command: ["--config", "/opt/elasticmq.conf"]
+    networks:
+      - baileys-sqs-network
+
+  # MinIO - S3-compatible object storage for local media uploads
+  minio:
+    container_name: baileys-sqs-minio
+    image: minio/minio:latest
+    ports:
+      - "9000:9000"  # S3 API port
+      - "9001:9001"  # MinIO Console port
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    volumes:
+      - ./docker-volumes/minio:/data
+    command: server /data --console-address ":9001"
+    networks:
+      - baileys-sqs-network
+
+  # MinIO bucket creation helper (one-shot init container)
+  minio-create-bucket:
+    container_name: baileys-sqs-minio-create-bucket
+    image: minio/mc:latest
+    depends_on:
+      - minio
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    entrypoint: >
+      /bin/sh -c "
+        sleep 5 &&
+        mc alias set local http://minio:9000 $${MINIO_ROOT_USER} $${MINIO_ROOT_PASSWORD} &&
+        mc mb local/baileys-sqs-media --ignore-existing &&
+        mc anonymous set download local/baileys-sqs-media
+      "
+    networks:
+      - baileys-sqs-network
+
+  # Baileys SQS Application
+  app:
+    build:
+      context: ..
+      dockerfile: baileys-sqs-rs/Dockerfile
+    container_name: baileys-sqs-app
+    environment:
+      - AWS_REGION=elasticmq
+      - AWS_ACCESS_KEY_ID=local
+      - AWS_SECRET_ACCESS_KEY=local
+      - AWS_ENDPOINT_URL=http://rusticmq:9324
+      - INPUT_QUEUE=http://rusticmq:9324/queue/input-queue
+      - OUTPUT_QUEUE=http://rusticmq:9324/queue/output-queue
+      - SESSION_DIR=/app/auth_info_baileys
+      - LOG_LEVEL=debug
+      - S3_ENDPOINT_URL=http://minio:9000
+      - S3_BUCKET=baileys-sqs-media
+      - S3_REGION=us-east-1
+      - S3_ACCESS_KEY_ID=minioadmin
+      - S3_SECRET_ACCESS_KEY=minioadmin
+      - S3_FORCE_PATH_STYLE=true
+      # Optional: HTTP input endpoint, additive to the SQS input queue (see README)
+      # - PORT=3000
+      # - AUTH_TOKEN=change_me_to_a_long_random_value
+    # ports:
+    #   - "3000:3000"  # only needed if PORT is set above
+    volumes:
+      - ./docker-volumes/auth:/app/auth_info_baileys
+    depends_on:
+      - rusticmq
+      - minio
+    networks:
+      - baileys-sqs-network
+    stdin_open: true
+    tty: true
+
+  # Output Queue Listener - QR codes and pretty-printed events
+  listener:
+    build:
+      context: ..
+      dockerfile: baileys-sqs-rs/Dockerfile
+    container_name: baileys-sqs-listener
+    command: ["listener"]
+    environment:
+      - AWS_REGION=elasticmq
+      - AWS_ACCESS_KEY_ID=local
+      - AWS_SECRET_ACCESS_KEY=local
+      - AWS_ENDPOINT_URL=http://rusticmq:9324
+      - OUTPUT_QUEUE=http://rusticmq:9324/queue/output-queue
+      - DEBUG=true
+    depends_on:
+      - rusticmq
+    networks:
+      - baileys-sqs-network
+    stdin_open: true
+    tty: true
+
+  # CLI Sender Tool - Interactive WhatsApp message sender
+  sender:
+    build:
+      context: ..
+      dockerfile: baileys-sqs-rs/Dockerfile
+    container_name: baileys-sqs-sender
+    command: ["sender"]
+    environment:
+      - AWS_REGION=elasticmq
+      - AWS_ACCESS_KEY_ID=local
+      - AWS_SECRET_ACCESS_KEY=local
+      - AWS_ENDPOINT_URL=http://rusticmq:9324
+      - INPUT_QUEUE=http://rusticmq:9324/queue/input-queue
+    depends_on:
+      - rusticmq
+    networks:
+      - baileys-sqs-network
+    stdin_open: true
+    tty: true
+
+networks:
+  baileys-sqs-network:
+    driver: bridge
