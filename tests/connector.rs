@@ -573,3 +573,26 @@ fn rusticmq_reads_the_elasticmq_configuration_used_by_compose() {
         "{names:?}"
     );
 }
+
+#[tokio::test]
+async fn slow_event_handling_does_not_drop_events() {
+    let (sender, receiver) = tokio::sync::broadcast::channel(4);
+    let mut queue = baileys_sqs::app::queue(receiver);
+    tokio::task::yield_now().await;
+    let mut received = 0;
+    for i in 0..64 {
+        sender.send(Event::Online(i % 2 == 0)).unwrap();
+        sender
+            .send(Event::Node(baileys_rs::binary::BinaryNode::new("iq")))
+            .unwrap();
+        // Let the pump drain the broadcast slots, as the socket's emitter does
+        // between stanzas; the consumer below has not read anything yet.
+        tokio::task::yield_now().await;
+    }
+    drop(sender);
+    while let Some(event) = queue.recv().await {
+        assert!(matches!(event, Event::Online(_)));
+        received += 1;
+    }
+    assert_eq!(received, 64);
+}

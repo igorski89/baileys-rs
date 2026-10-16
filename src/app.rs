@@ -13,7 +13,10 @@ use baileys_rs::{
 };
 use serde_json::{Map, Value, json};
 use std::{collections::BTreeMap, sync::Arc, time::Duration};
-use tokio::sync::broadcast::error::RecvError;
+use tokio::sync::{
+    broadcast::{self, error::RecvError},
+    mpsc,
+};
 
 /// Upstream's `DisconnectReason` name for a close code.
 pub fn disconnect_reason(code: u16) -> &'static str {
@@ -60,6 +63,31 @@ pub async fn whatsapp_version(settings: &Settings, http: &reqwest::Client) -> [u
     let latest = baileys_rs::version::fetch_latest_baileys_version(http).await;
     tracing::debug!(version = ?latest.version, is_latest = latest.is_latest, "using latest WA version");
     latest.version
+}
+
+/// Move events into an unbounded queue as they arrive, so slow handling
+/// (media downloads and uploads) never makes the broadcast channel drop
+/// events; upstream's `ev.process` queues the same way. Raw stanzas, which
+/// produce no output, are left out.
+pub fn queue(mut events: broadcast::Receiver<Event>) -> mpsc::UnboundedReceiver<Event> {
+    let (sender, receiver) = mpsc::unbounded_channel();
+    tokio::spawn(async move {
+        loop {
+            match events.recv().await {
+                Ok(Event::Node(_)) => {}
+                Ok(event) => {
+                    if sender.send(event).is_err() {
+                        return;
+                    }
+                }
+                Err(RecvError::Lagged(missed)) => {
+                    tracing::warn!(missed, "event subscriber lagged; events were dropped");
+                }
+                Err(RecvError::Closed) => return,
+            }
+        }
+    });
+    receiver
 }
 
 pub struct WhatsAppLoop {
@@ -130,20 +158,9 @@ impl WhatsAppLoop {
     }
 
     /// Returns the close code, or `None` if the event stream ended without one.
-    async fn process(
-        &self,
-        live: Arc<Live>,
-        mut events: tokio::sync::broadcast::Receiver<Event>,
-    ) -> Option<u16> {
-        loop {
-            let event = match events.recv().await {
-                Ok(event) => event,
-                Err(RecvError::Lagged(missed)) => {
-                    tracing::warn!(missed, "event subscriber lagged; events were dropped");
-                    continue;
-                }
-                Err(RecvError::Closed) => return None,
-            };
+    async fn process(&self, live: Arc<Live>, events: broadcast::Receiver<Event>) -> Option<u16> {
+        let mut queue = queue(events);
+        while let Some(event) = queue.recv().await {
             match &event {
                 Event::Qr(qr) => {
                     self.commands
@@ -165,6 +182,7 @@ impl WhatsAppLoop {
             }
             self.forward(live.as_ref(), &event).await;
         }
+        None
     }
 
     async fn pairing_code(&self, live: &Live) {
