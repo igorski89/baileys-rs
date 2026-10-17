@@ -495,6 +495,7 @@ async fn events_are_forwarded_with_metadata_media_and_ephemeral_learning() {
         message: Some(proto::Message {
             image_message: Some(Box::new(proto::message::ImageMessage {
                 mimetype: Some("image/jpeg".into()),
+                media_key: Some(vec![1, 2, 3]),
                 context_info: Some(Box::new(proto::ContextInfo {
                     expiration: Some(604800),
                     ..Default::default()
@@ -545,6 +546,11 @@ async fn events_are_forwarded_with_metadata_media_and_ephemeral_learning() {
     assert_eq!(
         upsert["payload"]["messages"][0]["_media"],
         json!({"type":"image","mimetype":"image/jpeg","data_base64":"/9j/","storage":"base64"})
+    );
+    // Bytes in the message are base64, as the TypeScript connector sends them.
+    assert_eq!(
+        upsert["payload"]["messages"][0]["message"]["imageMessage"]["mediaKey"],
+        "AQID"
     );
     assert_eq!(
         events[1]["meta"],
