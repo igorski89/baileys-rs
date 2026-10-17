@@ -13,13 +13,18 @@ impl Event {
     /// The upstream event-map entries this event corresponds to, as
     /// `(event name, JSON payload)` pairs in emission order.
     ///
-    /// Payloads follow `JSON.stringify` of upstream's values: bytes are
-    /// BufferJSON objects, dates are ISO strings, undefined fields are absent
+    /// Payloads follow `JSON.stringify` of upstream's values: bytes in
+    /// protobuf messages are base64 strings (protobufjs' `toJSON`), other
+    /// buffers are BufferJSON objects, dates are ISO strings, undefined fields are absent
     /// and Boom errors keep only their enumerable fields. Raw stanzas
     /// (`Event::Node`) have no counterpart and produce no entry;
     /// `Event::CredentialsUpdated` carries no fields, so its `creds.update`
     /// payload is empty.
     pub fn upstream(&self) -> Result<Vec<(&'static str, Value)>, Error> {
+        proto_json::with_base64_bytes(|| self.upstream_entries())
+    }
+
+    fn upstream_entries(&self) -> Result<Vec<(&'static str, Value)>, Error> {
         let mut entries = vec![];
         for action in projection::project(self.clone())? {
             match action {
@@ -108,8 +113,8 @@ fn native(event: &Event) -> Result<Vec<(&'static str, Value)>, Error> {
                         let mut value = json!({"key":update.key.to_value()});
                         if let Some(media) = &update.media {
                             value["media"] = json!({
-                                "ciphertext":proto_json::bytes_to_value(&media.ciphertext),
-                                "iv":proto_json::bytes_to_value(&media.iv),
+                                "ciphertext":proto_json::buffer_value(&media.ciphertext),
+                                "iv":proto_json::buffer_value(&media.iv),
                             });
                         }
                         if let Some(error) = &update.error {

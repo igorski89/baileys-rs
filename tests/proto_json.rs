@@ -50,7 +50,27 @@ fn every_message_and_schema_field_matches_original_protobufjs_json() {
             "canonical wire case{i} {name}:{}",
             case["label"]
         );
+        // protobufjs' toJSON: the same object with bytes as base64 strings.
+        let expected = case.get("base64").unwrap_or(&case["expected"]);
+        let base64 =
+            proto_json::with_base64_bytes(|| proto_json::decode_named(name, &original)).unwrap();
+        assert_eq!(
+            numbers::canonical(&base64),
+            numbers::canonical(expected),
+            "base64 case{i} {name}:{}",
+            case["label"]
+        );
+        assert_eq!(
+            proto_json::encode_named(name, &base64).unwrap(),
+            native,
+            "base64 wire case{i} {name}:{}",
+            case["label"]
+        );
     }
+    assert_eq!(
+        proto_json::bytes_to_value(&[1]),
+        json!({"type":"Buffer","data":[1]})
+    );
 }
 #[test]
 fn typed_messages_roundtrip_bytes_large_integers_and_flattened_oneofs() {

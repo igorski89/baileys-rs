@@ -93,6 +93,10 @@ fn events() -> Vec<Event> {
         message_timestamp: Some(10),
         message: Some(proto::Message {
             conversation: Some("hi".into()),
+            message_context_info: Some(proto::MessageContextInfo {
+                message_secret: Some(vec![1, 2, 3]),
+                ..Default::default()
+            }),
             ..Default::default()
         }),
         ..Default::default()
@@ -280,6 +284,15 @@ fn payloads_follow_json_stringify_of_the_upstream_values() {
     assert_eq!(message["key"]["addressingMode"], "pn");
     assert!(message["key"].get("isViewOnce").is_none());
     assert_eq!(message["message"]["conversation"], "hi");
+    // Bytes in protobuf messages are base64, as protobufjs' toJSON writes them.
+    assert_eq!(
+        message["message"]["messageContextInfo"]["messageSecret"],
+        "AQID"
+    );
+    assert_eq!(
+        baileys_rs::proto_json::bytes_to_value(&[1]),
+        json!({"type":"Buffer","data":[1]})
+    );
 
     let call = find("call");
     assert_eq!(call[0]["date"], "2027-01-15T08:00:00.123Z");

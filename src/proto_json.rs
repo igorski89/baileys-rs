@@ -1,6 +1,7 @@
 //! Complete schema-generated JSON conversion for native protobuf messages.
-//! Bytes use BufferJSON, 64-bit integers use decimal strings, enum fields use
-//! numeric values and oneof choices are flattened under their schema names.
+//! Bytes use BufferJSON (base64 strings inside `with_base64_bytes`), 64-bit
+//! integers use decimal strings, enum fields use numeric values and oneof
+//! choices are flattened under their schema names.
 use serde_json::{Value, json};
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
@@ -42,7 +43,32 @@ fn into_oneof<T, U: From<T>>(value: T) -> U {
 pub fn object(value: &Value) -> Result<&serde_json::Map<String, Value>, Error> {
     value.as_object().ok_or(Error::Input("message object"))
 }
+thread_local! {
+    static BASE64_BYTES: std::cell::Cell<bool> = const { std::cell::Cell::new(false) };
+}
+/// Run `f` with bytes fields written as base64 strings, as protobufjs'
+/// `toJSON` (and so `JSON.stringify` of a decoded message) writes them.
+pub fn with_base64_bytes<R>(f: impl FnOnce() -> R) -> R {
+    let previous = BASE64_BYTES.replace(true);
+    let _restore = Restore(previous);
+    f()
+}
+struct Restore(bool);
+impl Drop for Restore {
+    fn drop(&mut self) {
+        BASE64_BYTES.set(self.0);
+    }
+}
 pub fn bytes_to_value(bytes: &[u8]) -> Value {
+    if BASE64_BYTES.get() {
+        use base64::Engine as _;
+        json!(base64::engine::general_purpose::STANDARD.encode(bytes))
+    } else {
+        buffer_value(bytes)
+    }
+}
+/// A Node `Buffer` in `JSON.stringify` form, whatever the bytes mode.
+pub fn buffer_value(bytes: &[u8]) -> Value {
     json!({"type":"Buffer","data":bytes})
 }
 // protobufjs' fixed64 reader/formatter uses a signed Long for this schema.
