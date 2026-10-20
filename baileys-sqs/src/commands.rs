@@ -152,22 +152,43 @@ impl Commands {
         }
     }
 
+    /// The cache is keyed by the chat id events carry, which for most 1:1
+    /// chats is the LID, while commands usually address a phone number (or
+    /// the other way round), so a chat is looked up under its other form too.
+    async fn cached_ephemeral(&self, whatsapp: &dyn WhatsApp, jid: &str) -> Option<Value> {
+        if let Some(expiration) = self.ephemeral.get(jid) {
+            return Some(expiration);
+        }
+        match whatsapp.alternate_jid(jid).await {
+            Ok(alternate) => alternate.and_then(|alternate| self.ephemeral.get(&alternate)),
+            Err(err) => {
+                tracing::warn!(%err, jid, "failed to resolve the chat for the ephemeral cache");
+                None
+            }
+        }
+    }
+
     /// Attach the chat's known disappearing-messages duration unless the
     /// caller set `ephemeralExpiration` (even to null).
-    fn apply_ephemeral(&self, jid: &str, options: &mut Map<String, Value>) {
+    async fn apply_ephemeral(
+        &self,
+        whatsapp: &dyn WhatsApp,
+        jid: &str,
+        options: &mut Map<String, Value>,
+    ) {
         if options.contains_key("ephemeralExpiration") {
             return;
         }
-        if let Some(expiration) = self.ephemeral.get(jid) {
+        if let Some(expiration) = self.cached_ephemeral(whatsapp, jid).await {
             tracing::debug!(jid, %expiration, "applying cached ephemeralExpiration to outgoing message");
             options.insert("ephemeralExpiration".into(), expiration);
         }
     }
 
-    fn options(&self, jid: &str, cmd: &Value) -> Map<String, Value> {
+    async fn options(&self, whatsapp: &dyn WhatsApp, jid: &str, cmd: &Value) -> Map<String, Value> {
         let mut options = object(cmd.get("options"));
         Self::sanitize_quoted(&mut options);
-        self.apply_ephemeral(jid, &mut options);
+        self.apply_ephemeral(whatsapp, jid, &mut options).await;
         options
     }
 
@@ -206,7 +227,7 @@ impl Commands {
         };
         match kind {
             "send_text" => {
-                let options = self.options(&jid, cmd);
+                let options = self.options(whatsapp, &jid, cmd).await;
                 let content = match js::get(cmd, "message") {
                     Some(message) => message.clone(),
                     None => json!({"text": cmd.get("text").cloned().unwrap_or(Value::Null)}),
@@ -261,7 +282,7 @@ impl Commands {
                     field.into(),
                     json!({"type":"Buffer","data":STANDARD.encode(&bytes)}),
                 );
-                let options = self.options(&jid, cmd);
+                let options = self.options(whatsapp, &jid, cmd).await;
                 let sent_message = self
                     .send(whatsapp, &jid, &Value::Object(message), &options)
                     .await?;
@@ -440,7 +461,7 @@ impl Commands {
                         "send_poll requires \"poll\" with a \"name\" string and at least 2 \"values\"",
                     ));
                 }
-                let options = self.options(&jid, cmd);
+                let options = self.options(whatsapp, &jid, cmd).await;
                 let mut fields = json!({"name":poll["name"],"values":poll["values"]});
                 if let Some(count) = poll.get("selectableCount").filter(|v| !v.is_null()) {
                     fields["selectableCount"] = count.clone();
@@ -473,7 +494,7 @@ impl Commands {
                         "raw requires a \"body\" object to pass directly to sock.sendMessage",
                     ));
                 };
-                let options = self.options(&jid, cmd);
+                let options = self.options(whatsapp, &jid, cmd).await;
                 let message = self.send(whatsapp, &jid, body, &options).await?;
                 tracing::debug!(jid, body_keys = ?body.as_object().map(|o| o.keys().cloned().collect::<Vec<_>>()), "sent raw message");
                 sent(message)

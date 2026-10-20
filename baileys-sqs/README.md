@@ -1,6 +1,6 @@
 # baileys-sqs (Rust)
 
-A Rust port of [baileys-sqs](https://github.com/igorski89/baileys-sqs) (commit `8ad19d0`), the WhatsApp connector that uses AWS SQS for bidirectional message queuing. It lives in the [baileys-rs](https://github.com/igorski89/baileys-rs) repository, as the `baileys-sqs` workspace member, and WhatsApp runs on that library instead of Baileys; the environment variables, commands and output messages are the same, so existing producers and consumers keep working. Known differences are listed in [SHORTCOMINGS.md](SHORTCOMINGS.md).
+A Rust port of [baileys-sqs](https://github.com/igorski89/baileys-sqs) (commit `fd94f5a`), the WhatsApp connector that uses AWS SQS for bidirectional message queuing. It lives in the [baileys-rs](https://github.com/igorski89/baileys-rs) repository, as the `baileys-sqs` workspace member, and WhatsApp runs on that library instead of Baileys; the environment variables, commands and output messages are the same, so existing producers and consumers keep working. Known differences are listed in [SHORTCOMINGS.md](SHORTCOMINGS.md).
 
 ```
 ┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐

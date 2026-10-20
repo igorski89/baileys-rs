@@ -36,6 +36,9 @@ pub trait WhatsApp: Send + Sync {
         jid: &'a str,
     ) -> BoxFuture<'a, Result<()>>;
     fn read_messages<'a>(&'a self, keys: Vec<proto::MessageKey>) -> BoxFuture<'a, Result<()>>;
+    /// The chat's other identity from `signalRepository.lidMapping`: the
+    /// phone number for a LID, the LID for a phone number, as a user JID.
+    fn alternate_jid<'a>(&'a self, jid: &'a str) -> BoxFuture<'a, Result<Option<String>>>;
     /// `downloadMediaMessage(msg, 'buffer', {})`: no reupload request.
     fn download_media<'a>(
         &'a self,
@@ -93,6 +96,29 @@ impl WhatsApp for Live {
 
     fn read_messages<'a>(&'a self, keys: Vec<proto::MessageKey>) -> BoxFuture<'a, Result<()>> {
         Box::pin(async move { Ok(self.socket.read_messages(&keys).await?) })
+    }
+
+    fn alternate_jid<'a>(&'a self, jid: &'a str) -> BoxFuture<'a, Result<Option<String>>> {
+        Box::pin(async move {
+            let Some(parsed) = baileys_rs::jid::Jid::parse(jid) else {
+                return Ok(None);
+            };
+            let lid = parsed.is_lid_user();
+            if !lid && !parsed.is_pn_user() {
+                return Ok(None);
+            }
+            let mapping = self.socket.lid_mapping();
+            let jid = jid.to_owned();
+            let alternate = tokio::task::spawn_blocking(move || {
+                if lid {
+                    mapping.get_pn_for_lid(&jid)
+                } else {
+                    mapping.get_lid_for_pn(&jid)
+                }
+            })
+            .await??;
+            Ok(alternate.map(|jid| baileys_rs::jid::normalized_user(&jid)))
+        })
     }
 
     fn download_media<'a>(

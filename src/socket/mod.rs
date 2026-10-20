@@ -678,6 +678,12 @@ impl Drop for CancelGuard {
 type WebSocket = WebSocketStream<MaybeTlsStream<TcpStream>>;
 
 impl Socket {
+    /// The stored PN/LID mapping, upstream's `signalRepository.lidMapping`.
+    /// Its lookups are synchronous and may query USync, so async callers run
+    /// them on a blocking executor.
+    pub fn lid_mapping(&self) -> crate::signal::mapping::Store {
+        self.inner.decryptor.direct.lid_mapping().clone()
+    }
     /// Return after the authenticated Noise exchange. Account login/pairing proceeds
     /// through events; an encrypted connection is not yet an authenticated account.
     pub async fn connect(

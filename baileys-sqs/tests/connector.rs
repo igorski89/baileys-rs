@@ -193,6 +193,14 @@ impl WhatsApp for Fake {
         self.calls.lock().unwrap().push(Call::Read(keys));
         Box::pin(async { Ok(()) })
     }
+    fn alternate_jid<'a>(&'a self, jid: &'a str) -> BoxFuture<'a, Result<Option<String>>> {
+        let alternate = match jid {
+            "15551234@s.whatsapp.net" => Some("777@lid".to_owned()),
+            "777@lid" => Some("15551234@s.whatsapp.net".to_owned()),
+            _ => None,
+        };
+        Box::pin(async move { Ok(alternate) })
+    }
     fn download_media<'a>(
         &'a self,
         _: &'a proto::WebMessageInfo,
@@ -223,9 +231,11 @@ async fn input_commands_run_in_order_acknowledge_and_never_block_the_queue() {
     let dir = tempfile::tempdir().unwrap();
     let fake = Arc::new(Fake::default());
     let commands = commands(&queues, "output", Some(fake.clone()), &dir);
+    // Learned under the chat's LID, as events carry it; commands address
+    // the phone number.
     commands
         .ephemeral
-        .update(Some("15551234@s.whatsapp.net"), Some(Some(86400.0)));
+        .update(Some("777@lid"), Some(Some(86400.0)));
     for body in [
         json!({"type":"send_text","to":"+1 555 1234","text":"hi","correlation_id":"c1"}).to_string(),
         "not json".to_string(),
@@ -273,7 +283,7 @@ async fn input_commands_run_in_order_acknowledge_and_never_block_the_queue() {
         matches!(&calls[2], Call::Presence(Presence::Composing, j) if j == "15551234@s.whatsapp.net")
     );
     assert!(
-        matches!(&calls[3], Call::Send { content: Content::Poll(p), .. } if p.values == ["a", "b"])
+        matches!(&calls[3], Call::Send { content: Content::Poll(p), options, .. } if p.values == ["a", "b"] && options.ephemeral_expiration == Some(86400))
     );
 }
 

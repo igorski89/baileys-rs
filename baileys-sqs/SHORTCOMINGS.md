@@ -1,6 +1,6 @@
 # Shortcomings
 
-Known gaps and deliberate deviations from the TypeScript baileys-sqs (commit `8ad19d0`). Add an entry whenever a change introduces a deviation, and remove it when it is resolved. Differences inside the library itself are listed in the root [SHORTCOMINGS.md](../SHORTCOMINGS.md).
+Known gaps and deliberate deviations from the TypeScript baileys-sqs (commit `fd94f5a`). Add an entry whenever a change introduces a deviation, and remove it when it is resolved. Differences inside the library itself are listed in the root [SHORTCOMINGS.md](../SHORTCOMINGS.md).
 
 ## Not yet verified
 
