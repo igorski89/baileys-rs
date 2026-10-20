@@ -163,6 +163,10 @@ impl WhatsAppLoop {
     /// Returns the close code, or `None` if the event stream ended without one.
     async fn process(&self, live: Arc<Live>, events: broadcast::Receiver<Event>) -> Option<u16> {
         let mut queue = queue(events);
+        // One pairing code per connection: every request is a new link
+        // attempt, which replaces the previous code, and WhatsApp limits how
+        // many a number may make. QR refreshes come every 20 seconds.
+        let mut pairing_requested = false;
         while let Some(event) = queue.recv().await {
             match &event {
                 Event::Qr(qr) => {
@@ -170,7 +174,9 @@ impl WhatsAppLoop {
                         .output
                         .send(&json!({"type":"qr","payload":{"qr":qr}}))
                         .await;
-                    self.pairing_code(&live).await;
+                    if !pairing_requested {
+                        pairing_requested = self.pairing_code(&live).await;
+                    }
                 }
                 Event::Connection(ConnectionState::Closed { code }) => return Some(*code),
                 Event::Connection(ConnectionState::Open) => {
@@ -188,9 +194,11 @@ impl WhatsAppLoop {
         None
     }
 
-    async fn pairing_code(&self, live: &Live) {
+    /// Request a pairing code when configured and unregistered; returns
+    /// whether it did.
+    async fn pairing_code(&self, live: &Live) -> bool {
         if !self.settings.use_pairing_code {
-            return;
+            return false;
         }
         let registered = self
             .store
@@ -198,11 +206,11 @@ impl WhatsAppLoop {
             .map(|c| c.registered)
             .unwrap_or(false);
         if registered {
-            return;
+            return false;
         }
         tracing::info!("Requesting pairing code...");
         let Some(phone) = &self.settings.phone_number else {
-            return;
+            return true;
         };
         match live.socket.request_pairing_code(phone.clone(), None).await {
             Ok(code) => {
@@ -216,6 +224,7 @@ impl WhatsAppLoop {
             }
             Err(err) => tracing::error!(%err, "Failed to get pairing code"),
         }
+        true
     }
 
     /// Forward the event's upstream entries, except connection and

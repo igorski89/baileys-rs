@@ -2,7 +2,7 @@
 
 ## Objective and source
 
-Port baileys-sqs (TypeScript, commit `fd94f5a`: `index.ts`, `listener.ts`, `sender.ts`) to Rust on baileys-rs, keeping its environment variables, input commands and output messages, and test it against RusticMQ.
+Port baileys-sqs (TypeScript, commit `6ef7d8b`: `index.ts`, `listener.ts`, `sender.ts`) to Rust on baileys-rs, keeping its environment variables, input commands and output messages, and test it against RusticMQ.
 
 ## Implemented
 
