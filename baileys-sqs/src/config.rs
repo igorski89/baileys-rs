@@ -225,11 +225,18 @@ impl Settings {
     }
 }
 
-/// Map pino level names onto a tracing filter.
+/// Map pino level names onto a tracing filter. As the pino logger covers
+/// only the connector and Baileys, the level applies to the connector and
+/// baileys-rs; other crates (the AWS SDK, HTTP and TLS) log warnings and
+/// errors only, unless the level is stricter.
 pub fn log_filter(level: &str) -> String {
+    let level = match level {
+        "fatal" => "error",
+        "silent" => "off",
+        other => other,
+    };
     match level {
-        "fatal" => "error".into(),
-        "silent" => "off".into(),
+        "trace" | "debug" | "info" => format!("warn,baileys_sqs={level},baileys_rs={level}"),
         other => other.into(),
     }
 }
@@ -272,6 +279,18 @@ mod tests {
         );
         assert_eq!(file("auth.sqlite3").folder(), Some(Path::new(".")));
         assert_eq!(SessionDb::Memory.folder(), None);
+    }
+
+    #[test]
+    fn log_levels_cover_the_connector_and_the_library() {
+        use super::log_filter;
+        assert_eq!(
+            log_filter("debug"),
+            "warn,baileys_sqs=debug,baileys_rs=debug"
+        );
+        assert_eq!(log_filter("error"), "error");
+        assert_eq!(log_filter("fatal"), "error");
+        assert_eq!(log_filter("silent"), "off");
     }
 
     #[test]

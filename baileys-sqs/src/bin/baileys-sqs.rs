@@ -19,13 +19,17 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             std::process::exit(1);
         }
     };
-    tracing_subscriber::fmt()
-        .with_env_filter(
+    // RUST_LOG, when set, replaces the LOG_LEVEL filter (e.g. to see the AWS SDK).
+    let filter = std::env::var("RUST_LOG")
+        .ok()
+        .and_then(|f| tracing_subscriber::EnvFilter::try_new(f).ok())
+        .or_else(|| {
             tracing_subscriber::EnvFilter::try_new(baileys_sqs::config::log_filter(
                 &settings.log_level,
             ))
-            .unwrap_or_else(|_| tracing_subscriber::EnvFilter::new("debug")),
-        )
-        .init();
+            .ok()
+        })
+        .unwrap_or_else(|| tracing_subscriber::EnvFilter::new("debug"));
+    tracing_subscriber::fmt().with_env_filter(filter).init();
     baileys_sqs::run(settings).await
 }

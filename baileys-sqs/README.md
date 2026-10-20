@@ -44,7 +44,7 @@ Copy `.env.example` to `.env` and adjust. The variables are those of the TypeScr
 - `WHATSAPP_VERSION` (a JSON array) pins the WhatsApp Web version; otherwise the latest is fetched.
 - `S3_BUCKET` and the other `S3_*` variables upload incoming media to S3 and put a presigned URL in `_media.url`; without them media is inlined as base64.
 - `PORT`, `HTTP_HOST`, `AUTH_TOKEN` enable the HTTP endpoint.
-- `LOG_LEVEL` (pino level names) and `SOCKET_URL`.
+- `LOG_LEVEL` (pino level names) and `SOCKET_URL`. As with pino, the level covers the connector and the WhatsApp library; other crates log warnings and errors only. `RUST_LOG`, when set, replaces the filter.
 
 The bucket is not created automatically.
 
