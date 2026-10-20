@@ -30,9 +30,7 @@ pub async fn run(settings: config::Settings) -> Result<(), Box<dyn std::error::E
     let store = app::open_session(&settings.session_dir)?;
     let commands = commands::Commands {
         socket: Arc::default(),
-        ephemeral: ephemeral::EphemeralCache::load(
-            settings.session_dir.join("ephemeral-cache.json"),
-        ),
+        ephemeral: ephemeral::EphemeralCache::open(&settings.session_dir)?,
         output: output::Output::new(sqs.clone(), output_queue),
         http: http.clone(),
     };

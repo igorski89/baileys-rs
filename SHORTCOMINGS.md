@@ -17,7 +17,7 @@ Known gaps and deliberate deviations from the TypeScript baileys-sqs (commit `8a
 
 ## Session and connection
 
-- The session is a SQLite file in `SESSION_DIR`, not Baileys' multi-file JSON. A TypeScript session folder is imported once; going back to the TypeScript connector with the same folder needs the original files, which are left in place.
+- The session is a SQLite file in `SESSION_DIR`, not Baileys' multi-file JSON, and the disappearing-messages cache is a table in the same file rather than `ephemeral-cache.json`. A TypeScript session folder and its cache file are imported once; going back to the TypeScript connector with the same folder needs the original files, which are left in place but no longer updated.
 - There is no separate `creds.update` save step or signal-key cache: the store writes through.
 - `from`, `me_lid` and `/health`'s `connected` read the account from the store, as `sock.user` reads upstream's credentials.
 

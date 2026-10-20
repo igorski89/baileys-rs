@@ -44,7 +44,7 @@ Copy `.env.example` to `.env` and adjust. The variables are those of the TypeScr
 
 - `INPUT_QUEUE`, `OUTPUT_QUEUE` (required). A queue whose URL contains `fifo` is treated as FIFO.
 - `AWS_REGION`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_ENDPOINT_URL`, with `SQS_*` and `S3_*` overrides for each service.
-- `SESSION_DIR` (default `./auth`). The session is a SQLite file, `auth.sqlite3`. A folder written by the TypeScript connector (`creds.json` and key files) is imported on first start, so an existing pairing keeps working.
+- `SESSION_DIR` (default `./auth`). The session is one SQLite file, `auth.sqlite3`, which also holds the connector's disappearing-messages durations (table `baileys_sqs_ephemeral`). A folder written by the TypeScript connector (`creds.json`, key files and `ephemeral-cache.json`) is imported on first start, so an existing pairing keeps working; the original files are left in place.
 - `USE_PAIRING_CODE=true` with `PHONE_NUMBER` links with a pairing code instead of the QR code.
 - `WHATSAPP_VERSION` (a JSON array) pins the WhatsApp Web version; otherwise the latest is fetched.
 - `S3_BUCKET` and the other `S3_*` variables upload incoming media to S3 and put a presigned URL in `_media.url`; without them media is inlined as base64.
@@ -79,7 +79,7 @@ Send the JSON below to `INPUT_QUEUE`, or POST it to `http://<host>:<PORT>/comman
 
 On failure `ok` is false and `error` holds the message. `send_poll` acks carry `message_secret` (base64), needed to decrypt votes later.
 
-Outgoing sends to a chat with disappearing messages carry the chat's duration, learned from `chats.update` and from incoming messages and kept in `SESSION_DIR/ephemeral-cache.json`, unless `options.ephemeralExpiration` is set.
+Outgoing sends to a chat with disappearing messages carry the chat's duration, learned from `chats.update` and from incoming messages and kept in `SESSION_DIR/auth.sqlite3`, unless `options.ephemeralExpiration` is set.
 
 ## Output
 

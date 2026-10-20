@@ -716,6 +716,7 @@ dependencies = [
  "rand 0.9.5",
  "regex",
  "reqwest 0.12.28",
+ "rusqlite",
  "rusticmq",
  "serde_json",
  "sha2 0.10.9",

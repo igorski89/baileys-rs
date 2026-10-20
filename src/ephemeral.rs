@@ -1,58 +1,134 @@
-//! Per-chat disappearing-messages durations, persisted next to the session.
+//! Per-chat disappearing-messages durations, persisted in the session's
+//! SQLite file.
 //!
 //! Outgoing sends must carry the chat's ephemeral expiration explicitly;
 //! neither the protocol nor the library applies a 1:1 chat's setting by
 //! itself. The cache learns the setting from `chats.update` and from every
 //! message's context info, and is written through on every real change.
 use baileys_rs::{messages::generation, proto, proto_json::JsonField};
+use rusqlite::{Connection, OptionalExtension, types::Value as Sql};
 use serde_json::{Map, Value};
 use std::{
-    path::PathBuf,
+    path::Path,
     sync::{Arc, Mutex},
+    time::Duration,
 };
+
+/// The connector's table in `auth.sqlite3`, beside baileys-rs's own tables.
+const TABLE: &str = "baileys_sqs_ephemeral";
 
 #[derive(Clone)]
 pub struct EphemeralCache {
-    path: PathBuf,
+    connection: Arc<Mutex<Connection>>,
     entries: Arc<Mutex<Map<String, Value>>>,
 }
 
-impl EphemeralCache {
-    /// Load `ephemeral-cache.json`; a missing or corrupt file starts empty.
-    pub fn load(path: impl Into<PathBuf>) -> Self {
-        let path = path.into();
-        let mut entries = Map::new();
-        match std::fs::read_to_string(&path) {
-            Ok(raw) => match serde_json::from_str::<Value>(&raw) {
-                Ok(Value::Object(parsed)) => {
-                    for (jid, expiration) in parsed {
-                        if expiration.is_number() {
-                            entries.insert(jid, expiration);
-                        }
+fn to_sql(value: &Value) -> Sql {
+    match value.as_i64() {
+        Some(n) => Sql::Integer(n),
+        None => Sql::Real(value.as_f64().unwrap_or(f64::NAN)),
+    }
+}
+
+fn from_sql(value: Sql) -> Option<Value> {
+    match value {
+        Sql::Integer(n) => Some(Value::from(n)),
+        Sql::Real(n) => serde_json::Number::from_f64(n).map(Value::Number),
+        _ => None,
+    }
+}
+
+/// The numeric entries of the TypeScript connector's `ephemeral-cache.json`;
+/// a missing or corrupt file has none.
+fn legacy_entries(path: &Path) -> Map<String, Value> {
+    let mut entries = Map::new();
+    match std::fs::read_to_string(path) {
+        Ok(raw) => match serde_json::from_str::<Value>(&raw) {
+            Ok(Value::Object(parsed)) => {
+                for (jid, expiration) in parsed {
+                    if expiration.is_number() {
+                        entries.insert(jid, expiration);
                     }
-                    tracing::info!(count = entries.len(), path = %path.display(), "loaded ephemeral cache from disk");
                 }
-                Ok(_) => {
-                    tracing::info!(count = 0, path = %path.display(), "loaded ephemeral cache from disk");
-                }
-                Err(err) => {
-                    tracing::warn!(%err, path = %path.display(), "failed to load ephemeral cache - starting empty");
-                }
-            },
-            Err(err) if err.kind() == std::io::ErrorKind::NotFound => {}
-            Err(err) => {
-                tracing::warn!(%err, path = %path.display(), "failed to load ephemeral cache - starting empty");
             }
-        }
-        Self {
-            path,
-            entries: Arc::new(Mutex::new(entries)),
+            Ok(_) => {}
+            Err(err) => {
+                tracing::warn!(%err, path = %path.display(), "failed to import ephemeral cache - starting empty");
+            }
+        },
+        Err(err) if err.kind() == std::io::ErrorKind::NotFound => {}
+        Err(err) => {
+            tracing::warn!(%err, path = %path.display(), "failed to import ephemeral cache - starting empty");
         }
     }
+    entries
+}
 
-    fn persist(&self, entries: &Map<String, Value>) {
-        if let Err(err) = std::fs::write(&self.path, Value::Object(entries.clone()).to_string()) {
-            tracing::warn!(%err, path = %self.path.display(), "failed to persist ephemeral cache");
+impl EphemeralCache {
+    /// Open the cache in `session_dir/auth.sqlite3`. The first time, the
+    /// TypeScript connector's `ephemeral-cache.json` there is imported; the
+    /// file itself is left in place.
+    pub fn open(session_dir: &Path) -> Result<Self, rusqlite::Error> {
+        let mut connection = Connection::open(session_dir.join("auth.sqlite3"))?;
+        // The same file is written by baileys-rs's own connection.
+        connection.busy_timeout(Duration::from_secs(30))?;
+        connection.pragma_update(None, "synchronous", "FULL")?;
+        let tx = connection.transaction_with_behavior(rusqlite::TransactionBehavior::Immediate)?;
+        let created = tx
+            .query_row(
+                "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?1",
+                [TABLE],
+                |_| Ok(()),
+            )
+            .optional()?
+            .is_none();
+        if created {
+            tx.execute_batch(&format!(
+                "CREATE TABLE {TABLE} (jid TEXT PRIMARY KEY, expiration NUMERIC NOT NULL)"
+            ))?;
+            let legacy = session_dir.join("ephemeral-cache.json");
+            let imported = legacy_entries(&legacy);
+            for (jid, expiration) in &imported {
+                tx.execute(
+                    &format!("INSERT INTO {TABLE} (jid, expiration) VALUES (?1, ?2)"),
+                    rusqlite::params![jid, to_sql(expiration)],
+                )?;
+            }
+            if !imported.is_empty() {
+                tracing::info!(count = imported.len(), path = %legacy.display(), "imported ephemeral cache");
+            }
+        }
+        let mut entries = Map::new();
+        {
+            let mut rows = tx.prepare(&format!(
+                "SELECT jid, expiration FROM {TABLE} ORDER BY rowid"
+            ))?;
+            for row in rows.query_map([], |r| Ok((r.get::<_, String>(0)?, r.get::<_, Sql>(1)?)))? {
+                let (jid, expiration) = row?;
+                if let Some(expiration) = from_sql(expiration) {
+                    entries.insert(jid, expiration);
+                }
+            }
+        }
+        tx.commit()?;
+        tracing::info!(count = entries.len(), "loaded ephemeral cache");
+        Ok(Self {
+            connection: Arc::new(Mutex::new(connection)),
+            entries: Arc::new(Mutex::new(entries)),
+        })
+    }
+
+    fn persist(&self, jid: &str, expiration: Option<&Value>) {
+        let connection = self.connection.lock().expect("ephemeral cache connection");
+        let result = match expiration {
+            Some(expiration) => connection.execute(
+                &format!("INSERT OR REPLACE INTO {TABLE} (jid, expiration) VALUES (?1, ?2)"),
+                rusqlite::params![jid, to_sql(expiration)],
+            ),
+            None => connection.execute(&format!("DELETE FROM {TABLE} WHERE jid=?1"), [jid]),
+        };
+        if let Err(err) = result {
+            tracing::warn!(%err, jid, "failed to persist ephemeral cache");
         }
     }
 
@@ -75,14 +151,14 @@ impl EphemeralCache {
                 };
                 if entries.get(jid) != Some(&value) {
                     tracing::debug!(jid, expiration, "ephemeral cache: enabled/updated");
+                    self.persist(jid, Some(&value));
                     entries.insert(jid.into(), value);
-                    self.persist(&entries);
                 }
             }
             None => {
                 if entries.remove(jid).is_some() {
                     tracing::debug!(jid, "ephemeral cache: disabled");
-                    self.persist(&entries);
+                    self.persist(jid, None);
                 }
             }
         }
@@ -133,22 +209,62 @@ mod tests {
     #[test]
     fn changes_are_written_through_and_survive_a_restart() {
         let dir = tempfile::tempdir().unwrap();
-        let path = dir.path().join("ephemeral-cache.json");
-        let cache = EphemeralCache::load(&path);
+        let store = baileys_rs::auth::SqliteAuthStore::open(dir.path()).unwrap();
+        let cache = EphemeralCache::open(dir.path()).unwrap();
         cache.update(Some("a@s.whatsapp.net"), Some(Some(86400.0)));
         cache.update(Some("b@s.whatsapp.net"), Some(Some(604800.0)));
         cache.update(Some("b@s.whatsapp.net"), Some(Some(0.0)));
         cache.update(Some("a@s.whatsapp.net"), None);
-        assert_eq!(
-            std::fs::read_to_string(&path).unwrap(),
-            r#"{"a@s.whatsapp.net":86400}"#
-        );
-        let restarted = EphemeralCache::load(&path);
+        cache.update(Some("c@s.whatsapp.net"), Some(Some(1.5)));
+        drop(cache);
+        let restarted = EphemeralCache::open(dir.path()).unwrap();
         assert_eq!(restarted.get("a@s.whatsapp.net"), Some(json!(86400)));
+        assert_eq!(restarted.get("b@s.whatsapp.net"), None);
+        assert_eq!(restarted.get("c@s.whatsapp.net"), Some(json!(1.5)));
         restarted.update_from_chat(&json!({"id":"a@s.whatsapp.net","ephemeralExpiration":null}));
-        assert_eq!(restarted.get("a@s.whatsapp.net"), None);
-        std::fs::write(&path, "not json").unwrap();
-        assert_eq!(EphemeralCache::load(&path).get("a@s.whatsapp.net"), None);
+        assert_eq!(
+            EphemeralCache::open(dir.path())
+                .unwrap()
+                .get("a@s.whatsapp.net"),
+            None
+        );
+        // The library's own store still opens the shared file.
+        drop(store);
+        baileys_rs::auth::SqliteAuthStore::open(dir.path()).unwrap();
+    }
+
+    #[test]
+    fn the_typescript_cache_file_is_imported_once() {
+        let dir = tempfile::tempdir().unwrap();
+        let legacy = dir.path().join("ephemeral-cache.json");
+        std::fs::write(
+            &legacy,
+            r#"{"a@s.whatsapp.net":86400,"b@s.whatsapp.net":"x","c@g.us":7776000}"#,
+        )
+        .unwrap();
+        let cache = EphemeralCache::open(dir.path()).unwrap();
+        assert_eq!(cache.get("a@s.whatsapp.net"), Some(json!(86400)));
+        assert_eq!(cache.get("b@s.whatsapp.net"), None);
+        assert_eq!(cache.get("c@g.us"), Some(json!(7776000)));
+        cache.update(Some("a@s.whatsapp.net"), Some(None));
+        drop(cache);
+        // The file stays, but is not read again.
+        assert!(legacy.exists());
+        assert_eq!(
+            EphemeralCache::open(dir.path())
+                .unwrap()
+                .get("a@s.whatsapp.net"),
+            None
+        );
+
+        let corrupt = tempfile::tempdir().unwrap();
+        std::fs::write(corrupt.path().join("ephemeral-cache.json"), "not json").unwrap();
+        assert_eq!(
+            EphemeralCache::open(corrupt.path())
+                .unwrap()
+                .get("a@s.whatsapp.net"),
+            None
+        );
     }
 
     #[test]

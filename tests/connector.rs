@@ -211,7 +211,7 @@ fn commands(
         socket: Arc::new(tokio::sync::RwLock::new(
             fake.map(|f| f as Arc<dyn WhatsApp>),
         )),
-        ephemeral: EphemeralCache::load(dir.path().join("ephemeral-cache.json")),
+        ephemeral: EphemeralCache::open(dir.path()).unwrap(),
         output: Output::new(queues.sqs.clone(), queues.url(output)),
         http: reqwest::Client::new(),
     }

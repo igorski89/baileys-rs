@@ -20,6 +20,7 @@ qrcode = { version = "0.14", default-features = false }
 rand = "0.9"
 regex = "1"
 reqwest = { version = "0.12", default-features = false, features = ["rustls-tls-native-roots"] }
+rusqlite = { version = "0.38", features = ["bundled"] }
 serde_json = { version = "1", features = ["preserve_order"] }
 sha2 = "0.10"
 subtle = "2"
