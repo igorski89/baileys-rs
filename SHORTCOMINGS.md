@@ -17,7 +17,7 @@ Known gaps and deliberate deviations from the TypeScript baileys-sqs (commit `8a
 
 ## Session and connection
 
-- `SESSION_DB` (a file path or `:memory:`, also `--session-db`) replaces `SESSION_DIR`. Deployments must rename the variable, pointing it at `auth.sqlite3` in the old folder; with only `SESSION_DIR` set the connector exits with that hint.
+- `SESSION_DB` (a file path or `:memory:`, also `--session-db`) replaces `SESSION_DIR`. Deployments must rename the variable, pointing it at `auth.sqlite3` in the old folder; with only `SESSION_DIR` set the connector exits with that hint. With `:memory:`, the session and the disappearing-messages cache are two separate in-memory databases rather than tables of one file; neither outlives the process.
 
 - The session is a SQLite file, not Baileys' multi-file JSON, and the disappearing-messages cache is a table in the same file rather than `ephemeral-cache.json`. A TypeScript session folder and its cache file are imported once; going back to the TypeScript connector with the same folder needs the original files, which are left in place but no longer updated.
 - There is no separate `creds.update` save step or signal-key cache: the store writes through.
