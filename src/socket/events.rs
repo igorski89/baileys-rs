@@ -496,8 +496,14 @@ mod tests {
         let received = first(upsert("R", Some(metadata())));
         assert_eq!(received["messageTimestamp"], json!(1792506508));
         assert_eq!(received["status"], json!(Status::Pending as i32));
-        assert_eq!(received["message"]["protocolMessage"]["type"], "MESSAGE_EDIT");
-        assert_eq!(received["message"]["messageContextInfo"]["messageSecret"], "AQID");
+        assert_eq!(
+            received["message"]["protocolMessage"]["type"],
+            "MESSAGE_EDIT"
+        );
+        assert_eq!(
+            received["message"]["messageContextInfo"]["messageSecret"],
+            "AQID"
+        );
         assert_eq!(received["key"]["remoteJidAlt"], "201@lid");
         let own = first(upsert("O", None));
         assert_eq!(own["messageTimestamp"], "1792506508");

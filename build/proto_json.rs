@@ -12,10 +12,11 @@ fn ident(s: &str) -> String {
         _ => s.into(),
     }
 }
-/// A closure naming an enum field's value, as protobufjs' `toJSON` writes it.
-fn enum_name(f: &FieldDescriptorProto) -> String {
+/// `enum_to_value` for an enum field's value, named as protobufjs' `toJSON`
+/// names it.
+fn enum_json(f: &FieldDescriptorProto, value: &str) -> String {
     let ep = path(f.type_name.as_ref().unwrap());
-    format!("(|v:i32|{ep}::try_from(v).ok().map(|e|e.as_str_name()))")
+    format!("enum_to_value({value},{ep}::try_from({value}).ok().map(|e|e.as_str_name()))")
 }
 fn path(name: &str) -> String {
     let parts: Vec<_> = name.trim_start_matches('.').split('.').collect();
@@ -199,15 +200,15 @@ fn emit(message: &DescriptorProto, parent: &str, out: &mut String) {
                 format!("fixed64_value(self.{member})")
             }
         } else if f.r#type == Some(Type::Enum as i32) {
-            let name = enum_name(f);
             if f.label == Some(Label::Repeated as i32) {
                 format!(
-                    "Value::Array(self.{member}.iter().map(|v|enum_to_value(*v,{name}(*v))).collect())"
+                    "Value::Array(self.{member}.iter().map(|v|{}).collect())",
+                    enum_json(f, "*v")
                 )
             } else if optional(f) {
-                format!("{{let v=self.{member}.unwrap();enum_to_value(v,{name}(v))}}")
+                format!("{{let v=self.{member}.unwrap();{}}}", enum_json(f, "v"))
             } else {
-                format!("enum_to_value(self.{member},{name}(self.{member}))")
+                enum_json(f, &format!("self.{member}"))
             }
         } else {
             format!("self.{member}.to_value()")
@@ -238,7 +239,7 @@ fn emit(message: &DescriptorProto, parent: &str, out: &mut String) {
             } else if f.r#type == Some(Type::Fixed64 as i32) {
                 "fixed64_value(*value)".into()
             } else if f.r#type == Some(Type::Enum as i32) {
-                format!("enum_to_value(*value,{}(*value))", enum_name(f))
+                enum_json(f, "*value")
             } else {
                 "value.to_value()".into()
             };
