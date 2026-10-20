@@ -35,11 +35,12 @@ A plain `cargo test` at the root tests the library and the connector together.
 
 ## Configuration
 
-Copy `.env.example` to `.env` and adjust. The variables are those of the TypeScript connector, except `SESSION_DB`, which replaces `SESSION_DIR`:
+Copy `.env.example` to `.env` and adjust. The variables are those of the TypeScript connector, with `SESSION_DB` added:
 
 - `INPUT_QUEUE`, `OUTPUT_QUEUE` (required). A queue whose URL contains `fifo` is treated as FIFO.
 - `AWS_REGION`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_ENDPOINT_URL`, with `SQS_*` and `S3_*` overrides for each service.
-- `SESSION_DB` (default `./auth.sqlite3`), or `--session-db` on the command line, which takes precedence. The session is this one SQLite file, which also holds the connector's disappearing-messages durations (table `baileys_sqs_ephemeral`). While the connector runs, SQLite's write-ahead log keeps `auth.sqlite3-wal` and `auth.sqlite3-shm` beside it; they are part of the database, so back up all three files, or stop the connector first. `:memory:` keeps the session in memory only: nothing is written to disk and every start pairs a new device, which suits tests and CI. When the file is first created, a session the TypeScript connector left in the same folder (`creds.json`, key files and `ephemeral-cache.json`) is imported, so an existing pairing keeps working; the original files are left in place. To move from the TypeScript connector, replace `SESSION_DIR=/session` with `SESSION_DB=/session/auth.sqlite3`; a connector started with only `SESSION_DIR` set exits with that hint rather than pairing anew.
+- `SESSION_DIR` (default `./auth`, as in the TypeScript connector): the folder holding the session, which is the SQLite file `auth.sqlite3` in it. The folder is created if missing (mode 0700).
+- `SESSION_DB`, or `--session-db` on the command line, which takes precedence: the session's file itself, overriding `SESSION_DIR`. The session is this one SQLite file, which also holds the connector's disappearing-messages durations (table `baileys_sqs_ephemeral`). While the connector runs, SQLite's write-ahead log keeps `auth.sqlite3-wal` and `auth.sqlite3-shm` beside it; they are part of the database, so back up all three files, or stop the connector first. `:memory:` keeps the session in memory only: nothing is written to disk and every start pairs a new device, which suits tests and CI. When the file is first created, a session the TypeScript connector left in the same folder (`creds.json`, key files and `ephemeral-cache.json`) is imported, so an existing pairing keeps working; the original files are left in place. A TypeScript deployment therefore moves over unchanged: with the same `SESSION_DIR`, the connector creates `auth.sqlite3` there and keeps the pairing.
 - `USE_PAIRING_CODE=true` with `PHONE_NUMBER` links with a pairing code instead of the QR code.
 - `WHATSAPP_VERSION` (a JSON array) pins the WhatsApp Web version; otherwise the latest is fetched.
 - `S3_BUCKET` and the other `S3_*` variables upload incoming media to S3 and put a presigned URL in `_media.url`; without them media is inlined as base64.
@@ -109,7 +110,7 @@ export AWS_REGION=elasticmq AWS_ACCESS_KEY_ID=local AWS_SECRET_ACCESS_KEY=local
 export AWS_ENDPOINT_URL=http://localhost:9324
 export INPUT_QUEUE=http://localhost:9324/queue/input-queue
 export OUTPUT_QUEUE=http://localhost:9324/queue/output-queue
-export SESSION_DB=./auth_info_baileys/auth.sqlite3
+export SESSION_DIR=./auth_info_baileys
 
 # 3. Connector, listener and sender, each in its own terminal
 cargo run --release --bin baileys-sqs

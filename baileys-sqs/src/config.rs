@@ -101,12 +101,12 @@ impl std::fmt::Display for SessionDb {
 pub const USAGE: &str = "Usage: baileys-sqs [--session-db <path|:memory:>]
 
 Runs the connector with the settings in the environment (see .env.example).
---session-db overrides SESSION_DB: the session's SQLite file, or :memory:
-for a session that is never written to disk.";
+--session-db overrides SESSION_DB and SESSION_DIR: the session's SQLite file,
+or :memory: for a session that is never written to disk.";
 
 /// The session database from `--session-db`, then `SESSION_DB`, then
-/// `./auth.sqlite3`. `SESSION_DIR` alone is an error: it is no longer read,
-/// and silently starting a new, unpaired session would hide that.
+/// `auth.sqlite3` in `SESSION_DIR`, whose default `./auth` is the TypeScript
+/// connector's, so a deployment of that connector keeps its session.
 pub fn session_db(
     args: &[String],
     env_db: Option<String>,
@@ -130,14 +130,9 @@ pub fn session_db(
     if let Some(db) = arg.filter(|d| !d.is_empty()).or(env_db) {
         return Ok(SessionDb::parse(&db));
     }
-    if let Some(dir) = env_dir {
-        let path = Path::new(&dir).join("auth.sqlite3");
-        return Err(format!(
-            "SESSION_DIR is no longer read; set SESSION_DB to the session's database file, e.g. SESSION_DB={}",
-            path.display()
-        ));
-    }
-    Ok(SessionDb::File("./auth.sqlite3".into()))
+    let dir = env_dir.filter(|d| !d.is_empty());
+    let dir = dir.as_deref().unwrap_or("./auth");
+    Ok(SessionDb::File(Path::new(dir).join("auth.sqlite3")))
 }
 
 #[derive(Debug, Clone)]
@@ -204,9 +199,8 @@ impl Settings {
         Self {
             input_queue: var("INPUT_QUEUE"),
             output_queue: var("OUTPUT_QUEUE"),
-            session_db: var("SESSION_DB")
-                .map(|db| SessionDb::parse(&db))
-                .unwrap_or(SessionDb::File("./auth.sqlite3".into())),
+            session_db: session_db(&[], var("SESSION_DB"), var("SESSION_DIR"))
+                .expect("no arguments to reject"),
             use_pairing_code: var("USE_PAIRING_CODE").as_deref() == Some("true"),
             phone_number: var("PHONE_NUMBER"),
             whatsapp_version: var("WHATSAPP_VERSION"),
@@ -250,7 +244,7 @@ mod tests {
     fn the_session_database_comes_from_the_flag_then_the_environment() {
         let args = |a: &[&str]| a.iter().map(|s| s.to_string()).collect::<Vec<_>>();
         let file = |p: &str| SessionDb::File(p.into());
-        assert_eq!(session_db(&[], None, None), Ok(file("./auth.sqlite3")));
+        assert_eq!(session_db(&[], None, None), Ok(file("./auth/auth.sqlite3")));
         assert_eq!(
             session_db(&[], Some("/s/a.db".into()), None),
             Ok(file("/s/a.db"))
@@ -269,7 +263,11 @@ mod tests {
         );
         assert_eq!(
             session_db(&[], None, Some("/session".into())),
-            Err("SESSION_DIR is no longer read; set SESSION_DB to the session's database file, e.g. SESSION_DB=/session/auth.sqlite3".into())
+            Ok(file("/session/auth.sqlite3"))
+        );
+        assert_eq!(
+            session_db(&[], Some(":memory:".into()), Some("/session".into())),
+            Ok(SessionDb::Memory)
         );
         assert!(session_db(&args(&["--session-db"]), None, None).is_err());
         assert!(session_db(&args(&["--other"]), None, None).is_err());

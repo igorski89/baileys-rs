@@ -62,7 +62,7 @@ services:
       - AWS_ENDPOINT_URL=http://rusticmq:9324
       - INPUT_QUEUE=http://rusticmq:9324/queue/input-queue
       - OUTPUT_QUEUE=http://rusticmq:9324/queue/output-queue
-      - SESSION_DB=/app/auth_info_baileys/auth.sqlite3
+      - SESSION_DIR=/app/auth_info_baileys
       - LOG_LEVEL=debug
       - S3_ENDPOINT_URL=http://minio:9000
       - S3_BUCKET=baileys-sqs-media
