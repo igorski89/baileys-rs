@@ -820,6 +820,7 @@ mod tests {
             is_latest: Some(true),
             chunk_order: Some(0),
             peer_data_request_session_id: Some("".into()),
+            buffered: false,
         };
         emitter.send(Event::MessagingHistorySet(set)).unwrap();
         emitter

@@ -237,6 +237,7 @@ fn events() -> Vec<Event> {
             is_latest: Some(true),
             chunk_order: None,
             peer_data_request_session_id: None,
+            buffered: true,
         }),
         Event::MessagingHistoryStatus(history::StatusUpdate {
             sync_type: 3,
@@ -407,6 +408,37 @@ fn received_keys_keep_their_runtime_properties() {
     );
     // isViewOnce appears only when true.
     assert_eq!(reaction[0]["reaction"]["key"], lid_key("R"));
+}
+
+/// A set processMessage emits outside a buffer spreads processHistoryMessage's
+/// result, as a live session showed it.
+#[test]
+fn unbuffered_history_sets_have_the_direct_shape() {
+    let Event::MessagingHistorySet(mut set) = events()
+        .into_iter()
+        .find(|e| matches!(e, Event::MessagingHistorySet(_)))
+        .unwrap()
+    else {
+        unreachable!()
+    };
+    set.buffered = false;
+    let value = single(Event::MessagingHistorySet(set));
+    let keys: Vec<_> = value.as_object().unwrap().keys().cloned().collect();
+    assert_eq!(
+        keys,
+        [
+            "chats",
+            "contacts",
+            "messages",
+            "lidPnMappings",
+            "pastParticipants",
+            "syncType",
+            "progress",
+            "isLatest",
+            "chunkOrder",
+            "peerDataRequestSessionId"
+        ]
+    );
 }
 
 /// The buffered history set, as a live session showed it: unset

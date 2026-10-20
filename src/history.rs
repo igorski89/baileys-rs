@@ -111,6 +111,9 @@ pub struct Set {
     pub is_latest: Option<bool>,
     pub chunk_order: Option<u32>,
     pub peer_data_request_session_id: Option<String>,
+    /// Consolidated by the event buffer, whose set has another shape than
+    /// the one processMessage emits directly.
+    pub buffered: bool,
 }
 fn nonempty(v: &Option<String>) -> Option<String> {
     v.as_ref().filter(|s| !s.is_empty()).cloned()

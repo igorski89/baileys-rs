@@ -100,6 +100,7 @@ impl Socket {
                         is_latest: latest,
                         chunk_order,
                         peer_data_request_session_id,
+                        buffered: false,
                     }));
             }
             Some(Type::AppStateSyncKeyShare) => {

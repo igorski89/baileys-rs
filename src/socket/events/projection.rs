@@ -174,10 +174,18 @@ pub(super) fn project(event: Event) -> Result<Vec<Action>, Error> {
             json!({"key":v.key.to_value(),"receipt":receipt})
         }).collect::<Vec<_>>())),
         Event::MessagingHistorySet(set) => {
-            let mut value=json!({"chats":set.data.chats.iter().map(JsonField::to_value).collect::<Vec<_>>(),"contacts":serialize(&set.data.contacts)?,"messages":set.data.messages.iter().enumerate().map(|(i,m)|message_value(m,set.data.message_metadata.get(i).and_then(Option::as_ref),set.data.message_runtime_fields.get(i))).collect::<Result<Vec<_>,_>>()?,"syncType":set.data.sync_type});
-            // The buffered set: past participants only once some arrived, and
-            // the notification's unset fields as protobufjs' null defaults.
-            if !set.data.past_participants.is_empty() { value["pastParticipants"]=json!(set.data.past_participants.iter().map(JsonField::to_value).collect::<Vec<_>>()); }
+            let mut value=json!({"chats":set.data.chats.iter().map(JsonField::to_value).collect::<Vec<_>>(),"contacts":serialize(&set.data.contacts)?,"messages":set.data.messages.iter().enumerate().map(|(i,m)|message_value(m,set.data.message_metadata.get(i).and_then(Option::as_ref),set.data.message_runtime_fields.get(i))).collect::<Result<Vec<_>,_>>()?});
+            let past=json!(set.data.past_participants.iter().map(JsonField::to_value).collect::<Vec<_>>());
+            if set.buffered {
+                // The buffer's set: past participants only once some arrived.
+                if !set.data.past_participants.is_empty() { value["pastParticipants"]=past; }
+            } else {
+                // processMessage spreads processHistoryMessage's result.
+                value["lidPnMappings"]=serialize(&set.data.lid_pn_mappings)?;
+                value["pastParticipants"]=past;
+            }
+            // The notification's unset fields are protobufjs' null defaults.
+            value["syncType"]=json!(set.data.sync_type);
             value["progress"]=json!(set.data.progress);
             if let Some(v)=set.is_latest { value["isLatest"]=json!(v); }
             value["chunkOrder"]=json!(set.chunk_order);
@@ -320,6 +328,7 @@ pub(super) fn decode(batch: event_buffer::Batch) -> Result<Vec<Event>, Error> {
                     peer_data_request_session_id: value["peerDataRequestSessionId"]
                         .as_str()
                         .map(str::to_owned),
+                    buffered: true,
                 }));
             }
             _ => {
