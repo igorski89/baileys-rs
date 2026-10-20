@@ -1,5 +1,5 @@
 //! The connector: `cargo run --release` with the variables in `.env.example`.
-use baileys_sqs::config::{Settings, USAGE};
+use baileys_sqs::config::Settings;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -7,18 +7,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // linked, rustls has no process default and the WhatsApp connection
     // would panic.
     let _ = rustls::crypto::ring::default_provider().install_default();
-    let args: Vec<String> = std::env::args().skip(1).collect();
-    if args.iter().any(|a| a == "--help" || a == "-h") {
-        println!("{USAGE}");
-        return Ok(());
-    }
-    let settings = match Settings::from_env_and_args(&args) {
-        Ok(settings) => settings,
-        Err(err) => {
-            eprintln!("❌ ERROR: {err}");
-            std::process::exit(1);
-        }
-    };
+    let settings = Settings::from_env();
     // RUST_LOG, when set, replaces the LOG_LEVEL filter (e.g. to see the AWS SDK).
     let filter = std::env::var("RUST_LOG")
         .ok()

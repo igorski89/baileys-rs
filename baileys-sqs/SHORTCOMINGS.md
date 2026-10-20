@@ -18,7 +18,7 @@ Known gaps and deliberate deviations from the TypeScript baileys-sqs (commit `6e
 
 ## Session and connection
 
-- `SESSION_DIR` (default `./auth`) is read as in the TypeScript connector, but the session in it is one SQLite file, `auth.sqlite3` (with `-wal`/`-shm` beside it while running), not `creds.json` and key files; a TypeScript session found there is imported on first start. `SESSION_DB` (a file path or `:memory:`, also `--session-db`) is an addition that overrides it. With `:memory:`, the session and the disappearing-messages cache are two separate in-memory databases rather than tables of one file; neither outlives the process.
+- `SESSION_DIR` (default `./auth`) is read as in the TypeScript connector, but the session in it is one SQLite file, `auth.sqlite3` (with `-wal`/`-shm` beside it while running), not `creds.json` and key files; a TypeScript session found there is imported on first start. `SESSION_DIR=:memory:` is an addition: a session that is never written to disk. With it, the session and the disappearing-messages cache are two separate in-memory databases rather than tables of one file; neither outlives the process.
 
 - The session is a SQLite file, not Baileys' multi-file JSON, and the disappearing-messages cache is a table in the same file rather than `ephemeral-cache.json`. A TypeScript session folder and its cache file are imported once; going back to the TypeScript connector with the same folder needs the original files, which are left in place but no longer updated.
 - There is no separate `creds.update` save step or signal-key cache: the store writes through.

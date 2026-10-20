@@ -59,7 +59,8 @@ pub struct S3Settings {
     pub url_expiration_seconds: u64,
 }
 
-/// Where the session lives: a SQLite file, or memory only (`:memory:`).
+/// Where the session lives: a SQLite file, or memory only
+/// (`SESSION_DIR=:memory:`).
 #[derive(Debug, Clone, PartialEq)]
 pub enum SessionDb {
     Memory,
@@ -67,14 +68,6 @@ pub enum SessionDb {
 }
 
 impl SessionDb {
-    pub fn parse(text: &str) -> Self {
-        if text == ":memory:" {
-            Self::Memory
-        } else {
-            Self::File(text.into())
-        }
-    }
-
     /// The database's folder, where a TypeScript connector's session files
     /// are imported from; none for an in-memory session.
     pub fn folder(&self) -> Option<&Path> {
@@ -98,41 +91,14 @@ impl std::fmt::Display for SessionDb {
     }
 }
 
-pub const USAGE: &str = "Usage: baileys-sqs [--session-db <path|:memory:>]
-
-Runs the connector with the settings in the environment (see .env.example).
---session-db overrides SESSION_DB and SESSION_DIR: the session's SQLite file,
-or :memory: for a session that is never written to disk.";
-
-/// The session database from `--session-db`, then `SESSION_DB`, then
-/// `auth.sqlite3` in `SESSION_DIR`, whose default `./auth` is the TypeScript
-/// connector's, so a deployment of that connector keeps its session.
-pub fn session_db(
-    args: &[String],
-    env_db: Option<String>,
-    env_dir: Option<String>,
-) -> Result<SessionDb, String> {
-    let mut arg = None;
-    let mut rest = args.iter();
-    while let Some(a) = rest.next() {
-        match a.split_once('=') {
-            Some(("--session-db" | "--session_db", value)) => arg = Some(value.to_owned()),
-            _ if a == "--session-db" || a == "--session_db" => {
-                arg = Some(
-                    rest.next()
-                        .ok_or(format!("{a} needs a value\n\n{USAGE}"))?
-                        .clone(),
-                )
-            }
-            _ => return Err(format!("unknown argument {a}\n\n{USAGE}")),
-        }
+/// The session database: `auth.sqlite3` in `SESSION_DIR`, whose default
+/// `./auth` is the TypeScript connector's, so a deployment of that connector
+/// keeps its session; `SESSION_DIR=:memory:` keeps it in memory only.
+pub fn session_db(env_dir: Option<String>) -> SessionDb {
+    match env_dir.as_deref().filter(|d| !d.is_empty()) {
+        Some(":memory:") => SessionDb::Memory,
+        dir => SessionDb::File(Path::new(dir.unwrap_or("./auth")).join("auth.sqlite3")),
     }
-    if let Some(db) = arg.filter(|d| !d.is_empty()).or(env_db) {
-        return Ok(SessionDb::parse(&db));
-    }
-    let dir = env_dir.filter(|d| !d.is_empty());
-    let dir = dir.as_deref().unwrap_or("./auth");
-    Ok(SessionDb::File(Path::new(dir).join("auth.sqlite3")))
 }
 
 #[derive(Debug, Clone)]
@@ -153,13 +119,6 @@ pub struct Settings {
 }
 
 impl Settings {
-    /// The environment with the command line's `--session-db`.
-    pub fn from_env_and_args(args: &[String]) -> Result<Self, String> {
-        let mut settings = Self::from_env();
-        settings.session_db = session_db(args, var("SESSION_DB"), var("SESSION_DIR"))?;
-        Ok(settings)
-    }
-
     pub fn from_env() -> Self {
         let aws_region = var("AWS_REGION");
         let aws_key = var("AWS_ACCESS_KEY_ID");
@@ -199,8 +158,7 @@ impl Settings {
         Self {
             input_queue: var("INPUT_QUEUE"),
             output_queue: var("OUTPUT_QUEUE"),
-            session_db: session_db(&[], var("SESSION_DB"), var("SESSION_DIR"))
-                .expect("no arguments to reject"),
+            session_db: session_db(var("SESSION_DIR")),
             use_pairing_code: var("USE_PAIRING_CODE").as_deref() == Some("true"),
             phone_number: var("PHONE_NUMBER"),
             whatsapp_version: var("WHATSAPP_VERSION"),
@@ -241,36 +199,15 @@ mod tests {
     use std::path::Path;
 
     #[test]
-    fn the_session_database_comes_from_the_flag_then_the_environment() {
-        let args = |a: &[&str]| a.iter().map(|s| s.to_string()).collect::<Vec<_>>();
+    fn the_session_database_is_in_session_dir() {
         let file = |p: &str| SessionDb::File(p.into());
-        assert_eq!(session_db(&[], None, None), Ok(file("./auth/auth.sqlite3")));
+        assert_eq!(session_db(None), file("./auth/auth.sqlite3"));
+        assert_eq!(session_db(Some(String::new())), file("./auth/auth.sqlite3"));
         assert_eq!(
-            session_db(&[], Some("/s/a.db".into()), None),
-            Ok(file("/s/a.db"))
+            session_db(Some("/session".into())),
+            file("/session/auth.sqlite3")
         );
-        assert_eq!(
-            session_db(
-                &args(&["--session-db", ":memory:"]),
-                Some("/s/a.db".into()),
-                None
-            ),
-            Ok(SessionDb::Memory)
-        );
-        assert_eq!(
-            session_db(&args(&["--session_db=/x.db"]), None, Some("/s".into())),
-            Ok(file("/x.db"))
-        );
-        assert_eq!(
-            session_db(&[], None, Some("/session".into())),
-            Ok(file("/session/auth.sqlite3"))
-        );
-        assert_eq!(
-            session_db(&[], Some(":memory:".into()), Some("/session".into())),
-            Ok(SessionDb::Memory)
-        );
-        assert!(session_db(&args(&["--session-db"]), None, None).is_err());
-        assert!(session_db(&args(&["--other"]), None, None).is_err());
+        assert_eq!(session_db(Some(":memory:".into())), SessionDb::Memory);
         assert_eq!(
             file("/session/auth.sqlite3").folder(),
             Some(Path::new("/session"))

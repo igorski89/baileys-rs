@@ -107,8 +107,11 @@ impl WhatsAppLoop {
     pub async fn run(self) {
         loop {
             tracing::info!(
-                "Starting WhatsApp with SESSION_DB: {}",
-                self.settings.session_db
+                "Starting WhatsApp with SESSION_DIR: {}",
+                self.settings
+                    .session_db
+                    .folder()
+                    .map_or(":memory:".into(), |f| f.display().to_string())
             );
             let closed = match Socket::connect(self.config(), self.store.clone()).await {
                 Ok((socket, events)) => {
