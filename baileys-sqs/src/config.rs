@@ -91,13 +91,14 @@ impl std::fmt::Display for SessionDb {
     }
 }
 
-/// The session database: `auth.sqlite3` in `SESSION_DIR`, whose default
-/// `./auth` is the TypeScript connector's, so a deployment of that connector
-/// keeps its session; `SESSION_DIR=:memory:` keeps it in memory only.
+/// The session database: `auth.sqlite3` in `SESSION_DIR`. Unset (or
+/// `:memory:`), the session is kept in memory only, rather than in a folder
+/// the TypeScript connector would pick (`./auth`) relative to wherever the
+/// process happens to start.
 pub fn session_db(env_dir: Option<String>) -> SessionDb {
     match env_dir.as_deref().filter(|d| !d.is_empty()) {
-        Some(":memory:") => SessionDb::Memory,
-        dir => SessionDb::File(Path::new(dir.unwrap_or("./auth")).join("auth.sqlite3")),
+        None | Some(":memory:") => SessionDb::Memory,
+        Some(dir) => SessionDb::File(Path::new(dir).join("auth.sqlite3")),
     }
 }
 
@@ -201,8 +202,8 @@ mod tests {
     #[test]
     fn the_session_database_is_in_session_dir() {
         let file = |p: &str| SessionDb::File(p.into());
-        assert_eq!(session_db(None), file("./auth/auth.sqlite3"));
-        assert_eq!(session_db(Some(String::new())), file("./auth/auth.sqlite3"));
+        assert_eq!(session_db(None), SessionDb::Memory);
+        assert_eq!(session_db(Some(String::new())), SessionDb::Memory);
         assert_eq!(
             session_db(Some("/session".into())),
             file("/session/auth.sqlite3")

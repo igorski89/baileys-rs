@@ -27,6 +27,11 @@ pub async fn run(settings: config::Settings) -> Result<(), Box<dyn std::error::E
     };
     let sqs = aws_sdk_sqs::Client::new(&settings.sqs.sdk_config().await);
     let http = reqwest::Client::new();
+    if settings.session_db == config::SessionDb::Memory {
+        tracing::warn!(
+            "SESSION_DIR is unset or :memory:, so the session is kept in memory only and every start links a new device"
+        );
+    }
     let store = app::open_session(&settings.session_db)?;
     let commands = commands::Commands {
         socket: Arc::default(),
