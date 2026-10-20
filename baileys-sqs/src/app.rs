@@ -241,10 +241,11 @@ impl WhatsAppLoop {
                 }
             }
             if name == "messages.upsert" {
-                let typed = match event {
-                    Event::MessagesUpserted(upsert) => upsert.messages.as_slice(),
-                    _ => &[],
+                let upsert = match event {
+                    Event::MessagesUpserted(upsert) => Some(upsert),
+                    _ => None,
                 };
+                let typed = upsert.map_or(&[][..], |u| u.messages.as_slice());
                 let mut messages_meta = vec![];
                 let count = data["messages"].as_array().map_or(0, Vec::len);
                 for i in 0..count {
@@ -253,7 +254,13 @@ impl WhatsAppLoop {
                         if let Some(found) =
                             media::extract(whatsapp, self.storage.as_ref(), message).await
                         {
-                            data["messages"][i]["_media"] = found;
+                            // Our own sends have no receive metadata: upstream
+                            // they are protobufjs WebMessageInfo objects, whose
+                            // JSON drops the `_media` the TypeScript connector
+                            // sets on them, though it downloads the media.
+                            if upsert.is_some_and(|u| u.metadata_for(i).is_some()) {
+                                data["messages"][i]["_media"] = found;
+                            }
                             has_media = true;
                         }
                         self.commands.ephemeral.update_from_message(message);

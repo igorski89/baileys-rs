@@ -516,11 +516,37 @@ async fn events_are_forwarded_with_metadata_media_and_ephemeral_learning() {
         }),
         ..Default::default()
     };
+    let received = baileys_rs::messages::EnvelopeMetadata {
+        key_metadata: Default::default(),
+        category: None,
+        retry_count: None,
+        author: "1@s.whatsapp.net".into(),
+        sender: "1@s.whatsapp.net".into(),
+    };
+    let mut sent = image.clone();
+    sent.key = Some(proto::MessageKey {
+        id: Some("SENT".into()),
+        from_me: Some(true),
+        ..key.clone()
+    });
     app.forward(
         fake.as_ref(),
         &Event::MessagesUpserted(baileys_rs::messages::own::Upsert {
             messages: vec![image],
             kind: baileys_rs::messages::own::UpsertKind::Notify,
+            request_id: None,
+            metadata: vec![received],
+            metadata_indices: vec![],
+            runtime_fields: vec![],
+        }),
+    )
+    .await;
+    // Our own send: no receive metadata.
+    app.forward(
+        fake.as_ref(),
+        &Event::MessagesUpserted(baileys_rs::messages::own::Upsert {
+            messages: vec![sent],
+            kind: baileys_rs::messages::own::UpsertKind::Append,
             request_id: None,
             metadata: vec![],
             metadata_indices: vec![],
@@ -538,8 +564,8 @@ async fn events_are_forwarded_with_metadata_media_and_ephemeral_learning() {
         }]),
     )
     .await;
-    let events = queues.drain("output", 2).await;
-    assert_eq!(events.len(), 2, "connection.update is not forwarded");
+    let events = queues.drain("output", 3).await;
+    assert_eq!(events.len(), 3, "connection.update is not forwarded");
     let upsert = &events[0];
     assert_eq!(upsert["type"], "baileys_event");
     assert_eq!(upsert["event"], "messages.upsert");
@@ -562,8 +588,14 @@ async fn events_are_forwarded_with_metadata_media_and_ephemeral_learning() {
         upsert["payload"]["messages"][0]["message"]["imageMessage"]["mediaKey"],
         "AQID"
     );
+    // The TypeScript connector downloads its own sent media too, but the
+    // protobufjs message's JSON leaves `_media` out.
+    let own = &events[1];
+    assert_eq!(own["meta"]["messages"][0]["has_media"], true);
+    assert_eq!(own["meta"]["messages"][0]["direction"], "outgoing");
+    assert!(own["payload"]["messages"][0].get("_media").is_none());
     assert_eq!(
-        events[1]["meta"],
+        events[2]["meta"],
         json!({"updates":[{"message_id":"IMG","status":4}]})
     );
     // The message's context info revealed the chat's setting.
