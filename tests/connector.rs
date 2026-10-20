@@ -8,7 +8,7 @@ use baileys_rs::{
 use baileys_sqs::{
     app::WhatsAppLoop,
     commands::Commands,
-    config::{AwsService, Settings},
+    config::{AwsService, SessionDb, Settings},
     ephemeral::EphemeralCache,
     http,
     output::Output,
@@ -211,7 +211,7 @@ fn commands(
         socket: Arc::new(tokio::sync::RwLock::new(
             fake.map(|f| f as Arc<dyn WhatsApp>),
         )),
-        ephemeral: EphemeralCache::open(dir.path()).unwrap(),
+        ephemeral: EphemeralCache::open(&SessionDb::File(dir.path().join("auth.sqlite3"))).unwrap(),
         output: Output::new(queues.sqs.clone(), queues.url(output)),
         http: reqwest::Client::new(),
     }
@@ -475,7 +475,7 @@ async fn events_are_forwarded_with_metadata_media_and_ephemeral_learning() {
     let fake = Arc::new(Fake::default());
     let commands = commands(&queues, "output", Some(fake.clone()), &dir);
     let mut settings = Settings::from_env();
-    settings.session_dir = dir.path().into();
+    settings.session_db = SessionDb::File(dir.path().join("auth.sqlite3"));
     let app = WhatsAppLoop {
         settings,
         store: baileys_rs::auth::SqliteAuthStore::in_memory().unwrap(),

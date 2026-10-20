@@ -1,5 +1,5 @@
 //! Environment variables, with the TypeScript connector's names and defaults.
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 fn var(name: &str) -> Option<String> {
     std::env::var(name).ok().filter(|v| !v.is_empty())
@@ -59,11 +59,92 @@ pub struct S3Settings {
     pub url_expiration_seconds: u64,
 }
 
+/// Where the session lives: a SQLite file, or memory only (`:memory:`).
+#[derive(Debug, Clone, PartialEq)]
+pub enum SessionDb {
+    Memory,
+    File(PathBuf),
+}
+
+impl SessionDb {
+    pub fn parse(text: &str) -> Self {
+        if text == ":memory:" {
+            Self::Memory
+        } else {
+            Self::File(text.into())
+        }
+    }
+
+    /// The database's folder, where a TypeScript connector's session files
+    /// are imported from; none for an in-memory session.
+    pub fn folder(&self) -> Option<&Path> {
+        match self {
+            Self::Memory => None,
+            Self::File(path) => Some(
+                path.parent()
+                    .filter(|f| !f.as_os_str().is_empty())
+                    .unwrap_or(Path::new(".")),
+            ),
+        }
+    }
+}
+
+impl std::fmt::Display for SessionDb {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Memory => f.write_str(":memory:"),
+            Self::File(path) => write!(f, "{}", path.display()),
+        }
+    }
+}
+
+pub const USAGE: &str = "Usage: baileys-sqs [--session-db <path|:memory:>]
+
+Runs the connector with the settings in the environment (see .env.example).
+--session-db overrides SESSION_DB: the session's SQLite file, or :memory:
+for a session that is never written to disk.";
+
+/// The session database from `--session-db`, then `SESSION_DB`, then
+/// `./auth.sqlite3`. `SESSION_DIR` alone is an error: it is no longer read,
+/// and silently starting a new, unpaired session would hide that.
+pub fn session_db(
+    args: &[String],
+    env_db: Option<String>,
+    env_dir: Option<String>,
+) -> Result<SessionDb, String> {
+    let mut arg = None;
+    let mut rest = args.iter();
+    while let Some(a) = rest.next() {
+        match a.split_once('=') {
+            Some(("--session-db" | "--session_db", value)) => arg = Some(value.to_owned()),
+            _ if a == "--session-db" || a == "--session_db" => {
+                arg = Some(
+                    rest.next()
+                        .ok_or(format!("{a} needs a value\n\n{USAGE}"))?
+                        .clone(),
+                )
+            }
+            _ => return Err(format!("unknown argument {a}\n\n{USAGE}")),
+        }
+    }
+    if let Some(db) = arg.filter(|d| !d.is_empty()).or(env_db) {
+        return Ok(SessionDb::parse(&db));
+    }
+    if let Some(dir) = env_dir {
+        let path = Path::new(&dir).join("auth.sqlite3");
+        return Err(format!(
+            "SESSION_DIR is no longer read; set SESSION_DB to the session's database file, e.g. SESSION_DB={}",
+            path.display()
+        ));
+    }
+    Ok(SessionDb::File("./auth.sqlite3".into()))
+}
+
 #[derive(Debug, Clone)]
 pub struct Settings {
     pub input_queue: Option<String>,
     pub output_queue: Option<String>,
-    pub session_dir: PathBuf,
+    pub session_db: SessionDb,
     pub use_pairing_code: bool,
     pub phone_number: Option<String>,
     pub whatsapp_version: Option<String>,
@@ -77,6 +158,13 @@ pub struct Settings {
 }
 
 impl Settings {
+    /// The environment with the command line's `--session-db`.
+    pub fn from_env_and_args(args: &[String]) -> Result<Self, String> {
+        let mut settings = Self::from_env();
+        settings.session_db = session_db(args, var("SESSION_DB"), var("SESSION_DIR"))?;
+        Ok(settings)
+    }
+
     pub fn from_env() -> Self {
         let aws_region = var("AWS_REGION");
         let aws_key = var("AWS_ACCESS_KEY_ID");
@@ -116,7 +204,9 @@ impl Settings {
         Self {
             input_queue: var("INPUT_QUEUE"),
             output_queue: var("OUTPUT_QUEUE"),
-            session_dir: var("SESSION_DIR").unwrap_or_else(|| "./auth".into()).into(),
+            session_db: var("SESSION_DB")
+                .map(|db| SessionDb::parse(&db))
+                .unwrap_or(SessionDb::File("./auth.sqlite3".into())),
             use_pairing_code: var("USE_PAIRING_CODE").as_deref() == Some("true"),
             phone_number: var("PHONE_NUMBER"),
             whatsapp_version: var("WHATSAPP_VERSION"),
@@ -146,7 +236,43 @@ pub fn log_filter(level: &str) -> String {
 
 #[cfg(test)]
 mod tests {
-    use super::parse_int;
+    use super::{SessionDb, parse_int, session_db};
+    use std::path::Path;
+
+    #[test]
+    fn the_session_database_comes_from_the_flag_then_the_environment() {
+        let args = |a: &[&str]| a.iter().map(|s| s.to_string()).collect::<Vec<_>>();
+        let file = |p: &str| SessionDb::File(p.into());
+        assert_eq!(session_db(&[], None, None), Ok(file("./auth.sqlite3")));
+        assert_eq!(
+            session_db(&[], Some("/s/a.db".into()), None),
+            Ok(file("/s/a.db"))
+        );
+        assert_eq!(
+            session_db(
+                &args(&["--session-db", ":memory:"]),
+                Some("/s/a.db".into()),
+                None
+            ),
+            Ok(SessionDb::Memory)
+        );
+        assert_eq!(
+            session_db(&args(&["--session_db=/x.db"]), None, Some("/s".into())),
+            Ok(file("/x.db"))
+        );
+        assert_eq!(
+            session_db(&[], None, Some("/session".into())),
+            Err("SESSION_DIR is no longer read; set SESSION_DB to the session's database file, e.g. SESSION_DB=/session/auth.sqlite3".into())
+        );
+        assert!(session_db(&args(&["--session-db"]), None, None).is_err());
+        assert!(session_db(&args(&["--other"]), None, None).is_err());
+        assert_eq!(
+            file("/session/auth.sqlite3").folder(),
+            Some(Path::new("/session"))
+        );
+        assert_eq!(file("auth.sqlite3").folder(), Some(Path::new(".")));
+        assert_eq!(SessionDb::Memory.folder(), None);
+    }
 
     #[test]
     fn parse_int_reads_a_decimal_prefix() {

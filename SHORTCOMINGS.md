@@ -4,7 +4,7 @@ Known gaps and deliberate deviations from the TypeScript baileys-sqs (commit `8a
 
 ## Not yet verified
 
-- **Live run.** Nothing has run against a real WhatsApp account. The tests fake the socket.
+- **Live run.** Nothing has run against a paired WhatsApp account; the tests fake the socket. A start with `--session-db :memory:` reached WhatsApp and emitted the pairing QR code, and nothing beyond that has been exercised.
 - **S3 uploads** are not exercised by any test (no S3 server in the test setup); the code follows the TypeScript connector's client configuration.
 - **Docker images** have not been built; the Dockerfile and compose file are untested.
 - **Listener and sender** are built but not tested.
@@ -17,7 +17,9 @@ Known gaps and deliberate deviations from the TypeScript baileys-sqs (commit `8a
 
 ## Session and connection
 
-- The session is a SQLite file in `SESSION_DIR`, not Baileys' multi-file JSON, and the disappearing-messages cache is a table in the same file rather than `ephemeral-cache.json`. A TypeScript session folder and its cache file are imported once; going back to the TypeScript connector with the same folder needs the original files, which are left in place but no longer updated.
+- `SESSION_DB` (a file path or `:memory:`, also `--session-db`) replaces `SESSION_DIR`. Deployments must rename the variable, pointing it at `auth.sqlite3` in the old folder; with only `SESSION_DIR` set the connector exits with that hint.
+
+- The session is a SQLite file, not Baileys' multi-file JSON, and the disappearing-messages cache is a table in the same file rather than `ephemeral-cache.json`. A TypeScript session folder and its cache file are imported once; going back to the TypeScript connector with the same folder needs the original files, which are left in place but no longer updated.
 - There is no separate `creds.update` save step or signal-key cache: the store writes through.
 - `from`, `me_lid` and `/health`'s `connected` read the account from the store, as `sock.user` reads upstream's credentials.
 

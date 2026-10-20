@@ -1,7 +1,7 @@
 //! The WhatsApp connection, its events and the reconnect loop.
 use crate::{
     commands::Commands,
-    config::Settings,
+    config::{SessionDb, Settings},
     js,
     media::{self, S3Storage},
     whatsapp::{Live, WhatsApp},
@@ -34,12 +34,15 @@ pub fn disconnect_reason(code: u16) -> &'static str {
     }
 }
 
-/// Open the session folder. A folder written by the TypeScript connector
-/// (`useMultiFileAuthState`, with `creds.json`) is imported into the SQLite
-/// store the first time, so an existing pairing keeps working.
-pub fn open_session(folder: &std::path::Path) -> Result<SqliteAuthStore, baileys_rs::auth::Error> {
-    let import = folder.join("creds.json").is_file() && !folder.join("auth.sqlite3").exists();
-    let store = SqliteAuthStore::open(folder)?;
+/// Open the session database. When the file is first created, a session
+/// the TypeScript connector wrote to its folder (`useMultiFileAuthState`,
+/// with `creds.json`) is imported, so an existing pairing keeps working.
+pub fn open_session(db: &SessionDb) -> Result<SqliteAuthStore, baileys_rs::auth::Error> {
+    let (SessionDb::File(path), Some(folder)) = (db, db.folder()) else {
+        return SqliteAuthStore::in_memory();
+    };
+    let import = folder.join("creds.json").is_file() && !path.exists();
+    let store = SqliteAuthStore::open_file(path)?;
     if import {
         store.import_baileys_folder(folder, &BTreeMap::new())?;
         tracing::info!(folder = %folder.display(), "imported the Baileys multi-file session");
@@ -120,8 +123,8 @@ impl WhatsAppLoop {
     pub async fn run(self) {
         loop {
             tracing::info!(
-                "Starting WhatsApp with SESSION_DIR: {}",
-                self.settings.session_dir.display()
+                "Starting WhatsApp with SESSION_DB: {}",
+                self.settings.session_db
             );
             let code = match Socket::connect(self.config(), self.store.clone()).await {
                 Ok((socket, events)) => {

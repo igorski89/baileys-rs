@@ -27,10 +27,10 @@ pub async fn run(settings: config::Settings) -> Result<(), Box<dyn std::error::E
     };
     let sqs = aws_sdk_sqs::Client::new(&settings.sqs.sdk_config().await);
     let http = reqwest::Client::new();
-    let store = app::open_session(&settings.session_dir)?;
+    let store = app::open_session(&settings.session_db)?;
     let commands = commands::Commands {
         socket: Arc::default(),
-        ephemeral: ephemeral::EphemeralCache::open(&settings.session_dir)?,
+        ephemeral: ephemeral::EphemeralCache::open(&settings.session_db)?,
         output: output::Output::new(sqs.clone(), output_queue),
         http: http.clone(),
     };

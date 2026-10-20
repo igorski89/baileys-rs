@@ -40,11 +40,11 @@ cargo test              # runs against an in-process RusticMQ
 
 ## Configuration
 
-Copy `.env.example` to `.env` and adjust. The variables are those of the TypeScript connector:
+Copy `.env.example` to `.env` and adjust. The variables are those of the TypeScript connector, except `SESSION_DB`, which replaces `SESSION_DIR`:
 
 - `INPUT_QUEUE`, `OUTPUT_QUEUE` (required). A queue whose URL contains `fifo` is treated as FIFO.
 - `AWS_REGION`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_ENDPOINT_URL`, with `SQS_*` and `S3_*` overrides for each service.
-- `SESSION_DIR` (default `./auth`). The session is one SQLite file, `auth.sqlite3`, which also holds the connector's disappearing-messages durations (table `baileys_sqs_ephemeral`). A folder written by the TypeScript connector (`creds.json`, key files and `ephemeral-cache.json`) is imported on first start, so an existing pairing keeps working; the original files are left in place.
+- `SESSION_DB` (default `./auth.sqlite3`), or `--session-db` on the command line, which takes precedence. The session is this one SQLite file, which also holds the connector's disappearing-messages durations (table `baileys_sqs_ephemeral`). `:memory:` keeps the session in memory only: nothing is written to disk and every start pairs a new device, which suits tests and CI. When the file is first created, a session the TypeScript connector left in the same folder (`creds.json`, key files and `ephemeral-cache.json`) is imported, so an existing pairing keeps working; the original files are left in place. To move from the TypeScript connector, replace `SESSION_DIR=/session` with `SESSION_DB=/session/auth.sqlite3`; a connector started with only `SESSION_DIR` set exits with that hint rather than pairing anew.
 - `USE_PAIRING_CODE=true` with `PHONE_NUMBER` links with a pairing code instead of the QR code.
 - `WHATSAPP_VERSION` (a JSON array) pins the WhatsApp Web version; otherwise the latest is fetched.
 - `S3_BUCKET` and the other `S3_*` variables upload incoming media to S3 and put a presigned URL in `_media.url`; without them media is inlined as base64.
@@ -79,7 +79,7 @@ Send the JSON below to `INPUT_QUEUE`, or POST it to `http://<host>:<PORT>/comman
 
 On failure `ok` is false and `error` holds the message. `send_poll` acks carry `message_secret` (base64), needed to decrypt votes later.
 
-Outgoing sends to a chat with disappearing messages carry the chat's duration, learned from `chats.update` and from incoming messages and kept in `SESSION_DIR/auth.sqlite3`, unless `options.ephemeralExpiration` is set.
+Outgoing sends to a chat with disappearing messages carry the chat's duration, learned from `chats.update` and from incoming messages and kept in the session database, unless `options.ephemeralExpiration` is set.
 
 ## Output
 
@@ -114,7 +114,7 @@ export AWS_REGION=elasticmq AWS_ACCESS_KEY_ID=local AWS_SECRET_ACCESS_KEY=local
 export AWS_ENDPOINT_URL=http://localhost:9324
 export INPUT_QUEUE=http://localhost:9324/queue/input-queue
 export OUTPUT_QUEUE=http://localhost:9324/queue/output-queue
-export SESSION_DIR=./auth_info_baileys
+export SESSION_DB=./auth_info_baileys/auth.sqlite3
 
 # 3. Connector, listener and sender, each in its own terminal
 cargo run --release --bin baileys-sqs

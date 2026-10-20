@@ -5,6 +5,7 @@
 //! neither the protocol nor the library applies a 1:1 chat's setting by
 //! itself. The cache learns the setting from `chats.update` and from every
 //! message's context info, and is written through on every real change.
+use crate::config::SessionDb;
 use baileys_rs::{messages::generation, proto, proto_json::JsonField};
 use rusqlite::{Connection, OptionalExtension, types::Value as Sql};
 use serde_json::{Map, Value};
@@ -65,11 +66,15 @@ fn legacy_entries(path: &Path) -> Map<String, Value> {
 }
 
 impl EphemeralCache {
-    /// Open the cache in `session_dir/auth.sqlite3`. The first time, the
-    /// TypeScript connector's `ephemeral-cache.json` there is imported; the
-    /// file itself is left in place.
-    pub fn open(session_dir: &Path) -> Result<Self, rusqlite::Error> {
-        let mut connection = Connection::open(session_dir.join("auth.sqlite3"))?;
+    /// Open the cache in the session database. The first time, the
+    /// TypeScript connector's `ephemeral-cache.json` in the database's folder
+    /// is imported; the file itself is left in place. An in-memory session
+    /// keeps the cache in a memory database of its own.
+    pub fn open(db: &SessionDb) -> Result<Self, rusqlite::Error> {
+        let mut connection = match db {
+            SessionDb::Memory => Connection::open_in_memory()?,
+            SessionDb::File(path) => Connection::open(path)?,
+        };
         // The same file is written by baileys-rs's own connection.
         connection.busy_timeout(Duration::from_secs(30))?;
         connection.pragma_update(None, "synchronous", "FULL")?;
@@ -86,8 +91,8 @@ impl EphemeralCache {
             tx.execute_batch(&format!(
                 "CREATE TABLE {TABLE} (jid TEXT PRIMARY KEY, expiration NUMERIC NOT NULL)"
             ))?;
-            let legacy = session_dir.join("ephemeral-cache.json");
-            let imported = legacy_entries(&legacy);
+            let legacy = db.folder().map(|f| f.join("ephemeral-cache.json"));
+            let imported = legacy.as_deref().map(legacy_entries).unwrap_or_default();
             for (jid, expiration) in &imported {
                 tx.execute(
                     &format!("INSERT INTO {TABLE} (jid, expiration) VALUES (?1, ?2)"),
@@ -95,7 +100,7 @@ impl EphemeralCache {
                 )?;
             }
             if !imported.is_empty() {
-                tracing::info!(count = imported.len(), path = %legacy.display(), "imported ephemeral cache");
+                tracing::info!(count = imported.len(), path = ?legacy, "imported ephemeral cache");
             }
         }
         let mut entries = Map::new();
@@ -210,22 +215,21 @@ mod tests {
     fn changes_are_written_through_and_survive_a_restart() {
         let dir = tempfile::tempdir().unwrap();
         let store = baileys_rs::auth::SqliteAuthStore::open(dir.path()).unwrap();
-        let cache = EphemeralCache::open(dir.path()).unwrap();
+        let db = SessionDb::File(dir.path().join("auth.sqlite3"));
+        let cache = EphemeralCache::open(&db).unwrap();
         cache.update(Some("a@s.whatsapp.net"), Some(Some(86400.0)));
         cache.update(Some("b@s.whatsapp.net"), Some(Some(604800.0)));
         cache.update(Some("b@s.whatsapp.net"), Some(Some(0.0)));
         cache.update(Some("a@s.whatsapp.net"), None);
         cache.update(Some("c@s.whatsapp.net"), Some(Some(1.5)));
         drop(cache);
-        let restarted = EphemeralCache::open(dir.path()).unwrap();
+        let restarted = EphemeralCache::open(&db).unwrap();
         assert_eq!(restarted.get("a@s.whatsapp.net"), Some(json!(86400)));
         assert_eq!(restarted.get("b@s.whatsapp.net"), None);
         assert_eq!(restarted.get("c@s.whatsapp.net"), Some(json!(1.5)));
         restarted.update_from_chat(&json!({"id":"a@s.whatsapp.net","ephemeralExpiration":null}));
         assert_eq!(
-            EphemeralCache::open(dir.path())
-                .unwrap()
-                .get("a@s.whatsapp.net"),
+            EphemeralCache::open(&db).unwrap().get("a@s.whatsapp.net"),
             None
         );
         // The library's own store still opens the shared file.
@@ -242,7 +246,8 @@ mod tests {
             r#"{"a@s.whatsapp.net":86400,"b@s.whatsapp.net":"x","c@g.us":7776000}"#,
         )
         .unwrap();
-        let cache = EphemeralCache::open(dir.path()).unwrap();
+        let db = SessionDb::File(dir.path().join("auth.sqlite3"));
+        let cache = EphemeralCache::open(&db).unwrap();
         assert_eq!(cache.get("a@s.whatsapp.net"), Some(json!(86400)));
         assert_eq!(cache.get("b@s.whatsapp.net"), None);
         assert_eq!(cache.get("c@g.us"), Some(json!(7776000)));
@@ -251,16 +256,27 @@ mod tests {
         // The file stays, but is not read again.
         assert!(legacy.exists());
         assert_eq!(
-            EphemeralCache::open(dir.path())
-                .unwrap()
-                .get("a@s.whatsapp.net"),
+            EphemeralCache::open(&db).unwrap().get("a@s.whatsapp.net"),
             None
         );
 
         let corrupt = tempfile::tempdir().unwrap();
         std::fs::write(corrupt.path().join("ephemeral-cache.json"), "not json").unwrap();
         assert_eq!(
-            EphemeralCache::open(corrupt.path())
+            EphemeralCache::open(&SessionDb::File(corrupt.path().join("auth.sqlite3")))
+                .unwrap()
+                .get("a@s.whatsapp.net"),
+            None
+        );
+    }
+
+    #[test]
+    fn an_in_memory_session_keeps_the_cache_in_memory() {
+        let cache = EphemeralCache::open(&SessionDb::Memory).unwrap();
+        cache.update(Some("a@s.whatsapp.net"), Some(Some(86400.0)));
+        assert_eq!(cache.get("a@s.whatsapp.net"), Some(json!(86400)));
+        assert_eq!(
+            EphemeralCache::open(&SessionDb::Memory)
                 .unwrap()
                 .get("a@s.whatsapp.net"),
             None
