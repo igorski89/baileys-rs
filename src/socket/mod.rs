@@ -338,7 +338,11 @@ impl Default for LinkPreviewConfig {
 pub enum ConnectionState {
     Connecting,
     Open,
-    Closed { code: u16 },
+    /// `message` is that of upstream's Boom error for the close.
+    Closed {
+        code: u16,
+        message: String,
+    },
 }
 #[derive(Clone)]
 pub enum Event {
@@ -978,7 +982,7 @@ impl Socket {
                 let current = state.borrow().clone();
                 match current {
                     ConnectionState::Open => return Ok(()),
-                    ConnectionState::Closed { code } => return Err(Error::Closed(code)),
+                    ConnectionState::Closed { code, .. } => return Err(Error::Closed(code)),
                     ConnectionState::Connecting => (),
                 }
                 state.changed().await.map_err(|_| Error::Closed(428))?;
@@ -1462,7 +1466,7 @@ impl Socket {
     }
     fn closed_error(&self) -> Error {
         match self.state() {
-            ConnectionState::Closed { code } => Error::Closed(code),
+            ConnectionState::Closed { code, .. } => Error::Closed(code),
             _ => Error::Closed(428),
         }
     }

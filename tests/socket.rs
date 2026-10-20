@@ -576,7 +576,7 @@ async fn encrypted_login_queries_errors_and_shutdown() {
             Err(Error::Closed(515))
         ));
         event(&mut events, |e| {
-            matches!(e, Event::Connection(ConnectionState::Closed { code: 515 }))
+            matches!(e, Event::Connection(ConnectionState::Closed { code: 515, message }) if message == "Stream Errored (restart required)")
         })
         .await;
         assert_eq!(
@@ -649,7 +649,13 @@ async fn prekeys_are_uploaded_and_acknowledged_before_open() {
         assert_eq!(creds.next_pre_key_id, 6);
         assert_eq!(creds.first_unuploaded_pre_key_id, 6);
         socket.close().await.unwrap();
-        assert_eq!(socket.state(), ConnectionState::Closed { code: 428 });
+        assert_eq!(
+            socket.state(),
+            ConnectionState::Closed {
+                code: 428,
+                message: "Connection Closed".into()
+            }
+        );
         server.await.unwrap();
     })
     .await
@@ -772,7 +778,7 @@ async fn qr_pairing_persistence_and_reconnect_routing() {
         assert!(!format!("{:?}", Event::Qr(qr)).contains("ref,"));
         event(&mut events, |e| matches!(e, Event::PairingComplete)).await;
         event(&mut events, |e| {
-            matches!(e, Event::Connection(ConnectionState::Closed { code: 515 }))
+            matches!(e, Event::Connection(ConnectionState::Closed { code: 515, message }) if message == "Stream Errored (restart required)")
         })
         .await;
         let creds = store.load_credentials().unwrap();
@@ -823,7 +829,7 @@ async fn qr_rotation_and_expiry_are_terminal() {
             assert!(qr.contains(&format!("#{reference}")));
         }
         event(&mut events, |e| {
-            matches!(e, Event::Connection(ConnectionState::Closed { code: 408 }))
+            matches!(e, Event::Connection(ConnectionState::Closed { code: 408, message }) if message == "QR refs attempts ended")
         })
         .await;
         assert!(matches!(
@@ -855,7 +861,7 @@ async fn dropping_last_handle_stops_actor_and_keepalive_pings() {
         event(&mut events, |e| matches!(e,Event::Node(n) if n.tag=="iq")).await;
         drop(socket);
         event(&mut events, |e| {
-            matches!(e, Event::Connection(ConnectionState::Closed { code: 428 }))
+            matches!(e, Event::Connection(ConnectionState::Closed { code: 428, message }) if message == "Connection Closed")
         })
         .await;
         server.await.unwrap();

@@ -56,6 +56,8 @@ struct Actor<'a> {
     epoch: u64,
     last_recv: Instant,
     qr_refs: VecDeque<String>,
+    /// The message of upstream's Boom error for the close in progress.
+    close_message: Option<String>,
     qr_deadline: Option<Instant>,
     qr_first: bool,
     close_reply: Option<oneshot::Sender<Result<(), Error>>>,
@@ -106,6 +108,7 @@ pub(super) async fn run(
         epoch: 0,
         last_recv: Instant::now(),
         qr_refs: VecDeque::new(),
+        close_message: None,
         qr_deadline: None,
         qr_first: true,
         close_reply: None,
@@ -143,7 +146,7 @@ pub(super) async fn run(
                             .await.map_err(|_| Error::Timeout)??;
                     }
                     Some(Ok(tungstenite::Message::Pong(_))) => (),
-                    Some(Ok(tungstenite::Message::Close(_))) | None => return Err(Error::Closed(428)),
+                    Some(Ok(tungstenite::Message::Close(_))) | None => return Err(actor.close(428, "Connection Terminated")),
                     Some(Err(e)) => return Err(e.into()),
                     _ => return Err(Error::Closed(500)),
                 },
@@ -157,7 +160,7 @@ pub(super) async fn run(
                 _ = maintenance.tick() => actor.maintain().await?,
                 _ = heartbeat.tick() => {
                     if actor.last_recv.elapsed() > actor.config.keep_alive_interval + Duration::from_secs(5) {
-                        return Err(Error::Closed(408));
+                        return Err(actor.close(408, "Connection was lost"));
                     }
                     if !actor.pending.values().any(|p| matches!(p.kind, PendingKind::Heartbeat)) {
                         actor.internal_query(
@@ -179,6 +182,12 @@ pub(super) async fn run(
         .err()
         .map(Error::disconnect_code)
         .unwrap_or(428);
+    let message = actor.close_message.take().unwrap_or_else(|| match &result {
+        Err(Error::Timeout) => "Timed Out".into(),
+        Err(Error::WebSocket(error)) => format!("WebSocket Error ({error})"),
+        Err(Error::Closed(_)) | Ok(()) => "Connection Closed".into(),
+        Err(error) => error.to_string(),
+    });
     if let Some(manager) = retry_manager
         && let Err(error) = manager.clear()
     {
@@ -194,8 +203,11 @@ pub(super) async fn run(
             *privacy = None;
         }
     }
-    actor.state.send_replace(ConnectionState::Closed { code });
-    actor.emit(Event::Connection(ConnectionState::Closed { code }));
+    actor.state.send_replace(ConnectionState::Closed {
+        code,
+        message: message.clone(),
+    });
+    actor.emit(Event::Connection(ConnectionState::Closed { code, message }));
     for (_, pending) in actor.pending.drain() {
         if let PendingKind::Query { reply, .. } = pending.kind {
             let _ = reply.send(Err(Error::Closed(code)));
@@ -529,7 +541,11 @@ impl Actor<'_> {
                     )
                     .await?;
                 }
-                return Err(Error::Closed(if logout { 401 } else { 428 }));
+                return Err(if logout {
+                    self.close(401, "Intentional Logout")
+                } else {
+                    self.close(428, "Connection Closed")
+                });
             }
         }
         Ok(())
@@ -647,17 +663,23 @@ impl Actor<'_> {
                             500
                         }
                     });
-                return Err(Error::Closed(code));
+                // getErrorCodeFromStreamError: the first child names the reason.
+                let reason = match node.all_children().first() {
+                    _ if code == 515 => "restart required".to_owned(),
+                    Some(child) => child.tag.clone(),
+                    None => "unknown".to_owned(),
+                };
+                return Err(self.close(code, format!("Stream Errored ({reason})")));
             }
             "failure" => {
-                return Err(Error::Closed(
-                    node.attrs
-                        .get("reason")
-                        .and_then(|n| n.parse().ok())
-                        .unwrap_or(500),
-                ));
+                let code = node
+                    .attrs
+                    .get("reason")
+                    .and_then(|n| n.parse().ok())
+                    .unwrap_or(500);
+                return Err(self.close(code, "Connection Failure"));
             }
-            "xmlstreamend" => return Err(Error::Closed(428)),
+            "xmlstreamend" => return Err(self.close(428, "Connection Terminated by Server")),
             "success" => {
                 self.update_server_time(&node);
                 if self.initializing || matches!(*self.state.borrow(), ConnectionState::Open) {
@@ -811,7 +833,7 @@ impl Actor<'_> {
             }
             "ib" => {
                 if node.child("downgrade_webclient").is_some() {
-                    return Err(Error::Closed(411));
+                    return Err(self.close(411, "Multi-device beta not joined"));
                 }
                 if let Some(kind) = node
                     .child("dirty")
@@ -1200,8 +1222,16 @@ impl Actor<'_> {
         )
         .await
     }
+    /// End the connection with upstream's Boom message for this close.
+    fn close(&mut self, code: u16, message: impl Into<String>) -> Error {
+        self.close_message = Some(message.into());
+        Error::Closed(code)
+    }
     fn next_qr(&mut self) -> Result<(), Error> {
-        let reference = self.qr_refs.pop_front().ok_or(Error::Timeout)?;
+        let Some(reference) = self.qr_refs.pop_front() else {
+            self.close_message = Some("QR refs attempts ended".into());
+            return Err(Error::Timeout);
+        };
         self.emit(Event::Qr(connection::pairing_qr(
             &reference,
             &self.credentials,

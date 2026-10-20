@@ -117,7 +117,10 @@ fn events() -> Vec<Event> {
     vec![
         Event::Connection(ConnectionState::Connecting),
         Event::Connection(ConnectionState::Open),
-        Event::Connection(ConnectionState::Closed { code: 401 }),
+        Event::Connection(ConnectionState::Closed {
+            code: 401,
+            message: "Stream Errored (conflict)".into(),
+        }),
         Event::Online(true),
         Event::Qr("ref,key".into()),
         Event::PairingComplete,
@@ -301,10 +304,13 @@ fn payloads_follow_json_stringify_of_the_upstream_values() {
     assert_eq!(call[0]["status"], "offer");
     assert!(call[0].get("dateMs").is_none());
 
+    let closed = single(Event::Connection(ConnectionState::Closed {
+        code: 401,
+        message: "Stream Errored (conflict)".into(),
+    }));
     assert_eq!(
-        single(Event::Connection(ConnectionState::Closed { code: 401 }))["lastDisconnect"]["error"]
-            ["output"]["statusCode"],
-        401
+        closed["lastDisconnect"]["error"]["output"]["payload"],
+        json!({"statusCode":401,"error":"Unauthorized","message":"Stream Errored (conflict)"})
     );
     assert_eq!(single(Event::Qr("ref".into())), json!({"qr":"ref"}));
     assert_eq!(

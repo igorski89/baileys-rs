@@ -436,6 +436,7 @@ mod tests {
         emitter
             .send(Event::Connection(super::super::ConnectionState::Closed {
                 code: 428,
+                message: "Connection Closed".into(),
             }))
             .unwrap();
         receiver.try_recv().unwrap();
@@ -445,6 +446,7 @@ mod tests {
         emitter
             .send(Event::Connection(super::super::ConnectionState::Closed {
                 code: 428,
+                message: "Connection Closed".into(),
             }))
             .unwrap();
         receiver.try_recv().unwrap();

@@ -13,7 +13,7 @@ Known gaps and deliberate deviations from the TypeScript baileys-sqs (commit `6e
 ## Output messages
 
 - Protobuf values in event payloads follow the TypeScript connector's `JSON.stringify` (see baileys-rs's "Upstream JSON conversions" for the remaining gaps): enum names and base64 bytes inside decoded messages, a number for a received message's `messageTimestamp` and a decimal string for our own sends'.
-- A disconnect's `error` is upstream's `DisconnectReason` name for the close code (`"restartRequired"`, `"loggedOut"`, …), not the Boom message text (`"Stream Errored (restart required)"`). A connection that fails before a close code arrives is reported without `error` and `code`.
+- A connection that fails before a close code arrives is reported without `error` and `code`.
 - Events arrive from baileys-rs one at a time, so the connector cannot see which events upstream's `ev.process` would have delivered together; each event name still produces one output message.
 
 ## Session and connection

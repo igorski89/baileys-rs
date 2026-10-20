@@ -55,10 +55,10 @@ fn native(event: &Event) -> Result<Vec<(&'static str, Value)>, Error> {
         Event::Connection(ConnectionState::Open) => {
             ("connection.update", json!({"connection":"open"}))
         }
-        Event::Connection(ConnectionState::Closed { code }) => (
+        Event::Connection(ConnectionState::Closed { code, message }) => (
             "connection.update",
             json!({"connection":"close","lastDisconnect":{
-                "error":boom(*code, Value::Null),
+                "error":boom(*code, message, Value::Null),
                 "date":iso_date(now_ms()),
             }}),
         ),
@@ -121,7 +121,17 @@ fn native(event: &Event) -> Result<Vec<(&'static str, Value)>, Error> {
                             });
                         }
                         if let Some(error) = &update.error {
-                            value["error"] = boom(error.status, json!(error.attrs));
+                            let message = match error.code {
+                                Some(code) if code.is_finite() && code.fract() == 0.0 => {
+                                    format!("Failed to re-upload media ({})", code as i64)
+                                }
+                                Some(code) if code.is_nan() => {
+                                    "Failed to re-upload media (NaN)".into()
+                                }
+                                Some(code) => format!("Failed to re-upload media ({code})"),
+                                None => "Failed to re-upload media (missing ciphertext)".into(),
+                            };
+                            value["error"] = boom(error.status, &message, json!(error.attrs));
                         }
                         value
                     })
@@ -454,8 +464,9 @@ fn setting_value(setting: &SettingUpdate) -> Value {
     json!({"setting":name,"value":value})
 }
 
-/// The enumerable fields of a Boom error, which is what `JSON.stringify` keeps.
-fn boom(status: u16, data: Value) -> Value {
+/// The enumerable fields of a Boom error, which is what `JSON.stringify`
+/// keeps; the message shows in the payload unless the status is a server one.
+fn boom(status: u16, message: &str, data: Value) -> Value {
     let error = match status {
         400 => "Bad Request",
         401 => "Unauthorized",
@@ -474,7 +485,7 @@ fn boom(status: u16, data: Value) -> Value {
         "data":data,
         "isBoom":true,
         "isServer":status >= 500,
-        "output":{"statusCode":status,"payload":{"statusCode":status,"error":error,"message":if status == 500 {"An internal server error occurred"} else {""}},"headers":{}},
+        "output":{"statusCode":status,"payload":{"statusCode":status,"error":error,"message":if status >= 500 {"An internal server error occurred"} else {message}},"headers":{}},
     })
 }
 

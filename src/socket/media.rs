@@ -209,7 +209,7 @@ impl Socket {
                     }
                     Err(tokio::sync::broadcast::error::TryRecvError::Empty) => {}
                 }
-                if let super::ConnectionState::Closed { code } = state.borrow().clone() {
+                if let super::ConnectionState::Closed { code, .. } = state.borrow().clone() {
                     return Err(Error::Closed(code));
                 }
                 tokio::select! {

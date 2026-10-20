@@ -53,7 +53,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             };
             println!("{event:?}");
             match event {
-                Event::Connection(ConnectionState::Closed { code }) => break code,
+                Event::Connection(ConnectionState::Closed { code, .. }) => break code,
                 Event::Connection(ConnectionState::Open) if !sent => {
                     sent = true;
                     if let Ok(target) = std::env::var("TARGET") {

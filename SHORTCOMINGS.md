@@ -73,7 +73,7 @@ Not gaps, but worth knowing: like upstream, the socket does not reconnect by its
 
 ### Upstream JSON conversions
 - `Event::upstream()` writes protobuf values as `JSON.stringify` writes upstream's, following which of them are protobufjs messages there: those use `toJSON` (base64 bytes, enum names, decimal-string longs), and the plain objects holding protobuf values (received envelopes, update and receipt entries, `chats.upsert`) use Buffer bytes, enum numbers and JavaScript-number longs. `EnvelopeMetadata::protobuf` marks the upserted messages upstream builds with `fromObject`. Checked against protobufjs for every schema field and against the TypeScript connector live. Known gaps: a required field holding its zero value is omitted (the native types cannot tell it from an absent one; protobufjs writes it), and a placeholder resend restored onto a cached message has its decoded `Long` timestamp as a string, not `{low, high, unsigned}`.
-- A closed connection's `lastDisconnect.error` carries only the status code (Boom's enumerable fields, with an empty message), and its `date` is the time of conversion. `creds.update` has an empty payload, and raw stanza events produce no entry.
+- A closed connection's `lastDisconnect.error` has upstream's Boom status and message (`ConnectionState::Closed::message`) but `data: null` where upstream keeps the stream-error stanza, and its `date` is the time of conversion. `creds.update` has an empty payload, and raw stanza events produce no entry.
 - `content_from_json` takes dates (`event.startDate`, `timestamp`) as millisecond numbers, and accepts media as `{ url }` or a BufferJSON buffer; upstream cannot receive a buffer through `JSON.parse` at all, and streams have no JSON form.
 
 ### WAM

@@ -18,22 +18,6 @@ use tokio::sync::{
     mpsc,
 };
 
-/// Upstream's `DisconnectReason` name for a close code.
-pub fn disconnect_reason(code: u16) -> &'static str {
-    match code {
-        401 => "loggedOut",
-        403 => "forbidden",
-        408 => "connectionLost",
-        411 => "multideviceMismatch",
-        428 => "connectionClosed",
-        440 => "connectionReplaced",
-        500 => "badSession",
-        503 => "unavailableService",
-        515 => "restartRequired",
-        _ => "unknown",
-    }
-}
-
 /// Open the session database. When the file is first created, a session
 /// the TypeScript connector wrote to its folder (`useMultiFileAuthState`,
 /// with `creds.json`) is imported, so an existing pairing keeps working.
@@ -126,7 +110,7 @@ impl WhatsAppLoop {
                 "Starting WhatsApp with SESSION_DB: {}",
                 self.settings.session_db
             );
-            let code = match Socket::connect(self.config(), self.store.clone()).await {
+            let closed = match Socket::connect(self.config(), self.store.clone()).await {
                 Ok((socket, events)) => {
                     let live = Arc::new(Live {
                         socket,
@@ -140,11 +124,13 @@ impl WhatsAppLoop {
                     None
                 }
             };
+            let code = closed.as_ref().map(|(code, _)| *code);
             let should_reconnect = code != Some(401);
             tracing::error!(status_code = ?code, should_reconnect, "Connection closed");
             let mut payload = json!({"status":"disconnected"});
-            if let Some(code) = code {
-                payload["error"] = json!(disconnect_reason(code));
+            if let Some((code, message)) = closed {
+                // `lastDisconnect.error.message`, upstream's Boom message.
+                payload["error"] = json!(message);
                 payload["code"] = json!(code);
             }
             self.commands
@@ -160,8 +146,13 @@ impl WhatsAppLoop {
         }
     }
 
-    /// Returns the close code, or `None` if the event stream ended without one.
-    async fn process(&self, live: Arc<Live>, events: broadcast::Receiver<Event>) -> Option<u16> {
+    /// Returns the close code and message, or `None` if the event stream
+    /// ended without one.
+    async fn process(
+        &self,
+        live: Arc<Live>,
+        events: broadcast::Receiver<Event>,
+    ) -> Option<(u16, String)> {
         let mut queue = queue(events);
         // One pairing code per connection: every request is a new link
         // attempt, which replaces the previous code, and WhatsApp limits how
@@ -178,7 +169,9 @@ impl WhatsAppLoop {
                         pairing_requested = self.pairing_code(&live).await;
                     }
                 }
-                Event::Connection(ConnectionState::Closed { code }) => return Some(*code),
+                Event::Connection(ConnectionState::Closed { code, message }) => {
+                    return Some((*code, message.clone()));
+                }
                 Event::Connection(ConnectionState::Open) => {
                     tracing::info!("WhatsApp connection opened");
                     self.commands
