@@ -681,10 +681,12 @@ mod tests {
                     key: key("M"),
                     message: body.clone(),
                     timestamp: 30.0,
+                    key_metadata: None,
                 },
                 own::Mutation::Revoke {
                     key: key("R"),
                     original_key: key("REVOKE"),
+                    key_metadata: None,
                 },
             ]))
             .unwrap();

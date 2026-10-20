@@ -114,13 +114,16 @@ fn own_message_effects_match_original_upsert_and_process_message() {
         ];
         if let Some(mutation) = effects.mutation {
             let update = match mutation {
-                Mutation::Revoke { key, original_key } => {
+                Mutation::Revoke {
+                    key, original_key, ..
+                } => {
                     json!({"key":kw(&key),"revoke":true,"stub":proto::web_message_info::StubType::Revoke as i32,"originalKey":kw(&original_key)})
                 }
                 Mutation::Edit {
                     key,
                     message,
                     timestamp,
+                    ..
                 } => {
                     json!({"key":kw(&key),"message":wire(message.encode_to_vec()),"timestamp":timestamp})
                 }

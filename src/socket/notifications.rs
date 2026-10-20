@@ -152,7 +152,6 @@ impl Socket {
             }
         }
         if let Some(message) = parsed.message {
-            let context = messages::addressing_context(node);
             let key = message.key.clone().unwrap_or_default();
             let author = key
                 .participant
@@ -161,10 +160,9 @@ impl Socket {
                 .unwrap_or_default();
             let envelope = messages::Envelope {
                 message,
-                key_metadata: messages::KeyMetadata {
-                    addressing_mode: context.addressing_mode,
-                    ..Default::default()
-                },
+                // Upstream builds the message with WebMessageInfo.fromObject,
+                // which drops the runtime key properties.
+                key_metadata: Default::default(),
                 category: None,
                 retry_count: None,
                 sender: author.clone(),

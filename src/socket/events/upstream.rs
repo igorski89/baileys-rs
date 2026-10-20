@@ -298,6 +298,13 @@ fn public_payload(name: &str, value: &mut Value) {
             if let Some(messages) = value.get_mut("messages").and_then(Value::as_array_mut) {
                 messages.iter_mut().for_each(public_message);
             }
+            // History chats are protobufjs Conversations, whose JSON keeps
+            // only schema fields; the buffer's receive timestamp is not one.
+            if let Some(chats) = value.get_mut("chats").and_then(Value::as_array_mut) {
+                for chat in chats.iter_mut().filter_map(Value::as_object_mut) {
+                    chat.remove("lastMessageRecvTimestamp");
+                }
+            }
         }
         "groups.update" => {
             if let Some(groups) = value.as_array_mut() {

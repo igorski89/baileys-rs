@@ -49,11 +49,15 @@ pub enum Mutation {
     Revoke {
         key: proto::MessageKey,
         original_key: proto::MessageKey,
+        /// Runtime properties of the protocol message's key, which upstream
+        /// spreads into both keys.
+        key_metadata: Option<messages::KeyMetadata>,
     },
     Edit {
         key: proto::MessageKey,
         message: Box<proto::Message>,
         timestamp: f64,
+        key_metadata: Option<messages::KeyMetadata>,
     },
 }
 /// One consolidated source messages.update entry. Protobuf fields retain their
@@ -61,6 +65,8 @@ pub enum Mutation {
 #[derive(Debug, Clone, PartialEq)]
 pub struct Update {
     pub key: proto::MessageKey,
+    /// Runtime properties of `key`.
+    pub key_metadata: Option<messages::KeyMetadata>,
     pub info: proto::WebMessageInfo,
     pub runtime_fields: serde_json::Map<String, serde_json::Value>,
 }
@@ -89,6 +95,8 @@ pub struct ChatUpdate {
     pub name: Option<Option<String>>,
     pub description: Option<Option<String>>,
     pub messages: Option<Vec<proto::WebMessageInfo>>,
+    /// Runtime properties of the messages' keys.
+    pub message_key_metadata: Option<Box<messages::KeyMetadata>>,
     pub conversation_timestamp: Option<f64>,
     /// An unread-count delta, matching the upstream buffered chat update.
     pub unread_count: Option<i64>,
@@ -134,7 +142,13 @@ impl crate::proto_json::JsonField for ChatUpdate {
                 json!(
                     messages
                         .iter()
-                        .map(|message| { json!({"message": message.to_value()}) })
+                        .map(|message| {
+                            let mut message = message.to_value();
+                            if let Some(metadata) = &self.message_key_metadata {
+                                metadata.apply(&mut message["key"]);
+                            }
+                            json!({ "message": message })
+                        })
                         .collect::<Vec<_>>()
                 ),
             );
@@ -238,6 +252,10 @@ impl crate::proto_json::JsonField for ChatUpdate {
             fields.remove("unreadCount");
         }
         if let Some(messages) = fields.get("messages") {
+            result.message_key_metadata = messages
+                .get(0)
+                .and_then(|entry| messages::KeyMetadata::from_key(&entry["message"]["key"]))
+                .map(Box::new);
             result.messages = Some(
                 messages
                     .as_array()
@@ -334,6 +352,7 @@ pub fn effects_received(
                 result.mutation = Some(Mutation::Revoke {
                     key: target,
                     original_key: key.clone(),
+                    key_metadata: None,
                 });
             }
             Some(Type::MessageEdit) => {
@@ -352,6 +371,7 @@ pub fn effects_received(
                         .timestamp_ms
                         .map(|v| (v as f64 / 1000.0).floor())
                         .unwrap_or(timestamp),
+                    key_metadata: None,
                 });
             }
             Some(Type::EphemeralSetting) => {

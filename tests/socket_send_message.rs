@@ -389,7 +389,9 @@ async fn send_generates_encrypts_metadata_and_own_events_and_keeps_actor_respons
                         assert_eq!(updates.len(), 1);
                         let update = &updates[0];
                         match effects.mutation.as_ref().unwrap() {
-                            own::Mutation::Revoke { key, original_key } => {
+                            own::Mutation::Revoke {
+                                key, original_key, ..
+                            } => {
                                 assert_eq!(&update.key, key);
                                 assert_eq!(update.info.key.as_ref(), Some(original_key));
                                 assert_eq!(
@@ -405,6 +407,7 @@ async fn send_generates_encrypts_metadata_and_own_events_and_keeps_actor_respons
                                 key,
                                 message,
                                 timestamp,
+                                ..
                             } => {
                                 assert_eq!(&update.key, key);
                                 assert_eq!(update.info.message.as_ref(), Some(message.as_ref()));

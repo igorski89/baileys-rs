@@ -183,13 +183,25 @@ impl Socket {
     ) -> Result<(), Error> {
         let mut effects =
             own::effects_received(message, credentials.account_settings.unarchive_chats)?;
-        if let Some(update) = effects.mutation.take() {
+        let key_metadata = metadata.as_ref().map(|m| m.key_metadata.clone());
+        if let Some(chat) = effects.chat.as_mut().filter(|c| c.messages.is_some()) {
+            chat.message_key_metadata = key_metadata.clone().map(Box::new);
+        }
+        if let Some(mut update) = effects.mutation.take() {
+            match &mut update {
+                own::Mutation::Revoke {
+                    key_metadata: m, ..
+                }
+                | own::Mutation::Edit {
+                    key_metadata: m, ..
+                } => *m = key_metadata.clone(),
+            }
             self.inner
                 .events
                 .send(Event::MessageMutations(vec![update]))?;
         }
         if let Some(mut update) = effects.reaction.take() {
-            update.key_metadata = metadata.as_ref().map(|m| m.key_metadata.clone());
+            update.key_metadata = key_metadata;
             self.inner
                 .events
                 .send(Event::MessageReactions(vec![update]))?;

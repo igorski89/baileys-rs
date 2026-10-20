@@ -345,3 +345,89 @@ fn payloads_follow_json_stringify_of_the_upstream_values() {
         json!({"syncType":3,"status":"complete","explicit":true})
     );
 }
+
+/// Keys of received messages carry upstream's runtime properties wherever
+/// upstream spreads `message.key` (captured from a live session).
+#[test]
+fn received_keys_keep_their_runtime_properties() {
+    let metadata = messages::KeyMetadata {
+        remote_jid_alt: Some("41767906626@s.whatsapp.net".into()),
+        addressing_mode: "lid".into(),
+        ..Default::default()
+    };
+    let key = |id: &str| proto::MessageKey {
+        remote_jid: Some("238092300603504@lid".into()),
+        from_me: Some(false),
+        id: Some(id.into()),
+        participant: None,
+    };
+    let lid_key = |id: &str| {
+        json!({"remoteJid":"238092300603504@lid","fromMe":false,"id":id,
+            "remoteJidAlt":"41767906626@s.whatsapp.net","addressingMode":"lid"})
+    };
+    let chat = single(Event::ChatsUpdated(vec![own::ChatUpdate {
+        id: "238092300603504@lid".into(),
+        messages: Some(vec![proto::WebMessageInfo {
+            key: Some(key("M")),
+            ..Default::default()
+        }]),
+        message_key_metadata: Some(Box::new(metadata.clone())),
+        ..Default::default()
+    }]));
+    assert_eq!(chat[0]["messages"][0]["message"]["key"], lid_key("M"));
+    let mutations = single(Event::MessageMutations(vec![
+        own::Mutation::Revoke {
+            key: key("TARGET"),
+            original_key: key("REVOKE"),
+            key_metadata: Some(metadata.clone()),
+        },
+        own::Mutation::Edit {
+            key: key("EDITED"),
+            message: Box::default(),
+            timestamp: 1.0,
+            key_metadata: Some(metadata.clone()),
+        },
+    ]));
+    assert_eq!(mutations[0]["key"], lid_key("TARGET"));
+    assert_eq!(mutations[0]["update"]["key"], lid_key("REVOKE"));
+    assert_eq!(mutations[1]["key"], lid_key("EDITED"));
+    let reaction = single(Event::MessageReactions(vec![own::ReactionUpdate {
+        key: Some(key("T")),
+        reaction: proto::Reaction {
+            key: Some(key("R")),
+            text: Some("👍".into()),
+            sender_timestamp_ms: Some(1792506612077),
+            ..Default::default()
+        },
+        key_metadata: Some(metadata),
+    }]));
+    assert_eq!(
+        reaction[0]["reaction"]["senderTimestampMs"],
+        json!({"low":1505249645,"high":417,"unsigned":false})
+    );
+    // isViewOnce appears only when true.
+    assert_eq!(reaction[0]["reaction"]["key"], lid_key("R"));
+}
+
+/// The buffered history set, as a live session showed it: unset
+/// notification fields are null, empty past participants are absent and
+/// chats keep only Conversation fields.
+#[test]
+fn history_sets_have_the_buffered_shape() {
+    let set = events()
+        .into_iter()
+        .find_map(|e| match e {
+            Event::MessagingHistorySet(_) => Some(single(e)),
+            _ => None,
+        })
+        .unwrap();
+    let fields = set.as_object().unwrap();
+    assert_eq!(fields["chunkOrder"], Value::Null);
+    assert_eq!(fields["peerDataRequestSessionId"], Value::Null);
+    assert!(fields.contains_key("progress"));
+    assert!(!fields.contains_key("pastParticipants"));
+    assert!(!fields["chats"].as_array().unwrap().is_empty());
+    for chat in fields["chats"].as_array().unwrap() {
+        assert!(chat.get("lastMessageRecvTimestamp").is_none(), "{chat}");
+    }
+}

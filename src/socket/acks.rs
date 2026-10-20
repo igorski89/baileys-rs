@@ -20,6 +20,7 @@ pub fn bad_ack_update(node: &BinaryNode) -> Option<own::Update> {
             id: node.attrs.get("id").cloned(),
             participant: None,
         },
+        key_metadata: None,
         info: proto::WebMessageInfo {
             status: Some(proto::web_message_info::Status::Error as i32),
             message_stub_parameters: parameters,

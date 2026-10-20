@@ -44,15 +44,8 @@ fn message_value(
     }
     if let Some(metadata) = metadata {
         value[META] = serialize(metadata)?;
-        if let Some(key) = value.get_mut("key").and_then(Value::as_object_mut) {
-            for (name, value) in serialize(&metadata.key_metadata)?
-                .as_object()
-                .expect("key metadata object")
-            {
-                if !value.is_null() {
-                    key.insert(name.clone(), value.clone());
-                }
-            }
+        if let Some(key) = value.get_mut("key") {
+            metadata.key_metadata.apply(key);
         }
     }
     Ok(value)
@@ -91,22 +84,35 @@ fn metadata(value: &Value) -> Result<Option<messages::EnvelopeMetadata>, Error> 
 }
 fn reaction_value(update: &own::ReactionUpdate) -> Result<Value, Error> {
     let mut reaction = update.reaction.to_value();
+    // Upstream spreads the decoded reaction (`{ ...reactionMessage, key }`),
+    // so its int64 timestamp stays a protobufjs Long, which JSON writes as
+    // its two words.
+    if let Some(ms) = update.reaction.sender_timestamp_ms {
+        reaction["senderTimestampMs"] =
+            json!({"low": ms as i32, "high": (ms >> 32) as i32, "unsigned": false});
+    }
     if let Some(metadata) = &update.key_metadata
-        && let Some(key) = reaction.get_mut("key").and_then(Value::as_object_mut)
+        && let Some(key) = reaction.get_mut("key")
     {
-        for (name, value) in serialize(metadata)?
-            .as_object()
-            .expect("key metadata object")
-        {
-            if !value.is_null() {
-                key.insert(name.clone(), value.clone());
-            }
-        }
+        metadata.apply(key);
     }
     Ok(reaction)
 }
 fn update(key: &proto::MessageKey, fields: Value) -> Value {
     json!({"key":key.to_value(), "update":fields})
+}
+/// An update whose key is the received message's key with the target id,
+/// as upstream spreads `message.key`, runtime properties included.
+fn keyed_update(
+    key: &proto::MessageKey,
+    metadata: &Option<messages::KeyMetadata>,
+    fields: Value,
+) -> Value {
+    let mut value = update(key, fields);
+    if let Some(metadata) = metadata {
+        metadata.apply(&mut value["key"]);
+    }
+    value
 }
 pub(super) fn project(event: Event) -> Result<Vec<Action>, Error> {
     let (name, value) = match event {
@@ -148,13 +154,17 @@ pub(super) fn project(event: Event) -> Result<Vec<Action>, Error> {
         Event::MessagesDeleted(keys) => ("messages.delete", json!({"keys":keys.iter().map(JsonField::to_value).collect::<Vec<_>>()})),
         Event::MessagesUpdated(updates) => ("messages.update", json!(updates.iter().map(|v| update(&v.key,json!({"status":v.status as i32,"messageTimestamp":v.message_timestamp.to_value()}))).collect::<Vec<_>>())),
         Event::EventResponsesUpdated(updates) => ("messages.update", json!(updates.iter().map(|v|update(&v.key,json!({"eventResponses":[{"eventResponseMessageKey":v.event_response_message_key.to_value(),"senderTimestampMs":v.sender_timestamp_ms.map(|t|t.to_value()),"response":v.response.to_value()}]}))).collect::<Vec<_>>())),
-        Event::MessageUpdates(updates) => ("messages.update", json!(updates.iter().map(|v|update(&v.key,v.update_value())).collect::<Vec<_>>())),
+        Event::MessageUpdates(updates) => ("messages.update", json!(updates.iter().map(|v|keyed_update(&v.key,&v.key_metadata,v.update_value())).collect::<Vec<_>>())),
         Event::MessagesStarred(updates) => ("messages.update", json!(updates.iter().map(|v| update(&v.key,json!({"starred":v.starred}))).collect::<Vec<_>>())),
         Event::MessageStubsUpdated(updates) => ("messages.update", json!(updates.iter().map(|v| update(&v.key,json!({"messageStubParameters":v.parameters}))).collect::<Vec<_>>())),
         Event::MessageContentsUpdated(updates) => ("messages.update", json!(updates.iter().map(|v| update(&v.key,json!({"message":v.message.as_ref().map(|m|m.to_value())}))).collect::<Vec<_>>())),
         Event::MessageMutations(updates) => ("messages.update", json!(updates.iter().map(|v| match v {
-            own::Mutation::Revoke { key, original_key } => update(key,json!({"message":null,"messageStubType":proto::web_message_info::StubType::Revoke as i32,"key":original_key.to_value()})),
-            own::Mutation::Edit { key,message,timestamp } => update(key,json!({"message":message.to_value(),"messageTimestamp":timestamp.to_value()})),
+            own::Mutation::Revoke { key, original_key, key_metadata } => {
+                let mut original = original_key.to_value();
+                if let Some(metadata) = key_metadata { metadata.apply(&mut original); }
+                keyed_update(key,key_metadata,json!({"message":null,"messageStubType":proto::web_message_info::StubType::Revoke as i32,"key":original}))
+            }
+            own::Mutation::Edit { key,message,timestamp,key_metadata } => keyed_update(key,key_metadata,json!({"message":message.to_value(),"messageTimestamp":timestamp.to_value()})),
         }).collect::<Vec<_>>())),
         Event::MessageReactions(updates) => ("messages.reaction", json!(updates.iter().map(|v|Ok(json!({"key":v.key.as_ref().map(JsonField::to_value),"reaction":reaction_value(v)?}))).collect::<Result<Vec<_>, Error>>()?)),
         Event::MessageReceiptsUpdated(updates) => ("message-receipt.update", json!(updates.iter().map(|v|{
@@ -164,11 +174,14 @@ pub(super) fn project(event: Event) -> Result<Vec<Action>, Error> {
             json!({"key":v.key.to_value(),"receipt":receipt})
         }).collect::<Vec<_>>())),
         Event::MessagingHistorySet(set) => {
-            let mut value=json!({"chats":set.data.chats.iter().map(JsonField::to_value).collect::<Vec<_>>(),"contacts":serialize(&set.data.contacts)?,"messages":set.data.messages.iter().enumerate().map(|(i,m)|message_value(m,set.data.message_metadata.get(i).and_then(Option::as_ref),set.data.message_runtime_fields.get(i))).collect::<Result<Vec<_>,_>>()?,"syncType":set.data.sync_type,"pastParticipants":set.data.past_participants.iter().map(JsonField::to_value).collect::<Vec<_>>()});
-            if let Some(v)=set.data.progress { value["progress"]=json!(v); }
+            let mut value=json!({"chats":set.data.chats.iter().map(JsonField::to_value).collect::<Vec<_>>(),"contacts":serialize(&set.data.contacts)?,"messages":set.data.messages.iter().enumerate().map(|(i,m)|message_value(m,set.data.message_metadata.get(i).and_then(Option::as_ref),set.data.message_runtime_fields.get(i))).collect::<Result<Vec<_>,_>>()?,"syncType":set.data.sync_type});
+            // The buffered set: past participants only once some arrived, and
+            // the notification's unset fields as protobufjs' null defaults.
+            if !set.data.past_participants.is_empty() { value["pastParticipants"]=json!(set.data.past_participants.iter().map(JsonField::to_value).collect::<Vec<_>>()); }
+            value["progress"]=json!(set.data.progress);
             if let Some(v)=set.is_latest { value["isLatest"]=json!(v); }
-            if let Some(v)=set.chunk_order { value["chunkOrder"]=json!(v); }
-            if let Some(v)=set.peer_data_request_session_id { value["peerDataRequestSessionId"]=json!(v); }
+            value["chunkOrder"]=json!(set.chunk_order);
+            value["peerDataRequestSessionId"]=json!(set.peer_data_request_session_id);
             ("messaging-history.set",value)
         }
         event => return Ok(vec![Action::Native(event)]),
@@ -226,6 +239,7 @@ pub(super) fn decode(batch: event_buffer::Batch) -> Result<Vec<Event>, Error> {
                     let (info, runtime_fields) = message_decode(&entry["update"])?;
                     updates.push(own::Update {
                         key,
+                        key_metadata: messages::KeyMetadata::from_key(&entry["key"]),
                         info,
                         runtime_fields,
                     });
@@ -238,10 +252,7 @@ pub(super) fn decode(batch: event_buffer::Batch) -> Result<Vec<Event>, Error> {
                     updates.push(own::ReactionUpdate {
                         key: Some(proto::MessageKey::from_value(&entry["key"])?),
                         reaction: proto::Reaction::from_value(&entry["reaction"])?,
-                        key_metadata: entry["reaction"]["key"]
-                            .get("addressingMode")
-                            .map(|_| deserialize(&entry["reaction"]["key"]))
-                            .transpose()?,
+                        key_metadata: messages::KeyMetadata::from_key(&entry["reaction"]["key"]),
                     });
                 }
                 events.push(Event::MessageReactions(updates));

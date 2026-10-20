@@ -148,7 +148,7 @@ pub fn addressing_context(node: &BinaryNode) -> AddressingContext {
 
 /// Runtime key properties absent from the WAProto MessageKey schema.
 #[derive(Debug, Clone, Default, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "camelCase", default)]
 pub struct KeyMetadata {
     pub remote_jid_alt: Option<String>,
     pub remote_jid_username: Option<String>,
@@ -156,7 +156,55 @@ pub struct KeyMetadata {
     pub participant_username: Option<String>,
     pub addressing_mode: String,
     pub is_view_once: bool,
+    #[serde(alias = "server_id")]
     pub server_id: Option<String>,
+}
+impl KeyMetadata {
+    const NAMES: [&str; 7] = [
+        "remoteJidAlt",
+        "remoteJidUsername",
+        "participantAlt",
+        "participantUsername",
+        "addressingMode",
+        "isViewOnce",
+        "server_id",
+    ];
+    /// Write the properties onto a JSON message key as upstream's runtime
+    /// key carries them: unset ones are absent, `isViewOnce` appears only
+    /// when true and the newsletter id keeps its stanza name `server_id`.
+    pub fn apply(&self, key: &mut serde_json::Value) {
+        let Some(key) = key.as_object_mut() else {
+            return;
+        };
+        let text = [
+            &self.remote_jid_alt,
+            &self.remote_jid_username,
+            &self.participant_alt,
+            &self.participant_username,
+        ];
+        for (name, value) in Self::NAMES.iter().zip(text) {
+            if let Some(value) = value {
+                key.insert((*name).into(), value.clone().into());
+            }
+        }
+        if !self.addressing_mode.is_empty() {
+            key.insert("addressingMode".into(), self.addressing_mode.clone().into());
+        }
+        if self.is_view_once {
+            key.insert("isViewOnce".into(), true.into());
+        }
+        if let Some(id) = &self.server_id {
+            key.insert("server_id".into(), id.clone().into());
+        }
+    }
+    /// The properties `apply` wrote onto a JSON key; `None` when it has none.
+    pub fn from_key(key: &serde_json::Value) -> Option<Self> {
+        let fields = key.as_object()?;
+        if !Self::NAMES.iter().any(|name| fields.contains_key(*name)) {
+            return None;
+        }
+        serde_json::from_value(key.clone()).ok()
+    }
 }
 
 /// Runtime receive properties associated with a protobuf message.

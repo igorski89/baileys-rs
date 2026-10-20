@@ -56,13 +56,16 @@ fn cleaned_keys_classifiers_and_common_receive_effects_match_original() {
         let mut events = vec![];
         if let Some(mutation) = effects.mutation {
             let update = match mutation {
-                own::Mutation::Revoke { key, original_key } => {
+                own::Mutation::Revoke {
+                    key, original_key, ..
+                } => {
                     json!({"key":wire(key.encode_to_vec()),"revoke":true,"originalKey":wire(original_key.encode_to_vec())})
                 }
                 own::Mutation::Edit {
                     key,
                     message,
                     timestamp,
+                    ..
                 } => {
                     json!({"key":wire(key.encode_to_vec()),"message":wire(message.encode_to_vec()),"timestamp":timestamp as i64})
                 }
