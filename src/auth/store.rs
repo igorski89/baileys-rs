@@ -193,8 +193,15 @@ impl SqliteAuthStore {
     /// Create auth.sqlite3 under a private directory, or resume existing state.
     /// A corrupt credential record is an error, never an implicit identity reset.
     pub fn open(folder: impl AsRef<Path>) -> Result<Self, Error> {
-        let folder = folder.as_ref();
-        if !folder.exists() {
+        Self::open_file(folder.as_ref().join("auth.sqlite3"))
+    }
+    /// Create or resume the database at `path`, creating a missing parent
+    /// directory privately as `open` does.
+    pub fn open_file(path: impl AsRef<Path>) -> Result<Self, Error> {
+        let path = path.as_ref();
+        if let Some(folder) = path.parent().filter(|f| !f.as_os_str().is_empty())
+            && !folder.exists()
+        {
             let mut builder = fs::DirBuilder::new();
             builder.recursive(true);
             #[cfg(unix)]
@@ -204,7 +211,6 @@ impl SqliteAuthStore {
             }
             builder.create(folder)?;
         }
-        let path = folder.join("auth.sqlite3");
         let mut options = fs::OpenOptions::new();
         options.write(true).create_new(true);
         #[cfg(unix)]
@@ -212,16 +218,16 @@ impl SqliteAuthStore {
             use std::os::unix::fs::OpenOptionsExt;
             options.mode(0o600);
         }
-        match options.open(&path) {
+        match options.open(path) {
             Ok(file) => drop(file),
             Err(e) if e.kind() == std::io::ErrorKind::AlreadyExists => {
-                if !fs::symlink_metadata(&path)?.file_type().is_file() {
+                if !fs::symlink_metadata(path)?.file_type().is_file() {
                     return Err(Error::FileName);
                 }
             }
             Err(e) => return Err(e.into()),
         }
-        Self::initialize(Connection::open(&path)?, Some(path))
+        Self::initialize(Connection::open(path)?, Some(path.to_owned()))
     }
     pub fn in_memory() -> Result<Self, Error> {
         Self::initialize(Connection::open_in_memory()?, None)

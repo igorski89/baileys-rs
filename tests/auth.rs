@@ -378,6 +378,36 @@ fn creates_private_database_and_export_files() {
     );
 }
 
+#[cfg(unix)]
+#[test]
+fn opens_a_database_file_at_any_path_and_resumes_it() {
+    use std::os::unix::fs::PermissionsExt;
+    let temp = tempfile::tempdir().unwrap();
+    let folder = temp.path().join("nested/session");
+    let path = folder.join("whatsapp.db");
+    let store = SqliteAuthStore::open_file(&path).unwrap();
+    assert_eq!(store.path(), Some(path.as_path()));
+    assert_eq!(
+        std::fs::metadata(&folder).unwrap().permissions().mode() & 0o777,
+        0o700
+    );
+    assert_eq!(
+        std::fs::metadata(&path).unwrap().permissions().mode() & 0o777,
+        0o600
+    );
+    let identity = store.load_credentials().unwrap().registration_id;
+    drop(store);
+    let reopened = SqliteAuthStore::open_file(&path).unwrap();
+    assert_eq!(
+        reopened.load_credentials().unwrap().registration_id,
+        identity
+    );
+    assert!(matches!(
+        SqliteAuthStore::open_file(&folder),
+        Err(Error::FileName)
+    ));
+}
+
 struct CountingStore {
     inner: SqliteAuthStore,
     reads: Arc<AtomicUsize>,
