@@ -4,9 +4,10 @@ Known gaps and deliberate deviations from the TypeScript baileys-sqs (commit `6e
 
 ## Not yet verified
 
-- **Live run.** Nothing has run against a paired WhatsApp account; the tests fake the socket. A start with `--session-db :memory:` reached WhatsApp and emitted the pairing QR code, and nothing beyond that has been exercised.
+- **Live run** is partial: run for an afternoon on two accounts beside the TypeScript connector, with matching output for the message kinds tested (see the root SHORTCOMINGS.md). Not yet exercised live: calls, view-once media, stickers, group administration and longer runs.
 - **S3 uploads** are not exercised by any test (no S3 server in the test setup); the code follows the TypeScript connector's client configuration.
 - **Docker Compose** has not been run. The image builds from the repository root (`docker build -f baileys-sqs/Dockerfile .`) and its binaries start.
+- **Large messages need a raised queue limit.** A received video travels base64-encoded in one output message (16 MB of video is about 21 MB), so the queue server must accept it: ElasticMQ and RusticMQ (from `ee7053f`) with `pekko.http.server.parsing.max-content-length`, as mimi configures 500m; real SQS caps messages at 256 KB. A rejected message is logged and dropped; the TypeScript connector crashes on it (an unhandled EPIPE in the AWS SDK upload).
 - **Listener and sender** are built but not tested.
 
 ## Output messages
@@ -34,5 +35,4 @@ Known gaps and deliberate deviations from the TypeScript baileys-sqs (commit `6e
 - Logging uses `tracing` with snake_case field names instead of pino-pretty.
 - The listener formats times as `M/D/YYYY, h:mm:ss AM` in local time (the en-US form of `toLocaleString`), and draws QR codes with the `qrcode` crate rather than qrcode-terminal.
 - There is no hot-reload compose file (`docker-compose.dev.yml`, `Dockerfile.dev`); use `cargo run` or `cargo watch`.
-- The images build from the parent directory, because `baileys-rs` is a path dependency.
 - `elasticmq.conf` writes empty queue blocks as `{}`: RusticMQ's HOCON parser rejects `{ }` with a space inside, which ElasticMQ accepts.
