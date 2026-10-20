@@ -185,7 +185,10 @@ impl Socket {
         let mut effects =
             own::effects_received(message, credentials.account_settings.unarchive_chats)?;
         let key_metadata = metadata.as_ref().map(|m| m.key_metadata.clone());
-        if let Some(chat) = effects.chat.as_mut().filter(|c| c.messages.is_some()) {
+        // Upstream's fromObject messages have no runtime key properties.
+        if let Some(chat) = effects.chat.as_mut().filter(|c| c.messages.is_some())
+            && metadata.is_some_and(|m| !m.protobuf)
+        {
             chat.message_key_metadata = key_metadata.clone().map(Box::new);
         }
         if let Some(mut update) = effects.mutation.take() {

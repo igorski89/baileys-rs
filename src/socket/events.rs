@@ -386,6 +386,7 @@ mod tests {
             retry_count: Some(2),
             author: "200@s.whatsapp.net".into(),
             sender: "200@s.whatsapp.net".into(),
+            protobuf: false,
         }
     }
     #[tokio::test(start_paused = true)]
@@ -457,6 +458,56 @@ mod tests {
             receiver.try_recv(),
             Err(broadcast::error::TryRecvError::Closed)
         ));
+    }
+    /// Upstream writes a received envelope as a plain object holding a
+    /// protobufjs message and an own send as a protobufjs message, also
+    /// after the event buffer (as a live session showed).
+    #[tokio::test]
+    async fn upstream_json_tells_plain_envelopes_from_protobuf_messages() {
+        use proto::web_message_info::Status;
+        let edit = |id: &str| proto::WebMessageInfo {
+            key: Some(key(id)),
+            message_timestamp: Some(1792506508),
+            status: Some(Status::Pending as i32),
+            message: Some(proto::Message {
+                protocol_message: Some(Box::new(proto::message::ProtocolMessage {
+                    r#type: Some(proto::message::protocol_message::Type::MessageEdit as i32),
+                    ..Default::default()
+                })),
+                message_context_info: Some(proto::MessageContextInfo {
+                    message_secret: Some(vec![1, 2, 3]),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }),
+            ..Default::default()
+        };
+        let upsert = |id: &str, metadata: Option<messages::EnvelopeMetadata>| {
+            Event::MessagesUpserted(own::Upsert {
+                messages: vec![edit(id)],
+                kind: own::UpsertKind::Notify,
+                request_id: None,
+                metadata: metadata.into_iter().collect(),
+                metadata_indices: vec![],
+                runtime_fields: vec![],
+            })
+        };
+        let first = |event: Event| event.upstream().unwrap()[0].1["messages"][0].clone();
+        let received = first(upsert("R", Some(metadata())));
+        assert_eq!(received["messageTimestamp"], json!(1792506508));
+        assert_eq!(received["status"], json!(Status::Pending as i32));
+        assert_eq!(received["message"]["protocolMessage"]["type"], "MESSAGE_EDIT");
+        assert_eq!(received["message"]["messageContextInfo"]["messageSecret"], "AQID");
+        assert_eq!(received["key"]["remoteJidAlt"], "201@lid");
+        let own = first(upsert("O", None));
+        assert_eq!(own["messageTimestamp"], "1792506508");
+        assert_eq!(own["status"], "PENDING");
+        assert_eq!(own["message"]["protocolMessage"]["type"], "MESSAGE_EDIT");
+        let (emitter, mut receiver) = Emitter::new(8);
+        emitter.buffer();
+        emitter.send(upsert("R", Some(metadata()))).unwrap();
+        emitter.flush().unwrap();
+        assert_eq!(first(receiver.try_recv().unwrap()), received);
     }
     #[tokio::test(start_paused = true)]
     async fn completion_auto_flush_and_last_handle_drop_drive_timers_without_leaks() {

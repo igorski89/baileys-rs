@@ -265,6 +265,7 @@ impl Socket {
                         retry_count: None,
                         sender: author.clone(),
                         author,
+                        protobuf: true,
                     };
                     // Upstream logs a failed plaintext message without failing the notification.
                     if let Err(error) = self

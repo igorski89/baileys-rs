@@ -549,6 +549,9 @@
       "wire": "2000",
       "expected": {
         "accountType": 0
+      },
+      "tojson": {
+        "accountType": "E2EE"
       }
     },
     {
@@ -571,6 +574,9 @@
       "wire": "2800",
       "expected": {
         "deviceType": 0
+      },
+      "tojson": {
+        "deviceType": "E2EE"
       }
     },
     {
@@ -648,6 +654,9 @@
       "wire": "2800",
       "expected": {
         "accountType": 0
+      },
+      "tojson": {
+        "accountType": "E2EE"
       }
     },
     {
@@ -686,7 +695,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "details": "AAEC/w=="
       }
     },
@@ -708,7 +717,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "accountSignatureKey": "AAEC/w=="
       }
     },
@@ -730,7 +739,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "accountSignature": "AAEC/w=="
       }
     },
@@ -752,7 +761,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "deviceSignature": "AAEC/w=="
       }
     },
@@ -781,7 +790,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "details": "AAEC/w=="
       }
     },
@@ -803,7 +812,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "hmac": "AAEC/w=="
       }
     },
@@ -816,6 +825,9 @@
       "wire": "1800",
       "expected": {
         "accountType": 0
+      },
+      "tojson": {
+        "accountType": "E2EE"
       }
     },
     {
@@ -854,7 +866,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "details": "AAEC/w=="
       }
     },
@@ -876,7 +888,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "accountSignature": "AAEC/w=="
       }
     },
@@ -898,7 +910,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "accountSignatureKey": "AAEC/w=="
       }
     },
@@ -941,6 +953,15 @@
             "promptText": "value💚"
           }
         ]
+      },
+      "tojson": {
+        "capabilityOptions": [
+          {
+            "type": "PROMPT",
+            "title": "value💚",
+            "promptText": "value💚"
+          }
+        ]
       }
     },
     {
@@ -964,6 +985,15 @@
             "promptText": "value💚"
           }
         ]
+      },
+      "tojson": {
+        "conversationOptions": [
+          {
+            "type": "PROMPT",
+            "title": "value💚",
+            "promptText": "value💚"
+          }
+        ]
       }
     },
     {
@@ -982,6 +1012,9 @@
       "wire": "0800",
       "expected": {
         "type": 0
+      },
+      "tojson": {
+        "type": "PROMPT"
       }
     },
     {
@@ -1127,7 +1160,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "message": {
           "conversation": "value💚",
           "senderKeyDistributionMessage": {
@@ -1227,6 +1260,14 @@
             "codeContent": "value💚"
           }
         ]
+      },
+      "tojson": {
+        "codeBlocks": [
+          {
+            "highlightType": "AI_RICH_RESPONSE_CODE_HIGHLIGHT_DEFAULT",
+            "codeContent": "value💚"
+          }
+        ]
       }
     },
     {
@@ -1245,6 +1286,9 @@
       "wire": "0800",
       "expected": {
         "highlightType": 0
+      },
+      "tojson": {
+        "highlightType": "AI_RICH_RESPONSE_CODE_HIGHLIGHT_DEFAULT"
       }
     },
     {
@@ -1304,6 +1348,9 @@
       "wire": "1000",
       "expected": {
         "contentType": 0
+      },
+      "tojson": {
+        "contentType": "DEFAULT"
       }
     },
     {
@@ -1410,6 +1457,9 @@
       "wire": "0800",
       "expected": {
         "type": 0
+      },
+      "tojson": {
+        "type": "AI_RICH_RESPONSE_DYNAMIC_METADATA_TYPE_UNKNOWN"
       }
     },
     {
@@ -1591,6 +1641,9 @@
       "wire": "1800",
       "expected": {
         "alignment": 0
+      },
+      "tojson": {
+        "alignment": "AI_RICH_RESPONSE_IMAGE_LAYOUT_LEADING_ALIGNED"
       }
     },
     {
@@ -1925,6 +1978,9 @@
       "wire": "0800",
       "expected": {
         "messageType": 0
+      },
+      "tojson": {
+        "messageType": "AI_RICH_RESPONSE_TYPE_UNKNOWN"
       }
     },
     {
@@ -1959,6 +2015,15 @@
             "messageText": "value💚"
           }
         ]
+      },
+      "tojson": {
+        "submessages": [
+          {
+            "messageType": "AI_RICH_RESPONSE_UNKNOWN",
+            "gridImageMetadata": {},
+            "messageText": "value💚"
+          }
+        ]
       }
     },
     {
@@ -1983,7 +2048,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "unifiedResponse": {
           "data": "AAEC/w=="
         }
@@ -2032,6 +2097,9 @@
       "wire": "0800",
       "expected": {
         "messageType": 0
+      },
+      "tojson": {
+        "messageType": "AI_RICH_RESPONSE_UNKNOWN"
       }
     },
     {
@@ -2110,6 +2178,17 @@
           "imageText": "value💚",
           "alignment": 0
         }
+      },
+      "tojson": {
+        "imageMetadata": {
+          "imageUrl": {
+            "imagePreviewUrl": "value💚",
+            "imageHighResUrl": "value💚",
+            "sourceUrl": "value💚"
+          },
+          "imageText": "value💚",
+          "alignment": "AI_RICH_RESPONSE_IMAGE_LAYOUT_LEADING_ALIGNED"
+        }
       }
     },
     {
@@ -2168,6 +2247,13 @@
       "expected": {
         "dynamicMetadata": {
           "type": 0,
+          "version": "18446744073709551615",
+          "url": "value💚"
+        }
+      },
+      "tojson": {
+        "dynamicMetadata": {
+          "type": "AI_RICH_RESPONSE_DYNAMIC_METADATA_TYPE_UNKNOWN",
           "version": "18446744073709551615",
           "url": "value💚"
         }
@@ -2231,6 +2317,14 @@
             {}
           ],
           "contentType": 0
+        }
+      },
+      "tojson": {
+        "contentItemsMetadata": {
+          "itemsMetadata": [
+            {}
+          ],
+          "contentType": "DEFAULT"
         }
       }
     },
@@ -2335,7 +2429,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "data": "AAEC/w=="
       }
     },
@@ -2374,6 +2468,11 @@
         "clientInfo": {
           "type": 0
         }
+      },
+      "tojson": {
+        "clientInfo": {
+          "type": "UNKNOWN"
+        }
       }
     },
     {
@@ -2392,6 +2491,9 @@
       "wire": "0800",
       "expected": {
         "type": 0
+      },
+      "tojson": {
+        "type": "UNKNOWN"
       }
     },
     {
@@ -2632,6 +2734,9 @@
       "wire": "2000",
       "expected": {
         "hostStorage": 0
+      },
+      "tojson": {
+        "hostStorage": "ON_PREMISE"
       }
     },
     {
@@ -2654,6 +2759,9 @@
       "wire": "2800",
       "expected": {
         "accountType": 0
+      },
+      "tojson": {
+        "accountType": "ENTERPRISE"
       }
     },
     {
@@ -2716,7 +2824,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "vnameCert": {
           "details": "AAEC/w==",
           "signature": "AAEC/w==",
@@ -2742,7 +2850,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "bizAcctLinkInfo": "AAEC/w=="
       }
     },
@@ -2762,6 +2870,9 @@
       "wire": "0800",
       "expected": {
         "vlevel": 0
+      },
+      "tojson": {
+        "vlevel": "UNKNOWN"
       }
     },
     {
@@ -2817,7 +2928,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "vnameCert": {
           "details": "AAEC/w==",
           "signature": "AAEC/w==",
@@ -2856,6 +2967,9 @@
       "wire": "2800",
       "expected": {
         "hostStorage": 0
+      },
+      "tojson": {
+        "hostStorage": "ON_PREMISE"
       }
     },
     {
@@ -2878,6 +2992,9 @@
       "wire": "3000",
       "expected": {
         "actualActors": 0
+      },
+      "tojson": {
+        "actualActors": "SELF"
       }
     },
     {
@@ -2951,6 +3068,9 @@
       "wire": "1800",
       "expected": {
         "ageCollectionType": 0
+      },
+      "tojson": {
+        "ageCollectionType": "O18_BINARY"
       }
     },
     {
@@ -3046,6 +3166,11 @@
         "capabilities": [
           0
         ]
+      },
+      "tojson": {
+        "capabilities": [
+          "UNKNOWN"
+        ]
       }
     },
     {
@@ -3083,6 +3208,9 @@
       "wire": "1000",
       "expected": {
         "kind": 0
+      },
+      "tojson": {
+        "kind": "BOT_FEEDBACK_POSITIVE"
       }
     },
     {
@@ -3138,6 +3266,9 @@
       "wire": "3000",
       "expected": {
         "kindReport": 0
+      },
+      "tojson": {
+        "kindReport": "NONE"
       }
     },
     {
@@ -3575,6 +3706,9 @@
       "wire": "0800",
       "expected": {
         "imagineType": 0
+      },
+      "tojson": {
+        "imagineType": "UNKNOWN"
       }
     },
     {
@@ -3604,6 +3738,9 @@
       "wire": "0800",
       "expected": {
         "type": 0
+      },
+      "tojson": {
+        "type": "BOT_LINKED_ACCOUNT_TYPE_1P"
       }
     },
     {
@@ -3641,6 +3778,13 @@
             "type": 0
           }
         ]
+      },
+      "tojson": {
+        "accounts": [
+          {
+            "type": "BOT_LINKED_ACCOUNT_TYPE_1P"
+          }
+        ]
       }
     },
     {
@@ -3661,7 +3805,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "acAuthTokens": "AAEC/w=="
       }
     },
@@ -3758,6 +3902,9 @@
       "wire": "3801",
       "expected": {
         "orientationType": 1
+      },
+      "tojson": {
+        "orientationType": "CENTER"
       }
     },
     {
@@ -3906,6 +4053,9 @@
       "wire": "0800",
       "expected": {
         "type": 0
+      },
+      "tojson": {
+        "type": "BOT_MESSAGE_ORIGIN_TYPE_AI_INITIATED"
       }
     },
     {
@@ -3943,6 +4093,13 @@
             "type": 0
           }
         ]
+      },
+      "tojson": {
+        "origins": [
+          {
+            "type": "BOT_MESSAGE_ORIGIN_TYPE_AI_INITIATED"
+          }
+        ]
       }
     },
     {
@@ -3961,6 +4118,9 @@
       "wire": "0800",
       "expected": {
         "botEntryPointOrigin": 0
+      },
+      "tojson": {
+        "botEntryPointOrigin": "UNDEFINED_ENTRY_POINT"
       }
     },
     {
@@ -4039,6 +4199,13 @@
           "pluginType": 0,
           "thumbnailCdnUrl": "value💚"
         }
+      },
+      "tojson": {
+        "pluginMetadata": {
+          "provider": "UNKNOWN",
+          "pluginType": "UNKNOWN_PLUGIN",
+          "thumbnailCdnUrl": "value💚"
+        }
       }
     },
     {
@@ -4098,6 +4265,12 @@
           "sessionId": "value💚",
           "sessionSource": 0
         }
+      },
+      "tojson": {
+        "sessionMetadata": {
+          "sessionId": "value💚",
+          "sessionSource": "NONE"
+        }
       }
     },
     {
@@ -4155,6 +4328,17 @@
           "action": 1,
           "name": "value💚"
         }
+      },
+      "tojson": {
+        "reminderMetadata": {
+          "requestMessageKey": {
+            "remoteJid": "value💚",
+            "fromMe": true,
+            "id": "value💚"
+          },
+          "action": "NOTIFY",
+          "name": "value💚"
+        }
       }
     },
     {
@@ -4172,6 +4356,13 @@
         "modelMetadata": {
           "modelType": 0,
           "premiumModelStatus": 0,
+          "modelNameOverride": "value💚"
+        }
+      },
+      "tojson": {
+        "modelMetadata": {
+          "modelType": "UNKNOWN_TYPE",
+          "premiumModelStatus": "UNKNOWN_STATUS",
           "modelNameOverride": "value💚"
         }
       }
@@ -4225,6 +4416,13 @@
             0
           ]
         }
+      },
+      "tojson": {
+        "capabilityMetadata": {
+          "capabilities": [
+            "UNKNOWN"
+          ]
+        }
       }
     },
     {
@@ -4239,6 +4437,11 @@
       "expected": {
         "imagineMetadata": {
           "imagineType": 0
+        }
+      },
+      "tojson": {
+        "imagineMetadata": {
+          "imagineType": "UNKNOWN"
         }
       }
     },
@@ -4305,6 +4508,13 @@
           "destinationEntryPoint": 0,
           "threadOrigin": 1
         }
+      },
+      "tojson": {
+        "botMetricsMetadata": {
+          "destinationId": "value💚",
+          "destinationEntryPoint": "UNDEFINED_ENTRY_POINT",
+          "threadOrigin": "AI_TAB_THREAD"
+        }
       }
     },
     {
@@ -4337,7 +4547,7 @@
           "acErrorCode": 33
         }
       },
-      "base64": {
+      "tojson": {
         "botLinkedAccountsMetadata": {
           "accounts": [
             {}
@@ -4384,7 +4594,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "aiConversationContext": "AAEC/w=="
       }
     },
@@ -4401,6 +4611,12 @@
       "expected": {
         "botPromotionMessageMetadata": {
           "promotionType": 0,
+          "buttonTitle": "value💚"
+        }
+      },
+      "tojson": {
+        "botPromotionMessageMetadata": {
+          "promotionType": "UNKNOWN_TYPE",
           "buttonTitle": "value💚"
         }
       }
@@ -4420,6 +4636,13 @@
         "botModeSelectionMetadata": {
           "mode": [
             0
+          ]
+        }
+      },
+      "tojson": {
+        "botModeSelectionMetadata": {
+          "mode": [
+            "UNKNOWN_MODE"
           ]
         }
       }
@@ -4459,6 +4682,13 @@
           "ageCollectionEligible": true,
           "shouldTriggerAgeCollectionOnClient": true,
           "ageCollectionType": 0
+        }
+      },
+      "tojson": {
+        "botAgeCollectionMetadata": {
+          "ageCollectionEligible": true,
+          "shouldTriggerAgeCollectionOnClient": true,
+          "ageCollectionType": "O18_BINARY"
         }
       }
     },
@@ -4591,6 +4821,16 @@
             "type": 0
           }
         }
+      },
+      "tojson": {
+        "botThreadInfo": {
+          "serverInfo": {
+            "title": "value💚"
+          },
+          "clientInfo": {
+            "type": "UNKNOWN"
+          }
+        }
       }
     },
     {
@@ -4635,6 +4875,13 @@
           "hcaId": "value💚",
           "sessionTransparencyType": 0
         }
+      },
+      "tojson": {
+        "sessionTransparencyMetadata": {
+          "disclaimerText": "value💚",
+          "hcaId": "value💚",
+          "sessionTransparencyType": "UNKNOWN_TYPE"
+        }
       }
     },
     {
@@ -4655,7 +4902,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "internalMetadata": "AAEC/w=="
       }
     },
@@ -4686,6 +4933,9 @@
       "wire": "1000",
       "expected": {
         "destinationEntryPoint": 0
+      },
+      "tojson": {
+        "destinationEntryPoint": "UNDEFINED_ENTRY_POINT"
       }
     },
     {
@@ -4708,6 +4958,9 @@
       "wire": "1801",
       "expected": {
         "threadOrigin": 1
+      },
+      "tojson": {
+        "threadOrigin": "AI_TAB_THREAD"
       }
     },
     {
@@ -4741,6 +4994,11 @@
         "mode": [
           0
         ]
+      },
+      "tojson": {
+        "mode": [
+          "UNKNOWN_MODE"
+        ]
       }
     },
     {
@@ -4759,6 +5017,9 @@
       "wire": "0800",
       "expected": {
         "modelType": 0
+      },
+      "tojson": {
+        "modelType": "UNKNOWN_TYPE"
       }
     },
     {
@@ -4781,6 +5042,9 @@
       "wire": "1000",
       "expected": {
         "premiumModelStatus": 0
+      },
+      "tojson": {
+        "premiumModelStatus": "UNKNOWN_STATUS"
       }
     },
     {
@@ -4821,6 +5085,9 @@
       "wire": "0800",
       "expected": {
         "provider": 0
+      },
+      "tojson": {
+        "provider": "UNKNOWN"
       }
     },
     {
@@ -4843,6 +5110,9 @@
       "wire": "1000",
       "expected": {
         "pluginType": 0
+      },
+      "tojson": {
+        "pluginType": "UNKNOWN_PLUGIN"
       }
     },
     {
@@ -4950,6 +5220,9 @@
       "wire": "5800",
       "expected": {
         "deprecatedField": 0
+      },
+      "tojson": {
+        "deprecatedField": "UNKNOWN_PLUGIN"
       }
     },
     {
@@ -4972,6 +5245,9 @@
       "wire": "6000",
       "expected": {
         "parentPluginType": 0
+      },
+      "tojson": {
+        "parentPluginType": "UNKNOWN_PLUGIN"
       }
     },
     {
@@ -5091,6 +5367,15 @@
             "sourceUrl": "value💚"
           }
         ]
+      },
+      "tojson": {
+        "sourcesMetadata": [
+          {
+            "sourceTitle": "value💚",
+            "provider": "UNKNOWN",
+            "sourceUrl": "value💚"
+          }
+        ]
       }
     },
     {
@@ -5102,6 +5387,9 @@
       "wire": "2000",
       "expected": {
         "status": 0
+      },
+      "tojson": {
+        "status": "UNKNOWN"
       }
     },
     {
@@ -5191,6 +5479,9 @@
       "wire": "1000",
       "expected": {
         "provider": 0
+      },
+      "tojson": {
+        "provider": "UNKNOWN_PROVIDER"
       }
     },
     {
@@ -5253,6 +5544,9 @@
       "wire": "1000",
       "expected": {
         "provider": 0
+      },
+      "tojson": {
+        "provider": "UNKNOWN"
       }
     },
     {
@@ -5327,6 +5621,15 @@
             "sourceUrl": "value💚"
           }
         ]
+      },
+      "tojson": {
+        "sourcesMetadata": [
+          {
+            "title": "value💚",
+            "provider": "UNKNOWN_PROVIDER",
+            "sourceUrl": "value💚"
+          }
+        ]
       }
     },
     {
@@ -5345,6 +5648,9 @@
       "wire": "0800",
       "expected": {
         "promotionType": 0
+      },
+      "tojson": {
+        "promotionType": "UNKNOWN_TYPE"
       }
     },
     {
@@ -5454,6 +5760,15 @@
             "expirationTimestamp": "18446744073709551615"
           }
         ]
+      },
+      "tojson": {
+        "botFeatureQuotaMetadata": [
+          {
+            "featureType": "UNKNOWN_FEATURE",
+            "remainingQuota": 33,
+            "expirationTimestamp": "18446744073709551615"
+          }
+        ]
       }
     },
     {
@@ -5472,6 +5787,9 @@
       "wire": "0800",
       "expected": {
         "featureType": 0
+      },
+      "tojson": {
+        "featureType": "UNKNOWN_FEATURE"
       }
     },
     {
@@ -5542,6 +5860,9 @@
       "wire": "1001",
       "expected": {
         "action": 1
+      },
+      "tojson": {
+        "action": "NOTIFY"
       }
     },
     {
@@ -5586,6 +5907,9 @@
       "wire": "2801",
       "expected": {
         "frequency": 1
+      },
+      "tojson": {
+        "frequency": "ONCE"
       }
     },
     {
@@ -5691,6 +6015,9 @@
       "wire": "1000",
       "expected": {
         "sessionSource": 0
+      },
+      "tojson": {
+        "sessionSource": "NONE"
       }
     },
     {
@@ -5741,11 +6068,11 @@
           }
         ]
       },
-      "base64": {
+      "tojson": {
         "proofs": [
           {
             "version": 33,
-            "useCase": 0,
+            "useCase": "UNSPECIFIED",
             "signature": "AAEC/w=="
           }
         ]
@@ -5778,6 +6105,9 @@
       "wire": "1000",
       "expected": {
         "useCase": 0
+      },
+      "tojson": {
+        "useCase": "UNSPECIFIED"
       }
     },
     {
@@ -5809,7 +6139,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "signature": "AAEC/w=="
       }
     },
@@ -5835,7 +6165,7 @@
           }
         ]
       },
-      "base64": {
+      "tojson": {
         "certificateChain": [
           "AAEC/w=="
         ]
@@ -5869,6 +6199,15 @@
             "sourceProviderUrl": "value💚"
           }
         ]
+      },
+      "tojson": {
+        "sources": [
+          {
+            "provider": "UNKNOWN",
+            "thumbnailCdnUrl": "value💚",
+            "sourceProviderUrl": "value💚"
+          }
+        ]
       }
     },
     {
@@ -5887,6 +6226,9 @@
       "wire": "0800",
       "expected": {
         "provider": 0
+      },
+      "tojson": {
+        "provider": "UNKNOWN"
       }
     },
     {
@@ -6177,6 +6519,9 @@
       "wire": "0800",
       "expected": {
         "callResult": 0
+      },
+      "tojson": {
+        "callResult": "CONNECTED"
       }
     },
     {
@@ -6210,6 +6555,9 @@
       "wire": "1800",
       "expected": {
         "silenceReason": 0
+      },
+      "tojson": {
+        "silenceReason": "NONE"
       }
     },
     {
@@ -6352,6 +6700,14 @@
             "callResult": 0
           }
         ]
+      },
+      "tojson": {
+        "participants": [
+          {
+            "userJid": "value💚",
+            "callResult": "CONNECTED"
+          }
+        ]
       }
     },
     {
@@ -6363,6 +6719,9 @@
       "wire": "7800",
       "expected": {
         "callType": 0
+      },
+      "tojson": {
+        "callType": "REGULAR"
       }
     },
     {
@@ -6403,6 +6762,9 @@
       "wire": "1000",
       "expected": {
         "callResult": 0
+      },
+      "tojson": {
+        "callResult": "CONNECTED"
       }
     },
     {
@@ -6455,7 +6817,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "leaf": {
           "details": "AAEC/w==",
           "signature": "AAEC/w=="
@@ -6494,7 +6856,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "intermediate": {
           "details": "AAEC/w==",
           "signature": "AAEC/w=="
@@ -6526,7 +6888,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "details": "AAEC/w=="
       }
     },
@@ -6548,7 +6910,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "signature": "AAEC/w=="
       }
     },
@@ -6599,7 +6961,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "key": "AAEC/w=="
       }
     },
@@ -6660,6 +7022,15 @@
         "secretCode": {
           "encoding": 0,
           "transformer": 0,
+          "transformerArg": [
+            {}
+          ]
+        }
+      },
+      "tojson": {
+        "secretCode": {
+          "encoding": "UTF8",
+          "transformer": "NONE",
           "transformerArg": [
             {}
           ]
@@ -6774,7 +7145,7 @@
           "sourceUrl": "value💚"
         }
       },
-      "base64": {
+      "tojson": {
         "ctwaContext": {
           "conversionSource": "value💚",
           "conversionData": "AAEC/w==",
@@ -6829,7 +7200,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "conversionData": "AAEC/w=="
       }
     },
@@ -6919,6 +7290,9 @@
       "wire": "5000",
       "expected": {
         "mediaType": 0
+      },
+      "tojson": {
+        "mediaType": "NONE"
       }
     },
     {
@@ -7150,6 +7524,17 @@
           },
           "mcc": "value💚"
         }
+      },
+      "tojson": {
+        "userAgent": {
+          "platform": "ANDROID",
+          "appVersion": {
+            "primary": 33,
+            "secondary": 33,
+            "tertiary": 33
+          },
+          "mcc": "value💚"
+        }
       }
     },
     {
@@ -7221,6 +7606,9 @@
       "wire": "6000",
       "expected": {
         "connectType": 0
+      },
+      "tojson": {
+        "connectType": "CELLULAR_UNKNOWN"
       }
     },
     {
@@ -7243,6 +7631,9 @@
       "wire": "6800",
       "expected": {
         "connectReason": 0
+      },
+      "tojson": {
+        "connectReason": "PUSH"
       }
     },
     {
@@ -7284,6 +7675,12 @@
       "expected": {
         "dnsSource": {
           "dnsMethod": 0,
+          "appCached": true
+        }
+      },
+      "tojson": {
+        "dnsSource": {
+          "dnsMethod": "SYSTEM",
           "appCached": true
         }
       }
@@ -7352,7 +7749,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "devicePairingData": {
           "eRegid": "AAEC/w==",
           "eKeytype": "AAEC/w==",
@@ -7369,6 +7766,9 @@
       "wire": "a00100",
       "expected": {
         "product": 0
+      },
+      "tojson": {
+        "product": "WHATSAPP"
       }
     },
     {
@@ -7400,7 +7800,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "fbCat": "AAEC/w=="
       }
     },
@@ -7422,7 +7822,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "fbUserAgent": "AAEC/w=="
       }
     },
@@ -7457,6 +7857,9 @@
       "wire": "f00100",
       "expected": {
         "iosAppExtension": 0
+      },
+      "tojson": {
+        "iosAppExtension": "SHARE_EXTENSION"
       }
     },
     {
@@ -7499,7 +7902,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "fbDeviceId": "AAEC/w=="
       }
     },
@@ -7532,7 +7935,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "paddingBytes": "AAEC/w=="
       }
     },
@@ -7584,7 +7987,7 @@
           "enableReadReceipts": true
         }
       },
-      "base64": {
+      "tojson": {
         "interopData": {
           "accountId": "18446744073709551615",
           "token": "AAEC/w==",
@@ -7601,6 +8004,9 @@
       "wire": "c00200",
       "expected": {
         "trafficAnonymization": 0
+      },
+      "tojson": {
+        "trafficAnonymization": "OFF"
       }
     },
     {
@@ -7634,6 +8040,9 @@
       "wire": "d00200",
       "expected": {
         "accountType": 0
+      },
+      "tojson": {
+        "accountType": "DEFAULT"
       }
     },
     {
@@ -7707,6 +8116,9 @@
       "wire": "7800",
       "expected": {
         "dnsMethod": 0
+      },
+      "tojson": {
+        "dnsMethod": "SYSTEM"
       }
     },
     {
@@ -7756,7 +8168,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "eRegid": "AAEC/w=="
       }
     },
@@ -7778,7 +8190,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "eKeytype": "AAEC/w=="
       }
     },
@@ -7800,7 +8212,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "eIdent": "AAEC/w=="
       }
     },
@@ -7822,7 +8234,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "eSkeyId": "AAEC/w=="
       }
     },
@@ -7844,7 +8256,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "eSkeyVal": "AAEC/w=="
       }
     },
@@ -7866,7 +8278,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "eSkeySig": "AAEC/w=="
       }
     },
@@ -7888,7 +8300,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "buildHash": "AAEC/w=="
       }
     },
@@ -7910,7 +8322,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "deviceProps": "AAEC/w=="
       }
     },
@@ -7950,7 +8362,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "token": "AAEC/w=="
       }
     },
@@ -7981,6 +8393,9 @@
       "wire": "0800",
       "expected": {
         "platform": 0
+      },
+      "tojson": {
+        "platform": "ANDROID"
       }
     },
     {
@@ -8099,6 +8514,9 @@
       "wire": "5000",
       "expected": {
         "releaseChannel": 0
+      },
+      "tojson": {
+        "releaseChannel": "RELEASE"
       }
     },
     {
@@ -8165,6 +8583,9 @@
       "wire": "7800",
       "expected": {
         "deviceType": 0
+      },
+      "tojson": {
+        "deviceType": "PHONE"
       }
     },
     {
@@ -8308,6 +8729,9 @@
       "wire": "2000",
       "expected": {
         "webSubPlatform": 0
+      },
+      "tojson": {
+        "webSubPlatform": "WEB_BROWSER"
       }
     },
     {
@@ -8456,7 +8880,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "features": "AAEC/w=="
       }
     },
@@ -8522,7 +8946,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "hash": "AAEC/w=="
       }
     },
@@ -8551,7 +8975,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "publicKey": "AAEC/w=="
       }
     },
@@ -8564,6 +8988,9 @@
       "wire": "1000",
       "expected": {
         "deviceType": 0
+      },
+      "tojson": {
+        "deviceType": "UNKNOWN"
       }
     },
     {
@@ -8698,7 +9125,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "quotedMessage": {
           "conversation": "value💚",
           "senderKeyDistributionMessage": {
@@ -8768,7 +9195,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "conversionData": "AAEC/w=="
       }
     },
@@ -8831,10 +9258,10 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "quotedAd": {
           "advertiserName": "value💚",
-          "mediaType": 0,
+          "mediaType": "NONE",
           "jpegThumbnail": "AAEC/w=="
         }
       }
@@ -8898,7 +9325,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "ephemeralSharedSecret": "AAEC/w=="
       }
     },
@@ -8918,6 +9345,13 @@
           "title": "value💚",
           "body": "value💚",
           "mediaType": 0
+        }
+      },
+      "tojson": {
+        "externalAdReply": {
+          "title": "value💚",
+          "body": "value💚",
+          "mediaType": "NONE"
         }
       }
     },
@@ -8969,6 +9403,13 @@
         "disappearingMode": {
           "initiator": 0,
           "trigger": 0,
+          "initiatorDeviceJid": "value💚"
+        }
+      },
+      "tojson": {
+        "disappearingMode": {
+          "initiator": "CHANGED_IN_CHAT",
+          "trigger": "UNKNOWN",
           "initiatorDeviceJid": "value💚"
         }
       }
@@ -9243,7 +9684,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "ctwaPayload": "AAEC/w=="
       }
     },
@@ -9275,6 +9716,9 @@
       "wire": "c80300",
       "expected": {
         "statusAttributionType": 0
+      },
+      "tojson": {
+        "statusAttributionType": "NONE"
       }
     },
     {
@@ -9316,6 +9760,9 @@
       "wire": "d80300",
       "expected": {
         "pairedMediaType": 0
+      },
+      "tojson": {
+        "pairedMediaType": "NOT_PAIRED_MEDIA"
       }
     },
     {
@@ -9377,6 +9824,9 @@
       "wire": "800400",
       "expected": {
         "statusSourceType": 0
+      },
+      "tojson": {
+        "statusSourceType": "IMAGE"
       }
     },
     {
@@ -9411,6 +9861,15 @@
             "statusReshare": {}
           }
         ]
+      },
+      "tojson": {
+        "statusAttributions": [
+          {
+            "type": "UNKNOWN",
+            "actionUrl": "value💚",
+            "statusReshare": {}
+          }
+        ]
       }
     },
     {
@@ -9433,6 +9892,9 @@
       "wire": "980400",
       "expected": {
         "forwardOrigin": 0
+      },
+      "tojson": {
+        "forwardOrigin": "UNKNOWN"
       }
     },
     {
@@ -9494,6 +9956,11 @@
         "statusAudienceMetadata": {
           "audienceType": 0
         }
+      },
+      "tojson": {
+        "statusAudienceMetadata": {
+          "audienceType": "UNKNOWN"
+        }
       }
     },
     {
@@ -9516,6 +9983,9 @@
       "wire": "b80400",
       "expected": {
         "quotedType": 0
+      },
+      "tojson": {
+        "quotedType": "EXPLICIT"
       }
     },
     {
@@ -9542,6 +10012,12 @@
       "expected": {
         "botMessageSharingInfo": {
           "botEntryPointOrigin": 0,
+          "forwardScore": 33
+        }
+      },
+      "tojson": {
+        "botMessageSharingInfo": {
+          "botEntryPointOrigin": "UNDEFINED_ENTRY_POINT",
           "forwardScore": 33
         }
       }
@@ -9573,6 +10049,9 @@
       "wire": "1000",
       "expected": {
         "mediaType": 0
+      },
+      "tojson": {
+        "mediaType": "NONE"
       }
     },
     {
@@ -9604,7 +10083,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "jpegThumbnail": "AAEC/w=="
       }
     },
@@ -9808,6 +10287,9 @@
       "wire": "1800",
       "expected": {
         "mediaType": 0
+      },
+      "tojson": {
+        "mediaType": "NONE"
       }
     },
     {
@@ -9861,7 +10343,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "thumbnail": "AAEC/w=="
       }
     },
@@ -10072,6 +10554,9 @@
       "wire": "c80100",
       "expected": {
         "adType": 0
+      },
+      "tojson": {
+        "adType": "CTWA"
       }
     },
     {
@@ -10218,6 +10703,9 @@
       "wire": "2001",
       "expected": {
         "contentType": 1
+      },
+      "tojson": {
+        "contentType": "UPDATE"
       }
     },
     {
@@ -10300,7 +10788,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "quotedQuestion": {
           "conversation": "value💚",
           "senderKeyDistributionMessage": {
@@ -10355,7 +10843,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "quotedResponse": {
           "conversation": "value💚",
           "senderKeyDistributionMessage": {
@@ -10386,6 +10874,9 @@
       "wire": "0800",
       "expected": {
         "audienceType": 0
+      },
+      "tojson": {
+        "audienceType": "UNKNOWN"
       }
     },
     {
@@ -10564,6 +11055,9 @@
       "wire": "5800",
       "expected": {
         "endOfHistoryTransferType": 0
+      },
+      "tojson": {
+        "endOfHistoryTransferType": "COMPLETE_BUT_MORE_MESSAGES_REMAIN_ON_PRIMARY"
       }
     },
     {
@@ -10649,6 +11143,13 @@
           "trigger": 0,
           "initiatorDeviceJid": "value💚"
         }
+      },
+      "tojson": {
+        "disappearingMode": {
+          "initiator": "CHANGED_IN_CHAT",
+          "trigger": "UNKNOWN",
+          "initiatorDeviceJid": "value💚"
+        }
       }
     },
     {
@@ -10694,6 +11195,15 @@
             "memberLabel": {}
           }
         ]
+      },
+      "tojson": {
+        "participant": [
+          {
+            "userJid": "value💚",
+            "rank": "REGULAR",
+            "memberLabel": {}
+          }
+        ]
       }
     },
     {
@@ -10714,7 +11224,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "tcToken": "AAEC/w=="
       }
     },
@@ -10747,7 +11257,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "contactPrimaryIdentityKey": "AAEC/w=="
       }
     },
@@ -10799,6 +11309,9 @@
       "wire": "d80100",
       "expected": {
         "mediaVisibility": 0
+      },
+      "tojson": {
+        "mediaVisibility": "DEFAULT"
       }
     },
     {
@@ -11030,6 +11543,9 @@
       "wire": "f80201",
       "expected": {
         "systemMessageToInsert": 1
+      },
+      "tojson": {
+        "systemMessageToInsert": "E2EE_MSG"
       }
     },
     {
@@ -11096,6 +11612,9 @@
       "wire": "a00300",
       "expected": {
         "limitSharingTrigger": 0
+      },
+      "tojson": {
+        "limitSharingTrigger": "UNKNOWN"
       }
     },
     {
@@ -11147,6 +11666,9 @@
       "wire": "0800",
       "expected": {
         "chatLockSupportLevel": 0
+      },
+      "tojson": {
+        "chatLockSupportLevel": "NONE"
       }
     },
     {
@@ -11214,6 +11736,9 @@
       "wire": "2800",
       "expected": {
         "memberNameTagPrimarySupport": 0
+      },
+      "tojson": {
+        "memberNameTagPrimarySupport": "DISABLED"
       }
     },
     {
@@ -11317,7 +11842,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "signature": "AAEC/w=="
       }
     },
@@ -11346,7 +11871,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "senderKeyHash": "AAEC/w=="
       }
     },
@@ -11385,6 +11910,9 @@
       "wire": "2000",
       "expected": {
         "senderAccountType": 0
+      },
+      "tojson": {
+        "senderAccountType": "E2EE"
       }
     },
     {
@@ -11407,6 +11935,9 @@
       "wire": "2800",
       "expected": {
         "receiverAccountType": 0
+      },
+      "tojson": {
+        "receiverAccountType": "E2EE"
       }
     },
     {
@@ -11438,7 +11969,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "recipientKeyHash": "AAEC/w=="
       }
     },
@@ -11514,6 +12045,9 @@
       "wire": "1800",
       "expected": {
         "platformType": 0
+      },
+      "tojson": {
+        "platformType": "UNKNOWN"
       }
     },
     {
@@ -11851,6 +12385,9 @@
       "wire": "0800",
       "expected": {
         "initiator": 0
+      },
+      "tojson": {
+        "initiator": "CHANGED_IN_CHAT"
       }
     },
     {
@@ -11873,6 +12410,9 @@
       "wire": "1000",
       "expected": {
         "trigger": 0
+      },
+      "tojson": {
+        "trigger": "UNKNOWN"
       }
     },
     {
@@ -12017,7 +12557,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "message": {
           "conversation": "value💚",
           "senderKeyDistributionMessage": {
@@ -12112,7 +12652,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "artworkSha256": "AAEC/w=="
       }
     },
@@ -12134,7 +12674,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "artworkEncSha256": "AAEC/w=="
       }
     },
@@ -12167,7 +12707,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "countryBlocklist": "AAEC/w=="
       }
     },
@@ -12200,7 +12740,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "artworkMediaKey": "AAEC/w=="
       }
     },
@@ -12262,7 +12802,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "encryptedPayload": "AAEC/w=="
       }
     },
@@ -12284,7 +12824,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "iv": "AAEC/w=="
       }
     },
@@ -12389,6 +12929,13 @@
           "timestampMs": "-9007199254740993",
           "extraGuestCount": 33
         }
+      },
+      "tojson": {
+        "eventResponseMessage": {
+          "response": "UNKNOWN",
+          "timestampMs": "-9007199254740993",
+          "extraGuestCount": 33
+        }
       }
     },
     {
@@ -12456,7 +13003,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "mediaKey": "AAEC/w=="
       }
     },
@@ -12511,7 +13058,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "fileSha256": "AAEC/w=="
       }
     },
@@ -12533,7 +13080,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "fileEncSha256": "AAEC/w=="
       }
     },
@@ -12684,6 +13231,9 @@
       "wire": "1000",
       "expected": {
         "mediaVisibility": 0
+      },
+      "tojson": {
+        "mediaVisibility": "DEFAULT"
       }
     },
     {
@@ -12952,6 +13502,18 @@
             ]
           }
         }
+      },
+      "tojson": {
+        "chatLockSettings": {
+          "hideLockedChats": true,
+          "secretCode": {
+            "encoding": "UTF8",
+            "transformer": "NONE",
+            "transformerArg": [
+              {}
+            ]
+          }
+        }
       }
     },
     {
@@ -13006,7 +13568,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "deprecatedMessageHistoryBundle": {
           "mimetype": "value💚",
           "fileSha256": "AAEC/w==",
@@ -13023,6 +13585,9 @@
       "wire": "1000",
       "expected": {
         "processState": 0
+      },
+      "tojson": {
+        "processState": "NOT_INJECTED"
       }
     },
     {
@@ -13129,6 +13694,9 @@
       "wire": "1000",
       "expected": {
         "rank": 0
+      },
+      "tojson": {
+        "rank": "REGULAR"
       }
     },
     {
@@ -13208,7 +13776,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "clientHello": {
           "ephemeral": "AAEC/w==",
           "static": "AAEC/w==",
@@ -13258,7 +13826,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "serverHello": {
           "ephemeral": "AAEC/w==",
           "static": "AAEC/w==",
@@ -13308,7 +13876,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "clientFinish": {
           "static": "AAEC/w==",
           "payload": "AAEC/w==",
@@ -13341,7 +13909,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "static": "AAEC/w=="
       }
     },
@@ -13363,7 +13931,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "payload": "AAEC/w=="
       }
     },
@@ -13385,7 +13953,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "extendedCiphertext": "AAEC/w=="
       }
     },
@@ -13414,7 +13982,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "ephemeral": "AAEC/w=="
       }
     },
@@ -13436,7 +14004,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "static": "AAEC/w=="
       }
     },
@@ -13458,7 +14026,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "payload": "AAEC/w=="
       }
     },
@@ -13491,7 +14059,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "extendedCiphertext": "AAEC/w=="
       }
     },
@@ -13520,7 +14088,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "ephemeral": "AAEC/w=="
       }
     },
@@ -13542,7 +14110,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "static": "AAEC/w=="
       }
     },
@@ -13564,7 +14132,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "payload": "AAEC/w=="
       }
     },
@@ -13586,7 +14154,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "extendedStatic": "AAEC/w=="
       }
     },
@@ -13739,6 +14307,19 @@
             "opacity": 33
           }
         }
+      },
+      "tojson": {
+        "globalSettings": {
+          "lightThemeWallpaper": {
+            "filename": "value💚",
+            "opacity": 33
+          },
+          "mediaVisibility": "DEFAULT",
+          "darkThemeWallpaper": {
+            "filename": "value💚",
+            "opacity": 33
+          }
+        }
       }
     },
     {
@@ -13759,7 +14340,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "threadIdUserSecret": "AAEC/w=="
       }
     },
@@ -13812,7 +14393,7 @@
           }
         ]
       },
-      "base64": {
+      "tojson": {
         "recentStickers": [
           {
             "url": "value💚",
@@ -13868,6 +14449,15 @@
             "silenceReason": 0
           }
         ]
+      },
+      "tojson": {
+        "callLogRecords": [
+          {
+            "callResult": "CONNECTED",
+            "isDndMode": true,
+            "silenceReason": "NONE"
+          }
+        ]
       }
     },
     {
@@ -13879,6 +14469,9 @@
       "wire": "7000",
       "expected": {
         "aiWaitListState": 0
+      },
+      "tojson": {
+        "aiWaitListState": "IN_WAITLIST"
       }
     },
     {
@@ -13942,7 +14535,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "shareableChatIdentifierEncryptionKey": "AAEC/w=="
       }
     },
@@ -14200,6 +14793,9 @@
       "wire": "2001",
       "expected": {
         "webviewPresentation": 1
+      },
+      "tojson": {
+        "webviewPresentation": "FULL"
       }
     },
     {
@@ -14238,7 +14834,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "publicKey": "AAEC/w=="
       }
     },
@@ -14260,7 +14856,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "privateKey": "AAEC/w=="
       }
     },
@@ -14676,6 +15272,9 @@
       "wire": "4001",
       "expected": {
         "statusLinkType": 1
+      },
+      "tojson": {
+        "statusLinkType": "RASTERIZED_LINK_PREVIEW"
       }
     },
     {
@@ -14789,6 +15388,9 @@
       "wire": "0800",
       "expected": {
         "keepType": 0
+      },
+      "tojson": {
+        "keepType": "UNKNOWN"
       }
     },
     {
@@ -14901,7 +15503,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "baseKey": "AAEC/w=="
       }
     },
@@ -14923,7 +15525,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "ratchetKey": "AAEC/w=="
       }
     },
@@ -14945,7 +15547,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "identityKey": "AAEC/w=="
       }
     },
@@ -14967,7 +15569,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "baseKeySignature": "AAEC/w=="
       }
     },
@@ -14996,7 +15598,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "id": "AAEC/w=="
       }
     },
@@ -15065,7 +15667,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "encodedMappingPayload": "AAEC/w=="
       }
     },
@@ -15134,6 +15736,13 @@
           "timestampMs": "-9007199254740993",
           "extraGuestCount": 33
         }
+      },
+      "tojson": {
+        "eventResponseMessage": {
+          "response": "UNKNOWN",
+          "timestampMs": "-9007199254740993",
+          "extraGuestCount": 33
+        }
       }
     },
     {
@@ -15162,7 +15771,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "pollVote": {
           "selectedOptions": [
             "AAEC/w=="
@@ -15197,6 +15806,9 @@
       "wire": "1000",
       "expected": {
         "trigger": 0
+      },
+      "tojson": {
+        "trigger": "UNKNOWN"
       }
     },
     {
@@ -15366,7 +15978,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "fileEncSha256": "AAEC/w=="
       }
     },
@@ -15419,6 +16031,9 @@
       "wire": "1800",
       "expected": {
         "result": 0
+      },
+      "tojson": {
+        "result": "GENERAL_ERROR"
       }
     },
     {
@@ -15450,7 +16065,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "messageSecret": "AAEC/w=="
       }
     },
@@ -15525,7 +16140,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "senderKeyDistributionMessage": {
           "groupId": "value💚",
           "axolotlSenderKeyDistributionMessage": "AAEC/w=="
@@ -15661,7 +16276,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "audioMessage": {
           "url": "value💚",
           "mimetype": "value💚",
@@ -15695,7 +16310,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "videoMessage": {
           "url": "value💚",
           "mimetype": "value💚",
@@ -15737,7 +16352,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "call": {
           "callKey": "AAEC/w==",
           "conversionSource": "value💚",
@@ -15785,6 +16400,17 @@
             "id": "value💚"
           },
           "type": 0,
+          "ephemeralExpiration": 33
+        }
+      },
+      "tojson": {
+        "protocolMessage": {
+          "key": {
+            "remoteJid": "value💚",
+            "fromMe": true,
+            "id": "value💚"
+          },
+          "type": "REVOKE",
           "ephemeralExpiration": 33
         }
       }
@@ -15867,7 +16493,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "fastRatchetKeySenderKeyDistributionMessage": {
           "groupId": "value💚",
           "axolotlSenderKeyDistributionMessage": "AAEC/w=="
@@ -16082,7 +16708,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "stickerMessage": {
           "url": "value💚",
           "fileSha256": "AAEC/w==",
@@ -16244,7 +16870,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "messageContextInfo": {
           "deviceListMetadata": {
             "senderKeyHash": "AAEC/w==",
@@ -16326,7 +16952,7 @@
           "itemCount": 33
         }
       },
-      "base64": {
+      "tojson": {
         "orderMessage": {
           "orderId": "value💚",
           "thumbnail": "AAEC/w==",
@@ -16351,6 +16977,15 @@
         "listResponseMessage": {
           "title": "value💚",
           "listType": 0,
+          "singleSelectReply": {
+            "selectedRowId": "value💚"
+          }
+        }
+      },
+      "tojson": {
+        "listResponseMessage": {
+          "title": "value💚",
+          "listType": "UNKNOWN",
           "singleSelectReply": {
             "selectedRowId": "value💚"
           }
@@ -16396,6 +17031,13 @@
           "note": "value💚",
           "token": "value💚",
           "attachmentType": 0
+        }
+      },
+      "tojson": {
+        "invoiceMessage": {
+          "note": "value💚",
+          "token": "value💚",
+          "attachmentType": "IMAGE"
         }
       }
     },
@@ -16451,6 +17093,17 @@
           },
           "type": 0
         }
+      },
+      "tojson": {
+        "buttonsResponseMessage": {
+          "selectedButtonId": "value💚",
+          "contextInfo": {
+            "stanzaId": "value💚",
+            "participant": "value💚",
+            "quotedMessage": {}
+          },
+          "type": "UNKNOWN"
+        }
       }
     },
     {
@@ -16466,6 +17119,12 @@
       "expected": {
         "paymentInviteMessage": {
           "serviceType": 0,
+          "expiryTimestamp": "-9007199254740993"
+        }
+      },
+      "tojson": {
+        "paymentInviteMessage": {
+          "serviceType": "UNKNOWN",
           "expiryTimestamp": "-9007199254740993"
         }
       }
@@ -16598,6 +17257,24 @@
             "quotedMessage": {}
           }
         }
+      },
+      "tojson": {
+        "interactiveResponseMessage": {
+          "body": {
+            "text": "value💚",
+            "format": "DEFAULT"
+          },
+          "nativeFlowResponseMessage": {
+            "name": "value💚",
+            "paramsJson": "value💚",
+            "version": 33
+          },
+          "contextInfo": {
+            "stanzaId": "value💚",
+            "participant": "value💚",
+            "quotedMessage": {}
+          }
+        }
       }
     },
     {
@@ -16630,7 +17307,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "pollCreationMessage": {
           "encKey": "AAEC/w==",
           "name": "value💚",
@@ -16688,7 +17365,7 @@
           "metadata": {}
         }
       },
-      "base64": {
+      "tojson": {
         "pollUpdateMessage": {
           "pollCreationMessageKey": {
             "remoteJid": "value💚",
@@ -16726,6 +17403,17 @@
             "id": "value💚"
           },
           "keepType": 0,
+          "timestampMs": "-9007199254740993"
+        }
+      },
+      "tojson": {
+        "keepInChatMessage": {
+          "key": {
+            "remoteJid": "value💚",
+            "fromMe": true,
+            "id": "value💚"
+          },
+          "keepType": "UNKNOWN",
           "timestampMs": "-9007199254740993"
         }
       }
@@ -16841,7 +17529,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "encReactionMessage": {
           "targetMessageKey": {
             "remoteJid": "value💚",
@@ -16929,7 +17617,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "pollCreationMessageV2": {
           "encKey": "AAEC/w==",
           "name": "value💚",
@@ -16954,6 +17642,13 @@
         "scheduledCallCreationMessage": {
           "scheduledTimestampMs": "-9007199254740993",
           "callType": 0,
+          "title": "value💚"
+        }
+      },
+      "tojson": {
+        "scheduledCallCreationMessage": {
+          "scheduledTimestampMs": "-9007199254740993",
+          "callType": "UNKNOWN",
           "title": "value💚"
         }
       }
@@ -17006,6 +17701,17 @@
           "type": 0,
           "senderTimestampMs": "-9007199254740993"
         }
+      },
+      "tojson": {
+        "pinInChatMessage": {
+          "key": {
+            "remoteJid": "value💚",
+            "fromMe": true,
+            "id": "value💚"
+          },
+          "type": "UNKNOWN_TYPE",
+          "senderTimestampMs": "-9007199254740993"
+        }
       }
     },
     {
@@ -17038,7 +17744,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "pollCreationMessageV3": {
           "encKey": "AAEC/w==",
           "name": "value💚",
@@ -17071,6 +17777,16 @@
           },
           "editType": 0
         }
+      },
+      "tojson": {
+        "scheduledCallEditMessage": {
+          "key": {
+            "remoteJid": "value💚",
+            "fromMe": true,
+            "id": "value💚"
+          },
+          "editType": "UNKNOWN"
+        }
       }
     },
     {
@@ -17099,7 +17815,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "ptvMessage": {
           "url": "value💚",
           "mimetype": "value💚",
@@ -17147,6 +17863,13 @@
           "callOutcome": 0,
           "durationSecs": "-9007199254740993"
         }
+      },
+      "tojson": {
+        "callLogMesssage": {
+          "isVideo": true,
+          "callOutcome": "CONNECTED",
+          "durationSecs": "-9007199254740993"
+        }
       }
     },
     {
@@ -17183,7 +17906,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "messageHistoryBundle": {
           "mimetype": "value💚",
           "fileSha256": "AAEC/w==",
@@ -17233,7 +17956,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "encCommentMessage": {
           "targetMessageKey": {
             "remoteJid": "value💚",
@@ -17271,10 +17994,10 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "bcallMessage": {
           "sessionId": "value💚",
-          "mediaType": 0,
+          "mediaType": "UNKNOWN",
           "masterKey": "AAEC/w=="
         }
       }
@@ -17371,7 +18094,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "encEventResponseMessage": {
           "eventCreationMessageKey": {
             "remoteJid": "value💚",
@@ -17442,7 +18165,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "newsletterAdminInviteMessage": {
           "newsletterJid": "value💚",
           "newsletterName": "value💚",
@@ -17462,6 +18185,11 @@
       "expected": {
         "placeholderMessage": {
           "type": 0
+        }
+      },
+      "tojson": {
+        "placeholderMessage": {
+          "type": "MASK_LINKED_DEVICES"
         }
       }
     },
@@ -17507,7 +18235,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "secretEncryptedMessage": {
           "targetMessageKey": {
             "remoteJid": "value💚",
@@ -17814,9 +18542,9 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "richResponseMessage": {
-          "messageType": 0,
+          "messageType": "AI_RICH_RESPONSE_TYPE_UNKNOWN",
           "submessages": [
             {}
           ],
@@ -17858,6 +18586,21 @@
             "id": "value💚"
           },
           "type": 0
+        }
+      },
+      "tojson": {
+        "statusNotificationMessage": {
+          "responseMessageKey": {
+            "remoteJid": "value💚",
+            "fromMe": true,
+            "id": "value💚"
+          },
+          "originalMessageKey": {
+            "remoteJid": "value💚",
+            "fromMe": true,
+            "id": "value💚"
+          },
+          "type": "UNKNOWN"
         }
       }
     },
@@ -18112,9 +18855,9 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "statusQuotedMessage": {
-          "type": 1,
+          "type": "QUESTION_ANSWER",
           "text": "value💚",
           "thumbnail": "AAEC/w=="
         }
@@ -18144,6 +18887,17 @@
           },
           "stickerKey": "value💚",
           "type": 0
+        }
+      },
+      "tojson": {
+        "statusStickerInteractionMessage": {
+          "key": {
+            "remoteJid": "value💚",
+            "fromMe": true,
+            "id": "value💚"
+          },
+          "stickerKey": "value💚",
+          "type": "UNKNOWN"
         }
       }
     },
@@ -18177,7 +18931,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "pollCreationMessageV5": {
           "encKey": "AAEC/w==",
           "name": "value💚",
@@ -18213,7 +18967,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "newsletterFollowerInviteMessageV2": {
           "newsletterJid": "value💚",
           "newsletterName": "value💚",
@@ -18370,7 +19124,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "keyId": {
           "keyId": "AAEC/w=="
         }
@@ -18414,7 +19168,7 @@
           "timestamp": "-9007199254740993"
         }
       },
-      "base64": {
+      "tojson": {
         "keyData": {
           "keyData": "AAEC/w==",
           "fingerprint": {
@@ -18453,7 +19207,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "keyData": "AAEC/w=="
       }
     },
@@ -18560,7 +19314,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "keyId": "AAEC/w=="
       }
     },
@@ -18597,7 +19351,7 @@
           }
         ]
       },
-      "base64": {
+      "tojson": {
         "keyIds": [
           {
             "keyId": "AAEC/w=="
@@ -18680,7 +19434,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "fileSha256": "AAEC/w=="
       }
     },
@@ -18735,7 +19489,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "mediaKey": "AAEC/w=="
       }
     },
@@ -18757,7 +19511,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "fileEncSha256": "AAEC/w=="
       }
     },
@@ -18828,7 +19582,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "streamingSidecar": "AAEC/w=="
       }
     },
@@ -18850,7 +19604,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "waveform": "AAEC/w=="
       }
     },
@@ -18896,6 +19650,9 @@
       "wire": "b80100",
       "expected": {
         "mediaKeyDomain": 0
+      },
+      "tojson": {
+        "mediaKeyDomain": "UNSET"
       }
     },
     {
@@ -18936,6 +19693,9 @@
       "wire": "1000",
       "expected": {
         "mediaType": 0
+      },
+      "tojson": {
+        "mediaType": "UNKNOWN"
       }
     },
     {
@@ -18967,7 +19727,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "masterKey": "AAEC/w=="
       }
     },
@@ -19059,6 +19819,15 @@
             "type": 0
           }
         ]
+      },
+      "tojson": {
+        "buttons": [
+          {
+            "buttonId": "value💚",
+            "buttonText": {},
+            "type": "UNKNOWN"
+          }
+        ]
       }
     },
     {
@@ -19070,6 +19839,9 @@
       "wire": "5000",
       "expected": {
         "headerType": 0
+      },
+      "tojson": {
+        "headerType": "UNKNOWN"
       }
     },
     {
@@ -19158,7 +19930,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "videoMessage": {
           "url": "value💚",
           "mimetype": "value💚",
@@ -19227,6 +19999,9 @@
       "wire": "1800",
       "expected": {
         "type": 0
+      },
+      "tojson": {
+        "type": "UNKNOWN"
       }
     },
     {
@@ -19358,6 +20133,9 @@
       "wire": "2000",
       "expected": {
         "type": 0
+      },
+      "tojson": {
+        "type": "UNKNOWN"
       }
     },
     {
@@ -19407,7 +20185,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "callKey": "AAEC/w=="
       }
     },
@@ -19440,7 +20218,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "conversionData": "AAEC/w=="
       }
     },
@@ -19484,7 +20262,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "ctwaPayload": "AAEC/w=="
       }
     },
@@ -19564,6 +20342,9 @@
       "wire": "1000",
       "expected": {
         "callOutcome": 0
+      },
+      "tojson": {
+        "callOutcome": "CONNECTED"
       }
     },
     {
@@ -19597,6 +20378,9 @@
       "wire": "2000",
       "expected": {
         "callType": 0
+      },
+      "tojson": {
+        "callType": "REGULAR"
       }
     },
     {
@@ -19629,6 +20413,14 @@
             "callOutcome": 0
           }
         ]
+      },
+      "tojson": {
+        "participants": [
+          {
+            "jid": "value💚",
+            "callOutcome": "CONNECTED"
+          }
+        ]
       }
     },
     {
@@ -19658,6 +20450,9 @@
       "wire": "1000",
       "expected": {
         "callOutcome": 0
+      },
+      "tojson": {
+        "callOutcome": "CONNECTED"
       }
     },
     {
@@ -19742,6 +20537,9 @@
       "wire": "0800",
       "expected": {
         "status": 0
+      },
+      "tojson": {
+        "status": "UNKNOWN"
       }
     },
     {
@@ -19892,7 +20690,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "message": {
           "conversation": "value💚",
           "senderKeyDistributionMessage": {
@@ -20134,7 +20932,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "message": {
           "conversation": "value💚",
           "senderKeyDistributionMessage": {
@@ -20218,7 +21016,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "fileSha256": "AAEC/w=="
       }
     },
@@ -20262,7 +21060,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "mediaKey": "AAEC/w=="
       }
     },
@@ -20295,7 +21093,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "fileEncSha256": "AAEC/w=="
       }
     },
@@ -20361,7 +21159,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "thumbnailSha256": "AAEC/w=="
       }
     },
@@ -20383,7 +21181,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "thumbnailEncSha256": "AAEC/w=="
       }
     },
@@ -20405,7 +21203,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "jpegThumbnail": "AAEC/w=="
       }
     },
@@ -20489,6 +21287,9 @@
       "wire": "b00100",
       "expected": {
         "mediaKeyDomain": 0
+      },
+      "tojson": {
+        "mediaKeyDomain": "UNSET"
       }
     },
     {
@@ -20546,7 +21347,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "encPayload": "AAEC/w=="
       }
     },
@@ -20568,7 +21369,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "encIv": "AAEC/w=="
       }
     },
@@ -20616,7 +21417,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "encPayload": "AAEC/w=="
       }
     },
@@ -20638,7 +21439,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "encIv": "AAEC/w=="
       }
     },
@@ -20686,7 +21487,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "encPayload": "AAEC/w=="
       }
     },
@@ -20708,7 +21509,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "encIv": "AAEC/w=="
       }
     },
@@ -20891,6 +21692,9 @@
       "wire": "0800",
       "expected": {
         "response": 0
+      },
+      "tojson": {
+        "response": "UNKNOWN"
       }
     },
     {
@@ -21008,6 +21812,9 @@
       "wire": "4800",
       "expected": {
         "font": 0
+      },
+      "tojson": {
+        "font": "SYSTEM"
       }
     },
     {
@@ -21030,6 +21837,9 @@
       "wire": "5000",
       "expected": {
         "previewType": 0
+      },
+      "tojson": {
+        "previewType": "NONE"
       }
     },
     {
@@ -21061,7 +21871,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "jpegThumbnail": "AAEC/w=="
       }
     },
@@ -21132,7 +21942,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "thumbnailSha256": "AAEC/w=="
       }
     },
@@ -21154,7 +21964,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "thumbnailEncSha256": "AAEC/w=="
       }
     },
@@ -21176,7 +21986,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "mediaKey": "AAEC/w=="
       }
     },
@@ -21222,6 +22032,9 @@
       "wire": "d00100",
       "expected": {
         "inviteLinkGroupType": 0
+      },
+      "tojson": {
+        "inviteLinkGroupType": "DEFAULT"
       }
     },
     {
@@ -21264,7 +22077,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "inviteLinkParentGroupThumbnailV2": "AAEC/w=="
       }
     },
@@ -21277,6 +22090,9 @@
       "wire": "e80100",
       "expected": {
         "inviteLinkGroupTypeV2": 0
+      },
+      "tojson": {
+        "inviteLinkGroupTypeV2": "DEFAULT"
       }
     },
     {
@@ -21357,7 +22173,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "faviconMMSMetadata": {
           "thumbnailDirectPath": "value💚",
           "thumbnailSha256": "AAEC/w==",
@@ -21420,6 +22236,19 @@
           },
           "header": {
             "headerType": 0
+          },
+          "provider": {
+            "paramsJson": "value💚"
+          }
+        }
+      },
+      "tojson": {
+        "paymentLinkMetadata": {
+          "button": {
+            "displayText": "value💚"
+          },
+          "header": {
+            "headerType": "LINK_PREVIEW"
           },
           "provider": {
             "paramsJson": "value💚"
@@ -21564,7 +22393,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "message": {
           "conversation": "value💚",
           "senderKeyDistributionMessage": {
@@ -21648,7 +22477,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "jpegThumbnail": "AAEC/w=="
       }
     },
@@ -21699,6 +22528,9 @@
       "wire": "4000",
       "expected": {
         "groupType": 0
+      },
+      "tojson": {
+        "groupType": "DEFAULT"
       }
     },
     {
@@ -21916,6 +22748,15 @@
             "month": 33
           }
         }
+      },
+      "tojson": {
+        "dateTime": {
+          "component": {
+            "dayOfWeek": "MONDAY",
+            "year": 33,
+            "month": 33
+          }
+        }
       }
     },
     {
@@ -21971,6 +22812,13 @@
           "year": 33,
           "month": 33
         }
+      },
+      "tojson": {
+        "component": {
+          "dayOfWeek": "MONDAY",
+          "year": 33,
+          "month": 33
+        }
       }
     },
     {
@@ -22004,6 +22852,9 @@
       "wire": "0801",
       "expected": {
         "dayOfWeek": 1
+      },
+      "tojson": {
+        "dayOfWeek": "MONDAY"
       }
     },
     {
@@ -22081,6 +22932,9 @@
       "wire": "3801",
       "expected": {
         "calendar": 1
+      },
+      "tojson": {
+        "calendar": "GREGORIAN"
       }
     },
     {
@@ -22155,7 +23009,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "fileSha256": "AAEC/w=="
       }
     },
@@ -22188,7 +23042,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "mediaKey": "AAEC/w=="
       }
     },
@@ -22210,7 +23064,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "fileEncSha256": "AAEC/w=="
       }
     },
@@ -22234,6 +23088,9 @@
       "wire": "3000",
       "expected": {
         "syncType": 0
+      },
+      "tojson": {
+        "syncType": "INITIAL_BOOTSTRAP"
       }
     },
     {
@@ -22309,7 +23166,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "initialHistBootstrapInlinePayload": "AAEC/w=="
       }
     },
@@ -22423,7 +23280,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "fileSha256": "AAEC/w=="
       }
     },
@@ -22478,7 +23335,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "mediaKey": "AAEC/w=="
       }
     },
@@ -22500,7 +23357,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "fileEncSha256": "AAEC/w=="
       }
     },
@@ -22571,7 +23428,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "jpegThumbnail": "AAEC/w=="
       }
     },
@@ -22620,7 +23477,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "firstScanSidecar": "AAEC/w=="
       }
     },
@@ -22664,7 +23521,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "scansSidecar": "AAEC/w=="
       }
     },
@@ -22701,7 +23558,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "midQualityFileSha256": "AAEC/w=="
       }
     },
@@ -22723,7 +23580,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "midQualityFileEncSha256": "AAEC/w=="
       }
     },
@@ -22767,7 +23624,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "thumbnailSha256": "AAEC/w=="
       }
     },
@@ -22789,7 +23646,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "thumbnailEncSha256": "AAEC/w=="
       }
     },
@@ -22840,6 +23697,9 @@
       "wire": "f80100",
       "expected": {
         "imageSourceType": 0
+      },
+      "tojson": {
+        "imageSourceType": "USER_IMAGE"
       }
     },
     {
@@ -22873,6 +23733,9 @@
       "wire": "880200",
       "expected": {
         "mediaKeyDomain": 0
+      },
+      "tojson": {
+        "mediaKeyDomain": "UNSET"
       }
     },
     {
@@ -22990,7 +23853,7 @@
           "hasMediaAttachment": true
         }
       },
-      "base64": {
+      "tojson": {
         "footer": {
           "text": "value💚",
           "audioMessage": {
@@ -23065,6 +23928,13 @@
           "surface": 0,
           "messageVersion": 33
         }
+      },
+      "tojson": {
+        "shopStorefrontMessage": {
+          "id": "value💚",
+          "surface": "UNKNOWN_SURFACE",
+          "messageVersion": 33
+        }
       }
     },
     {
@@ -23129,6 +23999,15 @@
           ],
           "messageVersion": 33,
           "carouselCardType": 0
+        }
+      },
+      "tojson": {
+        "carouselMessage": {
+          "cards": [
+            {}
+          ],
+          "messageVersion": 33,
+          "carouselCardType": "UNKNOWN"
         }
       }
     },
@@ -23200,6 +24079,9 @@
       "wire": "1800",
       "expected": {
         "carouselCardType": 0
+      },
+      "tojson": {
+        "carouselCardType": "UNKNOWN"
       }
     },
     {
@@ -23308,7 +24190,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "audioMessage": {
           "url": "value💚",
           "mimetype": "value💚",
@@ -23412,7 +24294,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "jpegThumbnail": "AAEC/w=="
       }
     },
@@ -23442,7 +24324,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "videoMessage": {
           "url": "value💚",
           "mimetype": "value💚",
@@ -23610,6 +24492,9 @@
       "wire": "1000",
       "expected": {
         "surface": 0
+      },
+      "tojson": {
+        "surface": "UNKNOWN_SURFACE"
       }
     },
     {
@@ -23655,6 +24540,12 @@
         "body": {
           "text": "value💚",
           "format": 0
+        }
+      },
+      "tojson": {
+        "body": {
+          "text": "value💚",
+          "format": "DEFAULT"
         }
       }
     },
@@ -23731,6 +24622,9 @@
       "wire": "1000",
       "expected": {
         "format": 0
+      },
+      "tojson": {
+        "format": "DEFAULT"
       }
     },
     {
@@ -23822,6 +24716,9 @@
       "wire": "1800",
       "expected": {
         "attachmentType": 0
+      },
+      "tojson": {
+        "attachmentType": "IMAGE"
       }
     },
     {
@@ -23864,7 +24761,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "attachmentMediaKey": "AAEC/w=="
       }
     },
@@ -23897,7 +24794,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "attachmentFileSha256": "AAEC/w=="
       }
     },
@@ -23919,7 +24816,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "attachmentFileEncSha256": "AAEC/w=="
       }
     },
@@ -23952,7 +24849,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "attachmentJpegThumbnail": "AAEC/w=="
       }
     },
@@ -23991,6 +24888,9 @@
       "wire": "1000",
       "expected": {
         "keepType": 0
+      },
+      "tojson": {
+        "keepType": "UNKNOWN"
       }
     },
     {
@@ -24051,6 +24951,19 @@
             "paramsJson": "value💚"
           }
         }
+      },
+      "tojson": {
+        "paymentLinkMetadata": {
+          "button": {
+            "displayText": "value💚"
+          },
+          "header": {
+            "headerType": "LINK_PREVIEW"
+          },
+          "provider": {
+            "paramsJson": "value💚"
+          }
+        }
       }
     },
     {
@@ -24099,6 +25012,9 @@
       "wire": "2800",
       "expected": {
         "socialMediaPostType": 0
+      },
+      "tojson": {
+        "socialMediaPostType": "NONE"
       }
     },
     {
@@ -24213,6 +25129,9 @@
       "wire": "2000",
       "expected": {
         "listType": 0
+      },
+      "tojson": {
+        "listType": "UNKNOWN"
       }
     },
     {
@@ -24287,7 +25206,7 @@
           "businessOwnerJid": "value💚"
         }
       },
-      "base64": {
+      "tojson": {
         "productListInfo": {
           "productSections": [
             {}
@@ -24392,7 +25311,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "jpegThumbnail": "AAEC/w=="
       }
     },
@@ -24452,7 +25371,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "headerImage": {
           "productId": "value💚",
           "jpegThumbnail": "AAEC/w=="
@@ -24615,6 +25534,9 @@
       "wire": "1000",
       "expected": {
         "listType": 0
+      },
+      "tojson": {
+        "listType": "UNKNOWN"
       }
     },
     {
@@ -24812,7 +25734,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "jpegThumbnail": "AAEC/w=="
       }
     },
@@ -24978,7 +25900,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "jpegThumbnail": "AAEC/w=="
       }
     },
@@ -25045,7 +25967,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "thumbnailSha256": "AAEC/w=="
       }
     },
@@ -25067,7 +25989,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "thumbnailEncSha256": "AAEC/w=="
       }
     },
@@ -25089,7 +26011,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "mediaKey": "AAEC/w=="
       }
     },
@@ -25135,6 +26057,9 @@
       "wire": "4000",
       "expected": {
         "mediaKeyDomain": 0
+      },
+      "tojson": {
+        "mediaKeyDomain": "UNSET"
       }
     },
     {
@@ -25184,7 +26109,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "fileSha256": "AAEC/w=="
       }
     },
@@ -25206,7 +26131,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "mediaKey": "AAEC/w=="
       }
     },
@@ -25228,7 +26153,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "fileEncSha256": "AAEC/w=="
       }
     },
@@ -25452,7 +26377,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "jpegThumbnail": "AAEC/w=="
       }
     },
@@ -25552,7 +26477,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "jpegThumbnail": "AAEC/w=="
       }
     },
@@ -25630,7 +26555,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "thumbnail": "AAEC/w=="
       }
     },
@@ -25654,6 +26579,9 @@
       "wire": "2001",
       "expected": {
         "status": 1
+      },
+      "tojson": {
+        "status": "INQUIRY"
       }
     },
     {
@@ -25676,6 +26604,9 @@
       "wire": "2801",
       "expected": {
         "surface": 1
+      },
+      "tojson": {
+        "surface": "CATALOG"
       }
     },
     {
@@ -25879,6 +26810,9 @@
       "wire": "0800",
       "expected": {
         "serviceType": 0
+      },
+      "tojson": {
+        "serviceType": "UNKNOWN"
       }
     },
     {
@@ -25938,6 +26872,11 @@
         "header": {
           "headerType": 0
         }
+      },
+      "tojson": {
+        "header": {
+          "headerType": "LINK_PREVIEW"
+        }
       }
     },
     {
@@ -25989,6 +26928,9 @@
       "wire": "0800",
       "expected": {
         "headerType": 0
+      },
+      "tojson": {
+        "headerType": "LINK_PREVIEW"
       }
     },
     {
@@ -26036,6 +26978,9 @@
       "wire": "0800",
       "expected": {
         "peerDataOperationRequestType": 0
+      },
+      "tojson": {
+        "peerDataOperationRequestType": "UPLOAD_STICKER"
       }
     },
     {
@@ -26190,6 +27135,13 @@
           "chunkOrder": 33,
           "chunkNotificationId": "value💚"
         }
+      },
+      "tojson": {
+        "historySyncChunkRetryRequest": {
+          "syncType": "INITIAL_BOOTSTRAP",
+          "chunkOrder": 33,
+          "chunkNotificationId": "value💚"
+        }
       }
     },
     {
@@ -26206,6 +27158,13 @@
       "expected": {
         "galaxyFlowAction": {
           "type": 1,
+          "flowId": "value💚",
+          "stanzaId": "value💚"
+        }
+      },
+      "tojson": {
+        "galaxyFlowAction": {
+          "type": "NOTIFY_LAUNCH",
           "flowId": "value💚",
           "stanzaId": "value💚"
         }
@@ -26268,6 +27227,9 @@
       "wire": "0801",
       "expected": {
         "type": 1
+      },
+      "tojson": {
+        "type": "NOTIFY_LAUNCH"
       }
     },
     {
@@ -26319,6 +27281,9 @@
       "wire": "0800",
       "expected": {
         "syncType": 0
+      },
+      "tojson": {
+        "syncType": "INITIAL_BOOTSTRAP"
       }
     },
     {
@@ -26556,6 +27521,9 @@
       "wire": "0800",
       "expected": {
         "peerDataOperationRequestType": 0
+      },
+      "tojson": {
+        "peerDataOperationRequestType": "UPLOAD_STICKER"
       }
     },
     {
@@ -26601,6 +27569,15 @@
             "linkPreviewResponse": {}
           }
         ]
+      },
+      "tojson": {
+        "peerDataOperationResult": [
+          {
+            "mediaUploadResult": "GENERAL_ERROR",
+            "stickerMessage": {},
+            "linkPreviewResponse": {}
+          }
+        ]
       }
     },
     {
@@ -26619,6 +27596,9 @@
       "wire": "0800",
       "expected": {
         "mediaUploadResult": 0
+      },
+      "tojson": {
+        "mediaUploadResult": "GENERAL_ERROR"
       }
     },
     {
@@ -26666,7 +27646,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "stickerMessage": {
           "url": "value💚",
           "fileSha256": "AAEC/w==",
@@ -26715,7 +27695,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "placeholderMessageResendResponse": {
           "webMessageInfoBytes": "AAEC/w=="
         }
@@ -26756,6 +27736,14 @@
             "requestId": "value💚"
           },
           "responseCode": 0
+        }
+      },
+      "tojson": {
+        "fullHistorySyncOnDemandRequestResponse": {
+          "requestMetadata": {
+            "requestId": "value💚"
+          },
+          "responseCode": "REQUEST_SUCCESS"
         }
       }
     },
@@ -26798,7 +27786,7 @@
           "isCompressed": true
         }
       },
-      "base64": {
+      "tojson": {
         "syncdSnapshotFatalRecoveryResponse": {
           "collectionSnapshot": "AAEC/w==",
           "isCompressed": true
@@ -26838,6 +27826,13 @@
       "expected": {
         "historySyncChunkRetryResponse": {
           "syncType": 0,
+          "chunkOrder": 33,
+          "requestId": "value💚"
+        }
+      },
+      "tojson": {
+        "historySyncChunkRetryResponse": {
+          "syncType": "INITIAL_BOOTSTRAP",
           "chunkOrder": 33,
           "requestId": "value💚"
         }
@@ -26932,6 +27927,9 @@
       "wire": "1000",
       "expected": {
         "responseCode": 0
+      },
+      "tojson": {
+        "responseCode": "REQUEST_SUCCESS"
       }
     },
     {
@@ -26961,6 +27959,9 @@
       "wire": "0800",
       "expected": {
         "syncType": 0
+      },
+      "tojson": {
+        "syncType": "INITIAL_BOOTSTRAP"
       }
     },
     {
@@ -27005,6 +28006,9 @@
       "wire": "2001",
       "expected": {
         "responseCode": 1
+      },
+      "tojson": {
+        "responseCode": "GENERATION_ERROR"
       }
     },
     {
@@ -27087,7 +28091,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "thumbData": "AAEC/w=="
       }
     },
@@ -27207,7 +28211,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "mediaKey": "AAEC/w=="
       }
     },
@@ -27298,7 +28302,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "webMessageInfoBytes": "AAEC/w=="
       }
     },
@@ -27327,7 +28331,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "collectionSnapshot": "AAEC/w=="
       }
     },
@@ -27406,6 +28410,9 @@
       "wire": "1000",
       "expected": {
         "type": 0
+      },
+      "tojson": {
+        "type": "UNKNOWN_TYPE"
       }
     },
     {
@@ -27446,6 +28453,9 @@
       "wire": "0800",
       "expected": {
         "type": 0
+      },
+      "tojson": {
+        "type": "MASK_LINKED_DEVICES"
       }
     },
     {
@@ -27484,7 +28494,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "encKey": "AAEC/w=="
       }
     },
@@ -27567,6 +28577,9 @@
       "wire": "3000",
       "expected": {
         "pollContentType": 0
+      },
+      "tojson": {
+        "pollContentType": "UNKNOWN"
       }
     },
     {
@@ -27589,6 +28602,9 @@
       "wire": "3800",
       "expected": {
         "pollType": 0
+      },
+      "tojson": {
+        "pollType": "POLL"
       }
     },
     {
@@ -27673,7 +28689,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "encPayload": "AAEC/w=="
       }
     },
@@ -27695,7 +28711,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "encIv": "AAEC/w=="
       }
     },
@@ -27774,6 +28790,9 @@
       "wire": "2000",
       "expected": {
         "pollType": 0
+      },
+      "tojson": {
+        "pollType": "POLL"
       }
     },
     {
@@ -27874,7 +28893,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "vote": {
           "encPayload": "AAEC/w==",
           "encIv": "AAEC/w=="
@@ -27939,7 +28958,7 @@
           }
         ]
       },
-      "base64": {
+      "tojson": {
         "selectedOptions": [
           "AAEC/w=="
         ]
@@ -28296,6 +29315,9 @@
       "wire": "1000",
       "expected": {
         "type": 0
+      },
+      "tojson": {
+        "type": "REVOKE"
       }
     },
     {
@@ -28365,7 +29387,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "historySyncNotification": {
           "fileSha256": "AAEC/w==",
           "fileLength": "18446744073709551615",
@@ -28464,6 +29486,13 @@
           "trigger": 0,
           "initiatorDeviceJid": "value💚"
         }
+      },
+      "tojson": {
+        "disappearingMode": {
+          "initiator": "CHANGED_IN_CHAT",
+          "trigger": "UNKNOWN",
+          "initiatorDeviceJid": "value💚"
+        }
       }
     },
     {
@@ -28506,7 +29535,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "editedMessage": {
           "conversation": "value💚",
           "senderKeyDistributionMessage": {
@@ -28557,6 +29586,17 @@
             {}
           ]
         }
+      },
+      "tojson": {
+        "peerDataOperationRequestMessage": {
+          "peerDataOperationRequestType": "UPLOAD_STICKER",
+          "requestStickerReupload": [
+            {}
+          ],
+          "requestUrlPreview": [
+            {}
+          ]
+        }
       }
     },
     {
@@ -28575,6 +29615,15 @@
       "expected": {
         "peerDataOperationRequestResponseMessage": {
           "peerDataOperationRequestType": 0,
+          "stanzaId": "value💚",
+          "peerDataOperationResult": [
+            {}
+          ]
+        }
+      },
+      "tojson": {
+        "peerDataOperationRequestResponseMessage": {
+          "peerDataOperationRequestType": "UPLOAD_STICKER",
           "stanzaId": "value💚",
           "peerDataOperationResult": [
             {}
@@ -28607,6 +29656,17 @@
           "kind": 0,
           "text": "value💚"
         }
+      },
+      "tojson": {
+        "botFeedbackMessage": {
+          "messageKey": {
+            "remoteJid": "value💚",
+            "fromMe": true,
+            "id": "value💚"
+          },
+          "kind": "BOT_FEEDBACK_POSITIVE",
+          "text": "value💚"
+        }
       }
     },
     {
@@ -28632,6 +29692,11 @@
       "expected": {
         "requestWelcomeMessageMetadata": {
           "localChatState": 0
+        }
+      },
+      "tojson": {
+        "requestWelcomeMessageMetadata": {
+          "localChatState": "EMPTY"
         }
       }
     },
@@ -28661,7 +29726,7 @@
           "fileLength": "18446744073709551615"
         }
       },
-      "base64": {
+      "tojson": {
         "mediaNotifyMessage": {
           "expressPathUrl": "value💚",
           "fileEncSha256": "AAEC/w==",
@@ -28683,6 +29748,13 @@
       "expected": {
         "cloudApiThreadControlNotification": {
           "status": 0,
+          "senderNotificationTimestampMs": "-9007199254740993",
+          "consumerLid": "value💚"
+        }
+      },
+      "tojson": {
+        "cloudApiThreadControlNotification": {
+          "status": "UNKNOWN",
           "senderNotificationTimestampMs": "-9007199254740993",
           "consumerLid": "value💚"
         }
@@ -28710,7 +29782,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "lidMigrationMappingSyncMessage": {
           "encodedMappingPayload": "AAEC/w=="
         }
@@ -28733,6 +29805,13 @@
           "trigger": 0,
           "limitSharingSettingTimestamp": "-9007199254740993"
         }
+      },
+      "tojson": {
+        "limitSharing": {
+          "sharingLimited": true,
+          "trigger": "UNKNOWN",
+          "limitSharingSettingTimestamp": "-9007199254740993"
+        }
       }
     },
     {
@@ -28753,7 +29832,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "aiPsiMetadata": "AAEC/w=="
       }
     },
@@ -28952,7 +30031,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "noteMessage": {
           "conversation": "value💚",
           "senderKeyDistributionMessage": {
@@ -29099,6 +30178,9 @@
       "wire": "0800",
       "expected": {
         "localChatState": 0
+      },
+      "tojson": {
+        "localChatState": "EMPTY"
       }
     },
     {
@@ -29139,6 +30221,9 @@
       "wire": "1000",
       "expected": {
         "callType": 0
+      },
+      "tojson": {
+        "callType": "UNKNOWN"
       }
     },
     {
@@ -29198,6 +30283,9 @@
       "wire": "1000",
       "expected": {
         "editType": 0
+      },
+      "tojson": {
+        "editType": "UNKNOWN"
       }
     },
     {
@@ -29255,7 +30343,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "encPayload": "AAEC/w=="
       }
     },
@@ -29277,7 +30365,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "encIv": "AAEC/w=="
       }
     },
@@ -29290,6 +30378,9 @@
       "wire": "2000",
       "expected": {
         "secretEncType": 0
+      },
+      "tojson": {
+        "secretEncType": "UNKNOWN"
       }
     },
     {
@@ -29350,7 +30441,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "noteMessage": {
           "conversation": "value💚",
           "senderKeyDistributionMessage": {
@@ -29450,7 +30541,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "axolotlSenderKeyDistributionMessage": "AAEC/w=="
       }
     },
@@ -29508,6 +30599,9 @@
       "wire": "1800",
       "expected": {
         "type": 0
+      },
+      "tojson": {
+        "type": "UNKNOWN"
       }
     },
     {
@@ -29574,6 +30668,9 @@
       "wire": "0801",
       "expected": {
         "type": 1
+      },
+      "tojson": {
+        "type": "QUESTION_ANSWER"
       }
     },
     {
@@ -29616,7 +30713,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "thumbnail": "AAEC/w=="
       }
     },
@@ -29685,6 +30782,9 @@
       "wire": "1800",
       "expected": {
         "type": 0
+      },
+      "tojson": {
+        "type": "UNKNOWN"
       }
     },
     {
@@ -29734,7 +30834,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "fileSha256": "AAEC/w=="
       }
     },
@@ -29756,7 +30856,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "fileEncSha256": "AAEC/w=="
       }
     },
@@ -29778,7 +30878,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "mediaKey": "AAEC/w=="
       }
     },
@@ -29877,7 +30977,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "firstFrameSidecar": "AAEC/w=="
       }
     },
@@ -29910,7 +31010,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "pngThumbnail": "AAEC/w=="
       }
     },
@@ -30005,6 +31105,9 @@
       "wire": "b80100",
       "expected": {
         "mediaKeyDomain": 0
+      },
+      "tojson": {
+        "mediaKeyDomain": "UNSET"
       }
     },
     {
@@ -30114,7 +31217,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "fileSha256": "AAEC/w=="
       }
     },
@@ -30136,7 +31239,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "fileEncSha256": "AAEC/w=="
       }
     },
@@ -30158,7 +31261,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "mediaKey": "AAEC/w=="
       }
     },
@@ -30273,7 +31376,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "thumbnailSha256": "AAEC/w=="
       }
     },
@@ -30295,7 +31398,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "thumbnailEncSha256": "AAEC/w=="
       }
     },
@@ -30352,6 +31455,9 @@
       "wire": "b00100",
       "expected": {
         "stickerPackOrigin": 0
+      },
+      "tojson": {
+        "stickerPackOrigin": "FIRST_PARTY"
       }
     },
     {
@@ -30902,7 +32008,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "videoMessage": {
           "url": "value💚",
           "mimetype": "value💚",
@@ -31076,7 +32182,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "videoMessage": {
           "url": "value💚",
           "mimetype": "value💚",
@@ -31219,7 +32325,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "fileSha256": "AAEC/w=="
       }
     },
@@ -31263,7 +32369,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "mediaKey": "AAEC/w=="
       }
     },
@@ -31329,7 +32435,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "fileEncSha256": "AAEC/w=="
       }
     },
@@ -31400,7 +32506,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "jpegThumbnail": "AAEC/w=="
       }
     },
@@ -31449,7 +32555,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "streamingSidecar": "AAEC/w=="
       }
     },
@@ -31462,6 +32568,9 @@
       "wire": "980100",
       "expected": {
         "gifAttribution": 0
+      },
+      "tojson": {
+        "gifAttribution": "NONE"
       }
     },
     {
@@ -31515,7 +32624,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "thumbnailSha256": "AAEC/w=="
       }
     },
@@ -31537,7 +32646,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "thumbnailEncSha256": "AAEC/w=="
       }
     },
@@ -31620,7 +32729,7 @@
           }
         ]
       },
-      "base64": {
+      "tojson": {
         "processedVideos": [
           {
             "directPath": "value💚",
@@ -31672,6 +32781,9 @@
       "wire": "f80100",
       "expected": {
         "videoSourceType": 0
+      },
+      "tojson": {
+        "videoSourceType": "USER_VIDEO"
       }
     },
     {
@@ -31694,6 +32806,9 @@
       "wire": "800200",
       "expected": {
         "mediaKeyDomain": 0
+      },
+      "tojson": {
+        "mediaKeyDomain": "UNSET"
       }
     },
     {
@@ -31723,6 +32838,9 @@
       "wire": "0800",
       "expected": {
         "messageAddOnType": 0
+      },
+      "tojson": {
+        "messageAddOnType": "UNDEFINED"
       }
     },
     {
@@ -31776,7 +32894,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "messageAddOn": {
           "conversation": "value💚",
           "senderKeyDistributionMessage": {
@@ -31822,6 +32940,9 @@
       "wire": "2800",
       "expected": {
         "status": 0
+      },
+      "tojson": {
+        "status": "ERROR"
       }
     },
     {
@@ -31849,6 +32970,12 @@
         "addOnContextInfo": {
           "messageAddOnDurationInSecs": 33,
           "messageAddOnExpiryType": 1
+        }
+      },
+      "tojson": {
+        "addOnContextInfo": {
+          "messageAddOnDurationInSecs": 33,
+          "messageAddOnExpiryType": "STATIC"
         }
       }
     },
@@ -31911,10 +33038,10 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "legacyMessage": {
           "eventResponseMessage": {
-            "response": 0,
+            "response": "UNKNOWN",
             "timestampMs": "-9007199254740993",
             "extraGuestCount": 33
           },
@@ -31953,6 +33080,9 @@
       "wire": "1001",
       "expected": {
         "messageAddOnExpiryType": 1
+      },
+      "tojson": {
+        "messageAddOnExpiryType": "STATIC"
       }
     },
     {
@@ -31982,6 +33112,9 @@
       "wire": "0800",
       "expected": {
         "associationType": 0
+      },
+      "tojson": {
+        "associationType": "UNKNOWN"
       }
     },
     {
@@ -32062,7 +33195,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "deviceListMetadata": {
           "senderKeyHash": "AAEC/w==",
           "senderTimestamp": "18446744073709551615",
@@ -32101,7 +33234,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "messageSecret": "AAEC/w=="
       }
     },
@@ -32123,7 +33256,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "paddingBytes": "AAEC/w=="
       }
     },
@@ -32156,7 +33289,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "botMessageSecret": "AAEC/w=="
       }
     },
@@ -32193,6 +33326,21 @@
             "thumbnailCdnUrl": "value💚"
           }
         }
+      },
+      "tojson": {
+        "botMetadata": {
+          "avatarMetadata": {
+            "sentiment": 33,
+            "behaviorGraph": "value💚",
+            "action": 33
+          },
+          "personaId": "value💚",
+          "pluginMetadata": {
+            "provider": "UNKNOWN",
+            "pluginType": "UNKNOWN_PLUGIN",
+            "thumbnailCdnUrl": "value💚"
+          }
+        }
       }
     },
     {
@@ -32215,6 +33363,9 @@
       "wire": "4801",
       "expected": {
         "messageAddOnExpiryType": 1
+      },
+      "tojson": {
+        "messageAddOnExpiryType": "STATIC"
       }
     },
     {
@@ -32246,6 +33397,17 @@
       "expected": {
         "messageAssociation": {
           "associationType": 0,
+          "parentMessageKey": {
+            "remoteJid": "value💚",
+            "fromMe": true,
+            "id": "value💚"
+          },
+          "messageIndex": 33
+        }
+      },
+      "tojson": {
+        "messageAssociation": {
+          "associationType": "UNKNOWN",
           "parentMessageKey": {
             "remoteJid": "value💚",
             "fromMe": true,
@@ -32294,6 +33456,13 @@
           "trigger": 0,
           "limitSharingSettingTimestamp": "-9007199254740993"
         }
+      },
+      "tojson": {
+        "limitSharing": {
+          "sharingLimited": true,
+          "trigger": "UNKNOWN",
+          "limitSharingSettingTimestamp": "-9007199254740993"
+        }
       }
     },
     {
@@ -32311,6 +33480,13 @@
         "limitSharingV2": {
           "sharingLimited": true,
           "trigger": 0,
+          "limitSharingSettingTimestamp": "-9007199254740993"
+        }
+      },
+      "tojson": {
+        "limitSharingV2": {
+          "sharingLimited": true,
+          "trigger": "UNKNOWN",
           "limitSharingSettingTimestamp": "-9007199254740993"
         }
       }
@@ -32334,6 +33510,14 @@
             "threadKey": {}
           }
         ]
+      },
+      "tojson": {
+        "threadId": [
+          {
+            "threadType": "UNKNOWN",
+            "threadKey": {}
+          }
+        ]
       }
     },
     {
@@ -32345,6 +33529,9 @@
       "wire": "800100",
       "expected": {
         "weblinkRenderConfig": 0
+      },
+      "tojson": {
+        "weblinkRenderConfig": "WEBVIEW"
       }
     },
     {
@@ -32445,7 +33632,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "encIv": "AAEC/w=="
       }
     },
@@ -32467,7 +33654,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "encPayload": "AAEC/w=="
       }
     },
@@ -32646,7 +33833,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "futureproofBuffer": "AAEC/w=="
       }
     },
@@ -32733,7 +33920,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "messageSecret": "AAEC/w=="
       }
     },
@@ -32802,7 +33989,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "encPollVote": {
           "encPayload": "AAEC/w==",
           "encIv": "AAEC/w=="
@@ -32829,6 +34016,9 @@
       "wire": "d00200",
       "expected": {
         "pollContentType": 0
+      },
+      "tojson": {
+        "pollContentType": "UNKNOWN"
       }
     },
     {
@@ -32851,6 +34041,9 @@
       "wire": "f00200",
       "expected": {
         "pollType": 0
+      },
+      "tojson": {
+        "pollType": "POLL"
       }
     },
     {
@@ -32923,7 +34116,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "encReactionEncPayload": "AAEC/w=="
       }
     },
@@ -32945,7 +34138,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "encReactionEncIv": "AAEC/w=="
       }
     },
@@ -32967,7 +34160,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "botMessageSecret": "AAEC/w=="
       }
     },
@@ -33000,7 +34193,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "encPayload": "AAEC/w=="
       }
     },
@@ -33022,7 +34215,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "encIv": "AAEC/w=="
       }
     },
@@ -33151,7 +34344,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "plainProtobufBytes": "AAEC/w=="
       }
     },
@@ -33235,7 +34428,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "jpegThumbnail": "AAEC/w=="
       }
     },
@@ -33401,7 +34594,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "details": "AAEC/w=="
       }
     },
@@ -33423,7 +34616,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "signature": "AAEC/w=="
       }
     },
@@ -33496,7 +34689,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "key": "AAEC/w=="
       }
     },
@@ -33566,7 +34759,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "message": {
           "conversation": "value💚",
           "senderKeyDistributionMessage": {
@@ -33701,7 +34894,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "companionPublicKey": "AAEC/w=="
       }
     },
@@ -33723,7 +34916,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "companionIdentityKey": "AAEC/w=="
       }
     },
@@ -33745,7 +34938,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "advSecret": "AAEC/w=="
       }
     },
@@ -33776,6 +34969,9 @@
       "wire": "1000",
       "expected": {
         "leaveReason": 0
+      },
+      "tojson": {
+        "leaveReason": "LEFT"
       }
     },
     {
@@ -33839,6 +35035,15 @@
             "leaveTs": "18446744073709551615"
           }
         ]
+      },
+      "tojson": {
+        "pastParticipants": [
+          {
+            "userJid": "value💚",
+            "leaveReason": "LEFT",
+            "leaveTs": "18446744073709551615"
+          }
+        ]
       }
     },
     {
@@ -33866,7 +35071,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "currentLthash": "AAEC/w=="
       }
     },
@@ -33888,7 +35093,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "newLthash": "AAEC/w=="
       }
     },
@@ -33910,7 +35115,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "patchVersion": "AAEC/w=="
       }
     },
@@ -33932,7 +35137,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "collectionName": "AAEC/w=="
       }
     },
@@ -33954,7 +35159,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "firstFourBytesFromAHashOfSnapshotMacKey": "AAEC/w=="
       }
     },
@@ -33976,7 +35181,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "newLthashSubtract": "AAEC/w=="
       }
     },
@@ -34022,6 +35227,9 @@
       "wire": "5000",
       "expected": {
         "senderPlatform": 0
+      },
+      "tojson": {
+        "senderPlatform": "ANDROID"
       }
     },
     {
@@ -34175,7 +35383,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "mediaData": {
           "mediaKey": "AAEC/w==",
           "mediaKeyTimestamp": "-9007199254740993",
@@ -34192,6 +35400,9 @@
       "wire": "5000",
       "expected": {
         "type": 0
+      },
+      "tojson": {
+        "type": "UNKNOWN"
       }
     },
     {
@@ -34230,7 +35441,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "mediaKey": "AAEC/w=="
       }
     },
@@ -34263,7 +35474,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "fileSha256": "AAEC/w=="
       }
     },
@@ -34285,7 +35496,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "fileEncSha256": "AAEC/w=="
       }
     },
@@ -34316,6 +35527,9 @@
       "wire": "0800",
       "expected": {
         "currencyDeprecated": 0
+      },
+      "tojson": {
+        "currencyDeprecated": "UNKNOWN_CURRENCY"
       }
     },
     {
@@ -34360,6 +35574,9 @@
       "wire": "2000",
       "expected": {
         "status": 0
+      },
+      "tojson": {
+        "status": "UNKNOWN_STATUS"
       }
     },
     {
@@ -34445,6 +35662,9 @@
       "wire": "5000",
       "expected": {
         "txnStatus": 0
+      },
+      "tojson": {
+        "txnStatus": "UNKNOWN"
       }
     },
     {
@@ -34561,7 +35781,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "oldPhoto": "AAEC/w=="
       }
     },
@@ -34583,7 +35803,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "newPhoto": "AAEC/w=="
       }
     },
@@ -34614,6 +35834,9 @@
       "wire": "0800",
       "expected": {
         "type": 0
+      },
+      "tojson": {
+        "type": "UNKNOWN_TYPE"
       }
     },
     {
@@ -34682,6 +35905,12 @@
         "messageAddOnContextInfo": {
           "messageAddOnDurationInSecs": 33,
           "messageAddOnExpiryType": 1
+        }
+      },
+      "tojson": {
+        "messageAddOnContextInfo": {
+          "messageAddOnDurationInSecs": 33,
+          "messageAddOnExpiryType": "STATIC"
         }
       }
     },
@@ -34779,7 +36008,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "encPayload": "AAEC/w=="
       }
     },
@@ -34801,7 +36030,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "encIv": "AAEC/w=="
       }
     },
@@ -34857,7 +36086,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "vote": {
           "selectedOptions": [
             "AAEC/w=="
@@ -34934,7 +36163,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "publicKey": "AAEC/w=="
       }
     },
@@ -34956,7 +36185,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "privateKey": "AAEC/w=="
       }
     },
@@ -35018,7 +36247,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "baseKey": "AAEC/w=="
       }
     },
@@ -35040,7 +36269,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "identityKey": "AAEC/w=="
       }
     },
@@ -35062,7 +36291,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "message": "AAEC/w=="
       }
     },
@@ -35109,7 +36338,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "publicKey": "AAEC/w=="
       }
     },
@@ -35131,7 +36360,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "nonce": "AAEC/w=="
       }
     },
@@ -35171,7 +36400,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "fileSha256": "AAEC/w=="
       }
     },
@@ -35228,6 +36457,9 @@
       "wire": "3800",
       "expected": {
         "quality": 0
+      },
+      "tojson": {
+        "quality": "UNDEFINED"
       }
     },
     {
@@ -35281,7 +36513,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "companionEphemeralIdentity": "AAEC/w=="
       }
     },
@@ -35307,7 +36539,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "commitment": {
           "hash": "AAEC/w=="
         }
@@ -35367,7 +36599,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "originalData": "AAEC/w=="
       }
     },
@@ -35522,7 +36754,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "currentSession": {
           "sessionVersion": 33,
           "localIdentityPublic": "AAEC/w==",
@@ -35568,7 +36800,7 @@
           }
         ]
       },
-      "base64": {
+      "tojson": {
         "previousSessions": [
           {
             "sessionVersion": 33,
@@ -35654,7 +36886,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "reportingTag": "AAEC/w=="
       }
     },
@@ -35705,7 +36937,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "chainKey": "AAEC/w=="
       }
     },
@@ -35727,7 +36959,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "signingKey": "AAEC/w=="
       }
     },
@@ -35778,7 +37010,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "ciphertext": "AAEC/w=="
       }
     },
@@ -35854,7 +37086,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "senderChainKey": {
           "iteration": 33,
           "seed": "AAEC/w=="
@@ -35893,7 +37125,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "senderSigningKey": {
           "public": "AAEC/w==",
           "private": "AAEC/w=="
@@ -35928,7 +37160,7 @@
           }
         ]
       },
-      "base64": {
+      "tojson": {
         "senderMessageKeys": [
           {
             "iteration": 33,
@@ -35973,7 +37205,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "seed": "AAEC/w=="
       }
     },
@@ -36013,7 +37245,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "seed": "AAEC/w=="
       }
     },
@@ -36042,7 +37274,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "public": "AAEC/w=="
       }
     },
@@ -36064,7 +37296,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "private": "AAEC/w=="
       }
     },
@@ -36122,7 +37354,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "localIdentityPublic": "AAEC/w=="
       }
     },
@@ -36144,7 +37376,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "remoteIdentityPublic": "AAEC/w=="
       }
     },
@@ -36166,7 +37398,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "rootKey": "AAEC/w=="
       }
     },
@@ -36229,7 +37461,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "senderChain": {
           "senderRatchetKey": "AAEC/w==",
           "senderRatchetKeyPrivate": "AAEC/w==",
@@ -36278,7 +37510,7 @@
           }
         ]
       },
-      "base64": {
+      "tojson": {
         "receiverChains": [
           {
             "senderRatchetKey": "AAEC/w==",
@@ -36322,7 +37554,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "pendingKeyExchange": {
           "sequence": 33,
           "localBaseKey": "AAEC/w==",
@@ -36356,7 +37588,7 @@
           "signedPreKeyId": 33
         }
       },
-      "base64": {
+      "tojson": {
         "pendingPreKey": {
           "preKeyId": 33,
           "baseKey": "AAEC/w==",
@@ -36415,7 +37647,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "aliceBaseKey": "AAEC/w=="
       }
     },
@@ -36444,7 +37676,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "senderRatchetKey": "AAEC/w=="
       }
     },
@@ -36466,7 +37698,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "senderRatchetKeyPrivate": "AAEC/w=="
       }
     },
@@ -36494,7 +37726,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "chainKey": {
           "index": 33,
           "key": "AAEC/w=="
@@ -36539,7 +37771,7 @@
           }
         ]
       },
-      "base64": {
+      "tojson": {
         "messageKeys": [
           {
             "index": 33,
@@ -36585,7 +37817,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "key": "AAEC/w=="
       }
     },
@@ -36625,7 +37857,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "cipherKey": "AAEC/w=="
       }
     },
@@ -36647,7 +37879,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "macKey": "AAEC/w=="
       }
     },
@@ -36669,7 +37901,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "iv": "AAEC/w=="
       }
     },
@@ -36709,7 +37941,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "localBaseKey": "AAEC/w=="
       }
     },
@@ -36731,7 +37963,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "localBaseKeyPrivate": "AAEC/w=="
       }
     },
@@ -36753,7 +37985,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "localRatchetKey": "AAEC/w=="
       }
     },
@@ -36775,7 +38007,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "localRatchetKeyPrivate": "AAEC/w=="
       }
     },
@@ -36797,7 +38029,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "localIdentityKey": "AAEC/w=="
       }
     },
@@ -36819,7 +38051,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "localIdentityKeyPrivate": "AAEC/w=="
       }
     },
@@ -36870,7 +38102,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "baseKey": "AAEC/w=="
       }
     },
@@ -36912,6 +38144,9 @@
       "wire": "1800",
       "expected": {
         "sessionTransparencyType": 0
+      },
+      "tojson": {
+        "sessionTransparencyType": "UNKNOWN_TYPE"
       }
     },
     {
@@ -36950,7 +38185,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "ratchetKey": "AAEC/w=="
       }
     },
@@ -36994,7 +38229,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "ciphertext": "AAEC/w=="
       }
     },
@@ -37034,7 +38269,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "publicKey": "AAEC/w=="
       }
     },
@@ -37056,7 +38291,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "privateKey": "AAEC/w=="
       }
     },
@@ -37078,7 +38313,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "signature": "AAEC/w=="
       }
     },
@@ -37109,6 +38344,9 @@
       "wire": "0800",
       "expected": {
         "type": 0
+      },
+      "tojson": {
+        "type": "UNKNOWN"
       }
     },
     {
@@ -37156,6 +38394,16 @@
             "channelMessageId": 33
           }
         }
+      },
+      "tojson": {
+        "statusReshare": {
+          "source": "UNKNOWN",
+          "metadata": {
+            "duration": 33,
+            "channelJid": "value💚",
+            "channelMessageId": 33
+          }
+        }
       }
     },
     {
@@ -37173,6 +38421,13 @@
         "externalShare": {
           "actionUrl": "value💚",
           "source": 0,
+          "duration": 33
+        }
+      },
+      "tojson": {
+        "externalShare": {
+          "actionUrl": "value💚",
+          "source": "UNKNOWN",
           "duration": 33
         }
       }
@@ -37224,6 +38479,11 @@
         "rlAttribution": {
           "source": 0
         }
+      },
+      "tojson": {
+        "rlAttribution": {
+          "source": "UNKNOWN"
+        }
       }
     },
     {
@@ -37238,6 +38498,11 @@
       "expected": {
         "aiCreatedAttribution": {
           "source": 0
+        }
+      },
+      "tojson": {
+        "aiCreatedAttribution": {
+          "source": "UNKNOWN"
         }
       }
     },
@@ -37257,6 +38522,9 @@
       "wire": "0800",
       "expected": {
         "source": 0
+      },
+      "tojson": {
+        "source": "UNKNOWN"
       }
     },
     {
@@ -37297,6 +38565,9 @@
       "wire": "1000",
       "expected": {
         "source": 0
+      },
+      "tojson": {
+        "source": "UNKNOWN"
       }
     },
     {
@@ -37439,6 +38710,9 @@
       "wire": "0800",
       "expected": {
         "source": 0
+      },
+      "tojson": {
+        "source": "UNKNOWN"
       }
     },
     {
@@ -37468,6 +38742,9 @@
       "wire": "0800",
       "expected": {
         "source": 0
+      },
+      "tojson": {
+        "source": "UNKNOWN"
       }
     },
     {
@@ -37598,7 +38875,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "quotedStatus": {
           "conversation": "value💚",
           "senderKeyDistributionMessage": {
@@ -37678,7 +38955,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "fileSha256": "AAEC/w=="
       }
     },
@@ -37700,7 +38977,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "fileEncSha256": "AAEC/w=="
       }
     },
@@ -37722,7 +38999,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "mediaKey": "AAEC/w=="
       }
     },
@@ -37861,7 +39138,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "index": "AAEC/w=="
       }
     },
@@ -37914,7 +39191,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "padding": "AAEC/w=="
       }
     },
@@ -38446,7 +39723,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "stickerAction": {
           "url": "value💚",
           "fileEncSha256": "AAEC/w==",
@@ -38531,6 +39808,13 @@
           "message": "value💚",
           "type": 0
         }
+      },
+      "tojson": {
+        "marketingMessageAction": {
+          "name": "value💚",
+          "message": "value💚",
+          "type": "PERSONALIZED"
+        }
       }
     },
     {
@@ -38599,6 +39883,15 @@
             "silenceReason": 0
           }
         }
+      },
+      "tojson": {
+        "callLogAction": {
+          "callLogRecord": {
+            "callResult": "CONNECTED",
+            "isDndMode": true,
+            "silenceReason": "NONE"
+          }
+        }
       }
     },
     {
@@ -38623,7 +39916,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "ugcBot": {
           "definition": "AAEC/w=="
         }
@@ -38644,6 +39937,14 @@
       "expected": {
         "statusPrivacy": {
           "mode": 0,
+          "userJid": [
+            "value💚"
+          ]
+        }
+      },
+      "tojson": {
+        "statusPrivacy": {
+          "mode": "ALLOW_LIST",
           "userJid": [
             "value💚"
           ]
@@ -38777,6 +40078,18 @@
             ]
           }
         }
+      },
+      "tojson": {
+        "chatLockSettings": {
+          "hideLockedChats": true,
+          "secretCode": {
+            "encoding": "UTF8",
+            "transformer": "NONE",
+            "transformerArg": [
+              {}
+            ]
+          }
+        }
       }
     },
     {
@@ -38834,6 +40147,17 @@
             "importListEnabled": true
           }
         }
+      },
+      "tojson": {
+        "deviceCapabilities": {
+          "chatLockSupportLevel": "NONE",
+          "lidMigration": {
+            "chatDbMigrationTimestamp": "18446744073709551615"
+          },
+          "businessBroadcast": {
+            "importListEnabled": true
+          }
+        }
       }
     },
     {
@@ -38850,6 +40174,13 @@
       "expected": {
         "noteEditAction": {
           "type": 1,
+          "chatJid": "value💚",
+          "createdAt": "-9007199254740993"
+        }
+      },
+      "tojson": {
+        "noteEditAction": {
+          "type": "UNSTRUCTURED",
           "chatJid": "value💚",
           "createdAt": "-9007199254740993"
         }
@@ -38905,6 +40236,11 @@
         "waffleAccountLinkStateAction": {
           "linkState": 0
         }
+      },
+      "tojson": {
+        "waffleAccountLinkStateAction": {
+          "linkState": "ACTIVE"
+        }
       }
     },
     {
@@ -38920,6 +40256,11 @@
         "usernameChatStartMode": {
           "chatStartMode": 1
         }
+      },
+      "tojson": {
+        "usernameChatStartMode": {
+          "chatStartMode": "LID"
+        }
       }
     },
     {
@@ -38934,6 +40275,11 @@
       "expected": {
         "notificationActivitySettingAction": {
           "notificationActivitySetting": 0
+        }
+      },
+      "tojson": {
+        "notificationActivitySettingAction": {
+          "notificationActivitySetting": "DEFAULT_ALL_MESSAGES"
         }
       }
     },
@@ -39045,6 +40391,11 @@
         "maibaAiFeaturesControlAction": {
           "aiFeatureStatus": 0
         }
+      },
+      "tojson": {
+        "maibaAiFeaturesControlAction": {
+          "aiFeatureStatus": "ENABLED"
+        }
       }
     },
     {
@@ -39125,6 +40476,14 @@
             {}
           ]
         }
+      },
+      "tojson": {
+        "avatarUpdatedAction": {
+          "eventType": "UPDATED",
+          "recentAvatarStickers": [
+            {}
+          ]
+        }
       }
     },
     {
@@ -39139,6 +40498,11 @@
       "expected": {
         "privateProcessingSettingAction": {
           "privateProcessingStatus": 0
+        }
+      },
+      "tojson": {
+        "privateProcessingSettingAction": {
+          "privateProcessingStatus": "UNDEFINED"
         }
       }
     },
@@ -39184,6 +40548,11 @@
       "expected": {
         "interactiveMessageAction": {
           "type": 1
+        }
+      },
+      "tojson": {
+        "interactiveMessageAction": {
+          "type": "DISABLE_CTA"
         }
       }
     },
@@ -39320,6 +40689,9 @@
       "wire": "0800",
       "expected": {
         "eventType": 0
+      },
+      "tojson": {
+        "eventType": "UPDATED"
       }
     },
     {
@@ -39371,7 +40743,7 @@
           }
         ]
       },
-      "base64": {
+      "tojson": {
         "recentAvatarStickers": [
           {
             "url": "value💚",
@@ -39519,6 +40891,13 @@
           "callResult": 0,
           "isDndMode": true,
           "silenceReason": 0
+        }
+      },
+      "tojson": {
+        "callLogRecord": {
+          "callResult": "CONNECTED",
+          "isDndMode": true,
+          "silenceReason": "NONE"
         }
       }
     },
@@ -39983,6 +41362,9 @@
       "wire": "0801",
       "expected": {
         "type": 1
+      },
+      "tojson": {
+        "type": "DISABLE_CTA"
       }
     },
     {
@@ -40114,6 +41496,9 @@
       "wire": "3800",
       "expected": {
         "type": 0
+      },
+      "tojson": {
+        "type": "NONE"
       }
     },
     {
@@ -40263,6 +41648,9 @@
       "wire": "0800",
       "expected": {
         "aiFeatureStatus": 0
+      },
+      "tojson": {
+        "aiFeatureStatus": "ENABLED"
       }
     },
     {
@@ -40355,6 +41743,9 @@
       "wire": "1800",
       "expected": {
         "type": 0
+      },
+      "tojson": {
+        "type": "PERSONALIZED"
       }
     },
     {
@@ -40597,6 +41988,9 @@
       "wire": "0801",
       "expected": {
         "type": 1
+      },
+      "tojson": {
+        "type": "UNSTRUCTURED"
       }
     },
     {
@@ -40670,6 +42064,9 @@
       "wire": "0800",
       "expected": {
         "notificationActivitySetting": 0
+      },
+      "tojson": {
+        "notificationActivitySetting": "DEFAULT_ALL_MESSAGES"
       }
     },
     {
@@ -40903,6 +42300,9 @@
       "wire": "0800",
       "expected": {
         "privateProcessingStatus": 0
+      },
+      "tojson": {
+        "privateProcessingStatus": "UNDEFINED"
       }
     },
     {
@@ -41098,6 +42498,9 @@
       "wire": "0800",
       "expected": {
         "mode": 0
+      },
+      "tojson": {
+        "mode": "ALLOW_LIST"
       }
     },
     {
@@ -41162,7 +42565,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "fileEncSha256": "AAEC/w=="
       }
     },
@@ -41184,7 +42587,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "mediaKey": "AAEC/w=="
       }
     },
@@ -41468,7 +42871,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "definition": "AAEC/w=="
       }
     },
@@ -41524,6 +42927,9 @@
       "wire": "0801",
       "expected": {
         "chatStartMode": 1
+      },
+      "tojson": {
+        "chatStartMode": "LID"
       }
     },
     {
@@ -41553,6 +42959,9 @@
       "wire": "1000",
       "expected": {
         "linkState": 0
+      },
+      "tojson": {
+        "linkState": "ACTIVE"
       }
     },
     {
@@ -41609,7 +43018,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "blob": "AAEC/w=="
       }
     },
@@ -41629,6 +43038,9 @@
       "wire": "0800",
       "expected": {
         "operation": 0
+      },
+      "tojson": {
+        "operation": "SET"
       }
     },
     {
@@ -41696,7 +43108,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "record": {
           "index": {
             "blob": "AAEC/w=="
@@ -41733,6 +43145,14 @@
         "mutations": [
           {
             "operation": 0,
+            "record": {}
+          }
+        ]
+      },
+      "tojson": {
+        "mutations": [
+          {
+            "operation": "SET",
             "record": {}
           }
         ]
@@ -41779,6 +43199,14 @@
             "record": {}
           }
         ]
+      },
+      "tojson": {
+        "mutations": [
+          {
+            "operation": "SET",
+            "record": {}
+          }
+        ]
       }
     },
     {
@@ -41807,7 +43235,7 @@
           "handle": "value💚"
         }
       },
-      "base64": {
+      "tojson": {
         "externalMutations": {
           "mediaKey": "AAEC/w==",
           "directPath": "value💚",
@@ -41833,7 +43261,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "snapshotMac": "AAEC/w=="
       }
     },
@@ -41855,7 +43283,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "patchMac": "AAEC/w=="
       }
     },
@@ -41881,7 +43309,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "keyId": {
           "id": "AAEC/w=="
         }
@@ -41933,7 +43361,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "clientDebugData": "AAEC/w=="
       }
     },
@@ -41966,7 +43394,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "index": {
           "blob": "AAEC/w=="
         }
@@ -41994,7 +43422,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "value": {
           "blob": "AAEC/w=="
         }
@@ -42022,7 +43450,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "keyId": {
           "id": "AAEC/w=="
         }
@@ -42091,7 +43519,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "mac": "AAEC/w=="
       }
     },
@@ -42117,7 +43545,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "keyId": {
           "id": "AAEC/w=="
         }
@@ -42148,7 +43576,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "blob": "AAEC/w=="
       }
     },
@@ -42491,6 +43919,9 @@
       "wire": "0800",
       "expected": {
         "threadType": 0
+      },
+      "tojson": {
+        "threadType": "UNKNOWN"
       }
     },
     {
@@ -42620,6 +44051,9 @@
       "wire": "0800",
       "expected": {
         "encoding": 0
+      },
+      "tojson": {
+        "encoding": "UTF8"
       }
     },
     {
@@ -42642,6 +44076,9 @@
       "wire": "1000",
       "expected": {
         "transformer": 0
+      },
+      "tojson": {
+        "transformer": "NONE"
       }
     },
     {
@@ -42694,7 +44131,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "transformedData": "AAEC/w=="
       }
     },
@@ -42738,7 +44175,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "value": {
           "asBlob": "AAEC/w=="
         }
@@ -42769,7 +44206,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "asBlob": "AAEC/w=="
       }
     },
@@ -42890,7 +44327,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "details": "AAEC/w=="
       }
     },
@@ -42912,7 +44349,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "signature": "AAEC/w=="
       }
     },
@@ -42934,7 +44371,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "serverSignature": "AAEC/w=="
       }
     },
@@ -43057,6 +44494,9 @@
       "wire": "0800",
       "expected": {
         "labelsDisplay": 0
+      },
+      "tojson": {
+        "labelsDisplay": "NOT_STARTED"
       }
     },
     {
@@ -43079,6 +44519,9 @@
       "wire": "1000",
       "expected": {
         "voipIndividualOutgoing": 0
+      },
+      "tojson": {
+        "voipIndividualOutgoing": "NOT_STARTED"
       }
     },
     {
@@ -43101,6 +44544,9 @@
       "wire": "1800",
       "expected": {
         "groupsV3": 0
+      },
+      "tojson": {
+        "groupsV3": "NOT_STARTED"
       }
     },
     {
@@ -43123,6 +44569,9 @@
       "wire": "2000",
       "expected": {
         "groupsV3Create": 0
+      },
+      "tojson": {
+        "groupsV3Create": "NOT_STARTED"
       }
     },
     {
@@ -43145,6 +44594,9 @@
       "wire": "2800",
       "expected": {
         "changeNumberV2": 0
+      },
+      "tojson": {
+        "changeNumberV2": "NOT_STARTED"
       }
     },
     {
@@ -43167,6 +44619,9 @@
       "wire": "3000",
       "expected": {
         "queryStatusV3Thumbnail": 0
+      },
+      "tojson": {
+        "queryStatusV3Thumbnail": "NOT_STARTED"
       }
     },
     {
@@ -43189,6 +44644,9 @@
       "wire": "3800",
       "expected": {
         "liveLocations": 0
+      },
+      "tojson": {
+        "liveLocations": "NOT_STARTED"
       }
     },
     {
@@ -43211,6 +44669,9 @@
       "wire": "4000",
       "expected": {
         "queryVname": 0
+      },
+      "tojson": {
+        "queryVname": "NOT_STARTED"
       }
     },
     {
@@ -43233,6 +44694,9 @@
       "wire": "4800",
       "expected": {
         "voipIndividualIncoming": 0
+      },
+      "tojson": {
+        "voipIndividualIncoming": "NOT_STARTED"
       }
     },
     {
@@ -43255,6 +44719,9 @@
       "wire": "5000",
       "expected": {
         "quickRepliesQuery": 0
+      },
+      "tojson": {
+        "quickRepliesQuery": "NOT_STARTED"
       }
     },
     {
@@ -43277,6 +44744,9 @@
       "wire": "5800",
       "expected": {
         "payments": 0
+      },
+      "tojson": {
+        "payments": "NOT_STARTED"
       }
     },
     {
@@ -43299,6 +44769,9 @@
       "wire": "6000",
       "expected": {
         "stickerPackQuery": 0
+      },
+      "tojson": {
+        "stickerPackQuery": "NOT_STARTED"
       }
     },
     {
@@ -43321,6 +44794,9 @@
       "wire": "6800",
       "expected": {
         "liveLocationsFinal": 0
+      },
+      "tojson": {
+        "liveLocationsFinal": "NOT_STARTED"
       }
     },
     {
@@ -43343,6 +44819,9 @@
       "wire": "7000",
       "expected": {
         "labelsEdit": 0
+      },
+      "tojson": {
+        "labelsEdit": "NOT_STARTED"
       }
     },
     {
@@ -43365,6 +44844,9 @@
       "wire": "7800",
       "expected": {
         "mediaUpload": 0
+      },
+      "tojson": {
+        "mediaUpload": "NOT_STARTED"
       }
     },
     {
@@ -43387,6 +44869,9 @@
       "wire": "900100",
       "expected": {
         "mediaUploadRichQuickReplies": 0
+      },
+      "tojson": {
+        "mediaUploadRichQuickReplies": "NOT_STARTED"
       }
     },
     {
@@ -43409,6 +44894,9 @@
       "wire": "980100",
       "expected": {
         "vnameV2": 0
+      },
+      "tojson": {
+        "vnameV2": "NOT_STARTED"
       }
     },
     {
@@ -43431,6 +44919,9 @@
       "wire": "a00100",
       "expected": {
         "videoPlaybackUrl": 0
+      },
+      "tojson": {
+        "videoPlaybackUrl": "NOT_STARTED"
       }
     },
     {
@@ -43453,6 +44944,9 @@
       "wire": "a80100",
       "expected": {
         "statusRanking": 0
+      },
+      "tojson": {
+        "statusRanking": "NOT_STARTED"
       }
     },
     {
@@ -43475,6 +44969,9 @@
       "wire": "b00100",
       "expected": {
         "voipIndividualVideo": 0
+      },
+      "tojson": {
+        "voipIndividualVideo": "NOT_STARTED"
       }
     },
     {
@@ -43497,6 +44994,9 @@
       "wire": "b80100",
       "expected": {
         "thirdPartyStickers": 0
+      },
+      "tojson": {
+        "thirdPartyStickers": "NOT_STARTED"
       }
     },
     {
@@ -43519,6 +45019,9 @@
       "wire": "c00100",
       "expected": {
         "frequentlyForwardedSetting": 0
+      },
+      "tojson": {
+        "frequentlyForwardedSetting": "NOT_STARTED"
       }
     },
     {
@@ -43541,6 +45044,9 @@
       "wire": "c80100",
       "expected": {
         "groupsV4JoinPermission": 0
+      },
+      "tojson": {
+        "groupsV4JoinPermission": "NOT_STARTED"
       }
     },
     {
@@ -43563,6 +45069,9 @@
       "wire": "d00100",
       "expected": {
         "recentStickers": 0
+      },
+      "tojson": {
+        "recentStickers": "NOT_STARTED"
       }
     },
     {
@@ -43585,6 +45094,9 @@
       "wire": "d80100",
       "expected": {
         "catalog": 0
+      },
+      "tojson": {
+        "catalog": "NOT_STARTED"
       }
     },
     {
@@ -43607,6 +45119,9 @@
       "wire": "e00100",
       "expected": {
         "starredStickers": 0
+      },
+      "tojson": {
+        "starredStickers": "NOT_STARTED"
       }
     },
     {
@@ -43629,6 +45144,9 @@
       "wire": "e80100",
       "expected": {
         "voipGroupCall": 0
+      },
+      "tojson": {
+        "voipGroupCall": "NOT_STARTED"
       }
     },
     {
@@ -43651,6 +45169,9 @@
       "wire": "f00100",
       "expected": {
         "templateMessage": 0
+      },
+      "tojson": {
+        "templateMessage": "NOT_STARTED"
       }
     },
     {
@@ -43673,6 +45194,9 @@
       "wire": "f80100",
       "expected": {
         "templateMessageInteractivity": 0
+      },
+      "tojson": {
+        "templateMessageInteractivity": "NOT_STARTED"
       }
     },
     {
@@ -43695,6 +45219,9 @@
       "wire": "800200",
       "expected": {
         "ephemeralMessages": 0
+      },
+      "tojson": {
+        "ephemeralMessages": "NOT_STARTED"
       }
     },
     {
@@ -43717,6 +45244,9 @@
       "wire": "880200",
       "expected": {
         "e2ENotificationSync": 0
+      },
+      "tojson": {
+        "e2ENotificationSync": "NOT_STARTED"
       }
     },
     {
@@ -43739,6 +45269,9 @@
       "wire": "900200",
       "expected": {
         "recentStickersV2": 0
+      },
+      "tojson": {
+        "recentStickersV2": "NOT_STARTED"
       }
     },
     {
@@ -43761,6 +45294,9 @@
       "wire": "a00200",
       "expected": {
         "recentStickersV3": 0
+      },
+      "tojson": {
+        "recentStickersV3": "NOT_STARTED"
       }
     },
     {
@@ -43783,6 +45319,9 @@
       "wire": "a80200",
       "expected": {
         "userNotice": 0
+      },
+      "tojson": {
+        "userNotice": "NOT_STARTED"
       }
     },
     {
@@ -43805,6 +45344,9 @@
       "wire": "b80200",
       "expected": {
         "support": 0
+      },
+      "tojson": {
+        "support": "NOT_STARTED"
       }
     },
     {
@@ -43827,6 +45369,9 @@
       "wire": "c00200",
       "expected": {
         "groupUiiCleanup": 0
+      },
+      "tojson": {
+        "groupUiiCleanup": "NOT_STARTED"
       }
     },
     {
@@ -43849,6 +45394,9 @@
       "wire": "c80200",
       "expected": {
         "groupDogfoodingInternalOnly": 0
+      },
+      "tojson": {
+        "groupDogfoodingInternalOnly": "NOT_STARTED"
       }
     },
     {
@@ -43871,6 +45419,9 @@
       "wire": "d00200",
       "expected": {
         "settingsSync": 0
+      },
+      "tojson": {
+        "settingsSync": "NOT_STARTED"
       }
     },
     {
@@ -43893,6 +45444,9 @@
       "wire": "d80200",
       "expected": {
         "archiveV2": 0
+      },
+      "tojson": {
+        "archiveV2": "NOT_STARTED"
       }
     },
     {
@@ -43915,6 +45469,9 @@
       "wire": "e00200",
       "expected": {
         "ephemeralAllowGroupMembers": 0
+      },
+      "tojson": {
+        "ephemeralAllowGroupMembers": "NOT_STARTED"
       }
     },
     {
@@ -43937,6 +45494,9 @@
       "wire": "e80200",
       "expected": {
         "ephemeral24HDuration": 0
+      },
+      "tojson": {
+        "ephemeral24HDuration": "NOT_STARTED"
       }
     },
     {
@@ -43959,6 +45519,9 @@
       "wire": "f00200",
       "expected": {
         "mdForceUpgrade": 0
+      },
+      "tojson": {
+        "mdForceUpgrade": "NOT_STARTED"
       }
     },
     {
@@ -43981,6 +45544,9 @@
       "wire": "f80200",
       "expected": {
         "disappearingMode": 0
+      },
+      "tojson": {
+        "disappearingMode": "NOT_STARTED"
       }
     },
     {
@@ -44003,6 +45569,9 @@
       "wire": "800300",
       "expected": {
         "externalMdOptInAvailable": 0
+      },
+      "tojson": {
+        "externalMdOptInAvailable": "NOT_STARTED"
       }
     },
     {
@@ -44025,6 +45594,9 @@
       "wire": "880300",
       "expected": {
         "noDeleteMessageTimeLimit": 0
+      },
+      "tojson": {
+        "noDeleteMessageTimeLimit": "NOT_STARTED"
       }
     },
     {
@@ -44104,7 +45676,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "message": {
           "conversation": "value💚",
           "senderKeyDistributionMessage": {
@@ -44139,6 +45711,9 @@
       "wire": "2000",
       "expected": {
         "status": 0
+      },
+      "tojson": {
+        "status": "ERROR"
       }
     },
     {
@@ -44236,7 +45811,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "mediaCiphertextSha256": "AAEC/w=="
       }
     },
@@ -44282,6 +45857,9 @@
       "wire": "c00100",
       "expected": {
         "messageStubType": 0
+      },
+      "tojson": {
+        "messageStubType": "UNKNOWN"
       }
     },
     {
@@ -44293,6 +45871,9 @@
       "wire": "c00163",
       "expected": {
         "messageStubType": 99
+      },
+      "tojson": {
+        "messageStubType": "BLUE_MSG_SELF_PREMISE_UNVERIFIED"
       }
     },
     {
@@ -44364,6 +45945,13 @@
           "amount1000": "18446744073709551615",
           "receiverJid": "value💚"
         }
+      },
+      "tojson": {
+        "paymentInfo": {
+          "currencyDeprecated": "UNKNOWN_CURRENCY",
+          "amount1000": "18446744073709551615",
+          "receiverJid": "value💚"
+        }
       }
     },
     {
@@ -44399,6 +45987,13 @@
       "expected": {
         "quotedPaymentInfo": {
           "currencyDeprecated": 0,
+          "amount1000": "18446744073709551615",
+          "receiverJid": "value💚"
+        }
+      },
+      "tojson": {
+        "quotedPaymentInfo": {
+          "currencyDeprecated": "UNKNOWN_CURRENCY",
           "amount1000": "18446744073709551615",
           "receiverJid": "value💚"
         }
@@ -44457,6 +46052,9 @@
       "wire": "a00200",
       "expected": {
         "bizPrivacyStatus": 0
+      },
+      "tojson": {
+        "bizPrivacyStatus": "E2EE"
       }
     },
     {
@@ -44530,7 +46128,7 @@
           "newPhotoId": 33
         }
       },
-      "base64": {
+      "tojson": {
         "photoChange": {
           "oldPhoto": "AAEC/w==",
           "newPhoto": "AAEC/w==",
@@ -44617,7 +46215,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "futureproofData": "AAEC/w=="
       }
     },
@@ -44716,7 +46314,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "messageSecret": "AAEC/w=="
       }
     },
@@ -44738,6 +46336,17 @@
       "expected": {
         "keepInChat": {
           "keepType": 0,
+          "serverTimestamp": "-9007199254740993",
+          "key": {
+            "remoteJid": "value💚",
+            "fromMe": true,
+            "id": "value💚"
+          }
+        }
+      },
+      "tojson": {
+        "keepInChat": {
+          "keepType": "UNKNOWN",
           "serverTimestamp": "-9007199254740993",
           "key": {
             "remoteJid": "value💚",
@@ -44787,6 +46396,17 @@
       "expected": {
         "pinInChat": {
           "type": 0,
+          "key": {
+            "remoteJid": "value💚",
+            "fromMe": true,
+            "id": "value💚"
+          },
+          "senderTimestampMs": "-9007199254740993"
+        }
+      },
+      "tojson": {
+        "pinInChat": {
+          "type": "UNKNOWN_TYPE",
           "key": {
             "remoteJid": "value💚",
             "fromMe": true,
@@ -44914,7 +46534,7 @@
           }
         }
       },
-      "base64": {
+      "tojson": {
         "reportingTokenInfo": {
           "reportingTag": "AAEC/w=="
         }
@@ -45008,6 +46628,15 @@
         "messageAddOns": [
           {
             "messageAddOnType": 0,
+            "messageAddOn": {},
+            "senderTimestampMs": "-9007199254740993"
+          }
+        ]
+      },
+      "tojson": {
+        "messageAddOns": [
+          {
+            "messageAddOnType": "UNDEFINED",
             "messageAddOn": {},
             "senderTimestampMs": "-9007199254740993"
           }
@@ -45162,14 +46791,14 @@
           "processState": 0
         }
       },
-      "base64": {
+      "tojson": {
         "groupHistoryBundleInfo": {
           "deprecatedMessageHistoryBundle": {
             "mimetype": "value💚",
             "fileSha256": "AAEC/w==",
             "mediaKey": "AAEC/w=="
           },
-          "processState": 0
+          "processState": "NOT_INJECTED"
         }
       }
     },
@@ -45212,7 +46841,7 @@
           "extractedText": "value💚"
         }
       },
-      "base64": {
+      "tojson": {
         "quarantinedMessage": {
           "originalData": "AAEC/w==",
           "extractedText": "value💚"
@@ -45419,7 +47048,7 @@
           "data": []
         }
       },
-      "base64": {
+      "tojson": {
         "mediaKey": ""
       }
     },
@@ -45436,7 +47065,7 @@
           "data": []
         }
       },
-      "base64": {
+      "tojson": {
         "mediaKey": ""
       }
     },
@@ -45461,7 +47090,7 @@
           ]
         }
       },
-      "base64": {
+      "tojson": {
         "mediaKey": "AAH/"
       }
     },
@@ -45647,6 +47276,9 @@
       "wire": "2004",
       "expected": {
         "status": 4
+      },
+      "tojson": {
+        "status": "READ"
       }
     },
     {
@@ -45667,6 +47299,9 @@
       "wire": "2000",
       "expected": {
         "status": 0
+      },
+      "tojson": {
+        "status": "ERROR"
       }
     },
     {
@@ -45766,7 +47401,7 @@
           }
         ]
       },
-      "base64": {
+      "tojson": {
         "key": {
           "remoteJid": "200@s.whatsapp.net",
           "fromMe": false,
@@ -45788,7 +47423,7 @@
                     "buttonText": {
                       "displayText": "One"
                     },
-                    "type": 1
+                    "type": "RESPONSE"
                   }
                 ]
               }

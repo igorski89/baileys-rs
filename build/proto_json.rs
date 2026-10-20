@@ -12,6 +12,11 @@ fn ident(s: &str) -> String {
         _ => s.into(),
     }
 }
+/// A closure naming an enum field's value, as protobufjs' `toJSON` writes it.
+fn enum_name(f: &FieldDescriptorProto) -> String {
+    let ep = path(f.type_name.as_ref().unwrap());
+    format!("(|v:i32|{ep}::try_from(v).ok().map(|e|e.as_str_name()))")
+}
 fn path(name: &str) -> String {
     let parts: Vec<_> = name.trim_start_matches('.').split('.').collect();
     format!(
@@ -193,6 +198,17 @@ fn emit(message: &DescriptorProto, parent: &str, out: &mut String) {
             } else {
                 format!("fixed64_value(self.{member})")
             }
+        } else if f.r#type == Some(Type::Enum as i32) {
+            let name = enum_name(f);
+            if f.label == Some(Label::Repeated as i32) {
+                format!(
+                    "Value::Array(self.{member}.iter().map(|v|enum_to_value(*v,{name}(*v))).collect())"
+                )
+            } else if optional(f) {
+                format!("{{let v=self.{member}.unwrap();enum_to_value(v,{name}(v))}}")
+            } else {
+                format!("enum_to_value(self.{member},{name}(self.{member}))")
+            }
         } else {
             format!("self.{member}.to_value()")
         };
@@ -221,6 +237,8 @@ fn emit(message: &DescriptorProto, parent: &str, out: &mut String) {
                 "bytes_to_value(value)".into()
             } else if f.r#type == Some(Type::Fixed64 as i32) {
                 "fixed64_value(*value)".into()
+            } else if f.r#type == Some(Type::Enum as i32) {
+                format!("enum_to_value(*value,{}(*value))", enum_name(f))
             } else {
                 "value.to_value()".into()
             };

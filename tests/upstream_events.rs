@@ -87,6 +87,7 @@ fn events() -> Vec<Event> {
         retry_count: Some(2),
         author: "200@s.whatsapp.net".into(),
         sender: "200@s.whatsapp.net".into(),
+        protobuf: false,
     };
     let message = proto::WebMessageInfo {
         key: Some(key("M")),

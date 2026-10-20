@@ -263,11 +263,15 @@ impl WhatsAppLoop {
                         if let Some(found) =
                             media::extract(whatsapp, self.storage.as_ref(), message).await
                         {
-                            // Our own sends have no receive metadata: upstream
-                            // they are protobufjs WebMessageInfo objects, whose
-                            // JSON drops the `_media` the TypeScript connector
-                            // sets on them, though it downloads the media.
-                            if upsert.is_some_and(|u| u.metadata_for(i).is_some()) {
+                            // Upstream, only received envelopes are plain
+                            // objects; own sends and notifications are
+                            // protobufjs WebMessageInfo objects, whose JSON
+                            // drops the `_media` the TypeScript connector sets
+                            // on them, though it downloads the media.
+                            if upsert
+                                .and_then(|u| u.metadata_for(i))
+                                .is_some_and(|m| !m.protobuf)
+                            {
                                 data["messages"][i]["_media"] = found;
                             }
                             has_media = true;

@@ -297,6 +297,7 @@ impl Socket {
             retry_count: None,
             sender: author.clone(),
             author,
+            protobuf: false,
         };
         Box::pin(self.upsert_message(&envelope, crate::messages::own::UpsertKind::Notify)).await?;
         Ok(result.attrs.get("from").cloned())

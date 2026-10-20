@@ -50,20 +50,20 @@ fn every_message_and_schema_field_matches_original_protobufjs_json() {
             "canonical wire case{i} {name}:{}",
             case["label"]
         );
-        // protobufjs' toJSON: the same object with bytes as base64 strings.
-        let expected = case.get("base64").unwrap_or(&case["expected"]);
+        // protobufjs' toJSON: base64 bytes and enum names.
+        let expected = case.get("tojson").unwrap_or(&case["expected"]);
         let base64 =
-            proto_json::with_base64_bytes(|| proto_json::decode_named(name, &original)).unwrap();
+            proto_json::with_upstream_json(|| proto_json::decode_named(name, &original)).unwrap();
         assert_eq!(
             numbers::canonical(&base64),
             numbers::canonical(expected),
-            "base64 case{i} {name}:{}",
+            "toJSON case{i} {name}:{}",
             case["label"]
         );
         assert_eq!(
             proto_json::encode_named(name, &base64).unwrap(),
             native,
-            "base64 wire case{i} {name}:{}",
+            "toJSON wire case{i} {name}:{}",
             case["label"]
         );
     }

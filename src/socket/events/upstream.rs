@@ -21,7 +21,7 @@ impl Event {
     /// `Event::CredentialsUpdated` carries no fields, so its `creds.update`
     /// payload is empty.
     pub fn upstream(&self) -> Result<Vec<(&'static str, Value)>, Error> {
-        proto_json::with_base64_bytes(|| self.upstream_entries())
+        proto_json::with_upstream_json(|| self.upstream_entries())
     }
 
     fn upstream_entries(&self) -> Result<Vec<(&'static str, Value)>, Error> {
@@ -34,7 +34,10 @@ impl Event {
                 }
                 Action::Chats(updates) => entries.push((
                     "chats.update",
-                    json!(updates.iter().map(chat_update).collect::<Vec<_>>()),
+                    json!(proto_json::plain(|| updates
+                        .iter()
+                        .map(chat_update)
+                        .collect::<Vec<_>>())),
                 )),
                 Action::Native(event) => entries.extend(native(&event)?),
             }

@@ -838,6 +838,7 @@ async fn own_publication_matches_complete_original_buffered_event_sequences() {
                 retry_count: None,
                 author: "100@s.whatsapp.net".into(),
                 sender: "100@s.whatsapp.net".into(),
+                protobuf: false,
             };
             // The outer scope holds each synthetic case together while the
             // automatic publication scope executes, then source flushes it.

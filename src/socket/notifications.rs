@@ -168,6 +168,7 @@ impl Socket {
                 retry_count: None,
                 sender: author.clone(),
                 author,
+                protobuf: true,
             };
             self.upsert_message(&envelope, messages::own::UpsertKind::Append)
                 .await?;

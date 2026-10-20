@@ -215,6 +215,11 @@ pub struct EnvelopeMetadata {
     pub retry_count: Option<u32>,
     pub author: String,
     pub sender: String,
+    /// Upstream builds this message as a protobufjs WebMessageInfo
+    /// (`fromObject`) rather than the plain object a received envelope is,
+    /// so its JSON has only schema fields, enum names and string longs.
+    #[serde(default)]
+    pub protobuf: bool,
 }
 impl From<&Envelope> for EnvelopeMetadata {
     fn from(envelope: &Envelope) -> Self {
@@ -224,6 +229,7 @@ impl From<&Envelope> for EnvelopeMetadata {
             retry_count: envelope.retry_count,
             author: envelope.author.clone(),
             sender: envelope.sender.clone(),
+            protobuf: envelope.protobuf,
         }
     }
 }
@@ -235,6 +241,8 @@ pub struct Envelope {
     pub retry_count: Option<u32>,
     pub author: String,
     pub sender: String,
+    /// See `EnvelopeMetadata::protobuf`.
+    pub protobuf: bool,
 }
 impl std::fmt::Debug for Envelope {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -336,6 +344,7 @@ pub fn decode_node(node: &BinaryNode, me: &str, me_lid: &str) -> Result<Envelope
         retry_count: None,
         author: author.clone(),
         sender: if is_chat { author } else { chat },
+        protobuf: false,
     })
 }
 

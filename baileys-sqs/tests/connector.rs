@@ -522,6 +522,7 @@ async fn events_are_forwarded_with_metadata_media_and_ephemeral_learning() {
         retry_count: None,
         author: "1@s.whatsapp.net".into(),
         sender: "1@s.whatsapp.net".into(),
+        protobuf: false,
     };
     let mut sent = image.clone();
     sent.key = Some(proto::MessageKey {
@@ -577,7 +578,7 @@ async fn events_are_forwarded_with_metadata_media_and_ephemeral_learning() {
     );
     assert_eq!(
         upsert["meta"],
-        json!({"messages":[{"message_id":"IMG","from":"1@s.whatsapp.net","direction":"incoming","has_media":true,"timestamp":"1700000000"}],"type":"notify"})
+        json!({"messages":[{"message_id":"IMG","from":"1@s.whatsapp.net","direction":"incoming","has_media":true,"timestamp":1700000000}],"type":"notify"})
     );
     assert_eq!(
         upsert["payload"]["messages"][0]["_media"],

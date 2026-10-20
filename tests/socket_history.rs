@@ -71,7 +71,7 @@ async fn history_protocol_policy_self_guards_records_failures_and_metadata_match
             let payload=unhex(case["payload"].as_str().unwrap());let fail=case["fail"].as_bool().unwrap();config.history_downloader=Some(history::Downloader::new(move |_|{let payload=payload.clone();async move{if fail{Err(history::Error::Input("download failed"))}else{Ok(proto::HistorySync::decode(payload.as_slice()).unwrap())}}}));
             let server=tokio::spawn(async move{let mut peer=Peer::accept(listener.accept().await.unwrap().0).await;peer.closed().await;});
             let(socket,mut events)=Socket::connect(config,store.clone()).await.unwrap();while events.try_recv().is_ok(){}
-            let message=proto::WebMessageInfo::decode(unhex(case["message"].as_str().unwrap()).as_slice()).unwrap();let envelope=messages::Envelope{message,key_metadata:Default::default(),category:None,retry_count:None,author:"100@s.whatsapp.net".into(),sender:"100@s.whatsapp.net".into()};
+            let message=proto::WebMessageInfo::decode(unhex(case["message"].as_str().unwrap()).as_slice()).unwrap();let envelope=messages::Envelope{message,key_metadata:Default::default(),category:None,retry_count:None,author:"100@s.whatsapp.net".into(),sender:"100@s.whatsapp.net".into(),protobuf:false,};
             socket.buffer_events();let result=socket.upsert_message(&envelope,messages::own::UpsertKind::Notify).await;assert_eq!(result.is_err(),case["expected"]["error"].is_string(),"{}",case);
             socket.flush_events().unwrap();let mut observed=vec![];while let Ok(event)=events.try_recv(){match event {
                 Event::CredentialsUpdated=>{let creds=store.load_credentials().unwrap();observed.push(json!({"name":"creds.update","records":creds.processed_history_messages.iter().map(|m|json!({"key":wire(&m.key.as_ref().unwrap().encode_to_vec()),"timestamp":m.message_timestamp.unwrap().to_string()})).collect::<Vec<_>>()}));},
@@ -233,7 +233,7 @@ async fn history_status_precedes_download_checks_policy_once_and_accepts_nonself
         let(socket,mut events)=Socket::connect(config,store(false)).await.unwrap();
         let mut envelope=messages::Envelope {
             message:proto::WebMessageInfo {key:Some(proto::MessageKey {remote_jid:Some("100@s.whatsapp.net".into()),id:Some("BOOT".into()),from_me:Some(true),participant:None}),message:Some(proto::Message {protocol_message:Some(Box::new(proto::message::ProtocolMessage {r#type:Some(5),history_sync_notification:Some(proto::message::HistorySyncNotification {sync_type:Some(0),..Default::default()}),..Default::default()})),..Default::default()}),..Default::default()},
-            key_metadata:Default::default(),category:None,retry_count:None,author:"100@s.whatsapp.net".into(),sender:"100@s.whatsapp.net".into(),
+            key_metadata:Default::default(),category:None,retry_count:None,author:"100@s.whatsapp.net".into(),sender:"100@s.whatsapp.net".into(),protobuf:false,
         };
         let mut operation=Box::pin(socket.upsert_message(&envelope,messages::own::UpsertKind::Notify));
         tokio::select!{result=&mut operation=>panic!("download unexpectedly completed {result:?}"),result=seen=>result.unwrap()}

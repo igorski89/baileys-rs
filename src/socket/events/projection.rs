@@ -3,7 +3,7 @@ use crate::{
     auth, event_buffer, history,
     messages::{self, group_effects, own},
     proto,
-    proto_json::JsonField,
+    proto_json::{self, JsonField},
     receipts,
 };
 use serde::{Serialize, de::DeserializeOwned};
@@ -35,7 +35,18 @@ fn message_value(
     metadata: Option<&messages::EnvelopeMetadata>,
     runtime: Option<&serde_json::Map<String, Value>>,
 ) -> Result<Value, Error> {
-    let mut value = message.to_value();
+    // A received envelope is a plain object holding a decoded protobufjs
+    // message; other messages are protobufjs WebMessageInfo objects.
+    let plain = metadata.is_some_and(|m| !m.protobuf);
+    let mut value = if plain {
+        let mut value = proto_json::plain(|| message.to_value());
+        if let Some(content) = &message.message {
+            value["message"] = proto_json::protobuf(|| content.to_value());
+        }
+        value
+    } else {
+        proto_json::protobuf(|| message.to_value())
+    };
     if let Some(runtime) = runtime {
         value
             .as_object_mut()
@@ -114,7 +125,12 @@ fn keyed_update(
     }
     value
 }
+/// Upstream's event values are plain objects, except the protobufjs messages
+/// marked inside.
 pub(super) fn project(event: Event) -> Result<Vec<Action>, Error> {
+    proto_json::plain(|| project_plain(event))
+}
+fn project_plain(event: Event) -> Result<Vec<Action>, Error> {
     let (name, value) = match event {
         Event::ChatsUpdated(updates) => return Ok(vec![Action::Chats(updates)]),
         Event::ChatsUpserted(chats) => ("chats.upsert", json!(chats.iter().map(JsonField::to_value).collect::<Vec<_>>())),
@@ -153,18 +169,23 @@ pub(super) fn project(event: Event) -> Result<Vec<Action>, Error> {
         }
         Event::MessagesDeleted(keys) => ("messages.delete", json!({"keys":keys.iter().map(JsonField::to_value).collect::<Vec<_>>()})),
         Event::MessagesUpdated(updates) => ("messages.update", json!(updates.iter().map(|v| update(&v.key,json!({"status":v.status as i32,"messageTimestamp":v.message_timestamp.to_value()}))).collect::<Vec<_>>())),
-        Event::EventResponsesUpdated(updates) => ("messages.update", json!(updates.iter().map(|v|update(&v.key,json!({"eventResponses":[{"eventResponseMessageKey":v.event_response_message_key.to_value(),"senderTimestampMs":v.sender_timestamp_ms.map(|t|t.to_value()),"response":v.response.to_value()}]}))).collect::<Vec<_>>())),
-        Event::MessageUpdates(updates) => ("messages.update", json!(updates.iter().map(|v|keyed_update(&v.key,&v.key_metadata,v.update_value())).collect::<Vec<_>>())),
+        Event::EventResponsesUpdated(updates) => ("messages.update", json!(updates.iter().map(|v|update(&v.key,json!({"eventResponses":[{"eventResponseMessageKey":v.event_response_message_key.to_value(),"senderTimestampMs":v.sender_timestamp_ms.map(|t|t.to_value()),"response":proto_json::protobuf(||v.response.to_value())}]}))).collect::<Vec<_>>())),
+        Event::MessageUpdates(updates) => ("messages.update", json!(updates.iter().map(|v|{
+            let mut fields=v.update_value();
+            // A message in an update is a decoded protobufjs message.
+            if let Some(message)=&v.info.message && !v.runtime_fields.contains_key("message") { fields["message"]=proto_json::protobuf(||message.to_value()); }
+            keyed_update(&v.key,&v.key_metadata,fields)
+        }).collect::<Vec<_>>())),
         Event::MessagesStarred(updates) => ("messages.update", json!(updates.iter().map(|v| update(&v.key,json!({"starred":v.starred}))).collect::<Vec<_>>())),
         Event::MessageStubsUpdated(updates) => ("messages.update", json!(updates.iter().map(|v| update(&v.key,json!({"messageStubParameters":v.parameters}))).collect::<Vec<_>>())),
-        Event::MessageContentsUpdated(updates) => ("messages.update", json!(updates.iter().map(|v| update(&v.key,json!({"message":v.message.as_ref().map(|m|m.to_value())}))).collect::<Vec<_>>())),
+        Event::MessageContentsUpdated(updates) => ("messages.update", json!(updates.iter().map(|v| update(&v.key,json!({"message":v.message.as_ref().map(|m|proto_json::protobuf(||m.to_value()))}))).collect::<Vec<_>>())),
         Event::MessageMutations(updates) => ("messages.update", json!(updates.iter().map(|v| match v {
             own::Mutation::Revoke { key, original_key, key_metadata } => {
                 let mut original = original_key.to_value();
                 if let Some(metadata) = key_metadata { metadata.apply(&mut original); }
                 keyed_update(key,key_metadata,json!({"message":null,"messageStubType":proto::web_message_info::StubType::Revoke as i32,"key":original}))
             }
-            own::Mutation::Edit { key,message,timestamp,key_metadata } => keyed_update(key,key_metadata,json!({"message":message.to_value(),"messageTimestamp":timestamp.to_value()})),
+            own::Mutation::Edit { key,message,timestamp,key_metadata } => keyed_update(key,key_metadata,json!({"message":proto_json::protobuf(||message.to_value()),"messageTimestamp":timestamp.to_value()})),
         }).collect::<Vec<_>>())),
         Event::MessageReactions(updates) => ("messages.reaction", json!(updates.iter().map(|v|Ok(json!({"key":v.key.as_ref().map(JsonField::to_value),"reaction":reaction_value(v)?}))).collect::<Result<Vec<_>, Error>>()?)),
         Event::MessageReceiptsUpdated(updates) => ("message-receipt.update", json!(updates.iter().map(|v|{
@@ -174,7 +195,8 @@ pub(super) fn project(event: Event) -> Result<Vec<Action>, Error> {
             json!({"key":v.key.to_value(),"receipt":receipt})
         }).collect::<Vec<_>>())),
         Event::MessagingHistorySet(set) => {
-            let mut value=json!({"chats":set.data.chats.iter().map(JsonField::to_value).collect::<Vec<_>>(),"contacts":serialize(&set.data.contacts)?,"messages":set.data.messages.iter().enumerate().map(|(i,m)|message_value(m,set.data.message_metadata.get(i).and_then(Option::as_ref),set.data.message_runtime_fields.get(i))).collect::<Result<Vec<_>,_>>()?});
+            // History chats are decoded protobufjs Conversations.
+            let mut value=json!({"chats":proto_json::protobuf(||set.data.chats.iter().map(JsonField::to_value).collect::<Vec<_>>()),"contacts":serialize(&set.data.contacts)?,"messages":set.data.messages.iter().enumerate().map(|(i,m)|message_value(m,set.data.message_metadata.get(i).and_then(Option::as_ref),set.data.message_runtime_fields.get(i))).collect::<Result<Vec<_>,_>>()?});
             let past=json!(set.data.past_participants.iter().map(JsonField::to_value).collect::<Vec<_>>());
             if set.buffered {
                 // The buffer's set: past participants only once some arrived.

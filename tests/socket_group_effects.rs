@@ -97,7 +97,7 @@ async fn group_stub_and_member_label_events_match_original_including_partial_fai
     timeout(Duration::from_secs(15),async{
         let temp=tempfile::tempdir().unwrap();let auth=store(&temp);let mut credentials=auth.load_credentials().unwrap();credentials.me.as_mut().unwrap().id="100:7@s.whatsapp.net".into();credentials.account_settings.unarchive_chats=true;auth.save_credentials(&credentials).unwrap();
         let(listener,config)=listener().await;let server=tokio::spawn(async move{let mut peer=Peer::accept(listener.accept().await.unwrap().0).await;peer.send(BinaryNode::new("success")).await;assert_eq!(peer.read().await.tag,"ib");let finish=peer.read().await;assert!(finish.child("finish").is_some());peer.result(&finish).await;peer.closed().await;});let(socket,mut events)=Socket::connect(config,auth).await.unwrap();socket.wait_for_open(Duration::from_secs(2)).await.unwrap();
-        for case in fixture()["cases"].as_array().unwrap(){let message=proto::WebMessageInfo::decode(hex(case["input"].as_str().unwrap()).as_slice()).unwrap();let envelope=messages::Envelope{message,key_metadata:messages::KeyMetadata{participant_alt:case["metadata"]["participantAlt"].as_str().map(str::to_owned),participant_username:case["metadata"]["participantUsername"].as_str().map(str::to_owned),..Default::default()},category:None,retry_count:None,author:"300@lid".into(),sender:"group@g.us".into()};
+        for case in fixture()["cases"].as_array().unwrap(){let message=proto::WebMessageInfo::decode(hex(case["input"].as_str().unwrap()).as_slice()).unwrap();let envelope=messages::Envelope{message,key_metadata:messages::KeyMetadata{participant_alt:case["metadata"]["participantAlt"].as_str().map(str::to_owned),participant_username:case["metadata"]["participantUsername"].as_str().map(str::to_owned),..Default::default()},category:None,retry_count:None,author:"300@lid".into(),sender:"group@g.us".into(),protobuf:false};
             socket.buffer_events();let result=socket.upsert_message(&envelope,messages::own::UpsertKind::Append).await;assert_eq!(result.is_err(),case.get("bufferedError").is_some(),"{case}");socket.flush_events().unwrap();let mut actual=vec![];while let Ok(event)=events.try_recv(){match event{
                 Event::GroupEffects(values)=>actual.extend(Event::GroupEffects(values).upstream().unwrap().into_iter().map(|(name,data)|json!({"name":name,"data":data}))),Event::ChatsUpdated(values)=>actual.push(json!({"name":"chats.update","data":values.into_iter().map(chat).collect::<Vec<_>>()})),Event::MessageReactions(values)=>actual.push(json!({"name":"messages.reaction","data":values.into_iter().map(|r|json!({"key":r.key.map(|k|wire(k.encode_to_vec())),"reaction":wire(r.reaction.encode_to_vec())})).collect::<Vec<_>>()})),_=>{}
             }}assert_eq!(json!(actual),case["bufferedEvents"],"{case}");
@@ -135,6 +135,7 @@ async fn parsed_upserts_update_contacts_self_names_and_reject_missing_keys_witho
             retry_count: None,
             author: "300@lid".into(),
             sender: "group@g.us".into(),
+            protobuf: false,
         };
         socket
             .upsert_message(&envelope, messages::own::UpsertKind::Append)

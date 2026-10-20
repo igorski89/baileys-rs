@@ -121,6 +121,7 @@ fn incoming_receive_decisions_and_cleaned_upserts_match_original_handler() {
             retry_count: None,
             author: case["author"].as_str().unwrap().into(),
             sender: String::new(),
+            protobuf: false,
         };
         let node = node(&case["node"]);
         let action = incoming::plan(

@@ -114,6 +114,23 @@ pub struct ChatUpdate {
     /// Extension fields and runtime values outside the native field ranges.
     pub runtime_fields: Option<Box<serde_json::Map<String, serde_json::Value>>>,
 }
+/// A chat update's message: a received message is a plain envelope holding a
+/// decoded protobufjs message, an own one a protobufjs WebMessageInfo.
+fn chat_message(
+    message: &proto::WebMessageInfo,
+    key_metadata: Option<&messages::KeyMetadata>,
+) -> serde_json::Value {
+    use crate::proto_json::{self, JsonField};
+    let Some(metadata) = key_metadata else {
+        return proto_json::protobuf(|| message.to_value());
+    };
+    let mut value = proto_json::plain(|| message.to_value());
+    if let Some(content) = &message.message {
+        value["message"] = proto_json::protobuf(|| content.to_value());
+    }
+    metadata.apply(&mut value["key"]);
+    value
+}
 impl crate::proto_json::JsonField for ChatUpdate {
     fn to_value(&self) -> serde_json::Value {
         use serde_json::json;
@@ -143,11 +160,7 @@ impl crate::proto_json::JsonField for ChatUpdate {
                     messages
                         .iter()
                         .map(|message| {
-                            let mut message = message.to_value();
-                            if let Some(metadata) = &self.message_key_metadata {
-                                metadata.apply(&mut message["key"]);
-                            }
-                            json!({ "message": message })
+                            json!({ "message": chat_message(message, self.message_key_metadata.as_deref()) })
                         })
                         .collect::<Vec<_>>()
                 ),

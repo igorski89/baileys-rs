@@ -360,6 +360,7 @@ async fn socket_buffer_consolidates_real_publishers_and_cancelled_scopes_flush()
             retry_count: None,
             author: "200@s.whatsapp.net".into(),
             sender: "200@s.whatsapp.net".into(),
+            protobuf: false,
         };
         socket
             .upsert_message(&envelope, own::UpsertKind::Notify)
@@ -466,7 +467,7 @@ async fn automatic_message_and_sync_scopes_flush_success_failure_and_cancellatio
                 message:Some(proto::Message {conversation:Some("automatic scope".into()),..Default::default()}),
                 message_timestamp:Some(10),..Default::default()
             },
-            key_metadata:Default::default(),category:None,retry_count:None,author:"200@s.whatsapp.net".into(),sender:"200@s.whatsapp.net".into(),
+            key_metadata:Default::default(),category:None,retry_count:None,author:"200@s.whatsapp.net".into(),sender:"200@s.whatsapp.net".into(),protobuf:false,
         };
         socket.upsert_message(&envelope,own::UpsertKind::Notify).await.unwrap();
         let finished=tokio::time::Instant::now();

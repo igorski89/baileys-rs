@@ -102,6 +102,7 @@ fn cached(v: &Value) -> messages::Envelope {
         retry_count: None,
         author: "3000@lid".into(),
         sender: "2000@lid".into(),
+        protobuf: false,
     }
 }
 #[tokio::test]

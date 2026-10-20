@@ -76,6 +76,7 @@ fn envelope(sync_type: Option<i32>) -> messages::Envelope {
         retry_count: None,
         author: "100@s.whatsapp.net".into(),
         sender: "100@s.whatsapp.net".into(),
+        protobuf: false,
     }
 }
 async fn pending(events: &mut tokio::sync::broadcast::Receiver<Event>) {

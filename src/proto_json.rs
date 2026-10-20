@@ -1,7 +1,11 @@
 //! Complete schema-generated JSON conversion for native protobuf messages.
-//! Bytes use BufferJSON (base64 strings inside `with_base64_bytes`), 64-bit
-//! integers use decimal strings, enum fields use numeric values and oneof
-//! choices are flattened under their schema names.
+//! Bytes use BufferJSON, 64-bit integers use decimal strings, enum fields use
+//! numeric values and oneof choices are flattened under their schema names.
+//!
+//! Inside `with_upstream_json`, values are written as `JSON.stringify` writes
+//! upstream's: protobufjs messages through `toJSON` (base64 bytes, enum names,
+//! decimal-string longs), and plain objects holding protobuf values (`plain`)
+//! with Buffer bytes, enum numbers and JavaScript-number longs.
 use serde_json::{Value, json};
 #[derive(Debug, thiserror::Error)]
 pub enum Error {
@@ -43,24 +47,78 @@ fn into_oneof<T, U: From<T>>(value: T) -> U {
 pub fn object(value: &Value) -> Result<&serde_json::Map<String, Value>, Error> {
     value.as_object().ok_or(Error::Input("message object"))
 }
+#[derive(Clone, Copy, Default)]
+struct Mode {
+    /// Inside `with_upstream_json`.
+    upstream: bool,
+    /// Writing a protobufjs message (`toJSON`) rather than a plain object.
+    protobuf: bool,
+}
 thread_local! {
-    static BASE64_BYTES: std::cell::Cell<bool> = const { std::cell::Cell::new(false) };
+    static MODE: std::cell::Cell<Mode> = const { std::cell::Cell::new(Mode { upstream: false, protobuf: false }) };
 }
-/// Run `f` with bytes fields written as base64 strings, as protobufjs'
-/// `toJSON` (and so `JSON.stringify` of a decoded message) writes them.
-pub fn with_base64_bytes<R>(f: impl FnOnce() -> R) -> R {
-    let previous = BASE64_BYTES.replace(true);
-    let _restore = Restore(previous);
-    f()
-}
-struct Restore(bool);
+struct Restore(Mode);
 impl Drop for Restore {
     fn drop(&mut self) {
-        BASE64_BYTES.set(self.0);
+        MODE.set(self.0);
+    }
+}
+fn scoped<R>(mode: Mode, f: impl FnOnce() -> R) -> R {
+    let _restore = Restore(MODE.replace(mode));
+    f()
+}
+fn protobuf_json() -> bool {
+    let mode = MODE.get();
+    mode.upstream && mode.protobuf
+}
+fn plain_json() -> bool {
+    let mode = MODE.get();
+    mode.upstream && !mode.protobuf
+}
+/// Run `f` writing upstream's JSON; values are protobufjs messages unless
+/// marked `plain`.
+pub fn with_upstream_json<R>(f: impl FnOnce() -> R) -> R {
+    scoped(
+        Mode {
+            upstream: true,
+            protobuf: true,
+        },
+        f,
+    )
+}
+/// Within `with_upstream_json`, write values as a plain JavaScript object
+/// holding them (e.g. a received message's envelope); elsewhere no change.
+pub fn plain<R>(f: impl FnOnce() -> R) -> R {
+    let mode = MODE.get();
+    scoped(
+        Mode {
+            protobuf: !mode.upstream && mode.protobuf,
+            ..mode
+        },
+        f,
+    )
+}
+/// Within `with_upstream_json`, write values as a protobufjs message's
+/// `toJSON` (e.g. a decoded message inside a plain envelope).
+pub fn protobuf<R>(f: impl FnOnce() -> R) -> R {
+    let mode = MODE.get();
+    scoped(
+        Mode {
+            protobuf: true,
+            ..mode
+        },
+        f,
+    )
+}
+/// An enum value: its name in protobufjs JSON when known, else its number.
+pub fn enum_to_value(value: i32, name: Option<&'static str>) -> Value {
+    match name {
+        Some(name) if protobuf_json() => json!(name),
+        _ => json!(value),
     }
 }
 pub fn bytes_to_value(bytes: &[u8]) -> Value {
-    if BASE64_BYTES.get() {
+    if protobuf_json() {
         use base64::Engine as _;
         json!(base64::engine::general_purpose::STANDARD.encode(bytes))
     } else {
@@ -73,7 +131,21 @@ pub fn buffer_value(bytes: &[u8]) -> Value {
 }
 // protobufjs' fixed64 reader/formatter uses a signed Long for this schema.
 pub fn fixed64_value(value: u64) -> Value {
-    json!((value as i64).to_string())
+    long_value(value as i64)
+}
+/// A JavaScript number in plain objects, a decimal string otherwise.
+fn long_value(value: impl Into<i128> + std::fmt::Display + Copy) -> Value {
+    if plain_json() {
+        let value: i128 = value.into();
+        // Integers beyond 2^53 lose precision as JavaScript numbers.
+        if value.unsigned_abs() <= 1 << 53 {
+            json!(value as i64)
+        } else {
+            json!(value as f64)
+        }
+    } else {
+        json!(value.to_string())
+    }
 }
 pub fn bytes_from_value(value: &Value) -> Result<Vec<u8>, Error> {
     crate::serialization::decode_bytes(value.clone()).map_err(Error::Input)
@@ -205,7 +277,7 @@ impl JsonField for u8 {
 }
 impl JsonField for i64 {
     fn to_value(&self) -> Value {
-        json!(self.to_string())
+        long_value(*self)
     }
     fn from_value(v: &Value) -> Result<Self, Error> {
         long(v).map(|v| v as i64).map_err(Error::Input)
@@ -216,7 +288,7 @@ impl JsonField for i64 {
 }
 impl JsonField for u64 {
     fn to_value(&self) -> Value {
-        json!(self.to_string())
+        long_value(*self)
     }
     fn from_value(v: &Value) -> Result<Self, Error> {
         long(v).map_err(Error::Input)
@@ -242,7 +314,10 @@ fn long(value: &Value) -> Result<u64, &'static str> {
     }
 }
 fn float_value(n: f64) -> Value {
-    if n.is_nan() {
+    if plain_json() && !n.is_finite() {
+        // JSON.stringify writes non-finite numbers as null.
+        Value::Null
+    } else if n.is_nan() {
         json!("NaN")
     } else if n == f64::INFINITY {
         json!("Infinity")

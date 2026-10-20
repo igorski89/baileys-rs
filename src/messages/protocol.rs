@@ -16,6 +16,8 @@ pub fn restore_placeholder(
         retry_count: None,
         author: cached.author,
         sender: cached.sender,
+        // Upstream sets the decoded message on the cached plain object.
+        protobuf: cached.protobuf,
     };
     let original = cached.message;
     (
