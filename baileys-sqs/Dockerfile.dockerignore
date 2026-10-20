@@ -1,8 +1,9 @@
-# Context is the parent directory; send only the two crates, without builds.
-*
-!baileys-rs
-!baileys-sqs-rs
+# Context is the repository root; send the sources without builds or sessions.
 **/target
 **/.git
-**/auth*
+**/.cache
+**/auth.sqlite3*
+**/auth_info*
+**/baileys_auth_info
 **/docker-volumes
+**/.env

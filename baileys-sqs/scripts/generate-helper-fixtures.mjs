@@ -1,11 +1,11 @@
 // Run the TypeScript connector's pure helpers on sample inputs.
-// node scripts/generate-helper-fixtures.mjs ../baileys-sqs
+// Run from baileys-sqs/: node scripts/generate-helper-fixtures.mjs ../../baileys-sqs
 import { readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { stripTypeScriptTypes } from 'node:module'
 import { createHash } from 'node:crypto'
 
-const source = await readFile(join(process.argv[2] ?? '../baileys-sqs', 'index.ts'), 'utf8')
+const source = await readFile(join(process.argv[2] ?? '../../baileys-sqs', 'index.ts'), 'utf8')
 const slice = (start, end) => {
   const from = source.indexOf(start)
   const to = source.indexOf(end, from)

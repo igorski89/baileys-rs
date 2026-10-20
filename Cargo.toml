@@ -6,6 +6,12 @@ license = "MIT"
 description = "Rust port of Baileys' WhatsApp Web protocol client"
 build = "build.rs"
 
+[workspace]
+members = ["baileys-sqs"]
+# `cargo test` at the root also tests the connector, which depends on the
+# library's upstream-JSON conversions.
+default-members = [".", "baileys-sqs"]
+
 [dependencies]
 futures-util = { version = "0.3", features = ["sink"] }
 tokio = { version = "1", features = ["rt-multi-thread", "macros", "net", "time", "sync", "fs", "io-util"] }

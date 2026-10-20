@@ -8,7 +8,7 @@ authors = ["Igor Ievsiukov <igor.ievsiukov@gmail.com>"]
 default-run = "baileys-sqs"
 
 [dependencies]
-baileys-rs = { path = "../baileys-rs" }
+baileys-rs = { path = ".." }
 aws-config = { version = "1", features = ["behavior-version-latest"] }
 aws-credential-types = "1"
 aws-sdk-sqs = "1"
@@ -32,5 +32,5 @@ tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 uuid = { version = "1", features = ["v4"] }
 
 [dev-dependencies]
-rusticmq = { path = "../rusticmq" }
+rusticmq = { git = "https://github.com/igorski89/rusticmq.git", rev = "068da4e91b7ee18b5ad4d7ffb708e8f78946dd79" }
 tempfile = "3"

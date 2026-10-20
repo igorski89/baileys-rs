@@ -1,12 +1,12 @@
 # Shortcomings
 
-Known gaps and deliberate deviations from the TypeScript baileys-sqs (commit `8ad19d0`). Add an entry whenever a change introduces a deviation, and remove it when it is resolved. Differences inside baileys-rs itself are listed in its own `SHORTCOMINGS.md`.
+Known gaps and deliberate deviations from the TypeScript baileys-sqs (commit `8ad19d0`). Add an entry whenever a change introduces a deviation, and remove it when it is resolved. Differences inside the library itself are listed in the root [SHORTCOMINGS.md](../SHORTCOMINGS.md).
 
 ## Not yet verified
 
 - **Live run.** Nothing has run against a paired WhatsApp account; the tests fake the socket. A start with `--session-db :memory:` reached WhatsApp and emitted the pairing QR code, and nothing beyond that has been exercised.
 - **S3 uploads** are not exercised by any test (no S3 server in the test setup); the code follows the TypeScript connector's client configuration.
-- **Docker images** have not been built; the Dockerfile and compose file are untested.
+- **Docker Compose** has not been run. The image builds from the repository root (`docker build -f baileys-sqs/Dockerfile .`) and its binaries start.
 - **Listener and sender** are built but not tested.
 
 ## Output messages

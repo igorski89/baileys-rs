@@ -197,4 +197,4 @@ Each upstream public export and socket operation must map to implemented Rust fu
 
 ## Next step
 
-Run examples/live.rs against a live account (pairing-code login, event logging, one outgoing text; PROXY is optional), or the baileys-sqs connector port in ../baileys-sqs-rs, which exercises Event::upstream() and content_from_json end to end, and fix what they find. Everything left in SHORTCOMINGS.md is a deliberate deviation, a deferred performance item or the type-level audit of upstream's exported types. The full goal remains active.
+Run examples/live.rs against a live account (pairing-code login, event logging, one outgoing text; PROXY is optional), or the baileys-sqs connector port in baileys-sqs/, which exercises Event::upstream() and content_from_json end to end, and fix what they find. Everything left in SHORTCOMINGS.md is a deliberate deviation, a deferred performance item or the type-level audit of upstream's exported types. The full goal remains active.

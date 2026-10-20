@@ -1,6 +1,6 @@
 # baileys-sqs (Rust)
 
-A Rust port of [baileys-sqs](https://github.com/igorski89/baileys-sqs) (commit `8ad19d0`), the WhatsApp connector that uses AWS SQS for bidirectional message queuing. WhatsApp runs on [baileys-rs](https://github.com/igorski89/baileys-rs) instead of Baileys; the environment variables, commands and output messages are the same, so existing producers and consumers keep working. Known differences are listed in [SHORTCOMINGS.md](SHORTCOMINGS.md).
+A Rust port of [baileys-sqs](https://github.com/igorski89/baileys-sqs) (commit `8ad19d0`), the WhatsApp connector that uses AWS SQS for bidirectional message queuing. It lives in the [baileys-rs](https://github.com/igorski89/baileys-rs) repository, as the `baileys-sqs` workspace member, and WhatsApp runs on that library instead of Baileys; the environment variables, commands and output messages are the same, so existing producers and consumers keep working. Known differences are listed in [SHORTCOMINGS.md](SHORTCOMINGS.md).
 
 ```
 ┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
@@ -16,19 +16,14 @@ A Rust port of [baileys-sqs](https://github.com/igorski89/baileys-sqs) (commit `
 
 ## Build
 
-The crate depends on `baileys-rs` by path, so check both out side by side (and `rusticmq` too, for the tests and the local queue server):
-
-```
-Work/
-├── baileys-rs/
-├── baileys-sqs-rs/   # this repository
-└── rusticmq/         # dev-dependency and local SQS server
-```
+From the repository root (the crate depends on the library by path, and on [RusticMQ](https://github.com/igorski89/rusticmq) at a pinned commit for its tests):
 
 ```bash
-cargo build --release   # target/release/{baileys-sqs,listener,sender}
-cargo test              # runs against an in-process RusticMQ
+cargo build --release -p baileys-sqs   # target/release/{baileys-sqs,listener,sender}
+cargo test -p baileys-sqs              # runs against an in-process RusticMQ
 ```
+
+A plain `cargo test` at the root tests the library and the connector together.
 
 ## Binaries
 
@@ -95,7 +90,7 @@ For FIFO queues the group id is the chat (or the event type when there is none) 
 
 ## Local development
 
-Docker Compose starts RusticMQ (a Rust port of ElasticMQ, built from `../rusticmq` with the same `elasticmq.conf`), MinIO, the connector, the listener and the sender. The images are built from the parent directory so `baileys-rs` is in the build context:
+Docker Compose starts RusticMQ (a Rust port of ElasticMQ, built from its GitHub repository with the same `elasticmq.conf`), MinIO, the connector, the listener and the sender. The images are built from the repository root so the library is in the build context. Run Compose from `baileys-sqs/`:
 
 ```bash
 docker compose up --build
@@ -106,8 +101,8 @@ docker compose run --rm sender
 Without Docker:
 
 ```bash
-# 1. Queue server (in ../rusticmq)
-cargo run --release -- --config ../baileys-sqs-rs/elasticmq.conf
+# 1. Queue server, from a RusticMQ checkout
+cargo run --release -- --config path/to/baileys-rs/baileys-sqs/elasticmq.conf
 
 # 2. Environment
 export AWS_REGION=elasticmq AWS_ACCESS_KEY_ID=local AWS_SECRET_ACCESS_KEY=local

@@ -1,9 +1,9 @@
 services:
   # RusticMQ - SQS-compatible queue server for local development
-  # (a Rust port of ElasticMQ, built from ../rusticmq)
+  # (a Rust port of ElasticMQ, built from its GitHub repository)
   rusticmq:
     container_name: baileys-sqs-rusticmq
-    build: ../rusticmq
+    build: https://github.com/igorski89/rusticmq.git#068da4e91b7ee18b5ad4d7ffb708e8f78946dd79
     ports:
       - "9324:9324"  # SQS API port
     environment:
@@ -53,7 +53,7 @@ services:
   app:
     build:
       context: ..
-      dockerfile: baileys-sqs-rs/Dockerfile
+      dockerfile: baileys-sqs/Dockerfile
     container_name: baileys-sqs-app
     environment:
       - AWS_REGION=elasticmq
@@ -89,7 +89,7 @@ services:
   listener:
     build:
       context: ..
-      dockerfile: baileys-sqs-rs/Dockerfile
+      dockerfile: baileys-sqs/Dockerfile
     container_name: baileys-sqs-listener
     command: ["listener"]
     environment:
@@ -110,7 +110,7 @@ services:
   sender:
     build:
       context: ..
-      dockerfile: baileys-sqs-rs/Dockerfile
+      dockerfile: baileys-sqs/Dockerfile
     container_name: baileys-sqs-sender
     command: ["sender"]
     environment:
