@@ -234,6 +234,12 @@ pub fn process_action(
     }
     if let Some(setting) = a.and_then(|a| a.unarchive_chats_setting) {
         let value = setting.unarchive_chats.unwrap_or(false);
+        tracing::info!(
+            "archive setting updated => '{}'",
+            setting
+                .unarchive_chats
+                .map_or_else(|| "undefined".to_owned(), |v| v.to_string())
+        );
         if let Some(settings) = context.account_settings.as_mut() {
             settings.unarchive_chats = value;
         }

@@ -315,8 +315,11 @@ impl Cache {
             .filter(|d| !devices.iter().any(|j| j.device == d.device))
             .collect();
         match change {
-            Change::Add => updated.extend(devices.iter().cloned().map(Device::from)),
-            Change::Remove => (),
+            Change::Add => {
+                tracing::info!(count = devices.len(), "devices added");
+                updated.extend(devices.iter().cloned().map(Device::from))
+            }
+            Change::Remove => tracing::info!(count = devices.len(), "devices removed"),
             _ => return Ok(()),
         }
         if updated.is_empty() {

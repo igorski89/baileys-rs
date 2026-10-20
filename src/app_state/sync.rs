@@ -174,10 +174,16 @@ impl Synchronizer {
                 } else {
                     new_lthash_state()
                 };
+                let forced = force_snapshot.shift_remove(name);
+                tracing::info!(
+                    "resyncing {name} from v{}{}",
+                    state.version,
+                    if forced { " (forcing snapshot)" } else { "" }
+                );
                 requests.push(CollectionRequest {
                     name: name.clone(),
                     version: state.version,
-                    force_snapshot: force_snapshot.shift_remove(name),
+                    force_snapshot: forced,
                 });
                 states.insert(name.clone(), state);
             }
@@ -195,6 +201,10 @@ impl Synchronizer {
                             options.verify_snapshot,
                         )
                         .await?;
+                        tracing::info!(
+                            "restored state of {name} from snapshot to v{} with mutations",
+                            decoded.state.version
+                        );
                         states.insert(name.clone(), decoded.state.clone());
                         mutations.extend(decoded.mutations);
                         cached_states.insert(name.clone(), Some(decoded.state.clone()));
@@ -216,6 +226,7 @@ impl Synchronizer {
                         .await?;
                         // Source deliberately does not update states[name] here;
                         // the next request reloads the staged version instead.
+                        tracing::info!("synced {name} to v{}", decoded.state.version);
                         initial_versions.insert(name.clone(), decoded.state.version);
                         cached_states.insert(name.clone(), Some(decoded.state.clone()));
                         staged.insert(name.clone(), decoded.state);
@@ -226,7 +237,9 @@ impl Synchronizer {
                 .await;
                 match decoded {
                     Ok(()) => {
-                        if !collection.has_more_patches {
+                        if collection.has_more_patches {
+                            tracing::info!("{name} has more patches...");
+                        } else {
                             remaining.shift_remove(&name);
                         }
                     }
@@ -237,26 +250,47 @@ impl Synchronizer {
                         if !states.contains_key(&name) {
                             return Err(Error::Input("unrequested collection state"));
                         }
+                        let version = states.get(&name).map_or(0, |state| state.version);
                         let attempt = attempts.entry(name.clone()).or_insert(0);
                         *attempt += 1;
                         if error.is_missing_key() && *attempt >= MAX_SYNC_ATTEMPTS {
                             self.blocked.lock().await.insert(name.clone());
                             remaining.shift_remove(&name);
+                            tracing::warn!(
+                                name,
+                                attempt = *attempt,
+                                ?error,
+                                "app-state collection synchronization failed"
+                            );
                         } else if error.is_missing_key() {
                             force_snapshot.insert(name.clone());
+                            tracing::info!(
+                                name,
+                                attempt = *attempt,
+                                version,
+                                ?error,
+                                "{name} blocked on missing key from v{version}, retrying with snapshot"
+                            );
                         } else if *attempt >= MAX_SYNC_ATTEMPTS || matches!(error, Error::Input(_))
                         {
                             gave_up.push(name.clone());
                             remaining.shift_remove(&name);
+                            tracing::warn!(
+                                name,
+                                attempt = *attempt,
+                                ?error,
+                                "app-state collection synchronization failed"
+                            );
                         } else {
                             force_snapshot.insert(name.clone());
+                            tracing::info!(
+                                name,
+                                attempt = *attempt,
+                                version,
+                                ?error,
+                                "failed to sync {name} from v{version}, forcing snapshot retry"
+                            );
                         }
-                        tracing::warn!(
-                            name,
-                            attempt = *attempt,
-                            ?error,
-                            "app-state collection synchronization failed"
-                        );
                     }
                 }
             }

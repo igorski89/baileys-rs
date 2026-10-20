@@ -27,6 +27,13 @@ impl Socket {
                 let Some(notification) = protocol.history_sync_notification.clone() else {
                     return Ok(());
                 };
+                tracing::info!(
+                    sync_type = ?notification.sync_type,
+                    chunk_order = ?notification.chunk_order,
+                    process = history_eligible,
+                    id = ?message.key.as_ref().and_then(|k| k.id.as_deref()),
+                    "got history notification"
+                );
                 if !history_eligible {
                     return Ok(());
                 }
@@ -103,8 +110,19 @@ impl Socket {
                     .keys
                     .clone();
                 if keys.is_empty() {
+                    tracing::info!(
+                        id = ?message.key.as_ref().and_then(|k| k.id.as_deref()),
+                        "recv app state sync with 0 keys"
+                    );
                     return Ok(());
                 }
+                let new_keys: Vec<_> = {
+                    use base64::{Engine, engine::general_purpose::STANDARD};
+                    keys.iter()
+                        .filter_map(|key| key.key_id.as_ref()?.key_id.as_deref())
+                        .map(|id| STANDARD.encode(id))
+                        .collect()
+                };
                 let (reply, response) = oneshot::channel();
                 self.inner
                     .commands
@@ -112,6 +130,11 @@ impl Socket {
                     .await
                     .map_err(|_| Error::Closed(428))?;
                 response.await.map_err(|_| Error::Closed(428))??;
+                tracing::info!(
+                    new_app_state_sync_key_id = ?new_keys.last(),
+                    ?new_keys,
+                    "injecting new app state sync keys"
+                );
                 self.schedule_app_state_retry().await;
             }
             Some(Type::PeerDataOperationRequestResponseMessage) => {

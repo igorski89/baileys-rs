@@ -736,6 +736,7 @@ impl Socket {
             let mut noise_config = config.noise.clone();
             noise_config.routing_info = credentials.routing_info.clone();
             let mut noise = NoiseHandler::new(ephemeral, noise_config)?;
+            tracing::info!(browser = ?config.payload.browser, "connected to WA");
             let hello = proto::HandshakeMessage {
                 client_hello: Some(proto::handshake_message::ClientHello {
                     ephemeral: Some(public.to_vec()),
@@ -766,9 +767,13 @@ impl Socket {
             };
             let static_key = noise.process_handshake(&server_hello, &credentials.noise_key)?;
             let payload = if let Some(me) = &credentials.me {
-                connection::login_payload(&me.id, &config.payload)?
+                let payload = connection::login_payload(&me.id, &config.payload)?;
+                tracing::info!("logging in...");
+                payload
             } else {
-                connection::registration_payload(&credentials, &config.payload)?
+                let payload = connection::registration_payload(&credentials, &config.payload)?;
+                tracing::info!("not logged in, attempting registration...");
+                payload
             };
             let finish = proto::HandshakeMessage {
                 client_finish: Some(proto::handshake_message::ClientFinish {

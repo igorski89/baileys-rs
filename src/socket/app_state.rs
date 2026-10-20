@@ -12,6 +12,7 @@ impl Socket {
     pub(super) async fn run_admitted_initial_app_state_sync(&self) -> Result<(), Error> {
         let sync = self.app_state_synchronizer().await?;
         sync.take_blocked_collections().await;
+        tracing::info!("Doing app state sync");
         let collections = [
             "critical_block",
             "critical_unblock_low",
@@ -21,6 +22,9 @@ impl Socket {
         ]
         .map(str::to_owned);
         self.resync_app_state(&collections, true).await?;
+        tracing::info!(
+            "App state sync complete, transitioning to Online state and flushing buffer"
+        );
         self.inner.events.initial_sync_complete()?;
         let (reply, response) = tokio::sync::oneshot::channel();
         self.inner
@@ -444,6 +448,10 @@ impl Socket {
         if collections.is_empty() {
             return;
         }
+        tracing::info!(
+            ?collections,
+            "app state sync key arrived, re-syncing blocked collections"
+        );
         let weak = std::sync::Arc::downgrade(&self.inner);
         tokio::spawn(async move {
             let Some(inner) = weak.upgrade() else { return };

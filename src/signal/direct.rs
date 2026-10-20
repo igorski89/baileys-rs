@@ -775,6 +775,14 @@ impl Repository {
                 {
                     record = Record::default();
                 }
+                if !matches!(existing.get(&id), Some(KeyValue::IdentityKey(old)) if *old == identity)
+                {
+                    tracing::info!(
+                        jid,
+                        addr = %id,
+                        "identity key changed or new contact, session will be re-established"
+                    );
+                }
                 tx.set(&[KeyMutation::put(&id, KeyValue::IdentityKey(identity))])?;
                 let base = message.base_key.as_deref().ok_or(Error::Invalid)?;
                 if !record

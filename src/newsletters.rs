@@ -551,6 +551,7 @@ pub fn mex_notification(node: &BinaryNode, now_ms: f64) -> Result<Vec<Effect>, E
                 return Ok(vec![]);
             };
             if !get(payload, "is_active").is_some_and(truthy) {
+                tracing::info!("reachout timelock restriction lifted");
                 return Ok(vec![Effect::Timelock(ReachoutTimelock {
                     is_active: false,
                     time_enforcement_ends: None,
@@ -566,6 +567,11 @@ pub fn mex_notification(node: &BinaryNode, now_ms: f64) -> Result<Vec<Effect>, E
                 .and_then(Value::as_str)
                 .filter(|kind| ENFORCEMENT_TYPES.contains(kind))
                 .unwrap_or(ENFORCEMENT_DEFAULT);
+            tracing::info!(
+                enforcement_type = kind,
+                time_enforcement_ends = ends,
+                "reachout timelock restriction set"
+            );
             vec![Effect::Timelock(ReachoutTimelock {
                 is_active: true,
                 time_enforcement_ends: Some(ends),
@@ -575,7 +581,10 @@ pub fn mex_notification(node: &BinaryNode, now_ms: f64) -> Result<Vec<Effect>, E
         "MessageCappingInfoNotification" => {
             get(data, "xwa2_notify_new_chat_messages_capping_info_update")
                 .filter(|payload| truthy(payload))
-                .map(|payload| Effect::MessageCapping(payload.clone()))
+                .map(|payload| {
+                    tracing::info!(%payload, "received message capping update");
+                    Effect::MessageCapping(payload.clone())
+                })
                 .into_iter()
                 .collect()
         }
@@ -628,6 +637,7 @@ fn legacy_notification(node: &BinaryNode) -> Result<Vec<Effect>, Error> {
     let (Some(updates), Some(operation)) = (updates, operation.filter(truthy)) else {
         return Ok(vec![]);
     };
+    tracing::info!(%operation, "got mex newsletter notification");
     let operation = operation.as_str().unwrap_or_default();
     if !matches!(
         operation,
@@ -635,6 +645,7 @@ fn legacy_notification(node: &BinaryNode) -> Result<Vec<Effect>, Error> {
             | "NotificationNewsletterAdminPromote"
             | "NotificationLinkedProfilesUpdates"
     ) {
+        tracing::info!(operation, "unhandled mex newsletter notification");
         return Ok(vec![]);
     }
     // for..of accepts arrays and strings; string characters carry no fields.

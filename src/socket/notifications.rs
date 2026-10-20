@@ -125,6 +125,7 @@ impl Socket {
                     duration,
                     timestamp,
                 } => {
+                    tracing::info!(new_duration = duration, "updated account disappearing mode");
                     // Credentials hold integers; a NaN source value has no stored form.
                     let mode = auth::DisappearingMode {
                         ephemeral_expiration: (duration.is_finite()
@@ -185,7 +186,7 @@ impl Socket {
         {
             let result = self.handle_identity_change(node).await?;
             if result == IdentityChange::NoIdentityNode {
-                tracing::info!("unknown encrypt notification");
+                tracing::info!(id = ?node.attrs.get("id"), "unknown encrypt notification");
             }
             return Ok(Some(result));
         }
@@ -301,6 +302,7 @@ impl Socket {
         if node.child("identity").is_none() {
             return Ok(IdentityChange::NoIdentityNode);
         }
+        tracing::info!(jid = %from, "identity changed");
         if let Some(device) = crate::jid::Jid::parse(&from)
             .and_then(|jid| jid.device)
             .filter(|device| *device != 0)
@@ -316,6 +318,7 @@ impl Socket {
                     .as_deref()
                     .is_some_and(|lid| !lid.is_empty() && crate::jid::are_same_user(&from, lid)))
         {
+            tracing::info!(jid = %from, "self primary identity changed");
             return Ok(IdentityChange::SkippedSelfPrimary);
         }
         {
@@ -426,6 +429,22 @@ impl Socket {
         Ok(())
     }
     async fn process_devices_notification(&self, node: &BinaryNode) -> Result<(), Error> {
+        if let Some(child) = node.all_children().first()
+            && let Some(from) = node.attrs.get("from")
+            && let Ok(credentials) = super::load_credentials(self.inner.store.clone()).await
+            && let Some(me) = &credentials.me
+            && (crate::jid::are_same_user(from, &me.id)
+                || me
+                    .lid
+                    .as_deref()
+                    .is_some_and(|lid| crate::jid::are_same_user(from, lid)))
+        {
+            let device_jids: Vec<_> = child
+                .children("device")
+                .filter_map(|d| d.attrs.get("jid"))
+                .collect();
+            tracing::info!(?device_jids, "got my own devices");
+        }
         let Some(list) = crate::devices::parse_notification(node) else {
             return Ok(());
         };

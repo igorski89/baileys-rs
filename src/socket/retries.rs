@@ -274,6 +274,14 @@ impl Socket {
             })
             .await
             .map_err(|_| self.closed_error())?;
-        receiver.await.map_err(|_| self.closed_error())?
+        receiver.await.map_err(|_| self.closed_error())??;
+        tracing::info!(
+            id,
+            from = ?node.attrs.get("from"),
+            participant = ?node.attrs.get("participant"),
+            retry_count = count,
+            "sent retry receipt"
+        );
+        Ok(())
     }
 }

@@ -282,6 +282,10 @@ impl Socket {
             .await
         {
             Err(crate::media::Error::HttpStatus(404 | 410)) if reupload => {
+                tracing::info!(
+                    id = ?message.key.as_ref().and_then(|k| k.id.as_deref()),
+                    "sending reupload media request..."
+                );
                 self.update_media_message(message, limit).await?;
                 let (url, updated_keys) = fetch(message)?;
                 keys = updated_keys;

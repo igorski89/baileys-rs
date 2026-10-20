@@ -137,6 +137,7 @@ impl Socket {
         kind: &str,
         from_timestamp: Option<u64>,
     ) -> Result<(), Error> {
+        tracing::info!(from_timestamp, "clean dirty bits {kind}");
         let timestamp = from_timestamp.map(|t| t.to_string());
         self.send_node(chats::clean_dirty_bits_node(
             kind,

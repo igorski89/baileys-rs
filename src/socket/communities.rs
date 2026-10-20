@@ -46,7 +46,10 @@ impl Socket {
     }
     // A created group is reported through its metadata; failures yield no value.
     async fn created_group(&self, result: &BinaryNode) -> Option<groups::Metadata> {
-        let id = result.child("group")?.attrs.get("id")?;
+        tracing::info!(tag = %result.tag, id = ?result.attrs.get("id"), "parseGroupResult");
+        let group = result.child("group")?;
+        tracing::info!(id = ?group.attrs.get("id"), "groupNode");
+        let id = group.attrs.get("id")?;
         self.group_metadata(&format!("{id}@g.us")).await.ok()
     }
     /// Create a community with a general chat and approval-required membership.

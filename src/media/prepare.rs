@@ -479,6 +479,7 @@ pub async fn prepare(
     };
     let cipher_kind = options.media_type_override.unwrap_or(kind);
     let file = if raw {
+        tracing::info!(key = ?cache_key, "Preparing raw media for newsletter");
         tokio::task::spawn_blocking(move || RawFile::copy(input).map(File::Raw))
             .await
             .map_err(|_| Error::Task)??

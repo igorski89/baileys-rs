@@ -170,6 +170,10 @@ pub(super) async fn run(
             }
         }
     }.await;
+    match &result {
+        Err(error) => tracing::info!(?error, "connection errored"),
+        Ok(()) => tracing::info!("connection closed"),
+    }
     let code = result
         .as_ref()
         .err()
@@ -689,8 +693,15 @@ impl Actor<'_> {
                     .await
                     .map_err(|_| Error::Task)
                     .and_then(|result| result.map_err(Error::Signal));
-                    if let Err(error) = outcome {
-                        tracing::warn!(?error, "failed to initialize own LID session");
+                    match outcome {
+                        Ok(()) => tracing::info!(
+                            my_pn = %me.id,
+                            my_lid = %lid,
+                            "Own LID session created successfully"
+                        ),
+                        Err(error) => {
+                            tracing::warn!(?error, "failed to initialize own LID session")
+                        }
                     }
                 }
                 if self.config.initialize_session {
@@ -735,7 +746,13 @@ impl Actor<'_> {
             }
             "iq" if node.child("pair-success").is_some() => {
                 self.update_server_time(&node);
-                let pairing = connection::configure_successful_pairing(&node, &self.credentials)?;
+                let pairing = connection::configure_successful_pairing(&node, &self.credentials)
+                    .inspect_err(|error| tracing::info!(?error, "error in pairing"))?;
+                tracing::info!(
+                    me = %pairing.me.id,
+                    platform = ?pairing.platform,
+                    "pairing configured successfully, expect to restart the connection..."
+                );
                 pairing.apply(&mut self.credentials);
                 self.persist().await?;
                 self.qr_refs.clear();
@@ -796,11 +813,19 @@ impl Actor<'_> {
                 if node.child("downgrade_webclient").is_some() {
                     return Err(Error::Closed(411));
                 }
+                if let Some(kind) = node
+                    .child("dirty")
+                    .and_then(|d| d.attrs.get("type"))
+                    .filter(|t| !matches!(t.as_str(), "account_sync" | "groups"))
+                {
+                    tracing::info!(r#type = %kind, "received unknown sync");
+                }
                 if let Some(dirty) = crate::chats::account_sync_dirty(
                     &node,
                     self.credentials.last_account_sync_timestamp,
                 ) {
                     if let Some(from) = dirty.clean_from {
+                        tracing::info!(from_timestamp = from, "clean dirty bits account_sync");
                         let id = self.tag()?;
                         self.send(&crate::chats::clean_dirty_bits_node(
                             "account_sync",
@@ -836,6 +861,7 @@ impl Actor<'_> {
                     });
                 }
                 if node.child("offline_preview").is_some() {
+                    tracing::info!("offline preview received");
                     self.send(
                         &BinaryNode::new("ib").with_content(NodeContent::Children(vec![
                             BinaryNode::new("offline_batch").attr("count", "100"),
@@ -850,7 +876,13 @@ impl Actor<'_> {
                     self.credentials.routing_info = Some(bytes.to_vec());
                     self.persist().await?;
                 }
-                if node.child("offline").is_some() {
+                if let Some(offline) = node.child("offline") {
+                    let count = offline
+                        .attrs
+                        .get("count")
+                        .and_then(|n| n.parse::<u64>().ok())
+                        .unwrap_or(0);
+                    tracing::info!("handled {count} offline messages/notifications");
                     if self.events.start_initial_sync() {
                         let recent = proto::message::HistorySyncNotification {
                             sync_type: Some(3),
@@ -891,18 +923,33 @@ impl Actor<'_> {
                 if valid && let Some(count) = count {
                     let last = self.credentials.next_pre_key_id.saturating_sub(1);
                     let store = self.store.clone();
-                    let missing = tokio::task::spawn_blocking(move || {
+                    let exists = tokio::task::spawn_blocking(move || {
                         store
                             .get(KeyCategory::PreKey, &[last.to_string()])
-                            .map(|keys| last > 0 && !keys.contains_key(&last.to_string()))
+                            .map(|keys| last > 0 && keys.contains_key(&last.to_string()))
                     })
                     .await
                     .map_err(|_| Error::Task)??;
+                    let missing = last > 0 && !exists;
+                    tracing::info!("{count} pre-keys found on server");
+                    tracing::info!("Current prekey ID: {last}, exists in storage: {exists}");
                     let threshold = if count == 0 { 812 } else { 5 };
-                    if count <= threshold || missing {
+                    let low = count <= threshold;
+                    if low || missing {
+                        let mut reasons = Vec::new();
+                        if low {
+                            reasons.push(format!("server count low ({count})"));
+                        }
+                        if missing {
+                            reasons.push(format!("current prekey {last} missing from storage"));
+                        }
+                        tracing::info!("Uploading PreKeys due to: {}", reasons.join(", "));
                         self.upload(threshold, 0, After::Active).await?;
                         return Ok(());
                     }
+                    tracing::info!(
+                        "PreKey validation passed - Server: {count}, Current prekey {last} exists"
+                    );
                 }
                 self.active().await?;
             }
@@ -921,6 +968,7 @@ impl Actor<'_> {
                     .map_err(|_| Error::Task)??;
                     self.credentials = load_credentials(self.store.clone()).await?;
                     self.emit(Event::CredentialsUpdated);
+                    tracing::info!(count, "uploaded pre-keys successfully");
                 }
                 if !valid {
                     self.retry_upload(count, attempt, after).await?;
@@ -953,6 +1001,7 @@ impl Actor<'_> {
         if attempt == 0 {
             self.upload_deadline = Some(Instant::now() + self.config.pre_key_upload_timeout);
         }
+        tracing::info!(count, retry_count = attempt, "uploading pre-keys");
         let store = self.store.clone();
         let (batch, keys, credentials) = tokio::task::spawn_blocking(move || {
             store.transaction(|tx| {
@@ -1037,6 +1086,7 @@ impl Actor<'_> {
     }
     async fn retry_upload(&mut self, count: u32, attempt: u8, after: After) -> Result<(), Error> {
         if attempt < 3 {
+            tracing::info!("Retrying pre-key upload in {}ms", 1000u64 << attempt);
             self.upload_retry.push((
                 Instant::now() + Duration::from_secs(1 << attempt),
                 count,
@@ -1071,6 +1121,7 @@ impl Actor<'_> {
         .await
     }
     async fn open(&mut self) -> Result<(), Error> {
+        tracing::info!("opened connection to WA");
         self.state.send_replace(ConnectionState::Open);
         self.emit(Event::Connection(ConnectionState::Open));
         let presence = if self.config.mark_online_on_connect {

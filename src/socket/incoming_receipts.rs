@@ -49,10 +49,17 @@ impl Socket {
                 parsed.key.participant.as_deref(),
             ) {
                 let counter = format!("{id}:{participant}");
-                if parsed.key.from_me == Some(true)
-                    && self.inner.retry_requests.count(&counter).await
-                        < self.inner.max_msg_retry_count
-                {
+                let will_send = self.inner.retry_requests.count(&counter).await
+                    < self.inner.max_msg_retry_count;
+                if !will_send {
+                    tracing::info!(
+                        id,
+                        participant,
+                        "will not send message again, as sent too many times"
+                    );
+                } else if parsed.key.from_me != Some(true) {
+                    tracing::info!(id, participant, "recv retry for not fromMe message");
+                } else {
                     self.inner.retry_requests.increment(&counter).await;
                     if let Err(error) = self
                         .send_messages_again(&parsed.key, &parsed.ids, node)
@@ -134,6 +141,12 @@ impl Socket {
                     && stored != 0
                     && stored != reg
                 {
+                    tracing::info!(
+                        participant = %target,
+                        stored,
+                        received = reg,
+                        "reg id mismatch on retry without bundle, deleting session"
+                    );
                     repository.delete_sessions(std::slice::from_ref(&target))?;
                 }
             }

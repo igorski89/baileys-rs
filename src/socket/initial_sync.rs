@@ -54,6 +54,7 @@ impl Coordinator {
             return Effects::default();
         }
         self.phase = Phase::AwaitingInitialSync;
+        tracing::info!("Connection is now AwaitingInitialSync, buffering events");
         Effects {
             buffer: true,
             ..Default::default()
@@ -66,9 +67,21 @@ impl Coordinator {
         now: Duration,
     ) {
         if !will_sync_history || account_sync_counter > 0 {
+            if !will_sync_history {
+                tracing::info!(
+                    "History sync is disabled by config, not waiting for notification. Transitioning to Online."
+                );
+            } else {
+                tracing::info!(
+                    "Reconnection with existing sync data, skipping history sync wait. Transitioning to Online."
+                );
+            }
             self.phase = Phase::Online;
             self.deferred.push(now);
         } else {
+            tracing::info!(
+                "First connection, awaiting history sync notification with a 20s timeout."
+            );
             self.awaiting = Some(now + Duration::from_secs(20));
         }
     }
@@ -79,9 +92,13 @@ impl Coordinator {
         self.awaiting = None;
         if eligible {
             self.phase = Phase::Syncing;
+            tracing::info!("Transitioned to Syncing state");
             Effects::default()
         } else {
             self.phase = Phase::Online;
+            tracing::info!(
+                "History sync skipped, transitioning to Online state and flushing buffer"
+            );
             Effects {
                 flush: true,
                 ..Default::default()

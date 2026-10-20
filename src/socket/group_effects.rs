@@ -170,6 +170,7 @@ impl Socket {
             .is_some_and(|p| p.app_state_sync_key_share.is_some())
             && self.initial_sync_phase() == super::initial_sync::Phase::Syncing
         {
+            tracing::info!("App state sync key arrived, triggering app state sync");
             self.run_initial_app_state_sync().await?;
         }
         Ok(())
