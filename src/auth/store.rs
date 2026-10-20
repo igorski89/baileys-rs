@@ -234,6 +234,11 @@ impl SqliteAuthStore {
     }
     fn initialize(mut connection: Connection, path: Option<PathBuf>) -> Result<Self, Error> {
         connection.busy_timeout(Duration::from_secs(30))?;
+        // Write-ahead logging lets readers and the writer (and other
+        // connections to the file) proceed together; with full
+        // synchronization a committed write still survives a power loss.
+        // In-memory databases keep their own journal.
+        connection.pragma_update(None, "journal_mode", "WAL")?;
         connection.pragma_update(None, "synchronous", "FULL")?;
         let version: u32 = connection.pragma_query_value(None, "user_version", |r| r.get(0))?;
         if version > 1 {

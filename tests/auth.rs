@@ -408,6 +408,19 @@ fn opens_a_database_file_at_any_path_and_resumes_it() {
     ));
 }
 
+#[test]
+fn database_files_use_write_ahead_logging() {
+    let temp = tempfile::tempdir().unwrap();
+    let store = SqliteAuthStore::open(temp.path()).unwrap();
+    let mode: String = rusqlite::Connection::open(store.path().unwrap())
+        .unwrap()
+        .query_row("PRAGMA journal_mode", [], |r| r.get(0))
+        .unwrap();
+    assert_eq!(mode, "wal");
+    // In-memory stores still open.
+    SqliteAuthStore::in_memory().unwrap();
+}
+
 struct CountingStore {
     inner: SqliteAuthStore,
     reads: Arc<AtomicUsize>,

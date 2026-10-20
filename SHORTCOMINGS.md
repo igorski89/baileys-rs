@@ -82,7 +82,7 @@ Not gaps, but worth knowing: like upstream, the socket does not reconnect by its
 ## Performance and robustness (deferred by decision: parity first)
 
 - The event buffer converts events to JSON and back while buffering.
-- SQLite runs with full synchronous writes and without WAL.
+- SQLite runs with write-ahead logging and full synchronous writes; `synchronous=NORMAL` would be faster but could lose the last commits (keys, sessions) on a power loss.
 - Slow event subscribers lose events when the broadcast channel lags; the capacity is 256 by default.
 - Receive and worker queues are unbounded.
 - Storage calls hop through `spawn_blocking`.
