@@ -1,0 +1,36 @@
+[package]
+name = "baileys-sqs"
+version = "1.0.0"
+edition = "2024"
+license = "MIT"
+description = "Rust port of baileys-sqs: a WhatsApp connector over AWS SQS, built on baileys-rs"
+authors = ["Igor Ievsiukov <igor.ievsiukov@gmail.com>"]
+default-run = "baileys-sqs"
+
+[dependencies]
+baileys-rs = { path = "../baileys-rs" }
+aws-config = { version = "1", features = ["behavior-version-latest"] }
+aws-credential-types = "1"
+aws-sdk-sqs = "1"
+aws-sdk-s3 = "1"
+axum = "0.8"
+base64 = "0.22"
+chrono = { version = "0.4", default-features = false, features = ["clock", "std"] }
+qrcode = { version = "0.14", default-features = false }
+rand = "0.9"
+regex = "1"
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls-native-roots"] }
+rusqlite = { version = "0.38", features = ["bundled"] }
+rustls = { version = "0.23", default-features = false, features = ["ring"] }
+serde_json = { version = "1", features = ["preserve_order"] }
+sha2 = "0.10"
+subtle = "2"
+thiserror = "2"
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "net", "time", "sync", "signal", "io-std", "io-util"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+uuid = { version = "1", features = ["v4"] }
+
+[dev-dependencies]
+rusticmq = { path = "../rusticmq" }
+tempfile = "3"

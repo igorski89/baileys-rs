@@ -1,0 +1,8 @@
+# Context is the parent directory; send only the two crates, without builds.
+*
+!baileys-rs
+!baileys-sqs-rs
+**/target
+**/.git
+**/auth*
+**/docker-volumes
