@@ -3,7 +3,7 @@ services:
   # (a Rust port of ElasticMQ, built from its GitHub repository)
   rusticmq:
     container_name: baileys-sqs-rusticmq
-    build: https://github.com/igorski89/rusticmq.git#068da4e91b7ee18b5ad4d7ffb708e8f78946dd79
+    build: https://github.com/igorski89/rusticmq.git#ee7053fe970940bff1fa7dfa57eb55dc01638637
     ports:
       - "9324:9324"  # SQS API port
     environment:

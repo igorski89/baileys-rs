@@ -32,5 +32,5 @@ tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 uuid = { version = "1", features = ["v4"] }
 
 [dev-dependencies]
-rusticmq = { git = "https://github.com/igorski89/rusticmq.git", rev = "068da4e91b7ee18b5ad4d7ffb708e8f78946dd79" }
+rusticmq = { git = "https://github.com/igorski89/rusticmq.git", rev = "ee7053fe970940bff1fa7dfa57eb55dc01638637" }
 tempfile = "3"
