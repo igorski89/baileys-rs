@@ -28,6 +28,7 @@ Known gaps and deliberate deviations from the TypeScript baileys-sqs (commit `6e
 
 - A command without `to` fails with JavaScript's TypeError text (`Cannot read properties of undefined (reading 'includes')`), and an outgoing media fetch that exceeds ten seconds fails with Node's abort message, to keep `command_ack.error` the same.
 - Content objects (`message`, `raw.body`) go through baileys-rs's `content_from_json`; dates in them are millisecond numbers, and see baileys-rs's shortcomings for the shapes it covers.
+- `vote_poll` exists only here. It takes the poll's secret from the caller (`message_secret`) or from a table in the session file (`baileys_sqs_polls`). That table learns every poll in `messages.upsert`, received or sent, but not polls that arrive only in a history sync. The vote is encrypted with the creator's and our own JID in the chat's addressing mode, the same pair a phone uses; the ack reports both so a consumer can decrypt it. Verified live in a 1:1 LID chat; group polls are untested.
 - Two TypeScript quirks are kept: a command that arrives before the first socket exists is acknowledged with `ok: true` and null ids, and a `messages.upsert` spanning several chats is grouped by the first message's chat.
 
 ## Tooling

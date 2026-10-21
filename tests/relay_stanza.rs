@@ -261,6 +261,12 @@ fn retry_prefers_lid_sender_key_and_retains_corrupt_record_on_warning() {
         relay::encrypted_attributes(&reaction)["decrypt-fail"],
         "hide"
     );
+    // Not upstream's: a vote is hidden on failure, as a phone's votes are.
+    let vote = proto::Message {
+        poll_update_message: Some(Default::default()),
+        ..Default::default()
+    };
+    assert_eq!(relay::encrypted_attributes(&vote)["decrypt-fail"], "hide");
     let image = proto::Message {
         image_message: Some(Default::default()),
         ..Default::default()

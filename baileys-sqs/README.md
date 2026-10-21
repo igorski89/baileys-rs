@@ -64,6 +64,7 @@ Send the JSON below to `INPUT_QUEUE`, or POST it to `http://<host>:<PORT>/comman
 | `send_location` | `location: {latitude, longitude, name?, address?}` |
 | `send_contact` | `contact` or `contacts`, each with a `vcard` |
 | `send_poll` | `poll: {name, values, selectableCount?}`; `options` |
+| `vote_poll` | `message_key` (the poll's), `selected_options` (option names; empty withdraws the vote), `message_secret`? (base64), `poll_creator_jid`?, `voter_jid`? |
 | `raw` | `body`: any Baileys `sendMessage` content object; `options` |
 
 `to` is a phone number or a JID. `options` follows Baileys' send options (`quoted`, `ephemeralExpiration`, `messageId`, …). A command with a `correlation_id` gets a `command_ack` on `OUTPUT_QUEUE`:
@@ -73,6 +74,8 @@ Send the JSON below to `INPUT_QUEUE`, or POST it to `http://<host>:<PORT>/comman
 ```
 
 On failure `ok` is false and `error` holds the message. `send_poll` acks carry `message_secret` (base64), needed to decrypt votes later.
+
+`vote_poll` is not in the TypeScript connector. It votes on a poll this connector has seen in `messages.upsert`, received or sent (kept in the session database), or on any poll whose `message_secret` the command gives. Option names are checked against a known poll. Its ack carries `poll_creator_jid` and `voter_jid`, the JIDs the vote is encrypted with: by default the creator's and our own, deviceless, in the chat's addressing mode (LIDs in a LID chat).
 
 Outgoing sends to a chat with disappearing messages carry the chat's duration, learned from `chats.update` and from incoming messages and kept in the session database, unless `options.ephemeralExpiration` is set.
 

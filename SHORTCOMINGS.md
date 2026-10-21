@@ -46,6 +46,9 @@ Not gaps, but worth knowing: like upstream, the socket does not reconnect by its
 - A member label cut inside an astral character drops that character; upstream keeps half of it and sends it as invalid UTF-8, which a Rust string cannot hold.
 - The asynchronous patch hook is awaited on the relay blocking worker (`Handle::block_on`); it must not wait on the relay it is patching.
 
+### Poll votes (an addition)
+- Upstream can decrypt votes but not send them. `Content::PollVote` builds an encrypted `pollUpdateMessage` (`encrypt_poll_vote`, the inverse of `decrypt_poll_vote`), and its stanza is copied from a phone's vote captured live: `decrypt-fail="hide"` on each `enc`, `<meta polltype="vote" content_type="add_on"/>`, and an empty `metadata` in the message. Without the meta node the server acked the stanza but did not deliver it. The caller supplies the poll's secret and both JIDs (deviceless, in the chat's addressing mode: LIDs in a LID chat). Verified live, 1:1 only: the creator's devices decrypt the vote and both phones count it. Votes in groups are untested.
+
 ### Media
 - AVIF images and JPEG-compressed (YCbCr) TIFF images cannot be decoded for thumbnails or profile pictures; sharp handles both.
 - Thumbnails and profile pictures are not byte-identical to sharp's: resampling and JPEG encoding differ. On the audit picture the mean channel difference is about 4 to 7 out of 255 (1 for greyscale).

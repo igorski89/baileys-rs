@@ -142,3 +142,66 @@ fn every_ciphertext_byte_nonce_context_and_secret_are_authenticated() {
     }
     assert!(!format!("{ctx:?}").contains("poll_enc_key"));
 }
+#[tokio::test]
+async fn generated_votes_decrypt_with_the_poll_context() {
+    use baileys_rs::messages::generation::{self, Content, PollVote};
+    let secret = [5; 32];
+    let poll_key = proto::MessageKey {
+        remote_jid: Some("222@lid".into()),
+        from_me: Some(false),
+        id: Some("3EB0POLL".into()),
+        ..Default::default()
+    };
+    let content = Content::PollVote(Box::new(PollVote {
+        poll_key: poll_key.clone(),
+        poll_creator_jid: "222@lid".into(),
+        voter_jid: "111@lid".into(),
+        message_secret: secret.to_vec(),
+        selected_options: vec!["Yes, I accept".into()],
+    }));
+    let message = generation::content(
+        &content,
+        &Default::default(),
+        &Default::default(),
+        &generation::DefaultContentHooks,
+    )
+    .await
+    .unwrap();
+    let update = message.poll_update_message.unwrap();
+    assert_eq!(update.poll_creation_message_key, Some(poll_key));
+    assert_eq!(update.metadata, Some(Default::default()));
+    assert!(update.sender_timestamp_ms.unwrap() > 1_700_000_000_000);
+    let vote = update.vote.unwrap();
+    assert_eq!(vote.enc_iv.as_ref().unwrap().len(), 12);
+    let ctx = PollContext {
+        poll_creator_jid: "222@lid",
+        poll_msg_id: "3EB0POLL",
+        poll_enc_key: &secret,
+        voter_jid: "111@lid",
+    };
+    let decrypted = messages::decrypt_poll_vote(&vote, &ctx).unwrap();
+    assert_eq!(
+        decrypted.selected_options,
+        vec![baileys_rs::crypto::sha256(b"Yes, I accept").to_vec()]
+    );
+    // The creator's client must use the same identities.
+    for wrong in [
+        PollContext {
+            voter_jid: "41767767829@s.whatsapp.net",
+            ..ctx
+        },
+        PollContext {
+            poll_creator_jid: "41767906626@s.whatsapp.net",
+            ..ctx
+        },
+    ] {
+        assert!(messages::decrypt_poll_vote(&vote, &wrong).is_err());
+    }
+    // Each vote has its own IV.
+    let again = messages::encrypt_poll_vote(&decrypted, &ctx).unwrap();
+    assert_ne!(again.enc_iv, vote.enc_iv);
+    assert_eq!(
+        messages::decrypt_poll_vote(&again, &ctx).unwrap(),
+        decrypted
+    );
+}

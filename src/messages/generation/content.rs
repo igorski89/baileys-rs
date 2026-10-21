@@ -125,6 +125,21 @@ pub struct Poll {
     pub to_announcement_group: bool,
     pub message_secret: Option<Vec<u8>>,
 }
+/// A vote on a poll, encrypted with the poll's secret. Upstream generates no
+/// votes; this follows the voter's client (see `encrypt_poll_vote`).
+#[derive(Debug, Default, Clone)]
+pub struct PollVote {
+    /// The poll creation message's key, as this account sees it.
+    pub poll_key: proto::MessageKey,
+    /// Deviceless JIDs of the poll's creator and of this account, both in
+    /// the chat's addressing mode (LID or phone number).
+    pub poll_creator_jid: String,
+    pub voter_jid: String,
+    /// The poll's `messageContextInfo.messageSecret`.
+    pub message_secret: Vec<u8>,
+    /// The chosen option names; none withdraws the vote.
+    pub selected_options: Vec<String>,
+}
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Disappearing {
     Enabled,
@@ -170,6 +185,7 @@ pub enum Content {
     ListReply(Box<proto::message::ListResponseMessage>),
     Event(Box<Event>),
     Poll(Box<Poll>),
+    PollVote(Box<PollVote>),
     Album {
         expected_image_count: Option<u32>,
         expected_video_count: Option<u32>,
@@ -524,6 +540,32 @@ pub async fn content(
                 m.poll_creation_message = Some(creation);
             }
             Field::MessageContextInfo
+        }
+        Content::PollVote(vote) => {
+            let id = vote.poll_key.id.as_deref().unwrap_or_default();
+            let encrypted = messages::encrypt_poll_vote(
+                &p::PollVoteMessage {
+                    selected_options: vote
+                        .selected_options
+                        .iter()
+                        .map(|name| crypto::sha256(name.as_bytes()).to_vec())
+                        .collect(),
+                },
+                &messages::PollContext {
+                    poll_creator_jid: &vote.poll_creator_jid,
+                    poll_msg_id: id,
+                    poll_enc_key: &vote.message_secret,
+                    voter_jid: &vote.voter_jid,
+                },
+            )?;
+            m.poll_update_message = Some(p::PollUpdateMessage {
+                poll_creation_message_key: Some(vote.poll_key.clone()),
+                vote: Some(encrypted),
+                // Empty, as in a phone's votes.
+                metadata: Some(Default::default()),
+                sender_timestamp_ms: Some(hooks.now_ms()?),
+            });
+            Field::PollUpdateMessage
         }
         Content::Album {
             expected_image_count,

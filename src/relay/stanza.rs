@@ -157,9 +157,12 @@ pub fn encrypted_attributes(message: &proto::Message) -> IndexMap<String, String
     if !media.is_empty() {
         attributes.insert("mediatype".into(), media.into());
     }
-    if normalize(Some(message))
-        .is_some_and(|m| m.pin_in_chat_message.is_some() || m.reaction_message.is_some())
-    {
+    // Poll votes are not upstream's (it sends none); phones hide them too.
+    if normalize(Some(message)).is_some_and(|m| {
+        m.pin_in_chat_message.is_some()
+            || m.reaction_message.is_some()
+            || m.poll_update_message.is_some()
+    }) {
         attributes.insert("decrypt-fail".into(), "hide".into());
     }
     attributes

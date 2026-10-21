@@ -3,10 +3,11 @@ use crate::{
     ephemeral::EphemeralCache,
     js,
     output::Output,
+    polls::{self, PollCache},
     whatsapp::{User, WhatsApp},
 };
 use baileys_rs::{
-    messages::generation::content_from_json,
+    messages::generation::{Content, Modifiers, PollVote, content_from_json},
     proto,
     proto_json::JsonField,
     socket::{SendOptions, presence::Presence},
@@ -67,6 +68,7 @@ pub type SharedSocket = Arc<RwLock<Option<Arc<dyn WhatsApp>>>>;
 pub struct Commands {
     pub socket: SharedSocket,
     pub ephemeral: EphemeralCache,
+    pub polls: PollCache,
     pub output: Output,
     pub http: reqwest::Client,
 }
@@ -481,6 +483,80 @@ impl Commands {
                     .unwrap_or(Value::Null);
                 let mut extra = Map::new();
                 extra.insert("message_secret".into(), secret);
+                Ok(Some(Outcome {
+                    to: Some(jid.clone()),
+                    message_id: message_id(&message),
+                    extra,
+                }))
+            }
+            "vote_poll" => {
+                let key = require_key(cmd, "vote_poll")?;
+                let selected = match cmd.get("selected_options") {
+                    Some(Value::Array(names)) if names.iter().all(Value::is_string) => names
+                        .iter()
+                        .map(|n| n.as_str().unwrap_or_default().to_owned())
+                        .collect::<Vec<_>>(),
+                    _ => {
+                        return Err(fail(
+                            "vote_poll requires \"selected_options\" (array of option names, empty to withdraw the vote)",
+                        ));
+                    }
+                };
+                let id = js::string(&key["id"]);
+                let cached = self.polls.get(&id);
+                if let Some(poll) = &cached
+                    && let Some(unknown) = selected.iter().find(|n| !poll.options.contains(n))
+                {
+                    return Err(fail(format!(
+                        "vote_poll: {unknown:?} is not an option of poll {id} ({})",
+                        poll.options.join(", ")
+                    )));
+                }
+                let secret = match js::get(cmd, "message_secret") {
+                    Some(secret) => js::base64_lenient(&js::string(secret)),
+                    None => cached.as_ref().map(|p| p.secret.clone()).ok_or_else(|| {
+                        fail(format!(
+                            "vote_poll: poll {id} was not seen by this connector; pass its \"message_secret\""
+                        ))
+                    })?,
+                };
+                // The key as events carried it, with the caller's fields on top.
+                let mut poll_key = cached.map_or_else(|| message_key(&key, &jid, false), |p| p.key);
+                for field in ["remoteJid", "fromMe", "participant"] {
+                    if let Some(value) = key.get(field).filter(|v| !v.is_null()) {
+                        poll_key[field] = value.clone();
+                    }
+                }
+                let user = whatsapp
+                    .user()
+                    .ok_or_else(|| fail("vote_poll: not logged in"))?;
+                let (creator, voter) = polls::vote_identities(&poll_key, &user).map_err(fail)?;
+                let creator = js::get(cmd, "poll_creator_jid").map_or(creator, js::string);
+                let voter = js::get(cmd, "voter_jid").map_or(voter, js::string);
+                let mut proto_key = proto::MessageKey {
+                    remote_jid: Some(
+                        js::get(&poll_key, "remoteJid").map_or_else(|| jid.clone(), js::string),
+                    ),
+                    from_me: Some(js::truthy(poll_key.get("fromMe"))),
+                    id: Some(id),
+                    ..Default::default()
+                };
+                proto_key.participant = js::get(&poll_key, "participant").map(js::string);
+                let content = Content::PollVote(Box::new(PollVote {
+                    poll_key: proto_key,
+                    poll_creator_jid: creator.clone(),
+                    voter_jid: voter.clone(),
+                    message_secret: secret,
+                    selected_options: selected.clone(),
+                }));
+                let message = whatsapp
+                    .send_message(&jid, content, Modifiers::default(), Default::default())
+                    .await
+                    .map_err(from_error)?;
+                tracing::debug!(jid, poll_id = %key["id"], ?selected, creator, voter, "sent poll vote");
+                let mut extra = Map::new();
+                extra.insert("poll_creator_jid".into(), json!(creator));
+                extra.insert("voter_jid".into(), json!(voter));
                 Ok(Some(Outcome {
                     to: Some(jid.clone()),
                     message_id: message_id(&message),

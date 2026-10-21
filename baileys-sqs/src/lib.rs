@@ -12,6 +12,7 @@ pub mod js;
 pub mod media;
 pub mod output;
 pub mod poll;
+pub mod polls;
 pub mod whatsapp;
 
 use std::sync::Arc;
@@ -36,6 +37,7 @@ pub async fn run(settings: config::Settings) -> Result<(), Box<dyn std::error::E
     let commands = commands::Commands {
         socket: Arc::default(),
         ephemeral: ephemeral::EphemeralCache::open(&settings.session_db)?,
+        polls: polls::PollCache::open(&settings.session_db)?,
         output: output::Output::new(sqs.clone(), output_queue),
         http: http.clone(),
     };

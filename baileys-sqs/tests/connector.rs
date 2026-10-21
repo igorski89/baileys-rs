@@ -13,6 +13,7 @@ use baileys_sqs::{
     http,
     output::Output,
     poll,
+    polls::PollCache,
     whatsapp::{BoxFuture, Result, User, WhatsApp},
 };
 use rusticmq::{
@@ -220,6 +221,7 @@ fn commands(
             fake.map(|f| f as Arc<dyn WhatsApp>),
         )),
         ephemeral: EphemeralCache::open(&SessionDb::File(dir.path().join("auth.sqlite3"))).unwrap(),
+        polls: PollCache::open(&SessionDb::File(dir.path().join("auth.sqlite3"))).unwrap(),
         output: Output::new(queues.sqs.clone(), queues.url(output)),
         http: reqwest::Client::new(),
     }
@@ -644,4 +646,105 @@ async fn slow_event_handling_does_not_drop_events() {
         received += 1;
     }
     assert_eq!(received, 64);
+}
+
+#[tokio::test]
+async fn votes_use_the_cached_poll_and_the_chat_addressing_mode() {
+    let queues = Queues::start(&[("output", false)]).await;
+    let dir = tempfile::tempdir().unwrap();
+    let fake = Arc::new(Fake::default());
+    let commands = commands(&queues, "output", Some(fake.clone()), &dir);
+    let poll = proto::WebMessageInfo {
+        message: Some(proto::Message {
+            poll_creation_message_v3: Some(Box::new(proto::message::PollCreationMessage {
+                name: Some("T&C".into()),
+                options: ["Yes, I accept", "No"]
+                    .map(|name| proto::message::poll_creation_message::Option {
+                        option_name: Some(name.into()),
+                        ..Default::default()
+                    })
+                    .to_vec(),
+                ..Default::default()
+            })),
+            message_context_info: Some(proto::MessageContextInfo {
+                message_secret: Some(vec![4; 32]),
+                ..Default::default()
+            }),
+            ..Default::default()
+        }),
+        ..Default::default()
+    };
+    commands.polls.learn(
+        &poll,
+        &json!({"remoteJid":"777@lid","remoteJidAlt":"15551234@s.whatsapp.net","fromMe":false,"id":"P1","addressingMode":"lid"}),
+    );
+    commands
+        .dispatch(&json!({"type":"vote_poll","to":"15551234","message_key":{"id":"P1"},"selected_options":["Yes, I accept"],"correlation_id":"v1"}))
+        .await
+        .unwrap();
+    for (cmd, error) in [
+        (
+            json!({"type":"vote_poll","to":"15551234","message_key":{"id":"P1"},"selected_options":["Maybe"]}),
+            "vote_poll: \"Maybe\" is not an option of poll P1 (Yes, I accept, No)",
+        ),
+        (
+            json!({"type":"vote_poll","to":"15551234","message_key":{"id":"P2"},"selected_options":[]}),
+            "vote_poll: poll P2 was not seen by this connector; pass its \"message_secret\"",
+        ),
+        (
+            json!({"type":"vote_poll","to":"15551234","message_key":{"id":"P1"}}),
+            "vote_poll requires \"selected_options\" (array of option names, empty to withdraw the vote)",
+        ),
+    ] {
+        assert_eq!(commands.dispatch(&cmd).await.unwrap_err().0, error);
+    }
+    // An unseen poll, with the secret from the caller, in a phone-number chat.
+    commands
+        .dispatch(&json!({"type":"vote_poll","to":"15551234","message_key":{"id":"P3","remoteJid":"15551234@s.whatsapp.net"},"selected_options":[],"message_secret":"BAQE"}))
+        .await
+        .unwrap();
+    let acks = queues.drain("output", 1).await;
+    assert_eq!(
+        acks[0],
+        json!({"type":"command_ack","payload":{"correlation_id":"v1","command_type":"vote_poll","to":"15551234@s.whatsapp.net","from":"100:7@s.whatsapp.net","me_lid":"900@lid","ok":true,"message_id":"SENT","poll_creator_jid":"777@lid","voter_jid":"900@lid"}})
+    );
+    let calls = fake.calls.lock().unwrap();
+    let Call::Send {
+        jid,
+        content: Content::PollVote(vote),
+        ..
+    } = &calls[0]
+    else {
+        panic!("{calls:?}")
+    };
+    assert_eq!(jid, "15551234@s.whatsapp.net");
+    assert_eq!(
+        vote.poll_key,
+        proto::MessageKey {
+            remote_jid: Some("777@lid".into()),
+            from_me: Some(false),
+            id: Some("P1".into()),
+            participant: None,
+        }
+    );
+    assert_eq!(
+        (vote.poll_creator_jid.as_str(), vote.voter_jid.as_str()),
+        ("777@lid", "900@lid")
+    );
+    assert_eq!(vote.message_secret, vec![4; 32]);
+    assert_eq!(vote.selected_options, ["Yes, I accept"]);
+    let Call::Send {
+        content: Content::PollVote(vote),
+        ..
+    } = &calls[1]
+    else {
+        panic!("{calls:?}")
+    };
+    assert_eq!(
+        (vote.poll_creator_jid.as_str(), vote.voter_jid.as_str()),
+        ("15551234@s.whatsapp.net", "100@s.whatsapp.net")
+    );
+    assert_eq!(vote.message_secret, vec![4, 4, 4]);
+    assert!(vote.selected_options.is_empty());
+    assert_eq!(calls.len(), 2);
 }

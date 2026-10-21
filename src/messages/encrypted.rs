@@ -35,15 +35,14 @@ impl std::fmt::Debug for EventContext<'_> {
             .finish_non_exhaustive()
     }
 }
-fn decrypt(
-    payload: &[u8],
-    iv: &[u8],
+/// The AES-GCM key and additional data of a secret-derived payload.
+fn secret_key(
     secret: &[u8],
     id: &str,
     creator: &str,
     actor: &str,
     label: &str,
-) -> Result<Zeroizing<Vec<u8>>, Error> {
+) -> (Zeroizing<[u8; 32]>, Vec<u8>) {
     let key0 = Zeroizing::new(crypto::hmac_sha256(secret, &[0; 32]));
     let mut sign = Vec::new();
     for part in [id, creator, actor, label] {
@@ -54,12 +53,46 @@ fn decrypt(
     let mut aad = id.as_bytes().to_vec();
     aad.push(0);
     aad.extend_from_slice(actor.as_bytes());
+    (key, aad)
+}
+fn decrypt(
+    payload: &[u8],
+    iv: &[u8],
+    secret: &[u8],
+    id: &str,
+    creator: &str,
+    actor: &str,
+    label: &str,
+) -> Result<Zeroizing<Vec<u8>>, Error> {
+    let (key, aad) = secret_key(secret, id, creator, actor, label);
     Ok(Zeroizing::new(crypto::aes_decrypt_gcm(
         payload,
         key.as_ref(),
         iv,
         &aad,
     )?))
+}
+/// Encrypt a vote as the voter's client does, with a random 12-byte IV;
+/// the inverse of [`decrypt_poll_vote`]. Upstream has no counterpart.
+pub fn encrypt_poll_vote(
+    vote: &proto::message::PollVoteMessage,
+    ctx: &PollContext<'_>,
+) -> Result<proto::message::PollEncValue, Error> {
+    let (key, aad) = secret_key(
+        ctx.poll_enc_key,
+        ctx.poll_msg_id,
+        ctx.poll_creator_jid,
+        ctx.voter_jid,
+        "Poll Vote",
+    );
+    let mut iv = vec![0; 12];
+    getrandom::fill(&mut iv).map_err(|_| crypto::Error::Random)?;
+    let plaintext = Zeroizing::new(vote.encode_to_vec());
+    let payload = crypto::aes_encrypt_gcm(&plaintext, key.as_ref(), &iv, &aad)?;
+    Ok(proto::message::PollEncValue {
+        enc_payload: Some(payload),
+        enc_iv: Some(iv),
+    })
 }
 pub fn decrypt_poll_vote(
     value: &proto::message::PollEncValue,

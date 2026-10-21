@@ -273,6 +273,9 @@ impl WhatsAppLoop {
                             has_media = true;
                         }
                         self.commands.ephemeral.update_from_message(message);
+                        self.commands
+                            .polls
+                            .learn(message, &data["messages"][i]["key"]);
                     }
                     let message = &data["messages"][i];
                     let mut entry = Map::new();
