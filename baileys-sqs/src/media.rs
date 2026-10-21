@@ -7,8 +7,10 @@ use serde_json::{Value, json};
 use std::time::Duration;
 
 /// The media kinds the connector extracts; other messages carry no `_media`.
+/// Wrappers (disappearing, view once, document with caption) are looked
+/// through, as normalizeMessageContent does.
 pub fn media_type(message: &proto::WebMessageInfo) -> Option<&'static str> {
-    let m = message.message.as_ref()?;
+    let m = content(message)?;
     if m.image_message.is_some() {
         Some("image")
     } else if m.video_message.is_some() {
@@ -22,8 +24,12 @@ pub fn media_type(message: &proto::WebMessageInfo) -> Option<&'static str> {
     }
 }
 
+fn content(message: &proto::WebMessageInfo) -> Option<&proto::Message> {
+    baileys_rs::relay::normalize(message.message.as_ref())
+}
+
 fn mimetype(message: &proto::WebMessageInfo, kind: &str) -> Option<String> {
-    let m = message.message.as_ref()?;
+    let m = content(message)?;
     match kind {
         "image" => m.image_message.as_ref()?.mimetype.clone(),
         "video" => m.video_message.as_ref()?.mimetype.clone(),
@@ -203,5 +209,30 @@ mod tests {
         assert_eq!(extension_from_mimetype(None), "bin");
         assert_eq!(extension_from_mimetype(Some("weird/")), "bin");
         assert!(random_suffix().len() <= 11);
+    }
+
+    #[test]
+    fn media_inside_a_disappearing_message_is_found() {
+        let document = proto::Message {
+            document_message: Some(Box::new(proto::message::DocumentMessage {
+                mimetype: Some("application/pdf".into()),
+                ..Default::default()
+            })),
+            ..Default::default()
+        };
+        let wrapped = proto::WebMessageInfo {
+            message: Some(proto::Message {
+                ephemeral_message: Some(Box::new(proto::message::FutureProofMessage {
+                    message: Some(Box::new(document)),
+                })),
+                ..Default::default()
+            }),
+            ..Default::default()
+        };
+        assert_eq!(media_type(&wrapped), Some("document"));
+        assert_eq!(
+            mimetype(&wrapped, "document").as_deref(),
+            Some("application/pdf")
+        );
     }
 }
