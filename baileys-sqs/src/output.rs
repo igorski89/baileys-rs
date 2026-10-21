@@ -216,18 +216,38 @@ impl Output {
 
     /// Send one body; failures are logged, as the connector never retries.
     pub async fn send(&self, body: &Value) {
+        let text = js::stringify(body);
+        let bytes = text.len();
         let mut request = self
             .client
             .send_message()
             .queue_url(&self.queue_url)
-            .message_body(js::stringify(body));
-        if self.fifo {
+            .message_body(text);
+        let dedup_id = self.fifo.then(|| send_dedup_id(body, now_ms()));
+        let group_id = self.fifo.then(|| fifo_group_id(body));
+        if let (Some(dedup_id), Some(group_id)) = (&dedup_id, &group_id) {
             request = request
-                .message_group_id(fifo_group_id(body))
-                .message_deduplication_id(send_dedup_id(body, now_ms()));
+                .message_group_id(group_id)
+                .message_deduplication_id(dedup_id);
         }
-        if let Err(err) = request.send().await {
-            tracing::error!(err = %aws_sdk_sqs::error::DisplayErrorContext(&err), "Failed to send message to queue");
+        match request.send().await {
+            // Not in the TypeScript connector, which logs failures only: this
+            // line shows that an event reached the queue.
+            Ok(output) => tracing::debug!(
+                kind = body
+                    .get("event")
+                    .or(body.get("type"))
+                    .map(js::string)
+                    .unwrap_or_default(),
+                bytes,
+                group_id = group_id.as_deref().unwrap_or_default(),
+                dedup_id = dedup_id.as_deref().unwrap_or_default(),
+                sqs_message_id = output.message_id().unwrap_or_default(),
+                "Sent message to queue"
+            ),
+            Err(err) => {
+                tracing::error!(err = %aws_sdk_sqs::error::DisplayErrorContext(&err), "Failed to send message to queue");
+            }
         }
     }
 }
