@@ -39,6 +39,9 @@ pub trait WhatsApp: Send + Sync {
     /// The chat's other identity from `signalRepository.lidMapping`: the
     /// phone number for a LID, the LID for a phone number, as a user JID.
     fn alternate_jid<'a>(&'a self, jid: &'a str) -> BoxFuture<'a, Result<Option<String>>>;
+    /// Whether the chat is addressed by LIDs: a group's addressing mode, or
+    /// for a 1:1 chat whether the contact has a LID. `None` when unknown.
+    fn lid_addressed<'a>(&'a self, jid: &'a str) -> BoxFuture<'a, Result<Option<bool>>>;
     /// `downloadMediaMessage(msg, 'buffer', {})`: no reupload request.
     fn download_media<'a>(
         &'a self,
@@ -118,6 +121,27 @@ impl WhatsApp for Live {
             })
             .await??;
             Ok(alternate.map(|jid| baileys_rs::jid::normalized_user(&jid)))
+        })
+    }
+
+    fn lid_addressed<'a>(&'a self, jid: &'a str) -> BoxFuture<'a, Result<Option<bool>>> {
+        Box::pin(async move {
+            let Some(parsed) = baileys_rs::jid::Jid::parse(jid) else {
+                return Ok(None);
+            };
+            if parsed.is_group() {
+                let metadata = self.socket.group_metadata(jid).await?;
+                return Ok(Some(
+                    metadata.addressing_mode == baileys_rs::groups::AddressingMode::Lid,
+                ));
+            }
+            if parsed.is_lid_user() {
+                return Ok(Some(true));
+            }
+            if !parsed.is_pn_user() {
+                return Ok(None);
+            }
+            Ok(Some(self.alternate_jid(jid).await?.is_some()))
         })
     }
 

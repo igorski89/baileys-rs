@@ -202,6 +202,10 @@ impl WhatsApp for Fake {
         };
         Box::pin(async move { Ok(alternate) })
     }
+    fn lid_addressed<'a>(&'a self, jid: &'a str) -> BoxFuture<'a, Result<Option<bool>>> {
+        let lid = jid.ends_with("@g.us") || jid.ends_with("@lid");
+        Box::pin(async move { Ok(Some(lid)) })
+    }
     fn download_media<'a>(
         &'a self,
         _: &'a proto::WebMessageInfo,
@@ -698,6 +702,15 @@ async fn votes_use_the_cached_poll_and_the_chat_addressing_mode() {
     ] {
         assert_eq!(commands.dispatch(&cmd).await.unwrap_err().0, error);
     }
+    // Our own group poll: its key has no addressing mode, so the group's is used.
+    commands.polls.learn(
+        &poll,
+        &json!({"remoteJid":"1203@g.us","fromMe":true,"id":"P4"}),
+    );
+    commands
+        .dispatch(&json!({"type":"vote_poll","to":"1203@g.us","message_key":{"id":"P4"},"selected_options":["No"]}))
+        .await
+        .unwrap();
     // An unseen poll, with the secret from the caller, in a phone-number chat.
     commands
         .dispatch(&json!({"type":"vote_poll","to":"15551234","message_key":{"id":"P3","remoteJid":"15551234@s.whatsapp.net"},"selected_options":[],"message_secret":"BAQE"}))
@@ -734,9 +747,23 @@ async fn votes_use_the_cached_poll_and_the_chat_addressing_mode() {
     assert_eq!(vote.message_secret, vec![4; 32]);
     assert_eq!(vote.selected_options, ["Yes, I accept"]);
     let Call::Send {
+        jid,
         content: Content::PollVote(vote),
         ..
     } = &calls[1]
+    else {
+        panic!("{calls:?}")
+    };
+    assert_eq!(jid, "1203@g.us");
+    assert_eq!(
+        (vote.poll_creator_jid.as_str(), vote.voter_jid.as_str()),
+        ("900@lid", "900@lid")
+    );
+    assert_eq!(vote.poll_key.from_me, Some(true));
+    let Call::Send {
+        content: Content::PollVote(vote),
+        ..
+    } = &calls[2]
     else {
         panic!("{calls:?}")
     };
@@ -746,5 +773,5 @@ async fn votes_use_the_cached_poll_and_the_chat_addressing_mode() {
     );
     assert_eq!(vote.message_secret, vec![4, 4, 4]);
     assert!(vote.selected_options.is_empty());
-    assert_eq!(calls.len(), 2);
+    assert_eq!(calls.len(), 3);
 }

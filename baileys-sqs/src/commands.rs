@@ -530,7 +530,25 @@ impl Commands {
                 let user = whatsapp
                     .user()
                     .ok_or_else(|| fail("vote_poll: not logged in"))?;
-                let (creator, voter) = polls::vote_identities(&poll_key, &user).map_err(fail)?;
+                // Our own poll's key has no addressing mode and no author
+                // to read it from, so ask for the chat's.
+                let own_unaddressed = js::truthy(poll_key.get("fromMe"))
+                    && !poll_key.get("addressingMode").is_some_and(Value::is_string);
+                let chat_lid = if !own_unaddressed {
+                    None
+                } else {
+                    let chat =
+                        js::get(&poll_key, "remoteJid").map_or_else(|| jid.clone(), js::string);
+                    match whatsapp.lid_addressed(&chat).await {
+                        Ok(lid) => lid,
+                        Err(err) => {
+                            tracing::warn!(%err, chat, "failed to read the chat's addressing mode");
+                            None
+                        }
+                    }
+                };
+                let (creator, voter) =
+                    polls::vote_identities(&poll_key, &user, chat_lid).map_err(fail)?;
                 let creator = js::get(cmd, "poll_creator_jid").map_or(creator, js::string);
                 let voter = js::get(cmd, "voter_jid").map_or(voter, js::string);
                 let mut proto_key = proto::MessageKey {

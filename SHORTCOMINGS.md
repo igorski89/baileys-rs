@@ -47,7 +47,7 @@ Not gaps, but worth knowing: like upstream, the socket does not reconnect by its
 - The asynchronous patch hook is awaited on the relay blocking worker (`Handle::block_on`); it must not wait on the relay it is patching.
 
 ### Poll votes (an addition)
-- Upstream can decrypt votes but not send them. `Content::PollVote` builds an encrypted `pollUpdateMessage` (`encrypt_poll_vote`, the inverse of `decrypt_poll_vote`), and its stanza is copied from a phone's vote captured live: `decrypt-fail="hide"` on each `enc`, `<meta polltype="vote" content_type="add_on"/>`, and an empty `metadata` in the message. Without the meta node the server acked the stanza but did not deliver it. The caller supplies the poll's secret and both JIDs (deviceless, in the chat's addressing mode: LIDs in a LID chat). Verified live, 1:1 only: the creator's devices decrypt the vote and both phones count it. Votes in groups are untested.
+- Upstream can decrypt votes but not send them. `Content::PollVote` builds an encrypted `pollUpdateMessage` (`encrypt_poll_vote`, the inverse of `decrypt_poll_vote`), and its stanza is copied from a phone's vote captured live: `decrypt-fail="hide"` on each `enc`, `<meta polltype="vote" content_type="add_on"/>`, and an empty `metadata` in the message. Without the meta node the server acked the stanza but did not deliver it. The caller supplies the poll's secret and both JIDs (deviceless, in the chat's addressing mode: LIDs in a LID chat). Verified live in a 1:1 chat and in a LID-addressed group, voting on someone else's poll and on our own: the other side decrypts each vote, and both phones count it.
 
 ### Media
 - AVIF images and JPEG-compressed (YCbCr) TIFF images cannot be decoded for thumbnails or profile pictures; sharp handles both.

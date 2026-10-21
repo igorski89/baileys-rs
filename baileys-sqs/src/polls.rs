@@ -137,7 +137,14 @@ fn is_lid(jid: &str) -> bool {
 /// The poll creator's and this account's JIDs for the vote's encryption:
 /// deviceless, and both in the chat's addressing mode, which is what the
 /// creator's client decrypts with (a phone in a LID chat uses the LIDs).
-pub fn vote_identities(key: &Value, me: &User) -> Result<(String, String), String> {
+/// The key's `addressingMode` decides; without one, `chat_lid` (the chat's
+/// mode as WhatsApp reports it, needed for our own sent polls, whose keys
+/// carry neither a mode nor an author), else the author JID's form.
+pub fn vote_identities(
+    key: &Value,
+    me: &User,
+    chat_lid: Option<bool>,
+) -> Result<(String, String), String> {
     let group = text(key, "remoteJid").is_some_and(|j| j.ends_with("@g.us"));
     let (author, alt) = if group {
         (text(key, "participant"), text(key, "participantAlt"))
@@ -146,7 +153,7 @@ pub fn vote_identities(key: &Value, me: &User) -> Result<(String, String), Strin
     };
     let lid = match text(key, "addressingMode") {
         Some(mode) => mode == "lid",
-        None => author.is_some_and(is_lid),
+        None => chat_lid.unwrap_or_else(|| author.is_some_and(is_lid)),
     };
     let own = if lid {
         me.lid
@@ -186,12 +193,12 @@ mod tests {
     fn identities_follow_the_chat_addressing_mode() {
         let lid_chat = json!({"remoteJid":"222@lid","remoteJidAlt":"41767906626@s.whatsapp.net","fromMe":false,"id":"A","addressingMode":"lid"});
         assert_eq!(
-            vote_identities(&lid_chat, &me()).unwrap(),
+            vote_identities(&lid_chat, &me(), None).unwrap(),
             ("222@lid".into(), "111@lid".into())
         );
         let pn_chat = json!({"remoteJid":"41767906626@s.whatsapp.net","remoteJidAlt":"222@lid","fromMe":false,"id":"A","addressingMode":"pn"});
         assert_eq!(
-            vote_identities(&pn_chat, &me()).unwrap(),
+            vote_identities(&pn_chat, &me(), Some(true)).unwrap(),
             (
                 "41767906626@s.whatsapp.net".into(),
                 "41767767829@s.whatsapp.net".into()
@@ -199,12 +206,25 @@ mod tests {
         );
         let own = json!({"remoteJid":"222@lid","fromMe":true,"id":"A"});
         assert_eq!(
-            vote_identities(&own, &me()).unwrap(),
+            vote_identities(&own, &me(), None).unwrap(),
             ("111@lid".into(), "111@lid".into())
+        );
+        // Our own poll in a group: its key has no addressing mode.
+        let own_group = json!({"remoteJid":"1@g.us","fromMe":true,"id":"A"});
+        assert_eq!(
+            vote_identities(&own_group, &me(), Some(true)).unwrap(),
+            ("111@lid".into(), "111@lid".into())
+        );
+        assert_eq!(
+            vote_identities(&own_group, &me(), Some(false)).unwrap(),
+            (
+                "41767767829@s.whatsapp.net".into(),
+                "41767767829@s.whatsapp.net".into()
+            )
         );
         let group = json!({"remoteJid":"1@g.us","participant":"41767906626:2@s.whatsapp.net","participantAlt":"222:2@lid","fromMe":false,"id":"A","addressingMode":"lid"});
         assert_eq!(
-            vote_identities(&group, &me()).unwrap(),
+            vote_identities(&group, &me(), None).unwrap(),
             ("222@lid".into(), "111@lid".into())
         );
     }
