@@ -292,7 +292,8 @@ impl WhatsAppLoop {
                         })),
                     );
                     set("has_media", Some(&json!(has_media)));
-                    set("timestamp", message.get("messageTimestamp"));
+                    let timestamp = message.get("messageTimestamp").map(raw_timestamp);
+                    set("timestamp", timestamp.as_ref());
                     messages_meta.push(Value::Object(entry));
                 }
                 tracing::debug!(count = messages_meta.len(), "messages.upsert");
@@ -338,5 +339,38 @@ impl WhatsAppLoop {
                 }))
                 .await;
         }
+    }
+}
+
+/// `messageTimestamp` as index.ts copies it into `meta`: the raw value, not
+/// its toJSON form. A protobufjs message (the payload wrote the uint64 as a
+/// string) holds a Long, which JSON.stringify writes as {low, high, unsigned}.
+fn raw_timestamp(value: &Value) -> Value {
+    match value.as_str().and_then(|s| s.parse::<u64>().ok()) {
+        Some(v) => {
+            json!({"low": v as u32 as i32, "high": (v >> 32) as u32 as i32, "unsigned": true})
+        }
+        None => value.clone(),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::raw_timestamp;
+    use serde_json::json;
+
+    #[test]
+    fn meta_timestamps_are_the_raw_values_index_ts_copies() {
+        assert_eq!(raw_timestamp(&json!(1792589730)), json!(1792589730));
+        assert_eq!(
+            raw_timestamp(&json!("1792589697")),
+            json!({"low": 1792589697, "high": 0, "unsigned": true})
+        );
+        // Long.js keeps both halves as signed 32-bit integers.
+        assert_eq!(
+            raw_timestamp(&json!("4294967295")),
+            json!({"low": -1, "high": 0, "unsigned": true})
+        );
+        assert_eq!(raw_timestamp(&json!(null)), json!(null));
     }
 }
