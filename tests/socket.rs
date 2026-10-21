@@ -603,6 +603,34 @@ async fn encrypted_login_queries_errors_and_shutdown() {
     .unwrap();
 }
 
+/// ws reports a transport that ends without a close frame only as 'close',
+/// so upstream ends with Connection Terminated rather than a WebSocket Error.
+#[tokio::test]
+async fn transport_ending_without_close_frame_is_connection_terminated() {
+    timeout(Duration::from_secs(8), async {
+        let temp = tempfile::tempdir().unwrap();
+        let store = store(&temp, true);
+        let (listener, config) = listener().await;
+        let server = tokio::spawn(async move {
+            let mut peer = Peer::accept(listener.accept().await.unwrap().0).await;
+            peer.send(BinaryNode::new("success").attr("lid", "987654:7@lid"))
+                .await;
+            peer.read().await;
+            // Dropping the stream closes the TCP connection without a close frame.
+            drop(peer);
+        });
+        let (socket, mut events) = Socket::connect(config, store).await.unwrap();
+        socket.wait_for_open(Duration::from_secs(2)).await.unwrap();
+        event(&mut events, |e| {
+            matches!(e, Event::Connection(ConnectionState::Closed { code: 428, message }) if message == "Connection Terminated")
+        })
+        .await;
+        server.await.unwrap();
+    })
+    .await
+    .unwrap();
+}
+
 #[tokio::test]
 async fn prekeys_are_uploaded_and_acknowledged_before_open() {
     timeout(Duration::from_secs(8), async {

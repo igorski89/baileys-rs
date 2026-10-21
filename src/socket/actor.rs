@@ -127,7 +127,7 @@ pub(super) async fn run(
         actor.config.keep_alive_interval,
     );
     heartbeat.set_missed_tick_behavior(MissedTickBehavior::Skip);
-    let result: Result<(), Error> = async {
+    let mut result: Result<(), Error> = async {
         loop {
             while let Some(frame) = actor.noise.next_frame()? {
                 match frame {
@@ -176,6 +176,14 @@ pub(super) async fn run(
     match &result {
         Err(error) => tracing::info!(?error, "connection errored"),
         Ok(()) => tracing::info!("connection closed"),
+    }
+    // ws destroys the socket on a transport error without emitting 'error',
+    // so upstream sees only 'close': Connection Terminated.
+    if let Err(Error::WebSocket(error)) = &result
+        && transport_closed(error)
+    {
+        tracing::debug!(%error, "WebSocket transport closed");
+        result = Err(actor.close(428, "Connection Terminated"));
     }
     let code = result
         .as_ref()
@@ -1314,4 +1322,18 @@ impl Actor<'_> {
 }
 fn bytes_node(tag: &str, bytes: Vec<u8>) -> BinaryNode {
     BinaryNode::new(tag).with_content(NodeContent::Bytes(bytes))
+}
+
+/// A tungstenite error that ws reports only as the socket closing: the
+/// transport failed or ended, rather than a frame breaking the protocol.
+fn transport_closed(error: &tungstenite::Error) -> bool {
+    use tungstenite::error::ProtocolError;
+    matches!(
+        error,
+        tungstenite::Error::Io(_)
+            | tungstenite::Error::Tls(_)
+            | tungstenite::Error::ConnectionClosed
+            | tungstenite::Error::AlreadyClosed
+            | tungstenite::Error::Protocol(ProtocolError::ResetWithoutClosingHandshake)
+    )
 }
