@@ -552,9 +552,10 @@ pub fn pairing_code_finish_with_material(
     let reference = reg
         .child_buffer("link_code_pairing_ref")
         .ok_or(Error::Pairing("missing code reference"))?;
+    // Any length, as upstream: the key agreement below takes 32 bytes or
+    // 33 with the 0x05 prefix (generateSignalPubKey) and rejects the rest.
     let primary_identity = reg
         .child_buffer("primary_identity_pub")
-        .filter(|b| b.len() == 32)
         .ok_or(Error::Pairing("primary identity"))?;
     let wrapped = reg
         .child_buffer("link_code_pairing_wrapped_primary_ephemeral_pub")

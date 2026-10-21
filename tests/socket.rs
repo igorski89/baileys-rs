@@ -931,6 +931,7 @@ async fn phone_pairing_persists_derived_secret_after_finish_ack() {
             notification
                 .attrs
                 .insert("from".into(), "@s.whatsapp.net".into());
+            let mut incomplete = notification.clone();
             peer.send(notification).await;
             let finish = peer.read().await;
             let reg = finish.child("link_code_companion_reg").unwrap();
@@ -965,6 +966,24 @@ async fn phone_pairing_persists_derived_secret_after_finish_ack() {
             assert_eq!(ack.tag, "ack");
             assert_eq!(ack.attrs["id"], "phone-notify");
             assert_eq!(ack.attrs["type"], "link_code_companion_reg");
+            // A registration notification the handler cannot use is logged
+            // and acknowledged, as upstream's onUnexpectedError, and the
+            // pairing continues on the same connection.
+            incomplete
+                .attrs
+                .insert("id".into(), "phone-notify-2".into());
+            if let Some(NodeContent::Children(children)) = &mut incomplete.content
+                && let Some(reg) = children
+                    .iter_mut()
+                    .find(|c| c.tag == "link_code_companion_reg")
+                && let Some(NodeContent::Children(fields)) = &mut reg.content
+            {
+                fields.retain(|f| f.tag != "primary_identity_pub");
+            }
+            peer.send(incomplete).await;
+            let ack = peer.read().await;
+            assert_eq!(ack.tag, "ack");
+            assert_eq!(ack.attrs["id"], "phone-notify-2");
             peer.result(&finish).await;
             secret_tx.send(adv).unwrap();
             peer.closed().await;

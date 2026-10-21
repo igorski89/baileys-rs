@@ -817,15 +817,25 @@ impl Actor<'_> {
                 let credentials = self.credentials.clone();
                 let notification = node.clone();
                 let id = self.tag()?;
-                let finish = tokio::task::spawn_blocking(move || {
+                let finished = tokio::task::spawn_blocking(move || {
                     connection::pairing_code_finish(&credentials, &notification, &id)
                 })
                 .await
-                .map_err(|_| Error::Task)??;
-                self.credentials.adv_secret_key = finish.adv_secret_key;
-                self.persist().await?;
-                self.internal_query(finish.node, PendingKind::CodeFinish)
-                    .await?;
+                .map_err(|_| Error::Task)?;
+                match finished {
+                    Ok(finish) => {
+                        self.credentials.adv_secret_key = finish.adv_secret_key;
+                        self.persist().await?;
+                        self.internal_query(finish.node, PendingKind::CodeFinish)
+                            .await?;
+                    }
+                    // processNodeWithBuffer catches a failing notification
+                    // handler (onUnexpectedError) and the ack still goes out,
+                    // so the connection stays up for the pair-success.
+                    Err(error) => {
+                        tracing::error!(?error, "unexpected error in 'processing notification'")
+                    }
+                }
                 if let (Some(id), Some(from)) = (node.attrs.get("id"), node.attrs.get("from")) {
                     let mut ack = BinaryNode::new("ack")
                         .attr("id", id)
@@ -940,11 +950,17 @@ impl Actor<'_> {
                 let _ = reply.send(result);
             }
             PendingKind::Heartbeat => (),
-            PendingKind::CodeFinish => {
-                node.assert_error_free()?;
-                self.credentials.registered = true;
-                self.persist().await?;
-            }
+            PendingKind::CodeFinish => match node.assert_error_free() {
+                Ok(()) => {
+                    self.credentials.registered = true;
+                    self.persist().await?;
+                }
+                // The query throws inside the notification handler, which
+                // only logs it: registered stays false.
+                Err(error) => {
+                    tracing::error!(?error, "unexpected error in 'processing notification'")
+                }
+            },
             PendingKind::InitCount => {
                 let count = node
                     .child("count")
@@ -1312,7 +1328,10 @@ impl Actor<'_> {
                         ..
                     } => self.retry_upload(count, attempt, after).await?,
                     PendingKind::InitActive | PendingKind::InitDigest => self.open().await?,
-                    PendingKind::CodeFinish => return Err(Error::Timeout),
+                    PendingKind::CodeFinish => tracing::error!(
+                        error = ?Error::Timeout,
+                        "unexpected error in 'processing notification'"
+                    ),
                     PendingKind::Heartbeat => (),
                 }
             }
