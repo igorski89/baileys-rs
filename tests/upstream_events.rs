@@ -448,9 +448,9 @@ fn unbuffered_history_sets_have_the_direct_shape() {
     );
 }
 
-/// The buffered history set, as a live session showed it: unset
-/// notification fields are null, empty past participants are absent and
-/// chats keep only Conversation fields.
+/// The buffered history set, as a live session showed it: consolidateEvents'
+/// key order, unset notification fields are null, empty past participants
+/// are absent and chats keep only Conversation fields.
 #[test]
 fn history_sets_have_the_buffered_shape() {
     let set = events()
@@ -461,6 +461,20 @@ fn history_sets_have_the_buffered_shape() {
         })
         .unwrap();
     let fields = set.as_object().unwrap();
+    let keys: Vec<_> = fields.keys().cloned().collect();
+    assert_eq!(
+        keys,
+        [
+            "chats",
+            "messages",
+            "contacts",
+            "syncType",
+            "progress",
+            "isLatest",
+            "chunkOrder",
+            "peerDataRequestSessionId"
+        ]
+    );
     assert_eq!(fields["chunkOrder"], Value::Null);
     assert_eq!(fields["peerDataRequestSessionId"], Value::Null);
     assert!(fields.contains_key("progress"));

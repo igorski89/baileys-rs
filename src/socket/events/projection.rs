@@ -196,12 +196,18 @@ fn project_plain(event: Event) -> Result<Vec<Action>, Error> {
         }).collect::<Vec<_>>())),
         Event::MessagingHistorySet(set) => {
             // History chats are decoded protobufjs Conversations.
-            let mut value=json!({"chats":proto_json::protobuf(||set.data.chats.iter().map(JsonField::to_value).collect::<Vec<_>>()),"contacts":serialize(&set.data.contacts)?,"messages":set.data.messages.iter().enumerate().map(|(i,m)|message_value(m,set.data.message_metadata.get(i).and_then(Option::as_ref),set.data.message_runtime_fields.get(i))).collect::<Result<Vec<_>,_>>()?});
+            let chats=proto_json::protobuf(||set.data.chats.iter().map(JsonField::to_value).collect::<Vec<_>>());
+            let contacts=serialize(&set.data.contacts)?;
+            let messages=set.data.messages.iter().enumerate().map(|(i,m)|message_value(m,set.data.message_metadata.get(i).and_then(Option::as_ref),set.data.message_runtime_fields.get(i))).collect::<Result<Vec<_>,_>>()?;
             let past=json!(set.data.past_participants.iter().map(JsonField::to_value).collect::<Vec<_>>());
+            let mut value;
             if set.buffered {
-                // The buffer's set: past participants only once some arrived.
+                // consolidateEvents' order; past participants only once some arrived.
+                value=json!({"chats":chats,"messages":messages,"contacts":contacts});
                 if !set.data.past_participants.is_empty() { value["pastParticipants"]=past; }
             } else {
+                // processHistoryMessage's order.
+                value=json!({"chats":chats,"contacts":contacts,"messages":messages});
                 // processMessage spreads processHistoryMessage's result.
                 value["lidPnMappings"]=serialize(&set.data.lid_pn_mappings)?;
                 value["pastParticipants"]=past;
