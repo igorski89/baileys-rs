@@ -86,7 +86,7 @@ Every WhatsApp event is published as
 
 with Baileys' event names and payload shapes (`meta` summarises `messages.upsert`, `messages.update` and `presence.update`; incoming media is attached to each message as `_media`). Connection changes are `{"type":"connection","payload":{"status":"connected"}}` or `{"status":"disconnected","error":...,"code":...}`, QR codes `{"type":"qr","payload":{"qr":...}}`, and pairing codes `{"type":"pairing_code",...}`. The connector reconnects five seconds after every close except a logout (401).
 
-For FIFO queues the group id is the chat (or the event type when there is none) and the deduplication id is a readable prefix plus the SHA-256 of the content, so a redelivered event is dropped within SQS's five-minute window. The `sender` uses a random deduplication id.
+For FIFO queues the group id is the chat (or the event type when there is none) and the deduplication id is a readable prefix plus the SHA-256 of the content, so a redelivered event is dropped within SQS's five-minute window. A connection status is never dropped: the same status recurs (`connected` after every reconnect), so its id also carries the send time. The `sender` uses a random deduplication id.
 
 ## Local development
 

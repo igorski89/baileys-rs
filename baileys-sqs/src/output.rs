@@ -183,6 +183,19 @@ pub fn compute_dedup_id(body: &Value) -> String {
     format!("{prefix}-{hex}")
 }
 
+/// The deduplication id a send carries: [`compute_dedup_id`], except that a
+/// connection status is a state change rather than a redelivery, so it gets
+/// the send time and the same status again (`connected` after every
+/// reconnect) is never dropped within the FIFO window.
+pub fn send_dedup_id(body: &Value, now_ms: u128) -> String {
+    let id = compute_dedup_id(body);
+    if body.get("type").and_then(Value::as_str) == Some("connection") {
+        id.replacen("connection-", &format!("connection:{now_ms}-"), 1)
+    } else {
+        id
+    }
+}
+
 /// The output queue.
 #[derive(Clone)]
 pub struct Output {
@@ -211,12 +224,19 @@ impl Output {
         if self.fifo {
             request = request
                 .message_group_id(fifo_group_id(body))
-                .message_deduplication_id(compute_dedup_id(body));
+                .message_deduplication_id(send_dedup_id(body, now_ms()));
         }
         if let Err(err) = request.send().await {
             tracing::error!(err = %aws_sdk_sqs::error::DisplayErrorContext(&err), "Failed to send message to queue");
         }
     }
+}
+
+fn now_ms() -> u128 {
+    std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map(|d| d.as_millis())
+        .unwrap_or_default()
 }
 
 #[cfg(test)]
@@ -251,6 +271,19 @@ mod tests {
         other["id"] = json!("y");
         assert_eq!(id, compute_dedup_id(&other));
         assert!(id.len() <= 128);
+        assert_eq!(send_dedup_id(&upsert, 1), id);
+    }
+
+    #[test]
+    fn a_repeated_connection_status_gets_a_new_deduplication_id() {
+        let connected = json!({"type":"connection","payload":{"status":"connected"}});
+        let first = send_dedup_id(&connected, 1792506508000);
+        assert_eq!(
+            first,
+            compute_dedup_id(&connected).replace("connection-", "connection:1792506508000-")
+        );
+        assert_ne!(first, send_dedup_id(&connected, 1792506508001));
+        assert!(first.len() <= 128);
     }
 
     #[test]
