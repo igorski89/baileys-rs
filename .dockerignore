@@ -1,0 +1,7 @@
+# The image builds from sources only: no build output, history or local state.
+target
+.git
+.cache
+**/node_modules
+baileys-sqs/docker-volumes
+baileys-sqs/.env

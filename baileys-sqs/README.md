@@ -98,6 +98,12 @@ docker compose logs -f listener   # QR code and messages
 docker compose run --rm sender
 ```
 
+The image alone, for linux/amd64 and linux/arm64, from the repository root (the build stage cross-compiles on the builder's own platform; the image runs as uid 1001 in `/app`, like the TypeScript image, and its command is `baileys-sqs`, with `listener` and `sender` beside it):
+
+```bash
+docker buildx build --platform linux/amd64,linux/arm64 -f baileys-sqs/Dockerfile -t <registry>/baileys-rs:latest --push .
+```
+
 Without Docker:
 
 ```bash
