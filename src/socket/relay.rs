@@ -138,6 +138,21 @@ impl Socket {
         message: proto::Message,
         mut options: RelayOptions,
     ) -> Result<String, Error> {
+        // A phone's vote carries this node; without it the server acks a vote but does not deliver it.
+        // Added here, not in send_message, so retry resends carry it too (upstream sends no votes).
+        if relay::normalize(Some(&message)).is_some_and(|m| m.poll_update_message.is_some())
+            && !options
+                .stanza
+                .additional_nodes
+                .iter()
+                .any(|n| n.tag == "meta")
+        {
+            options.stanza.additional_nodes.push(
+                binary::BinaryNode::new("meta")
+                    .attr("polltype", "vote")
+                    .attr("content_type", "add_on"),
+            );
+        }
         let _serial = self.inner.relay_lock.lock().await;
         let credentials = load_credentials(self.inner.store.clone()).await?;
         let me = credentials.me_id()?.to_owned();
@@ -420,7 +435,12 @@ impl Socket {
                         me_lid.as_deref(),
                         distribution.bytes.as_deref(),
                     )?;
-                    content.push(relay::encrypt_retry(participant, &payload, tx)?);
+                    let mut node = relay::encrypt_retry(participant, &payload, tx)?;
+                    // As on the first send; upstream omits it on retries (see SHORTCOMINGS).
+                    if let Some(hide) = attrs.get("decrypt-fail") {
+                        node.attrs.insert("decrypt-fail".into(), hide.clone());
+                    }
+                    content.push(node);
                 }
                 let (token, sender_timestamp) = if one_to_one {
                     tx.privacy_token(&storage_owned, timestamp)?

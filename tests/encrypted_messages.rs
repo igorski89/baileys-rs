@@ -205,3 +205,37 @@ async fn generated_votes_decrypt_with_the_poll_context() {
         decrypted
     );
 }
+#[tokio::test]
+async fn votes_reject_jids_with_a_device() {
+    use baileys_rs::messages::generation::{self, Content, PollVote};
+    for (creator, voter, field) in [
+        ("222:3@lid", "111@lid", "pollCreatorJid"),
+        ("222@lid", "111:5@lid", "voterJid"),
+        ("222@lid", "", "voterJid"),
+    ] {
+        let content = Content::PollVote(Box::new(PollVote {
+            poll_key: proto::MessageKey {
+                id: Some("3EB0POLL".into()),
+                ..Default::default()
+            },
+            poll_creator_jid: creator.into(),
+            voter_jid: voter.into(),
+            message_secret: vec![5; 32],
+            selected_options: vec!["Yes".into()],
+        }));
+        let error = generation::content(
+            &content,
+            &Default::default(),
+            &Default::default(),
+            &generation::DefaultContentHooks,
+        )
+        .await
+        .unwrap_err();
+        assert_eq!(error.status_code(), Some(400));
+        assert!(
+            error
+                .to_string()
+                .starts_with(&format!("pollVote.{field} must be a JID without device"))
+        );
+    }
+}

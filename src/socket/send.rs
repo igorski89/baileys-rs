@@ -133,13 +133,6 @@ pub fn send_metadata(
         options
             .additional_nodes
             .push(BinaryNode::new("meta").attr("polltype", "creation"));
-    } else if matches!(content, Content::PollVote(_)) {
-        // Not upstream, which sends no votes: the node a phone's vote carries.
-        options.additional_nodes.push(
-            BinaryNode::new("meta")
-                .attr("polltype", "vote")
-                .attr("content_type", "add_on"),
-        );
     } else if matches!(content, Content::Event(_)) {
         options
             .additional_nodes

@@ -1060,3 +1060,64 @@ fn member_label_message_truncates_like_upstream_and_carries_its_meta_node() {
     assert_eq!(meta.attrs["appdata"], "member_tag");
     assert!(meta.content.is_none());
 }
+
+#[tokio::test]
+async fn poll_votes_keep_their_markers_on_retries() {
+    timeout(Duration::from_secs(8), async {
+        let temp = tempfile::tempdir().unwrap();
+        let store = store(&temp);
+        let (_, _, bundle) = receiver();
+        direct::Repository::new(store.clone())
+            .inject_session("800:1@lid", &bundle)
+            .unwrap();
+        let (listener, config) = listener().await;
+        let server = tokio::spawn(async move {
+            let mut peer = Peer::accept(listener.accept().await.unwrap().0).await;
+            peer.send(BinaryNode::new("success").attr("lid", "987654:7@lid"))
+                .await;
+            assert!(peer.read().await.child("unified_session").is_some());
+            let node = loop {
+                let node = peer.read().await;
+                if node.tag == "message" {
+                    break node;
+                }
+                peer.result(&node).await;
+            };
+            assert_eq!(node.attrs["id"], "VOTE");
+            assert_eq!(node.attrs["type"], "poll");
+            let meta = node.child("meta").unwrap();
+            assert_eq!(meta.attrs["polltype"], "vote");
+            assert_eq!(meta.attrs["content_type"], "add_on");
+            let enc = node.child("enc").unwrap();
+            assert_eq!(enc.attrs["count"], "2");
+            assert_eq!(enc.attrs["decrypt-fail"], "hide");
+            peer.closed().await;
+        });
+        let (socket, _) = Socket::connect(config, store.clone()).await.unwrap();
+        socket.wait_for_open(Duration::from_secs(2)).await.unwrap();
+        let vote = proto::Message {
+            poll_update_message: Some(proto::message::PollUpdateMessage {
+                poll_creation_message_key: Some(proto::MessageKey {
+                    remote_jid: Some("800@lid".into()),
+                    from_me: Some(false),
+                    id: Some("POLL".into()),
+                    ..Default::default()
+                }),
+                vote: Some(Default::default()),
+                ..Default::default()
+            }),
+            ..Default::default()
+        };
+        // A retry resend relays the stored message directly, without send_message's metadata.
+        let mut retry = options("VOTE");
+        retry.stanza.retry = Some(relay::Retry {
+            jid: "800:1@lid".into(),
+            count: 2,
+        });
+        socket.relay_message("800@lid", vote, retry).await.unwrap();
+        socket.close().await.unwrap();
+        server.await.unwrap();
+    })
+    .await
+    .unwrap();
+}

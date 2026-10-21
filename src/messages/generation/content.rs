@@ -542,6 +542,18 @@ pub async fn content(
             Field::MessageContextInfo
         }
         Content::PollVote(vote) => {
+            // The creator derives the key from the deviceless JIDs, so a device suffix makes the vote undecryptable.
+            for (field, value) in [
+                ("pollCreatorJid", &vote.poll_creator_jid),
+                ("voterJid", &vote.voter_jid),
+            ] {
+                if value.is_empty() || crate::jid::normalized_user(value) != *value {
+                    return Err(Error::PollVoteJid {
+                        field,
+                        value: value.clone(),
+                    });
+                }
+            }
             let id = vote.poll_key.id.as_deref().unwrap_or_default();
             let encrypted = messages::encrypt_poll_vote(
                 &p::PollVoteMessage {

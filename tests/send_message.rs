@@ -184,17 +184,3 @@ fn normalize_numbers(value: &mut Value) {
         _ => {}
     }
 }
-#[test]
-fn poll_votes_carry_a_phones_vote_meta_node() {
-    let vote = Content::PollVote(Box::default());
-    let meta = socket::send_metadata(&vote, &Default::default());
-    assert!(meta.additional_attributes.is_empty());
-    assert_eq!(
-        meta.additional_nodes,
-        vec![
-            BinaryNode::new("meta")
-                .attr("polltype", "vote")
-                .attr("content_type", "add_on")
-        ]
-    );
-}

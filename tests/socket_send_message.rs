@@ -232,7 +232,7 @@ async fn send_generates_encrypts_metadata_and_own_events_and_keeps_actor_respons
                 })),
                 Modifiers::default(),
                 None,
-                Some("polltype"),
+                Some(("polltype", "creation")),
             ),
             (
                 Content::Event(Box::new(generation::Event {
@@ -243,7 +243,19 @@ async fn send_generates_encrypts_metadata_and_own_events_and_keeps_actor_respons
                 })),
                 Modifiers::default(),
                 None,
-                Some("event_type"),
+                Some(("event_type", "creation")),
+            ),
+            (
+                Content::PollVote(Box::new(generation::PollVote {
+                    poll_key: target.clone(),
+                    poll_creator_jid: "800@lid".into(),
+                    voter_jid: "987654@lid".into(),
+                    message_secret: vec![7; 32],
+                    selected_options: vec!["A".into()],
+                })),
+                Modifiers::default(),
+                None,
+                Some(("polltype", "vote")),
             ),
             (
                 Content::Disappearing(generation::Disappearing::Seconds(60)),
@@ -304,11 +316,11 @@ async fn send_generates_encrypts_metadata_and_own_events_and_keeps_actor_respons
                     .iter()
                     .filter(|n| n.tag == "meta")
                     .collect();
-                if let Some(key) = meta {
+                if let Some((key, value)) = meta {
                     assert!(
                         metas
                             .iter()
-                            .any(|n| n.attrs.get(key).is_some_and(|v| v == "creation"))
+                            .any(|n| n.attrs.get(key).is_some_and(|v| v == value))
                     );
                 } else {
                     assert!(
@@ -325,6 +337,14 @@ async fn send_generates_encrypts_metadata_and_own_events_and_keeps_actor_respons
                     .unwrap()
                     .child("enc")
                     .unwrap();
+                if meta == Some(("polltype", "vote")) {
+                    assert_eq!(enc.attrs["decrypt-fail"], "hide");
+                    assert!(
+                        metas
+                            .iter()
+                            .any(|n| n.attrs.get("content_type").is_some_and(|v| v == "add_on"))
+                    );
+                }
                 sent_tx.send(plaintext(&bob, &me, enc)).unwrap();
             }
             for (tag, expiration) in [("ephemeral", Some("604800")), ("not_ephemeral", None)] {

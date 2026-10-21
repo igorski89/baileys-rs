@@ -18,6 +18,8 @@ pub enum Error {
     EmptyContacts,
     #[error("poll.selectableCount in poll should be >= 0 and <= {max}")]
     PollCount { max: usize },
+    #[error("pollVote.{field} must be a JID without device, got {value}")]
+    PollVoteJid { field: &'static str, value: String },
     #[error("message generation hook failed: {0}")]
     Hook(String),
     #[error(transparent)]
@@ -35,6 +37,7 @@ impl Error {
             | Self::InvalidContent
             | Self::EmptyContacts
             | Self::PollCount { .. }
+            | Self::PollVoteJid { .. }
             | Self::InvalidMediaType
             | Self::Json(_) => Some(400),
             Self::Hook(_) => None,
