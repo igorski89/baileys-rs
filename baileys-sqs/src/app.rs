@@ -83,6 +83,7 @@ pub struct WhatsAppLoop {
     pub version: [u32; 3],
     pub commands: Commands,
     pub storage: Option<S3Storage>,
+    pub missing: crate::missing::MissingContent,
 }
 
 impl WhatsAppLoop {
@@ -272,6 +273,7 @@ impl WhatsAppLoop {
                             }
                             has_media = true;
                         }
+                        self.missing.observe(message);
                         self.commands.ephemeral.update_from_message(message);
                         self.commands
                             .polls

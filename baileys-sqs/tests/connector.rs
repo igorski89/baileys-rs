@@ -498,6 +498,7 @@ async fn events_are_forwarded_with_metadata_media_and_ephemeral_learning() {
         version: [2, 3000, 1],
         commands: commands.clone(),
         storage: None,
+        missing: Default::default(),
     };
     let key = proto::MessageKey {
         remote_jid: Some("1@s.whatsapp.net".into()),

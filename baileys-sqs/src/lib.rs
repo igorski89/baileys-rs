@@ -10,6 +10,7 @@ pub mod ephemeral;
 pub mod http;
 pub mod js;
 pub mod media;
+pub mod missing;
 pub mod output;
 pub mod poll;
 pub mod polls;
@@ -53,6 +54,7 @@ pub async fn run(settings: config::Settings) -> Result<(), Box<dyn std::error::E
             version,
             commands: commands.clone(),
             storage,
+            missing: Default::default(),
         }
         .run(),
     );
