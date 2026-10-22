@@ -836,3 +836,24 @@ async fn resends_are_requested_from_the_phone_for_each_key() {
         ]
     );
 }
+
+#[test]
+fn a_failed_session_import_leaves_no_database_behind() {
+    let dir = tempfile::tempdir().unwrap();
+    let source = baileys_rs::auth::SqliteAuthStore::in_memory().unwrap();
+    source.load_credentials().unwrap();
+    let folder = dir.path().join("session");
+    source.export_baileys_folder(&folder).unwrap();
+    // A lossy name the importer cannot map back to an id.
+    std::fs::write(folder.join("session-a__b.json"), "{}").unwrap();
+    let db = SessionDb::File(folder.join("auth.sqlite3"));
+    assert!(baileys_sqs::app::open_session(&db).is_err());
+    assert!(!folder.join("auth.sqlite3").exists());
+    std::fs::remove_file(folder.join("session-a__b.json")).unwrap();
+    std::fs::write(folder.join("ephemeral-cache.json"), "{}").unwrap();
+    let store = baileys_sqs::app::open_session(&db).unwrap();
+    assert_eq!(
+        store.load_credentials().unwrap().registration_id,
+        source.load_credentials().unwrap().registration_id
+    );
+}

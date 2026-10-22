@@ -624,3 +624,37 @@ fn upstream_adapter_resumes_and_updates_rust_export() {
             .is_empty()
     );
 }
+
+#[test]
+fn typescript_folders_import_with_the_token_index_and_other_files() {
+    let temp = tempfile::tempdir().unwrap();
+    let f = fixture();
+    let source = SqliteAuthStore::in_memory().unwrap();
+    source
+        .save_credentials(&serde_json::from_value(f["populated"].clone()).unwrap())
+        .unwrap();
+    let token =
+        KeyValue::from_baileys_json(KeyCategory::Tctoken, f["keys"]["tctoken"].clone()).unwrap();
+    source
+        .set(&[KeyMutation::put("__index", token.clone())])
+        .unwrap();
+    let folder = temp.path().join("export");
+    source.export_baileys_folder(&folder).unwrap();
+    assert!(folder.join("tctoken-__index.json").is_file());
+    // The TypeScript connector keeps its own cache beside the keys.
+    std::fs::write(
+        folder.join("ephemeral-cache.json"),
+        r#"{"1@s.whatsapp.net":86400}"#,
+    )
+    .unwrap();
+    let destination = SqliteAuthStore::in_memory().unwrap();
+    destination
+        .import_baileys_folder(&folder, &BTreeMap::new())
+        .unwrap();
+    eq_key(
+        &destination
+            .get(KeyCategory::Tctoken, &ids("__index"))
+            .unwrap()["__index"],
+        &token,
+    );
+}

@@ -28,7 +28,17 @@ pub fn open_session(db: &SessionDb) -> Result<SqliteAuthStore, baileys_rs::auth:
     let import = folder.join("creds.json").is_file() && !path.exists();
     let store = SqliteAuthStore::open_file(path)?;
     if import {
-        store.import_baileys_folder(folder, &BTreeMap::new())?;
+        if let Err(err) = store.import_baileys_folder(folder, &BTreeMap::new()) {
+            // Leave no empty database behind: the next start would skip the
+            // import and pair a new device.
+            drop(store);
+            for suffix in ["", "-wal", "-shm"] {
+                let mut file = path.clone().into_os_string();
+                file.push(suffix);
+                let _ = std::fs::remove_file(file);
+            }
+            return Err(err);
+        }
         tracing::info!(folder = %folder.display(), "imported the Baileys multi-file session");
     }
     Ok(store)

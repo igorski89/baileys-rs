@@ -327,16 +327,22 @@ impl SqliteAuthStore {
             if !entry.file_type()?.is_file() {
                 return Err(Error::FileName);
             }
+            // Other JSON files, such as an application's own caches, are not
+            // keys; the multi-file adapter never reads them either.
             let Some(category) = KeyCategory::ALL
                 .into_iter()
                 .filter(|c| name.starts_with(&format!("{}-", c.as_str())))
                 .max_by_key(|c| c.as_str().len())
             else {
-                return Err(Error::FileName);
+                tracing::debug!(file = name, "skipping a file that holds no keys");
+                continue;
             };
             let id = &name[category.as_str().len() + 1..name.len() - 5];
             let id = if let Some(mapped) = id_map.get(&name) {
                 mapped.as_str()
+            } else if category == KeyCategory::Tctoken && id == crate::privacy::INDEX_KEY {
+                // The token index's own id, not an escaped slash.
+                id
             } else {
                 if id.contains("__") || id.contains('-') {
                     return Err(Error::FileName);
