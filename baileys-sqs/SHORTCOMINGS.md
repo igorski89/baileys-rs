@@ -35,7 +35,6 @@ Known gaps and deliberate deviations from the TypeScript baileys-sqs (commit `6e
 ## Tooling
 
 - Logging uses `tracing` with snake_case field names instead of pino-pretty. Every message published to OUTPUT_QUEUE is also logged at debug level, with its event, size in bytes, FIFO group and deduplication ids, and SQS message id. The TypeScript connector logs only failures.
-- A message published without content (a `CIPHERTEXT` stub: no copy for this device, or a decryption failure) is logged as a warning with its id, chat and stub reason. For "Message absent from node" the library asks the primary phone once to resend it, as upstream does; if no content arrives within 15 seconds a second warning says so and suggests checking that the phone is online, and content that does arrive is logged at info. The TypeScript connector logs neither.
 - The listener formats times as `M/D/YYYY, h:mm:ss AM` in local time (the en-US form of `toLocaleString`), and draws QR codes with the `qrcode` crate rather than qrcode-terminal.
 - There is no hot-reload compose file (`docker-compose.dev.yml`, `Dockerfile.dev`); use `cargo run` or `cargo watch`.
 - `elasticmq.conf` writes empty queue blocks as `{}`: RusticMQ's HOCON parser rejects `{ }` with a space inside, which ElasticMQ accepts.

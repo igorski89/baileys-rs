@@ -4,7 +4,7 @@
 //! failed to decrypt, is published as a `CIPHERTEXT` stub with an empty
 //! `message`. For "Message absent from node" the library asks the primary
 //! phone once to resend it and gives up after ten seconds; the content then
-//! never arrives. Rust-only: the TypeScript connector logs neither case.
+//! never arrives. The TypeScript connector logs the same lines (`13949c8`).
 use baileys_rs::{messages::incoming::NO_MESSAGE, proto};
 use std::{
     collections::HashSet,
