@@ -114,20 +114,27 @@ impl Socket {
             .to_owned();
         let placeholders = &self.inner.retry_requests.placeholders;
         if placeholders.get(&id).await.is_some() {
+            tracing::debug!(?key, "already requested resend");
             return Ok(None);
         }
         placeholders.set(&id, data).await;
         tokio::time::sleep(Duration::from_secs(2)).await;
         if !self.has_pending_placeholder_resend(&id).await? {
+            tracing::debug!(?key, "message received while resend requested");
             return Ok(Some("RESOLVED".into()));
         }
         let state = Arc::downgrade(&self.inner.retry_requests);
         let expiry_id = id;
+        let expiry_key = key.clone();
         tokio::spawn(async move {
             tokio::time::sleep(Duration::from_secs(8)).await;
             if let Some(state) = state.upgrade()
                 && state.placeholders.get(&expiry_id).await.is_some()
             {
+                tracing::debug!(
+                    key = ?expiry_key,
+                    "PDO message without response after 8 seconds. Phone possibly offline"
+                );
                 state.placeholders.del(&expiry_id).await;
             }
         });
@@ -248,11 +255,19 @@ impl Socket {
                     move || {
                         if let Some(inner) = inner.upgrade() {
                             tokio::spawn(async move {
-                                if let Err(error) = (Socket { inner })
+                                match (Socket { inner })
                                     .request_placeholder_resend(&key, None)
                                     .await
                                 {
-                                    tracing::debug!(?error, "scheduled phone resend failed");
+                                    Ok(request_id) => tracing::debug!(
+                                        "sendRetryRequest: requested placeholder resend ({request_id:?}) for message {:?} (scheduled)",
+                                        key.id
+                                    ),
+                                    Err(error) => tracing::warn!(
+                                        ?error,
+                                        msg_id = ?key.id,
+                                        "failed to send scheduled phone request"
+                                    ),
                                 }
                             });
                         }
@@ -260,7 +275,10 @@ impl Socket {
                     None,
                 )?;
             } else {
-                Box::pin(self.request_placeholder_resend(&key, None)).await?;
+                let request_id = Box::pin(self.request_placeholder_resend(&key, None)).await?;
+                tracing::debug!(
+                    "sendRetryRequest: requested placeholder resend for message {request_id:?}"
+                );
             }
         }
         let (reply, receiver) = oneshot::channel();

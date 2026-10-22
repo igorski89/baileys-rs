@@ -169,6 +169,11 @@ impl Socket {
                 tokio::spawn(async move {
                     match socket.request_placeholder_resend(&key, Some(data)).await {
                         Ok(Some(request_id)) if request_id != "RESOLVED" => {
+                            tracing::debug!(
+                                msg_id = ?key.id,
+                                request_id,
+                                "requested placeholder resend for unavailable message"
+                            );
                             let _ = socket.inner.events.send(Event::MessageStubsUpdated(vec![
                                 incoming::StubUpdate {
                                     key,
@@ -176,7 +181,11 @@ impl Socket {
                                 },
                             ]));
                         }
-                        Err(error) => tracing::debug!(?error, "placeholder resend failed"),
+                        Err(error) => tracing::warn!(
+                            ?error,
+                            msg_id = ?key.id,
+                            "failed to request placeholder resend for unavailable message"
+                        ),
                         _ => {}
                     }
                 });
