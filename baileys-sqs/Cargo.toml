@@ -16,6 +16,7 @@ aws-sdk-s3 = "1"
 axum = "0.8"
 base64 = "0.22"
 chrono = { version = "0.4", default-features = false, features = ["clock", "std"] }
+futures-util = { version = "0.3", default-features = false }
 qrcode = { version = "0.14", default-features = false }
 rand = "0.9"
 regex = "1"

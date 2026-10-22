@@ -111,6 +111,30 @@ fn require_key(cmd: &Value, command: &str) -> Result<Value> {
     Ok(key)
 }
 
+/// `message_keys`, or `message_key` alone, each with an id; `remoteJid`
+/// defaults to the chat and `fromMe` to false.
+fn require_keys(cmd: &Value, command: &str, jid: &str) -> Result<Vec<proto::MessageKey>> {
+    let keys = match js::get(cmd, "message_keys") {
+        Some(keys) => keys.clone(),
+        None => match js::get(cmd, "message_key") {
+            Some(key) => json!([key]),
+            None => json!([]),
+        },
+    };
+    let valid = keys
+        .as_array()
+        .filter(|keys| !keys.is_empty() && keys.iter().all(|k| js::truthy(k.get("id"))));
+    let Some(keys) = valid else {
+        return Err(fail(format!(
+            "{command} requires \"message_keys\" (array) or \"message_key\" (single), each with an \"id\" field"
+        )));
+    };
+    keys.iter()
+        .map(|k| proto::MessageKey::from_value(&message_key(k, jid, false)))
+        .collect::<std::result::Result<Vec<_>, _>>()
+        .map_err(from_error)
+}
+
 impl Commands {
     /// Fetch an outgoing media URL, failing after ten seconds.
     async fn fetch(&self, url: &str) -> Result<Vec<u8>> {
@@ -340,26 +364,7 @@ impl Commands {
                 sent(message)
             }
             "send_read_receipt" => {
-                let keys = match js::get(cmd, "message_keys") {
-                    Some(keys) => keys.clone(),
-                    None => match js::get(cmd, "message_key") {
-                        Some(key) => json!([key]),
-                        None => json!([]),
-                    },
-                };
-                let valid = keys.as_array().filter(|keys| {
-                    !keys.is_empty() && keys.iter().all(|k| js::truthy(k.get("id")))
-                });
-                let Some(keys) = valid else {
-                    return Err(fail(
-                        "send_read_receipt requires \"message_keys\" (array) or \"message_key\" (single), each with an \"id\" field",
-                    ));
-                };
-                let keys = keys
-                    .iter()
-                    .map(|k| proto::MessageKey::from_value(&message_key(k, &jid, false)))
-                    .collect::<std::result::Result<Vec<_>, _>>()
-                    .map_err(from_error)?;
+                let keys = require_keys(cmd, "send_read_receipt", &jid)?;
                 let count = keys.len();
                 whatsapp.read_messages(keys).await.map_err(from_error)?;
                 tracing::debug!(jid, count, "sent read receipt");
@@ -579,6 +584,24 @@ impl Commands {
                     to: Some(jid.clone()),
                     message_id: message_id(&message),
                     extra,
+                }))
+            }
+            "request_resend" => {
+                let keys = require_keys(cmd, "request_resend", &jid)?;
+                let ids = futures_util::future::join_all(
+                    keys.into_iter().map(|key| whatsapp.request_resend(key)),
+                )
+                .await
+                .into_iter()
+                .collect::<std::result::Result<Vec<_>, _>>()
+                .map_err(from_error)?;
+                tracing::debug!(jid, ?ids, "requested message resends from the phone");
+                let mut extra = Map::new();
+                extra.insert("request_ids".into(), json!(ids));
+                Ok(Some(Outcome {
+                    to: Some(jid),
+                    extra,
+                    ..Default::default()
                 }))
             }
             "raw" => {

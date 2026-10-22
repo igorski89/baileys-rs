@@ -130,6 +130,7 @@ enum Call {
     Subscribe(String),
     Presence(Presence, String),
     Read(Vec<proto::MessageKey>),
+    Resend(proto::MessageKey),
 }
 
 #[derive(Default)]
@@ -193,6 +194,15 @@ impl WhatsApp for Fake {
     fn read_messages<'a>(&'a self, keys: Vec<proto::MessageKey>) -> BoxFuture<'a, Result<()>> {
         self.calls.lock().unwrap().push(Call::Read(keys));
         Box::pin(async { Ok(()) })
+    }
+    fn request_resend<'a>(
+        &'a self,
+        key: proto::MessageKey,
+    ) -> BoxFuture<'a, Result<Option<String>>> {
+        let id = (key.id.as_deref() != Some("PENDING"))
+            .then(|| format!("REQ-{}", key.id.clone().unwrap_or_default()));
+        self.calls.lock().unwrap().push(Call::Resend(key));
+        Box::pin(async move { Ok(id) })
     }
     fn alternate_jid<'a>(&'a self, jid: &'a str) -> BoxFuture<'a, Result<Option<String>>> {
         let alternate = match jid {
@@ -775,4 +785,54 @@ async fn votes_use_the_cached_poll_and_the_chat_addressing_mode() {
     assert_eq!(vote.message_secret, vec![4, 4, 4]);
     assert!(vote.selected_options.is_empty());
     assert_eq!(calls.len(), 3);
+}
+
+#[tokio::test]
+async fn resends_are_requested_from_the_phone_for_each_key() {
+    let queues = Queues::start(&[("output", false)]).await;
+    let dir = tempfile::tempdir().unwrap();
+    let fake = Arc::new(Fake::default());
+    let commands = commands(&queues, "output", Some(fake.clone()), &dir);
+    commands
+        .dispatch(&json!({"type":"request_resend","to":"777@lid","correlation_id":"r1","message_keys":[{"id":"A"},{"id":"PENDING","fromMe":true}]}))
+        .await
+        .unwrap();
+    let error = commands
+        .dispatch(&json!({"type":"request_resend","to":"777@lid"}))
+        .await
+        .unwrap_err();
+    assert_eq!(
+        error.0,
+        "request_resend requires \"message_keys\" (array) or \"message_key\" (single), each with an \"id\" field"
+    );
+    let acks = queues.drain("output", 1).await;
+    assert_eq!(
+        acks[0],
+        json!({"type":"command_ack","payload":{"correlation_id":"r1","command_type":"request_resend","to":"777@lid","from":"100:7@s.whatsapp.net","me_lid":"900@lid","ok":true,"message_id":null,"request_ids":["REQ-A",null]}})
+    );
+    let calls = fake.calls.lock().unwrap();
+    let keys: Vec<_> = calls
+        .iter()
+        .map(|c| match c {
+            Call::Resend(key) => key.clone(),
+            other => panic!("{other:?}"),
+        })
+        .collect();
+    assert_eq!(
+        keys,
+        [
+            proto::MessageKey {
+                remote_jid: Some("777@lid".into()),
+                from_me: Some(false),
+                id: Some("A".into()),
+                participant: None,
+            },
+            proto::MessageKey {
+                remote_jid: Some("777@lid".into()),
+                from_me: Some(true),
+                id: Some("PENDING".into()),
+                participant: None,
+            },
+        ]
+    );
 }

@@ -36,6 +36,13 @@ pub trait WhatsApp: Send + Sync {
         jid: &'a str,
     ) -> BoxFuture<'a, Result<()>>;
     fn read_messages<'a>(&'a self, keys: Vec<proto::MessageKey>) -> BoxFuture<'a, Result<()>>;
+    /// `requestPlaceholderResend(key)`: ask the primary phone to resend a
+    /// message's content. The request id, `RESOLVED` when the content came
+    /// in meanwhile, or `None` when a request for it is still pending.
+    fn request_resend<'a>(
+        &'a self,
+        key: proto::MessageKey,
+    ) -> BoxFuture<'a, Result<Option<String>>>;
     /// The chat's other identity from `signalRepository.lidMapping`: the
     /// phone number for a LID, the LID for a phone number, as a user JID.
     fn alternate_jid<'a>(&'a self, jid: &'a str) -> BoxFuture<'a, Result<Option<String>>>;
@@ -99,6 +106,13 @@ impl WhatsApp for Live {
 
     fn read_messages<'a>(&'a self, keys: Vec<proto::MessageKey>) -> BoxFuture<'a, Result<()>> {
         Box::pin(async move { Ok(self.socket.read_messages(&keys).await?) })
+    }
+
+    fn request_resend<'a>(
+        &'a self,
+        key: proto::MessageKey,
+    ) -> BoxFuture<'a, Result<Option<String>>> {
+        Box::pin(async move { Ok(self.socket.request_placeholder_resend(&key, None).await?) })
     }
 
     fn alternate_jid<'a>(&'a self, jid: &'a str) -> BoxFuture<'a, Result<Option<String>>> {
