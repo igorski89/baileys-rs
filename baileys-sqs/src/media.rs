@@ -164,17 +164,26 @@ pub async fn extract(
 ) -> Option<Value> {
     let kind = media_type(message)?;
     let message_id = message.key.as_ref().and_then(|k| k.id.as_deref());
+    let mut stage = "download_failed";
     let result: Result<Value, Box<dyn std::error::Error + Send + Sync>> = async {
+        let started = std::time::Instant::now();
         let bytes = whatsapp.download_media(message).await?;
+        metrics::histogram!("baileys_media_duration_seconds", "type" => kind, "stage" => "download")
+            .record(started.elapsed());
+        metrics::histogram!("baileys_media_bytes", "type" => kind).record(bytes.len() as f64);
+        stage = "upload_failed";
         let mimetype = mimetype(message, kind);
         let mut media = json!({ "type": kind });
         if let Some(mimetype) = &mimetype {
             media["mimetype"] = json!(mimetype);
         }
         if let Some(storage) = storage {
+            let started = std::time::Instant::now();
             let (url, key) = storage
                 .upload(kind, mimetype.as_deref(), bytes, message_id)
                 .await?;
+            metrics::histogram!("baileys_media_duration_seconds", "type" => kind, "stage" => "upload")
+                .record(started.elapsed());
             media["url"] = json!(url);
             media["s3_key"] = json!(key);
             media["storage"] = json!("s3");
@@ -185,6 +194,8 @@ pub async fn extract(
         Ok(media)
     }
     .await;
+    let outcome = if result.is_ok() { "ok" } else { stage };
+    metrics::counter!("baileys_media_total", "type" => kind, "result" => outcome).increment(1);
     match result {
         Ok(media) => Some(media),
         Err(err) => {

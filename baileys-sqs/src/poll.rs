@@ -20,6 +20,8 @@ pub async fn poll_loop(client: Client, queue_url: String, commands: Commands) {
         let messages = match received {
             Ok(output) => output.messages.unwrap_or_default(),
             Err(err) => {
+                metrics::counter!("baileys_input_poll_errors_total", "stage" => "receive")
+                    .increment(1);
                 tracing::error!(err = %DisplayErrorContext(&err), "SQS poll error");
                 tokio::time::sleep(Duration::from_secs(5)).await;
                 continue;
@@ -44,6 +46,8 @@ pub async fn poll_loop(client: Client, queue_url: String, commands: Commands) {
                 .send()
                 .await;
             if let Err(err) = deleted {
+                metrics::counter!("baileys_input_poll_errors_total", "stage" => "delete")
+                    .increment(1);
                 // The TypeScript loop lets this escape to its outer handler.
                 tracing::error!(err = %DisplayErrorContext(&err), "SQS poll error");
                 tokio::time::sleep(Duration::from_secs(5)).await;

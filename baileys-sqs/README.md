@@ -44,6 +44,7 @@ Copy `.env.example` to `.env` and adjust. The variables are those of the TypeScr
 - `WHATSAPP_VERSION` (a JSON array) pins the WhatsApp Web version; otherwise the latest is fetched.
 - `S3_BUCKET` and the other `S3_*` variables upload incoming media to S3 and put a presigned URL in `_media.url`; without them media is inlined as base64.
 - `PORT`, `HTTP_HOST`, `AUTH_TOKEN` enable the HTTP endpoint.
+- `METRICS_PORT` (and `METRICS_HOST`, default `0.0.0.0`) serves Prometheus metrics on `GET /metrics`; see [Metrics](#metrics).
 - `LOG_LEVEL` (pino level names) and `SOCKET_URL`. As with pino, the level covers the connector and the WhatsApp library; other crates log warnings and errors only. `RUST_LOG`, when set, replaces the filter.
 
 The bucket is not created automatically.
@@ -93,6 +94,36 @@ Every WhatsApp event is published as
 with Baileys' event names and payload shapes (`meta` summarises `messages.upsert`, `messages.update` and `presence.update`; incoming images, videos, audio and documents are attached to each message as `_media`, also inside disappearing, view-once and document-with-caption wrappers). Connection changes are `{"type":"connection","payload":{"status":"connected"}}` or `{"status":"disconnected","error":...,"code":...}`, QR codes `{"type":"qr","payload":{"qr":...}}`, and pairing codes `{"type":"pairing_code",...}`. The connector reconnects five seconds after every close except a logout (401).
 
 For FIFO queues the group id is the chat (or the event type when there is none) and the deduplication id is a readable prefix plus the SHA-256 of the content, so a redelivered event is dropped within SQS's five-minute window. A connection status is never dropped: the same status recurs (`connected` after every reconnect), so its id also carries the send time. The `sender` uses a random deduplication id.
+
+## Metrics
+
+With `METRICS_PORT` set (the documented port is 9464), `GET http://<host>:<METRICS_PORT>/metrics` serves metrics in the Prometheus text format. It has its own listener, separate from the command endpoint, and no authentication, so keep the port on an internal network. The TypeScript connector has no metrics. Without `METRICS_PORT` nothing is recorded. Labels stay low-cardinality (no JIDs or message ids); the scraper is expected to add instance and service labels.
+
+| Metric | Type | Labels | Meaning |
+|---|---|---|---|
+| `baileys_connection_state` | gauge | `state`: connecting, open, closed | 1 for the current state |
+| `baileys_reconnects_total` | counter | `code` (close code, or `none`) | Connections closed and retried |
+| `baileys_logged_out_total` | counter | | Closes with 401: the device was unlinked |
+| `baileys_pairing_code_requests_total`, `baileys_qr_codes_total` | counter | | Above 0 on a paired device means the session was lost |
+| `baileys_session_import_total` | counter | `result`: ok, failed | Imports of a TypeScript session folder |
+| `baileys_last_message_received_timestamp_seconds` | gauge | | Unix time of the last new incoming message |
+| `baileys_messages_total` | counter | `direction`: in, out; `type`: content field (`conversation`, `imageMessage`, …), `stub` or `none` | Messages in `messages.upsert` (new, own and offline ones; not history syncs) |
+| `baileys_messages_without_content_total` | counter | `reason` (`Message absent from node`, `Bad MAC`, …) | Incoming messages that arrived as `CIPHERTEXT` stubs |
+| `baileys_missing_content_unrecovered_total` | counter | | Of those absent from node, the ones whose content never came from the phone |
+| `baileys_placeholder_resends_total` | counter | `result`: requested, answered | Resends asked of the phone (automatic and `request_resend`) and its answers |
+| `baileys_events_published_total`, `baileys_publish_errors_total` | counter | `event` (event name or message type) | Publishes to OUTPUT_QUEUE |
+| `baileys_publish_duration_seconds` | histogram | | Time per publish |
+| `baileys_commands_total` | counter | `type` (known commands, else `unknown`); `result`: ok, error | Commands from INPUT_QUEUE and HTTP |
+| `baileys_command_duration_seconds` | histogram | `type` | Time per command |
+| `baileys_input_poll_errors_total` | counter | `stage`: receive, delete | INPUT_QUEUE errors |
+| `baileys_media_total` | counter | `type`: image, video, audio, document; `result`: ok, download_failed, upload_failed | Incoming media |
+| `baileys_media_duration_seconds` | histogram | `type`; `stage`: download, upload | Time per download or S3 upload |
+| `baileys_media_bytes` | histogram | `type` | Size of downloaded media |
+| `baileys_event_queue_depth` | gauge | | WhatsApp events waiting to be handled |
+| `baileys_events_dropped_total` | counter | | Events dropped because handling lagged |
+| `baileys_prekeys`, `baileys_signal_sessions` | gauge | | Pre-keys and Signal sessions in `auth.sqlite3`, counted every minute |
+
+Some alerts that would have caught past incidents: `baileys_pairing_code_requests_total > 0` or `baileys_qr_codes_total > 0` on a paired device (lost session); `baileys_connection_state{state="open"} == 0` for a few minutes; `time() - baileys_last_message_received_timestamp_seconds` above what the account normally sees; `increase(baileys_messages_without_content_total[1h]) > 0`; `baileys_signal_sessions` not growing while contacts write.
 
 ## Local development
 

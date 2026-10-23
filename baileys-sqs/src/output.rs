@@ -230,22 +230,31 @@ impl Output {
                 .message_group_id(group_id)
                 .message_deduplication_id(dedup_id);
         }
-        match request.send().await {
+        let kind = body
+            .get("event")
+            .or(body.get("type"))
+            .map(js::string)
+            .unwrap_or_default();
+        let started = std::time::Instant::now();
+        let sent = request.send().await;
+        metrics::histogram!("baileys_publish_duration_seconds").record(started.elapsed());
+        match sent {
             // Not in the TypeScript connector, which logs failures only: this
             // line shows that an event reached the queue.
-            Ok(output) => tracing::debug!(
-                kind = body
-                    .get("event")
-                    .or(body.get("type"))
-                    .map(js::string)
-                    .unwrap_or_default(),
-                bytes,
-                group_id = group_id.as_deref().unwrap_or_default(),
-                dedup_id = dedup_id.as_deref().unwrap_or_default(),
-                sqs_message_id = output.message_id().unwrap_or_default(),
-                "Sent message to queue"
-            ),
+            Ok(output) => {
+                metrics::counter!("baileys_events_published_total", "event" => kind.clone())
+                    .increment(1);
+                tracing::debug!(
+                    kind,
+                    bytes,
+                    group_id = group_id.as_deref().unwrap_or_default(),
+                    dedup_id = dedup_id.as_deref().unwrap_or_default(),
+                    sqs_message_id = output.message_id().unwrap_or_default(),
+                    "Sent message to queue"
+                )
+            }
             Err(err) => {
+                metrics::counter!("baileys_publish_errors_total", "event" => kind).increment(1);
                 tracing::error!(err = %aws_sdk_sqs::error::DisplayErrorContext(&err), "Failed to send message to queue");
             }
         }

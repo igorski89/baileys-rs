@@ -65,6 +65,8 @@ impl MissingContent {
             .first()
             .map(String::as_str)
             .unwrap_or_default();
+        metrics::counter!("baileys_messages_without_content_total", "reason" => reason.to_owned())
+            .increment(1);
         tracing::warn!(
             id,
             chat,
@@ -85,6 +87,7 @@ impl MissingContent {
         tokio::spawn(async move {
             tokio::time::sleep(wait).await;
             if pending.lock().expect("missing content").remove(&id) {
+                metrics::counter!("baileys_missing_content_unrecovered_total").increment(1);
                 tracing::warn!(
                     id,
                     chat,

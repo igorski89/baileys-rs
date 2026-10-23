@@ -4,11 +4,13 @@ use crate::{
     config::{SessionDb, Settings},
     js,
     media::{self, S3Storage},
+    telemetry,
     whatsapp::{Live, WhatsApp},
 };
 use baileys_rs::{
     auth::SqliteAuthStore,
     cache::{Cache, MemoryStore},
+    messages::own,
     socket::{Config, ConnectionState, Event, Socket},
 };
 use serde_json::{Map, Value, json};
@@ -29,6 +31,7 @@ pub fn open_session(db: &SessionDb) -> Result<SqliteAuthStore, baileys_rs::auth:
     let store = SqliteAuthStore::open_file(path)?;
     if import {
         if let Err(err) = store.import_baileys_folder(folder, &BTreeMap::new()) {
+            metrics::counter!("baileys_session_import_total", "result" => "failed").increment(1);
             // Leave no empty database behind: the next start would skip the
             // import and pair a new device.
             drop(store);
@@ -39,6 +42,7 @@ pub fn open_session(db: &SessionDb) -> Result<SqliteAuthStore, baileys_rs::auth:
             }
             return Err(err);
         }
+        metrics::counter!("baileys_session_import_total", "result" => "ok").increment(1);
         tracing::info!(folder = %folder.display(), "imported the Baileys multi-file session");
     }
     Ok(store)
@@ -76,8 +80,10 @@ pub fn queue(mut events: broadcast::Receiver<Event>) -> mpsc::UnboundedReceiver<
                     if sender.send(event).is_err() {
                         return;
                     }
+                    metrics::gauge!("baileys_event_queue_depth").increment(1.0);
                 }
                 Err(RecvError::Lagged(missed)) => {
+                    metrics::counter!("baileys_events_dropped_total").increment(missed);
                     tracing::warn!(missed, "event subscriber lagged; events were dropped");
                 }
                 Err(RecvError::Closed) => return,
@@ -124,6 +130,7 @@ impl WhatsAppLoop {
                     .folder()
                     .map_or(":memory:".into(), |f| f.display().to_string())
             );
+            telemetry::connection_state("connecting");
             let closed = match Socket::connect(self.config(), self.store.clone()).await {
                 Ok((socket, events)) => {
                     let live = Arc::new(Live {
@@ -140,6 +147,13 @@ impl WhatsAppLoop {
             };
             let code = closed.as_ref().map(|(code, _)| *code);
             let should_reconnect = code != Some(401);
+            telemetry::connection_state("closed");
+            if should_reconnect {
+                let code = code.map_or_else(|| "none".to_owned(), |c| c.to_string());
+                metrics::counter!("baileys_reconnects_total", "code" => code).increment(1);
+            } else {
+                metrics::counter!("baileys_logged_out_total").increment(1);
+            }
             tracing::error!(status_code = ?code, should_reconnect, "Connection closed");
             let mut payload = json!({"status":"disconnected"});
             if let Some((code, message)) = closed {
@@ -167,14 +181,18 @@ impl WhatsAppLoop {
         live: Arc<Live>,
         events: broadcast::Receiver<Event>,
     ) -> Option<(u16, String)> {
+        // Events still queued when the previous connection closed were dropped.
+        metrics::gauge!("baileys_event_queue_depth").set(0.0);
         let mut queue = queue(events);
         // One pairing code per connection: every request is a new link
         // attempt, which replaces the previous code, and WhatsApp limits how
         // many a number may make. QR refreshes come every 20 seconds.
         let mut pairing_requested = false;
         while let Some(event) = queue.recv().await {
+            metrics::gauge!("baileys_event_queue_depth").decrement(1.0);
             match &event {
                 Event::Qr(qr) => {
+                    metrics::counter!("baileys_qr_codes_total").increment(1);
                     self.commands
                         .output
                         .send(&json!({"type":"qr","payload":{"qr":qr}}))
@@ -188,6 +206,7 @@ impl WhatsAppLoop {
                 }
                 Event::Connection(ConnectionState::Open) => {
                     tracing::info!("WhatsApp connection opened");
+                    telemetry::connection_state("open");
                     self.commands
                         .output
                         .send(&json!({"type":"connection","payload":{"status":"connected"}}))
@@ -216,6 +235,7 @@ impl WhatsAppLoop {
             return false;
         }
         tracing::info!("Requesting pairing code...");
+        metrics::counter!("baileys_pairing_code_requests_total").increment(1);
         let Some(phone) = &self.settings.phone_number else {
             return true;
         };
@@ -284,6 +304,7 @@ impl WhatsAppLoop {
                             has_media = true;
                         }
                         self.missing.observe(message);
+                        record_message(message, upsert);
                         self.commands.ephemeral.update_from_message(message);
                         self.commands
                             .polls
@@ -326,6 +347,13 @@ impl WhatsAppLoop {
                                 if let Some(id) = u.pointer("/key/id") {
                                     update.insert("message_id".into(), id.clone());
                                 }
+                                if u.pointer("/update/messageStubParameters/0")
+                                    .and_then(Value::as_str)
+                                    == Some(baileys_rs::messages::incoming::NO_MESSAGE)
+                                    && u.pointer("/update/messageStubParameters/1").is_some()
+                                {
+                                    metrics::counter!("baileys_placeholder_resends_total", "result" => "requested").increment(1);
+                                }
                                 if let Some(status) = u.pointer("/update/status") {
                                     update.insert("status".into(), status.clone());
                                 }
@@ -354,6 +382,31 @@ impl WhatsAppLoop {
                 }))
                 .await;
         }
+    }
+}
+
+/// Count an upserted message; a new incoming one also sets the time of the
+/// last message received, and the phone's answer to a resend counts as one.
+fn record_message(message: &baileys_rs::proto::WebMessageInfo, upsert: Option<&own::Upsert>) {
+    let incoming = message.key.as_ref().and_then(|k| k.from_me) != Some(true);
+    let direction = if incoming { "in" } else { "out" };
+    metrics::counter!(
+        "baileys_messages_total",
+        "direction" => direction,
+        "type" => telemetry::message_type(message)
+    )
+    .increment(1);
+    let Some(upsert) = upsert else {
+        return;
+    };
+    if upsert.request_id.is_some() {
+        metrics::counter!("baileys_placeholder_resends_total", "result" => "answered").increment(1);
+    }
+    if incoming && upsert.kind == own::UpsertKind::Notify {
+        let now = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .map_or(0.0, |d| d.as_secs_f64());
+        metrics::gauge!("baileys_last_message_received_timestamp_seconds").set(now);
     }
 }
 

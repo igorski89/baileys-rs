@@ -4,6 +4,7 @@ use crate::{
     js,
     output::Output,
     polls::{self, PollCache},
+    telemetry,
     whatsapp::{User, WhatsApp},
 };
 use baileys_rs::{
@@ -596,6 +597,12 @@ impl Commands {
                 .collect::<std::result::Result<Vec<_>, _>>()
                 .map_err(from_error)?;
                 tracing::debug!(jid, ?ids, "requested message resends from the phone");
+                let requested = ids
+                    .iter()
+                    .filter(|id| id.as_deref().is_some_and(|id| id != "RESOLVED"))
+                    .count();
+                metrics::counter!("baileys_placeholder_resends_total", "result" => "requested")
+                    .increment(requested as u64);
                 let mut extra = Map::new();
                 extra.insert("request_ids".into(), json!(ids));
                 Ok(Some(Outcome {
@@ -632,7 +639,14 @@ impl Commands {
     /// Run a command and, when it has a `correlation_id`, publish a
     /// `command_ack`. The command's error is returned either way.
     pub async fn dispatch(&self, cmd: &Value) -> Result<()> {
+        let label = telemetry::command_label(cmd.get("type").and_then(Value::as_str));
+        let started = std::time::Instant::now();
         let result = self.handle(cmd).await;
+        metrics::histogram!("baileys_command_duration_seconds", "type" => label)
+            .record(started.elapsed());
+        let status = if result.is_ok() { "ok" } else { "error" };
+        metrics::counter!("baileys_commands_total", "type" => label, "result" => status)
+            .increment(1);
         let correlation = js::get(cmd, "correlation_id").cloned();
         let user = self.user().await;
         let from = user.as_ref().map_or(Value::Null, |u| json!(u.id));

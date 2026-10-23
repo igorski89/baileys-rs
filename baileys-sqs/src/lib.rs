@@ -14,6 +14,7 @@ pub mod missing;
 pub mod output;
 pub mod poll;
 pub mod polls;
+pub mod telemetry;
 pub mod whatsapp;
 
 use std::sync::Arc;
@@ -33,6 +34,10 @@ pub async fn run(settings: config::Settings) -> Result<(), Box<dyn std::error::E
         tracing::warn!(
             "SESSION_DIR is unset or :memory:, so the session is kept in memory only and every start links a new device"
         );
+    }
+    if let Some(port) = settings.metrics_port {
+        telemetry::serve(telemetry::install(), &settings.metrics_host, port).await?;
+        telemetry::watch_store(&settings.session_db);
     }
     let store = app::open_session(&settings.session_db)?;
     let commands = commands::Commands {

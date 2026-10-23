@@ -115,6 +115,9 @@ pub struct Settings {
     pub s3: Option<S3Settings>,
     pub http_port: Option<u16>,
     pub http_host: String,
+    /// `METRICS_PORT`: serve Prometheus metrics there (Rust-only).
+    pub metrics_port: Option<u16>,
+    pub metrics_host: String,
     pub auth_token: Option<String>,
     pub log_level: String,
 }
@@ -171,6 +174,10 @@ impl Settings {
                 .and_then(parse_int)
                 .and_then(|n| u16::try_from(n).ok())
                 .filter(|n| *n != 0),
+            metrics_port: var("METRICS_PORT")
+                .as_deref()
+                .and_then(|p| p.trim().parse().ok()),
+            metrics_host: var("METRICS_HOST").unwrap_or_else(|| "0.0.0.0".into()),
             http_host: var("HTTP_HOST").unwrap_or_else(|| "0.0.0.0".into()),
             auth_token: var("AUTH_TOKEN"),
             log_level: var("LOG_LEVEL").unwrap_or_else(|| "debug".into()),
