@@ -37,10 +37,10 @@ pub fn plan(envelope: &Envelope, node: &BinaryNode, active: bool, now: u64) -> P
         }
         let age = now as i128 - i128::from(msg.message_timestamp.unwrap_or(0));
         if reason == Some(NO_MESSAGE) {
-            let excluded = node
+            let unavailable = node
                 .child("unavailable")
                 .and_then(|n| n.attrs.get("type"))
-                .is_some_and(|s| {
+                .filter(|s| {
                     matches!(
                         s.as_str(),
                         "bot_unavailable_fanout"
@@ -48,7 +48,21 @@ pub fn plan(envelope: &Envelope, node: &BinaryNode, active: bool, now: u64) -> P
                             | "view_once_unavailable_fanout"
                     )
                 });
-            if excluded || age > 14 * 86400 {
+            let id = key.and_then(|k| k.id.as_deref());
+            if let Some(unavailable) = unavailable {
+                tracing::debug!(
+                    msg_id = id,
+                    unavailable_type = unavailable.as_str(),
+                    "skipping placeholder resend for excluded unavailable type"
+                );
+                return Plan::Drop { nack: None };
+            }
+            if age > 14 * 86400 {
+                tracing::debug!(
+                    msg_id = id,
+                    message_age = age as i64,
+                    "skipping placeholder resend for old message"
+                );
                 return Plan::Drop { nack: None };
             }
             return Plan::Placeholder;

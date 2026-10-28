@@ -237,6 +237,7 @@ impl Actor<'_> {
         Ok(format!("{}internal-{n}", self.prefix))
     }
     async fn send(&mut self, node: &BinaryNode) -> Result<(), Error> {
+        tracing::trace!(xml = %node.to_tree_string(), "xml send");
         let wire = self.noise.encode_frame(&binary::encode(node)?)?;
         timeout(
             self.config.connect_timeout,
@@ -559,6 +560,7 @@ impl Actor<'_> {
         Ok(())
     }
     async fn node(&mut self, node: BinaryNode) -> Result<(), Error> {
+        tracing::trace!(xml = %node.to_tree_string(), "recv xml");
         if let Some(id) = node.attrs.get("id")
             && let Some(pending) = self.pending.remove(id)
         {
