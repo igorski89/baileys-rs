@@ -293,6 +293,24 @@ impl Default for Config {
         }
     }
 }
+impl Config {
+    /// The defaults, set up to receive an account's full history on a new
+    /// link: a desktop browser, which WhatsApp sends full history to, and a
+    /// policy that also processes the FULL (type 2) sync, which upstream's
+    /// default skips. Not upstream API; full history arrives only on the
+    /// first connection of a newly linked device.
+    ///
+    /// Windows, because as of 2026-10-28 the server resets the connection before
+    /// the QR code for `Browser::macos("Desktop")` with full history (its
+    /// DARWIN sub-platform), upstream's included.
+    pub fn full_history() -> Self {
+        let mut config = Self::default();
+        config.payload.browser = crate::connection::Browser::windows("Desktop");
+        config.payload.sync_full_history = true;
+        config.history_policy = crate::history::Policy::new(|_| true);
+        config
+    }
+}
 #[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
 pub struct MacVerification {
     pub patch: bool,

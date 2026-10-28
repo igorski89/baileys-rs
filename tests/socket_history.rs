@@ -252,3 +252,125 @@ async fn history_status_precedes_download_checks_policy_once_and_accepts_nonself
         socket.close().await.unwrap();server.await.unwrap();
     }).await.unwrap();
 }
+
+#[tokio::test]
+async fn on_demand_history_waits_for_the_answering_set_and_times_out_or_closes() {
+    timeout(Duration::from_secs(10), async {
+        let chat = "200@s.whatsapp.net";
+        let history = proto::HistorySync {
+            sync_type: 6,
+            conversations: vec![proto::Conversation {
+                id: chat.into(),
+                messages: vec![proto::HistorySyncMsg {
+                    message: Some(proto::WebMessageInfo {
+                        key: Some(proto::MessageKey {
+                            remote_jid: Some(chat.into()),
+                            from_me: Some(false),
+                            id: Some("older".into()),
+                            ..Default::default()
+                        }),
+                        message_timestamp: Some(5),
+                        ..Default::default()
+                    }),
+                    msg_order_id: None,
+                }],
+                ..Default::default()
+            }],
+            ..Default::default()
+        };
+        let mut zlib = flate2::write::ZlibEncoder::new(Vec::new(), flate2::Compression::default());
+        zlib.write_all(&history.encode_to_vec()).unwrap();
+        let bytes = zlib.finish().unwrap();
+        let (listener, config) = setup().await;
+        let (send, sent) = tokio::sync::oneshot::channel::<()>();
+        let server = tokio::spawn(async move {
+            let mut peer = Peer::accept(listener.accept().await.unwrap().0).await;
+            sent.await.unwrap();
+            let message = proto::Message {
+                protocol_message: Some(Box::new(proto::message::ProtocolMessage {
+                    r#type: Some(
+                        proto::message::protocol_message::Type::HistorySyncNotification as i32,
+                    ),
+                    history_sync_notification: Some(proto::message::HistorySyncNotification {
+                        sync_type: Some(6),
+                        initial_hist_bootstrap_inline_payload: Some(bytes),
+                        peer_data_request_session_id: Some("REQ".into()),
+                        ..Default::default()
+                    }),
+                    ..Default::default()
+                })),
+                ..Default::default()
+            };
+            peer.send(
+                BinaryNode::new("message")
+                    .attr("id", "ONDEMAND")
+                    .attr("from", "100@s.whatsapp.net")
+                    .attr("t", "1700000000")
+                    .with_content(NodeContent::Children(vec![
+                        BinaryNode::new("plaintext")
+                            .with_content(NodeContent::Bytes(message.encode_to_vec())),
+                    ])),
+            )
+            .await;
+            peer.closed().await;
+        });
+        let (socket, _events) = Socket::connect(config, store(true)).await.unwrap();
+        // Another request's answer is not taken for this one.
+        let other = socket.subscribe();
+        let waiting = socket.subscribe();
+        send.send(()).unwrap();
+        let set = socket
+            .wait_for_history_set(waiting, "REQ", chat, Duration::from_secs(3))
+            .await
+            .unwrap();
+        assert_eq!(set.data.sync_type, 6);
+        assert_eq!(set.peer_data_request_session_id.as_deref(), Some("REQ"));
+        assert_eq!(set.data.messages.len(), 1);
+        // A phone that answered under another session id still matches by chat.
+        assert!(set.answers("PHONE-ID", chat));
+        assert!(!set.answers("PHONE-ID", "300@s.whatsapp.net"));
+        assert!(matches!(
+            socket
+                .wait_for_history_set(
+                    other,
+                    "ELSE",
+                    "300@s.whatsapp.net",
+                    Duration::from_millis(50)
+                )
+                .await,
+            Err(baileys_rs::socket::Error::Timeout)
+        ));
+        let pending = socket.subscribe();
+        let closer = socket.clone();
+        let close = tokio::spawn(async move {
+            tokio::time::sleep(Duration::from_millis(50)).await;
+            closer.close().await.unwrap();
+        });
+        assert!(matches!(
+            socket
+                .wait_for_history_set(pending, "REQ2", chat, Duration::from_secs(3))
+                .await,
+            Err(baileys_rs::socket::Error::Closed(_))
+        ));
+        close.await.unwrap();
+        server.await.unwrap();
+    })
+    .await
+    .unwrap();
+}
+
+#[test]
+fn full_history_config_takes_the_full_sync() {
+    let config = Config::full_history();
+    assert_eq!(
+        config.payload.browser,
+        baileys_rs::connection::Browser::windows("Desktop")
+    );
+    assert!(config.payload.sync_full_history);
+    let full = proto::message::HistorySyncNotification {
+        sync_type: Some(2),
+        ..Default::default()
+    };
+    assert!(config.history_policy.should_process(&full));
+    assert!(!Config::default().history_policy.should_process(&full));
+}

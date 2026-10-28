@@ -100,6 +100,58 @@ impl Socket {
         ))
         .await
     }
+    /// [`fetch_message_history`](Self::fetch_message_history), then wait up to
+    /// `limit` for the phone's answer. Not upstream API: upstream emits the
+    /// answer as `messaging-history.set` and leaves matching it to the caller.
+    /// The phone must be online; without an answer this ends in `Timeout`.
+    pub async fn fetch_message_history_set(
+        &self,
+        count: i32,
+        oldest: &proto::MessageKey,
+        oldest_timestamp_ms: i64,
+        limit: Duration,
+    ) -> Result<crate::history::Set, Error> {
+        let chat = oldest.remote_jid.clone().ok_or(relay::Error::Recipient)?;
+        let events = self.subscribe();
+        let id = self
+            .fetch_message_history(count, oldest, oldest_timestamp_ms)
+            .await?;
+        self.wait_for_history_set(events, &id, &chat, limit).await
+    }
+    /// Wait on `events`, subscribed before the request was sent, for the
+    /// on-demand history set answering it (see [`crate::history::Set::answers`]).
+    pub async fn wait_for_history_set(
+        &self,
+        mut events: tokio::sync::broadcast::Receiver<super::Event>,
+        request_id: &str,
+        chat: &str,
+        limit: Duration,
+    ) -> Result<crate::history::Set, Error> {
+        use tokio::sync::broadcast::error::RecvError;
+        let mut state = self.inner.state.clone();
+        let wait = async {
+            loop {
+                if let super::ConnectionState::Closed { code, .. } = *state.borrow_and_update() {
+                    return Err(Error::Closed(code));
+                }
+                tokio::select! {
+                    biased;
+                    event = events.recv() => match event {
+                        Ok(super::Event::MessagingHistorySet(set)) if set.answers(request_id, chat) => {
+                            return Ok(set);
+                        }
+                        Ok(_) => {}
+                        Err(RecvError::Lagged(n)) => return Err(Error::EventLagged(n)),
+                        Err(RecvError::Closed) => return Err(Error::Closed(428)),
+                    },
+                    changed = state.changed() => changed.map_err(|_| Error::Closed(428))?,
+                }
+            }
+        };
+        tokio::time::timeout(limit, wait)
+            .await
+            .map_err(|_| Error::Timeout)?
+    }
     pub async fn request_placeholder_resend(
         &self,
         key: &proto::MessageKey,

@@ -115,6 +115,20 @@ pub struct Set {
     /// the one processMessage emits directly.
     pub buffered: bool,
 }
+impl Set {
+    /// Whether this is the on-demand (type 6) answer to the request with the
+    /// given id for `chat`: its session id is the request's, or, should the
+    /// phone use another id, its messages are from that chat. Unverified live.
+    pub fn answers(&self, request_id: &str, chat: &str) -> bool {
+        self.data.sync_type == 6
+            && (self.peer_data_request_session_id.as_deref() == Some(request_id)
+                || self
+                    .data
+                    .messages
+                    .iter()
+                    .any(|m| m.key.as_ref().and_then(|k| k.remote_jid.as_deref()) == Some(chat)))
+    }
+}
 fn nonempty(v: &Option<String>) -> Option<String> {
     v.as_ref().filter(|s| !s.is_empty()).cloned()
 }
