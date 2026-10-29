@@ -145,7 +145,18 @@ impl Socket {
         match plan {
             Plan::Drop { nack } => {
                 *acked = true;
-                return self.send_message_ack(node, nack).await;
+                self.send_message_ack(node, nack).await?;
+                let fanout = node
+                    .child("unavailable")
+                    .and_then(|n| n.attrs.get("type"))
+                    .filter(|t| *t == "view_once_unavailable_fanout");
+                let Some(fanout) = fanout.filter(|_| self.inner.report_view_once_fanout) else {
+                    return Ok(());
+                };
+                envelope.message.message_stub_type = None;
+                envelope.message.message_stub_parameters.clear();
+                envelope.key_metadata.is_view_once = true;
+                envelope.key_metadata.unavailable_type = Some(fanout.clone());
             }
             Plan::Retry => {
                 if !matches!(

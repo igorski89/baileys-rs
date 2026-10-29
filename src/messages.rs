@@ -156,11 +156,15 @@ pub struct KeyMetadata {
     pub participant_username: Option<String>,
     pub addressing_mode: String,
     pub is_view_once: bool,
+    /// The `<unavailable>` type of a placeholder reported only through
+    /// `Config::report_view_once_fanout`; not upstream, always unset otherwise.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub unavailable_type: Option<String>,
     #[serde(alias = "server_id")]
     pub server_id: Option<String>,
 }
 impl KeyMetadata {
-    const NAMES: [&str; 7] = [
+    const NAMES: [&str; 8] = [
         "remoteJidAlt",
         "remoteJidUsername",
         "participantAlt",
@@ -168,6 +172,7 @@ impl KeyMetadata {
         "addressingMode",
         "isViewOnce",
         "server_id",
+        "unavailableType",
     ];
     /// Write the properties onto a JSON message key as upstream's runtime
     /// key carries them: unset ones are absent, `isViewOnce` appears only
@@ -195,6 +200,9 @@ impl KeyMetadata {
         }
         if let Some(id) = &self.server_id {
             key.insert("server_id".into(), id.clone().into());
+        }
+        if let Some(kind) = &self.unavailable_type {
+            key.insert("unavailableType".into(), kind.clone().into());
         }
     }
     /// The properties `apply` wrote onto a JSON key; `None` when it has none.

@@ -77,6 +77,7 @@ async fn an_unavailable_view_once_message_is_upserted_without_content_or_stub() 
         assert!(message.message.is_none());
         assert!(message.message_stub_type.is_none());
         assert!(upsert.metadata[0].key_metadata.is_view_once);
+        assert!(upsert.metadata[0].key_metadata.unavailable_type.is_none());
         socket.close().await.unwrap();
         server.await.unwrap();
     })
@@ -123,6 +124,60 @@ async fn a_view_once_fanout_is_acked_without_an_event_or_resend() {
         while let Ok(event) = events.try_recv() {
             assert!(!matches!(event, Event::MessagesUpserted(_)), "{event:?}");
         }
+        socket.close().await.unwrap();
+        server.await.unwrap();
+    })
+    .await
+    .unwrap();
+}
+
+/// Opt-in, not upstream: with `report_view_once_fanout` the fanout variant is
+/// upserted like the `view_once` placeholder, its type in the key metadata.
+/// The ack is unchanged: no receipt, no resend.
+#[tokio::test]
+async fn a_reported_view_once_fanout_is_upserted_after_the_same_ack() {
+    timeout(Duration::from_secs(10), async {
+        let (listener, mut config, store) = setup().await;
+        config.report_view_once_fanout = true;
+        let server = tokio::spawn(async move {
+            let mut peer = Peer::accept(listener.accept().await.unwrap().0).await;
+            peer.send(view_once("FANOUT", "view_once_unavailable_fanout"))
+                .await;
+            let ack = peer.read().await;
+            assert_eq!(ack.tag, "ack", "{ack:?}");
+            assert_eq!(ack.attrs["id"], "FANOUT");
+            assert!(!ack.attrs.contains_key("error"));
+            let probe = peer.read().await;
+            assert_eq!(probe.attrs["xmlns"], "probe", "{probe:?}");
+            peer.result(&probe).await;
+            peer.closed().await;
+        });
+        let (socket, mut events) = Socket::connect(config, store).await.unwrap();
+        let upsert = loop {
+            if let Event::MessagesUpserted(upsert) = events.recv().await.unwrap() {
+                break upsert;
+            }
+        };
+        let message = &upsert.messages[0];
+        assert_eq!(message.key.as_ref().unwrap().id.as_deref(), Some("FANOUT"));
+        assert!(message.message.is_none());
+        assert!(message.message_stub_type.is_none());
+        assert!(message.message_stub_parameters.is_empty());
+        let metadata = &upsert.metadata[0].key_metadata;
+        assert!(metadata.is_view_once);
+        assert_eq!(
+            metadata.unavailable_type.as_deref(),
+            Some("view_once_unavailable_fanout")
+        );
+        socket
+            .query(
+                BinaryNode::new("iq")
+                    .attr("type", "get")
+                    .attr("xmlns", "probe"),
+                None,
+            )
+            .await
+            .unwrap();
         socket.close().await.unwrap();
         server.await.unwrap();
     })

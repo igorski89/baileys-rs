@@ -217,6 +217,13 @@ pub struct Config {
     pub placeholder_resend_cache: Option<crate::cache::Cache<Option<crate::messages::Envelope>>>,
     pub process_messages: bool,
     pub send_active_receipts: bool,
+    /// Report a view-once message the server delivers to this companion as
+    /// `<unavailable type="view_once_unavailable_fanout"/>`, which upstream
+    /// acks and drops without an event, as an upsert without content: like
+    /// the `view_once` placeholder, with `is_view_once` and its
+    /// `unavailable_type` in the key metadata. Off by default (upstream);
+    /// the acknowledgement is unchanged and no resend is requested.
+    pub report_view_once_fanout: bool,
     pub retry_request_delay: Duration,
     /// Time allowed for a pre-key upload with its retries before whatever waits
     /// on it moves on; the upload itself is not cancelled.
@@ -274,6 +281,7 @@ impl Default for Config {
             placeholder_resend_cache: None,
             process_messages: true,
             send_active_receipts: false,
+            report_view_once_fanout: false,
             retry_request_delay: Duration::from_millis(250),
             pre_key_upload_timeout: defaults::UPLOAD_TIMEOUT,
             process_media_notifications: true,
@@ -581,6 +589,7 @@ struct Inner {
     message_lock: tokio::sync::Mutex<()>,
     active_receipts: std::sync::atomic::AtomicBool,
     retry_request_delay: Duration,
+    report_view_once_fanout: bool,
     media_cache: tokio::sync::Mutex<media::MediaCache>,
     media_store: Option<crate::cache::Cache<Vec<u8>>>,
     media_http: tokio::sync::OnceCell<crate::media::HttpClient>,
@@ -858,6 +867,7 @@ impl Socket {
             message_lock: tokio::sync::Mutex::new(()),
             active_receipts: std::sync::atomic::AtomicBool::new(config.send_active_receipts),
             retry_request_delay: config.retry_request_delay,
+            report_view_once_fanout: config.report_view_once_fanout,
             media_cache: tokio::sync::Mutex::new(Default::default()),
             media_store: config.media_cache.clone(),
             media_http: tokio::sync::OnceCell::new_with(config.media_http.clone()),

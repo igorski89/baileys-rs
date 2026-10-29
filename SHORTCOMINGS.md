@@ -54,6 +54,9 @@ Not gaps, but worth knowing: like upstream, the socket does not reconnect by its
 - `Socket::fetch_message_history_set` sends upstream's on-demand request and waits, with a required time limit, for the type-6 `MessagingHistorySet` answering it (`wait_for_history_set` does the waiting alone). Upstream emits the answer and leaves the matching to the caller. `history::Set::answers` matches a set whose `peer_data_request_session_id` is the request's message id, or one with messages from the requested chat. Neither rule has been checked live, and the phone has never answered a peer data request in our tests (see the placeholder resends in `~/Work/live-test/FINDINGS.md`).
 - There is no completion signal for the FULL sync. As upstream, `MessagingHistoryStatus` reports INITIAL_BOOTSTRAP complete and RECENT complete (progress 100) or paused (120 s without a chunk).
 
+### View-once (an addition)
+- `Config::report_view_once_fanout` (off by default) upserts the `<unavailable type="view_once_unavailable_fanout"/>` placeholder, which upstream acks and drops without an event, the way the `view_once` placeholder is upserted: no content, no stub, `is_view_once`, and the key metadata's `unavailable_type` set to the placeholder type (`unavailableType` on the JSON key). The ack is unchanged and no resend is requested. Not yet run live.
+
 ### Media
 - AVIF images and JPEG-compressed (YCbCr) TIFF images cannot be decoded for thumbnails or profile pictures; sharp handles both.
 - Thumbnails and profile pictures are not byte-identical to sharp's: resampling and JPEG encoding differ. On the audit picture the mean channel difference is about 4 to 7 out of 255 (1 for greyscale).
