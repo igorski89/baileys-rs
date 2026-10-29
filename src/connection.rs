@@ -112,6 +112,11 @@ pub struct PayloadConfig {
     pub sync_full_history: bool,
     pub country_code: String,
     pub push_name: Option<String>,
+    /// The history sync limits and capabilities a new link asks the phone for;
+    /// `None` sends upstream's ([`upstream_history_sync_config`]). Not upstream
+    /// API: there it cannot be changed. Sent only when registering.
+    #[serde(skip)]
+    pub history_sync_config: Option<proto::device_props::HistorySyncConfig>,
 }
 impl Default for PayloadConfig {
     fn default() -> Self {
@@ -121,6 +126,7 @@ impl Default for PayloadConfig {
             sync_full_history: true,
             country_code: "US".into(),
             push_name: None,
+            history_sync_config: None,
         }
     }
 }
@@ -185,6 +191,25 @@ pub fn login_payload(jid: &str, config: &PayloadConfig) -> Result<proto::ClientP
         ..client_payload(config)
     })
 }
+/// The history sync configuration upstream registers with. It leaves the
+/// FULL sync's day and size limits, `on_demand_ready` and
+/// `complete_on_demand_ready` unset, so the phone's defaults apply.
+pub fn upstream_history_sync_config() -> proto::device_props::HistorySyncConfig {
+    proto::device_props::HistorySyncConfig {
+        storage_quota_mb: Some(10240),
+        inline_initial_payload_in_e2_ee_msg: Some(true),
+        support_call_log_history: Some(false),
+        support_bot_user_agent_chat_history: Some(true),
+        support_cag_reactions_and_polls: Some(true),
+        support_biz_hosted_msg: Some(true),
+        support_recent_sync_chunk_message_count_tuning: Some(true),
+        support_hosted_group_msg: Some(true),
+        support_fbid_bot_chat_history: Some(true),
+        support_message_association: Some(true),
+        support_group_history: Some(false),
+        ..Default::default()
+    }
+}
 pub fn registration_payload(
     credentials: &Credentials,
     config: &PayloadConfig,
@@ -214,20 +239,11 @@ pub fn registration_payload(
             tertiary: Some(7),
             ..Default::default()
         }),
-        history_sync_config: Some(d::HistorySyncConfig {
-            storage_quota_mb: Some(10240),
-            inline_initial_payload_in_e2_ee_msg: Some(true),
-            support_call_log_history: Some(false),
-            support_bot_user_agent_chat_history: Some(true),
-            support_cag_reactions_and_polls: Some(true),
-            support_biz_hosted_msg: Some(true),
-            support_recent_sync_chunk_message_count_tuning: Some(true),
-            support_hosted_group_msg: Some(true),
-            support_fbid_bot_chat_history: Some(true),
-            support_message_association: Some(true),
-            support_group_history: Some(false),
-            ..Default::default()
-        }),
+        history_sync_config: Some(
+            config
+                .history_sync_config
+                .unwrap_or_else(upstream_history_sync_config),
+        ),
     };
     let version = config
         .version

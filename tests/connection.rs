@@ -236,3 +236,35 @@ fn matches_upstream_phone_pairing_request_and_finish_exchange() {
         phone["advSecretKey"].as_str().unwrap()
     );
 }
+/// Not upstream: the registration can ask for other history sync limits.
+#[test]
+fn registration_sends_a_chosen_history_sync_config() {
+    let device_props = |config: &PayloadConfig| {
+        let payload = registration_payload(&credentials(), config).unwrap();
+        proto::DeviceProps::decode(
+            payload
+                .device_pairing_data
+                .unwrap()
+                .device_props
+                .unwrap()
+                .as_slice(),
+        )
+        .unwrap()
+        .history_sync_config
+        .unwrap()
+    };
+    assert_eq!(
+        device_props(&PayloadConfig::default()),
+        upstream_history_sync_config()
+    );
+    let chosen = proto::device_props::HistorySyncConfig {
+        full_sync_days_limit: Some(3650),
+        on_demand_ready: Some(true),
+        ..upstream_history_sync_config()
+    };
+    let config = PayloadConfig {
+        history_sync_config: Some(chosen),
+        ..Default::default()
+    };
+    assert_eq!(device_props(&config), chosen);
+}
