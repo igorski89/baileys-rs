@@ -247,6 +247,11 @@ pub struct Config {
     pub media_preparation_hooks: crate::media::PreparationHooks,
     pub history_policy: crate::history::Policy,
     pub history_downloader: Option<crate::history::Downloader>,
+    /// Also emit each processed history notification's inflated protobuf as
+    /// `Event::HistorySyncPayload`, for callers that keep everything. Off by
+    /// default (not upstream). A custom `history_downloader` must be made with
+    /// `Downloader::new_raw` for downloaded payloads to be kept.
+    pub emit_history_payloads: bool,
 }
 impl Default for Config {
     fn default() -> Self {
@@ -298,6 +303,7 @@ impl Default for Config {
             media_preparation_hooks: Default::default(),
             history_policy: Default::default(),
             history_downloader: None,
+            emit_history_payloads: false,
         }
     }
 }
@@ -446,6 +452,10 @@ pub enum Event {
     EventResponsesUpdated(Vec<crate::messages::EventResponseUpdate>),
     MessagingHistorySet(crate::history::Set),
     MessagingHistoryStatus(crate::history::StatusUpdate),
+    /// The inflated protobuf of a processed history notification, sent only
+    /// with `Config::emit_history_payloads`. Not upstream; never buffered and
+    /// without an upstream JSON form.
+    HistorySyncPayload(crate::history::Payload),
 }
 impl std::fmt::Debug for Event {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -453,6 +463,12 @@ impl std::fmt::Debug for Event {
             Self::MessagingHistoryStatus(status) => f
                 .debug_tuple("MessagingHistoryStatus")
                 .field(status)
+                .finish(),
+            Self::HistorySyncPayload(v) => f
+                .debug_struct("HistorySyncPayload")
+                .field("message_id", &v.message_id)
+                .field("sync_type", &v.sync_type)
+                .field("bytes", &v.bytes.len())
                 .finish(),
             Self::MessagingHistorySet(v) => f
                 .debug_struct("MessagingHistorySet")
@@ -600,6 +616,7 @@ struct Inner {
     custom_upload_hosts: Vec<crate::media::UploadHost>,
     history_policy: crate::history::Policy,
     history_downloader: tokio::sync::OnceCell<crate::history::Downloader>,
+    emit_history_payloads: bool,
     media_preparation_hooks: crate::media::PreparationHooks,
     own_messages: Option<mpsc::UnboundedSender<proto::WebMessageInfo>>,
     generation_hooks: crate::messages::generation::GenerationHooks,
@@ -885,6 +902,7 @@ impl Socket {
             custom_upload_hosts: config.custom_upload_hosts.clone(),
             history_policy: config.history_policy.clone(),
             history_downloader: tokio::sync::OnceCell::new_with(config.history_downloader.clone()),
+            emit_history_payloads: config.emit_history_payloads,
             media_preparation_hooks: config.media_preparation_hooks.clone(),
             own_messages: config.emit_own_events.then_some(own_sender),
             generation_hooks: config.generation_hooks.clone(),

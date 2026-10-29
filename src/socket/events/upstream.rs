@@ -17,7 +17,7 @@ impl Event {
     /// protobuf messages are base64 strings (protobufjs' `toJSON`), other
     /// buffers are BufferJSON objects, dates are ISO strings, undefined fields are absent
     /// and Boom errors keep only their enumerable fields. Raw stanzas
-    /// (`Event::Node`) have no counterpart and produce no entry;
+    /// (`Event::Node`) and history payloads have no counterpart and produce no entry;
     /// `Event::CredentialsUpdated` carries no fields, so its `creds.update`
     /// payload is empty.
     pub fn upstream(&self) -> Result<Vec<(&'static str, Value)>, Error> {
@@ -82,7 +82,7 @@ fn native(event: &Event) -> Result<Vec<(&'static str, Value)>, Error> {
             ("connection.update", json!({ "reachoutTimeLock": lock }))
         }
         Event::CredentialsUpdated => ("creds.update", json!({})),
-        Event::Node(_) => return Ok(vec![]),
+        Event::Node(_) | Event::HistorySyncPayload(_) => return Ok(vec![]),
         Event::PresenceUpdated(update) => ("presence.update", serialize(update)?),
         Event::Calls(calls) => (
             "call",

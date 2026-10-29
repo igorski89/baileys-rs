@@ -412,3 +412,45 @@ fn on_demand_history_requests_match_original_protobuf_bytes() {
         assert_eq!(actual, expected);
     }
 }
+/// Not upstream: the inflated protobuf is kept byte for byte, unknown fields
+/// included, from an inline payload and from a raw downloader.
+#[tokio::test]
+async fn raw_history_bytes_are_kept_when_asked() {
+    let mut input = unhex(fixtures()["cases"][0]["input"].as_str().unwrap());
+    // Field 99, varint 1: unknown to the schema.
+    input.extend([0x98, 0x06, 0x01]);
+    let mut encoder = flate2::write::ZlibEncoder::new(Vec::new(), flate2::Compression::default());
+    encoder.write_all(&input).unwrap();
+    let inline = proto::message::HistorySyncNotification {
+        initial_hist_bootstrap_inline_payload: Some(encoder.finish().unwrap()),
+        ..Default::default()
+    };
+    let downloader = Downloader::new(|_| async { panic!("inline must bypass the transport") });
+    let (data, raw) = downloader
+        .download_and_process_raw(inline.clone(), true)
+        .await
+        .unwrap();
+    assert_eq!(data.messages.len(), 3);
+    assert_eq!(raw.unwrap().as_slice(), input.as_slice());
+    let (_, raw) = downloader
+        .download_and_process_raw(inline, false)
+        .await
+        .unwrap();
+    assert!(raw.is_none());
+    let bytes = input.clone();
+    let downloader = Downloader::new_raw(move |_| {
+        let bytes = bytes.clone();
+        async move { Ok(bytes) }
+    });
+    let notification = proto::message::HistorySyncNotification::default();
+    let (data, raw) = downloader
+        .download_and_process_raw(notification.clone(), true)
+        .await
+        .unwrap();
+    assert_eq!(data.messages.len(), 3);
+    assert_eq!(raw.unwrap().as_slice(), input.as_slice());
+    assert_eq!(
+        downloader.download_and_process(notification).await.unwrap(),
+        data
+    );
+}

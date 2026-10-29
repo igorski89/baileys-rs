@@ -18,7 +18,7 @@ fn expected(event: &Event) -> &'static [&'static str] {
         | Event::PendingNotifications
         | Event::ReachoutTimelockUpdated(_) => &["connection.update"],
         Event::CredentialsUpdated => &["creds.update"],
-        Event::Node(_) => &[],
+        Event::Node(_) | Event::HistorySyncPayload(_) => &[],
         Event::PresenceUpdated(_) => &["presence.update"],
         Event::Calls(_) => &["call"],
         Event::MediaUpdated(_) => &["messages.media-update"],

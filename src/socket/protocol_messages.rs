@@ -82,7 +82,21 @@ impl Socket {
                 let chunk_order = notification.chunk_order;
                 let peer_data_request_session_id =
                     notification.peer_data_request_session_id.clone();
-                let data = downloader.download_and_process(notification).await?;
+                let sync_type = notification.sync_type;
+                let (data, raw) = downloader
+                    .download_and_process_raw(notification, self.inner.emit_history_payloads)
+                    .await?;
+                if let Some(bytes) = raw {
+                    let _ = self.inner.events.send(Event::HistorySyncPayload(
+                        crate::history::Payload {
+                            message_id: message.key.as_ref().and_then(|k| k.id.clone()),
+                            sync_type,
+                            chunk_order,
+                            peer_data_request_session_id: peer_data_request_session_id.clone(),
+                            bytes,
+                        },
+                    ));
+                }
                 let repository = self.inner.decryptor.direct.clone();
                 let mappings = data.lid_pn_mappings.clone();
                 let chats = data.chats.clone();

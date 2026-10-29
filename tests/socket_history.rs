@@ -117,7 +117,10 @@ async fn actual_history_notifications_receipt_inline_inflate_and_preserve_latest
         zlib.write_all(&history.encode_to_vec()).unwrap();
         let bytes = zlib.finish().unwrap();
         for latest in [true, false] {
-            let (listener, config) = setup().await;
+            let (listener, mut config) = setup().await;
+            // Not upstream: the inflated payload too, on the first pass only.
+            config.emit_history_payloads = latest;
+            let inflated = history.encode_to_vec();
             let bytes = bytes.clone();
             let server = tokio::spawn(async move {
                 let mut peer = Peer::accept(listener.accept().await.unwrap().0).await;
@@ -171,8 +174,22 @@ async fn actual_history_notifications_receipt_inline_inflate_and_preserve_latest
                 peer.closed().await;
             });
             let (socket, mut events) = Socket::connect(config, persistent.clone()).await.unwrap();
+            let mut payload = None;
             loop {
-                if let Event::MessagingHistorySet(set) = events.recv().await.unwrap() {
+                let event = events.recv().await.unwrap();
+                if let Event::HistorySyncPayload(p) = &event {
+                    payload = Some(p.clone());
+                }
+                if let Event::MessagingHistorySet(set) = event {
+                    match &payload {
+                        Some(p) => {
+                            assert!(latest);
+                            assert_eq!(p.bytes.as_slice(), inflated.as_slice());
+                            assert_eq!(p.message_id.as_deref(), Some("HISTORY"));
+                            assert_eq!(p.sync_type, Some(3));
+                        }
+                        None => assert!(!latest),
+                    }
                     assert_eq!(set.is_latest, Some(latest));
                     assert_eq!(set.data.messages.len(), 1);
                     assert_eq!(set.data.chats[0].last_message_recv_timestamp, Some(15.0));

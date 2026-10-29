@@ -322,8 +322,22 @@ type Download = dyn Fn(
     ) -> BoxFuture<'static, Result<proto::HistorySync, Error>>
     + Send
     + Sync;
+type DownloadRaw = dyn Fn(proto::message::HistorySyncNotification) -> BoxFuture<'static, Result<Vec<u8>, Error>>
+    + Send
+    + Sync;
+/// The inflated `HistorySync` protobuf of one history notification, exactly as
+/// the phone sent it (unknown fields included). Not upstream.
+#[derive(Debug, Clone, PartialEq)]
+pub struct Payload {
+    /// The id of the message that carried the notification.
+    pub message_id: Option<String>,
+    pub sync_type: Option<i32>,
+    pub chunk_order: Option<u32>,
+    pub peer_data_request_session_id: Option<String>,
+    pub bytes: Arc<Vec<u8>>,
+}
 #[derive(Clone)]
-pub struct Downloader(Arc<Download>);
+pub struct Downloader(Arc<Download>, Option<Arc<DownloadRaw>>);
 impl std::fmt::Debug for Downloader {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.debug_struct("HistoryDownloader").finish_non_exhaustive()
@@ -335,10 +349,34 @@ impl Downloader {
         F: Fn(proto::message::HistorySyncNotification) -> Fut + Send + Sync + 'static,
         Fut: std::future::Future<Output = Result<proto::HistorySync, Error>> + Send + 'static,
     {
-        Self(Arc::new(move |n| Box::pin(download(n))))
+        Self(Arc::new(move |n| Box::pin(download(n))), None)
+    }
+    /// A downloader that yields the inflated protobuf bytes, so that
+    /// [`download_and_process_raw`](Self::download_and_process_raw) can keep them.
+    pub fn new_raw<F, Fut>(download: F) -> Self
+    where
+        F: Fn(proto::message::HistorySyncNotification) -> Fut + Send + Sync + 'static,
+        Fut: std::future::Future<Output = Result<Vec<u8>, Error>> + Send + 'static,
+    {
+        let raw: Arc<DownloadRaw> = Arc::new(move |n| Box::pin(download(n)));
+        let decode = raw.clone();
+        Self(
+            Arc::new(move |n| {
+                let raw = decode.clone();
+                Box::pin(async move {
+                    let bytes = raw(n).await?;
+                    tokio::task::spawn_blocking(move || {
+                        proto::HistorySync::decode(bytes.as_slice()).map_err(Error::from)
+                    })
+                    .await
+                    .map_err(|_| Error::Task)?
+                })
+            }),
+            Some(raw),
+        )
     }
     pub fn from_http(client: media::HttpClient, options: media::DownloadOptions) -> Self {
-        Self::new(move |notification| {
+        Self::new_raw(move |notification| {
             let client = client.clone();
             let options = options.clone();
             async move {
@@ -357,17 +395,14 @@ impl Downloader {
                 let (output, input) = tokio::io::duplex(64 * 1024);
                 let download =
                     client.download_to(&url, keys, options.range, options.headers, output);
-                let decode = async move {
-                    tokio::task::spawn_blocking(move || {
-                        proto::HistorySync::decode(inflate(SyncIoBridge::new(input))?.as_slice())
-                            .map_err(Error::from)
-                    })
-                    .await
-                    .map_err(|_| Error::Task)?
+                let inflated = async move {
+                    tokio::task::spawn_blocking(move || inflate(SyncIoBridge::new(input)))
+                        .await
+                        .map_err(|_| Error::Task)?
                 };
-                let (_, history) =
-                    tokio::try_join!(async { download.await.map_err(Error::from) }, decode)?;
-                Ok(history)
+                let (_, bytes) =
+                    tokio::try_join!(async { download.await.map_err(Error::from) }, inflated)?;
+                Ok(bytes)
             }
         })
     }
@@ -381,20 +416,46 @@ impl Downloader {
         &self,
         notification: proto::message::HistorySyncNotification,
     ) -> Result<Processed, Error> {
-        let mut history = if let Some(bytes) = notification.initial_hist_bootstrap_inline_payload {
-            tokio::task::spawn_blocking(move || {
-                proto::HistorySync::decode(inflate(bytes.as_slice())?.as_slice())
-                    .map_err(Error::from)
-            })
-            .await
-            .map_err(|_| Error::Task)??
-        } else {
-            self.download(notification).await?
-        };
-        tokio::task::spawn_blocking(move || process(&mut history))
-            .await
-            .map_err(|_| Error::Task)?
+        Ok(self.download_and_process_raw(notification, false).await?.0)
     }
+    /// As [`download_and_process`](Self::download_and_process), and with `keep`
+    /// also the inflated bytes, when they are available: from an inline payload,
+    /// or from a downloader made with [`new_raw`](Self::new_raw) or
+    /// [`from_http`](Self::from_http).
+    pub async fn download_and_process_raw(
+        &self,
+        notification: proto::message::HistorySyncNotification,
+        keep: bool,
+    ) -> Result<(Processed, Option<Arc<Vec<u8>>>), Error> {
+        let inline = notification.initial_hist_bootstrap_inline_payload.clone();
+        let (mut history, raw) = match (inline, &self.1) {
+            (Some(bytes), _) => {
+                let bytes = tokio::task::spawn_blocking(move || inflate(bytes.as_slice()))
+                    .await
+                    .map_err(|_| Error::Task)??;
+                decode_kept(bytes, keep).await?
+            }
+            (None, Some(raw)) if keep => decode_kept(raw(notification).await?, true).await?,
+            _ => (self.download(notification).await?, None),
+        };
+        let processed = tokio::task::spawn_blocking(move || process(&mut history))
+            .await
+            .map_err(|_| Error::Task)??;
+        Ok((processed, raw))
+    }
+}
+async fn decode_kept(
+    bytes: Vec<u8>,
+    keep: bool,
+) -> Result<(proto::HistorySync, Option<Arc<Vec<u8>>>), Error> {
+    let bytes = Arc::new(bytes);
+    let decoded = bytes.clone();
+    let history = tokio::task::spawn_blocking(move || {
+        proto::HistorySync::decode(decoded.as_slice()).map_err(Error::from)
+    })
+    .await
+    .map_err(|_| Error::Task)??;
+    Ok((history, keep.then_some(bytes)))
 }
 type ShouldSync = dyn Fn(&proto::message::HistorySyncNotification) -> bool + Send + Sync;
 #[derive(Clone)]
