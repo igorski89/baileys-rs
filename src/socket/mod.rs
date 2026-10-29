@@ -694,6 +694,8 @@ enum Command {
     },
     Close {
         logout: bool,
+        /// Send the remove-companion-device request before closing.
+        remove: bool,
         reply: oneshot::Sender<Result<(), Error>>,
     },
 }
@@ -1478,16 +1480,52 @@ impl Socket {
         receiver.await.map_err(|_| self.closed_error())?
     }
     pub async fn close(&self) -> Result<(), Error> {
-        self.close_inner(false).await
+        self.close_inner(false, false).await
     }
+    /// Unlink this device and close. Upstream sends `remove-companion-device`
+    /// and closes without waiting; on an open connection this waits for the
+    /// server's answer first (up to the query timeout), and a 401 close that
+    /// the removal itself causes counts as success.
     pub async fn logout(&self) -> Result<(), Error> {
-        self.close_inner(true).await
+        if !matches!(self.state(), ConnectionState::Open) {
+            return self.close_inner(true, true).await;
+        }
+        let credentials = load_credentials(self.inner.store.clone()).await?;
+        let Some(jid) = credentials.me.as_ref().map(|me| me.id.clone()) else {
+            return self.close_inner(true, false).await;
+        };
+        let removed = self
+            .query(
+                BinaryNode::new("iq")
+                    .attr("to", "@s.whatsapp.net")
+                    .attr("type", "set")
+                    .attr("xmlns", "md")
+                    .with_content(crate::binary::NodeContent::Children(vec![
+                        BinaryNode::new("remove-companion-device")
+                            .attr("jid", jid)
+                            .attr("reason", "user_initiated"),
+                    ])),
+                None,
+            )
+            .await;
+        match &removed {
+            Ok(_) => tracing::info!("companion device removed"),
+            Err(error) => tracing::warn!(?error, "remove-companion-device failed"),
+        }
+        match self.close_inner(true, false).await {
+            Err(Error::Closed(401)) => Ok(()),
+            result => result,
+        }
     }
-    async fn close_inner(&self, logout: bool) -> Result<(), Error> {
+    async fn close_inner(&self, logout: bool, remove: bool) -> Result<(), Error> {
         let (reply, receiver) = oneshot::channel();
         self.inner
             .commands
-            .send(Command::Close { logout, reply })
+            .send(Command::Close {
+                logout,
+                remove,
+                reply,
+            })
             .await
             .map_err(|_| self.closed_error())?;
         receiver.await.map_err(|_| self.closed_error())?

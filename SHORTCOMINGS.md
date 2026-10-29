@@ -69,6 +69,9 @@ Not gaps, but worth knowing: like upstream, the socket does not reconnect by its
 - A USync query assembled through its public fields rather than the builder methods lists built-in protocols before custom ones.
 - The external device store holds the encoded JID with each device; upstream recomputes it on every read.
 
+### Logout
+- On an open connection, `Socket::logout` waits (up to the query timeout) for the server's answer to `remove-companion-device` before closing with 401, and a 401 close caused by the removal counts as success; upstream sends the request and closes at once. Live (2026-10-29), a device logged out without waiting stayed in the phone's list of linked devices; the waiting version has not been run live.
+
 ### Configuration
 - Proxies are given as a URL in `Config::proxy` (HTTP CONNECT or SOCKS5, for the WebSocket) and through the caller's `media_http` client (for media and link previews); upstream takes agent objects. `socks5://` and `socks5h://` both let the proxy resolve the host name. An HTTPS proxy (TLS to the proxy itself) is not supported for the WebSocket, and no test crosses a real proxy.
 - The caches a caller can supply are typed (`cache::Cache<u64>` for retry counters, `Cache<Option<Envelope>>` for placeholder resends, `Cache<Vec<u8>>` for prepared media, `devices::Store`, `calls::Cache`) where upstream has one untyped `CacheStore`. Their calls cannot fail, except the call-offer cache's.

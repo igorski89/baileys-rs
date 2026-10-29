@@ -536,9 +536,13 @@ impl Actor<'_> {
                     }
                 }
             }
-            Command::Close { logout, reply } => {
+            Command::Close {
+                logout,
+                remove,
+                reply,
+            } => {
                 self.close_reply = Some(reply);
-                if logout && let Some(me) = &self.credentials.me {
+                if remove && let Some(me) = &self.credentials.me {
                     let jid = me.id.clone();
                     let id = self.tag()?;
                     self.send(
