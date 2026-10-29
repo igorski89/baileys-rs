@@ -148,6 +148,23 @@ pub fn notification(
         .clone()
 }
 pub fn process(item: &mut proto::HistorySync) -> Result<Processed, Error> {
+    // Shape only, no content: which parts of the payload are present.
+    tracing::debug!(
+        sync_type = item.sync_type,
+        chunk_order = ?item.chunk_order,
+        progress = ?item.progress,
+        conversations = item.conversations.len(),
+        conversation_messages = item.conversations.iter().map(|c| c.messages.len()).sum::<usize>(),
+        status_v3_messages = item.status_v3_messages.len(),
+        pushnames = item.pushnames.len(),
+        global_settings = item.global_settings.is_some(),
+        recent_stickers = item.recent_stickers.len(),
+        past_participants = item.past_participants.len(),
+        call_log_records = item.call_log_records.len(),
+        phone_number_to_lid_mappings = item.phone_number_to_lid_mappings.len(),
+        accounts = item.accounts.len(),
+        "history sync payload"
+    );
     let mut result = Processed {
         chats: vec![],
         contacts: vec![],

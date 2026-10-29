@@ -30,6 +30,16 @@ impl Socket {
                 tracing::info!(
                     sync_type = ?notification.sync_type,
                     chunk_order = ?notification.chunk_order,
+                    progress = ?notification.progress,
+                    file_length = ?notification.file_length,
+                    direct_path = notification.direct_path.is_some(),
+                    inline_payload = ?notification
+                        .initial_hist_bootstrap_inline_payload
+                        .as_ref()
+                        .map(Vec::len),
+                    oldest_msg_in_chunk = ?notification.oldest_msg_in_chunk_timestamp_sec,
+                    peer_data_request_session_id = ?notification.peer_data_request_session_id,
+                    message_access_status = ?notification.message_access_status,
                     process = history_eligible,
                     id = ?message.key.as_ref().and_then(|k| k.id.as_deref()),
                     "got history notification"
