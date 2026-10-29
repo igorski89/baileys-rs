@@ -135,9 +135,14 @@ fn media_mut(message: &mut proto::Message) -> Result<MediaMut<'_>, Error> {
     if let Some(p) = &mut content.sticker_message {
         return Ok(MediaMut::Sticker(p));
     }
+    // Not upstream: assertMediaContent has no video note, so its reupload fails.
+    if let Some(p) = &mut content.ptv_message {
+        return Ok(MediaMut::Video(p));
+    }
     Err(Error::NotMedia)
 }
-/// Source assertMediaContent order differs from generic content selection; PTV is excluded.
+/// Source assertMediaContent order differs from generic content selection; a video
+/// note (PTV), which upstream excludes, comes last.
 pub fn retry_media_key(message: &mut proto::Message) -> Result<Vec<u8>, Error> {
     let media = media_mut(message)?;
     with_media!(media, p, p.media_key.clone().ok_or(Error::MissingMediaKey))

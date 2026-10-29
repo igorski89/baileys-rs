@@ -68,6 +68,16 @@ fn retry_receipts_and_original_nested_payload_updates_match_upstream() {
             }),
         };
         let result = apply_retry(&mut message, &event, "custom.example:8443");
+        // Not upstream: a video note can be reuploaded here; upstream rejects it.
+        if message
+            .message
+            .as_ref()
+            .is_some_and(|m| m.ptv_message.is_some())
+        {
+            assert_eq!(case["error"], "given message is not a media message");
+            assert!(!matches!(result, Err(Error::NotMedia)), "{case}");
+            continue;
+        }
         if case.get("error").is_some() {
             assert!(result.is_err(), "{case}");
             if let Some(status) = case["status"].as_u64() {
@@ -108,4 +118,16 @@ fn download_payload_selection_and_thumbnail_descriptors_match_upstream() {
             assert_eq!(d.key, hex(&expected["download"]["mediaKey"]["hex"]));
         }
     }
+}
+/// Not upstream: a video note's media key is found for a reupload request.
+#[test]
+fn a_video_note_can_be_reuploaded() {
+    let mut message = proto::Message {
+        ptv_message: Some(Box::new(proto::message::VideoMessage {
+            media_key: Some(vec![7; 32]),
+            ..Default::default()
+        })),
+        ..Default::default()
+    };
+    assert_eq!(retry_media_key(&mut message).unwrap(), vec![7; 32]);
 }

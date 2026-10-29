@@ -61,6 +61,7 @@ Not gaps, but worth knowing: like upstream, the socket does not reconnect by its
 - AVIF images and JPEG-compressed (YCbCr) TIFF images cannot be decoded for thumbnails or profile pictures; sharp handles both.
 - Thumbnails and profile pictures are not byte-identical to sharp's: resampling and JPEG encoding differ. On the audit picture the mean channel difference is about 4 to 7 out of 255 (1 for greyscale).
 - Waveforms are produced for AAC, M4A and non-16-bit WAV, where upstream's decoder yields none. Lossy formats may differ by one level per bin.
+- A video note (`ptvMessage`) can be reuploaded by the phone (`update_media_message`, and the reupload in `download_media_message_to`); upstream's `assertMediaContent` has no video note, so its reupload fails with "given message is not a media message". Not yet run live.
 - `DownloadOptions::reupload_on_forbidden` (off by default) makes `download_media_message_to` also request a phone reupload on HTTP 403; upstream does so on 404 and 410 only. Live (2026-10-29), a stored URL with a damaged path got 403 from the CDN, and with the option on, the library's reupload then downloaded it with a matching SHA-256. A genuinely expired URL has not been tried.
 - The remote download limit counts received bytes exactly; upstream counts each chunk twice, so its effective limit is lower and depends on chunk sizes.
 
