@@ -71,7 +71,7 @@ Not gaps, but worth knowing: like upstream, the socket does not reconnect by its
 - The external device store holds the encoded JID with each device; upstream recomputes it on every read.
 
 ### Logout
-- On an open connection, `Socket::logout` waits (up to the query timeout) for the server's answer to `remove-companion-device` before closing with 401, and a 401 close caused by the removal counts as success; upstream sends the request and closes at once. Live (2026-10-29), a device logged out without waiting stayed in the phone's list of linked devices; the waiting version has not been run live.
+- On an open connection, `Socket::logout` waits (up to the query timeout) for the server's answer to `remove-companion-device` before closing with 401, and a 401 close caused by the removal counts as success; upstream sends the request and closes at once. Live (2026-10-29) the server answered the removal, but an iPhone still listed the device a minute later, as it did after a logout that did not wait. Whether official companions also notify the phone is unknown; until then the device may also have to be removed on the phone.
 
 ### Configuration
 - Proxies are given as a URL in `Config::proxy` (HTTP CONNECT or SOCKS5, for the WebSocket) and through the caller's `media_http` client (for media and link previews); upstream takes agent objects. `socks5://` and `socks5h://` both let the proxy resolve the host name. An HTTPS proxy (TLS to the proxy itself) is not supported for the WebSocket, and no test crosses a real proxy.
