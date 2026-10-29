@@ -173,7 +173,12 @@ pub(super) async fn run(
             }
         }
     }.await;
+    // A close or logout the caller asked for is logged like upstream's
+    // end(undefined): no error, though the state still carries 428 or 401.
     match &result {
+        Err(_) if actor.close_reply.is_some() => {
+            tracing::info!(message = ?actor.close_message, "connection closed by the caller")
+        }
         Err(error) => tracing::info!(?error, "connection errored"),
         Ok(()) => tracing::info!("connection closed"),
     }
