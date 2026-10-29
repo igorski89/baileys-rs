@@ -247,7 +247,8 @@ impl Socket {
     }
 }
 impl Socket {
-    /// Download an encrypted message, optionally requesting one phone reupload on HTTP 404/410.
+    /// Download an encrypted message, optionally requesting one phone reupload on HTTP 404/410
+    /// (and 403 with `DownloadOptions::reupload_on_forbidden`).
     /// The writer is consumed only after a successful HTTP response, so the retry retains it.
     pub async fn download_media_message_to<W>(
         &self,
@@ -281,7 +282,11 @@ impl Socket {
             .download_response(&url, options.range, options.headers.clone())
             .await
         {
-            Err(crate::media::Error::HttpStatus(404 | 410)) if reupload => {
+            Err(crate::media::Error::HttpStatus(status))
+                if reupload
+                    && (matches!(status, 404 | 410)
+                        || status == 403 && options.reupload_on_forbidden) =>
+            {
                 tracing::info!(
                     id = ?message.key.as_ref().and_then(|k| k.id.as_deref()),
                     "sending reupload media request..."

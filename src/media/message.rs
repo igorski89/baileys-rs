@@ -7,6 +7,10 @@ pub struct DownloadOptions {
     pub range: super::Range,
     pub headers: HeaderMap,
     pub host: Option<String>,
+    /// Also ask the phone to reupload on HTTP 403, which the CDN returns for an
+    /// expired or invalid URL signature. Not upstream, which reuploads on 404
+    /// and 410 only; used by `Socket::download_media_message_to`.
+    pub reupload_on_forbidden: bool,
 }
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Downloadable {

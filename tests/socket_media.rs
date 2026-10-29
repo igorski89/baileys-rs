@@ -516,6 +516,22 @@ async fn disabled_automatic_notifications_support_manual_processing_and_updates(
 }
 #[tokio::test]
 async fn expired_download_requests_phone_reupload_then_streams_refreshed_https_media() {
+    reupload_after(b"404 Missing", Default::default()).await;
+}
+/// Opt-in, not upstream: a 403 (an expired or invalid URL signature) also
+/// asks the phone to reupload.
+#[tokio::test]
+async fn forbidden_download_requests_phone_reupload_when_enabled() {
+    reupload_after(
+        b"403 Forbidden",
+        baileys_rs::media::DownloadOptions {
+            reupload_on_forbidden: true,
+            ..Default::default()
+        },
+    )
+    .await;
+}
+async fn reupload_after(status: &'static [u8], options: baileys_rs::media::DownloadOptions) {
     timeout(Duration::from_secs(8), async {
         use tokio::io::{AsyncReadExt, AsyncWriteExt};
         use tokio_rustls::{
@@ -561,7 +577,12 @@ async fn expired_download_requests_phone_reupload_then_streams_refreshed_https_m
             assert!(String::from_utf8(header).unwrap().starts_with("GET /old "));
             socket
                 .write_all(
-                    b"HTTP/1.1 404 Missing\r\nContent-Length: 0\r\nConnection: close\r\n\r\n",
+                    &[
+                        b"HTTP/1.1 ",
+                        status,
+                        b"\r\nContent-Length: 0\r\nConnection: close\r\n\r\n",
+                    ]
+                    .concat(),
                 )
                 .await
                 .unwrap();
@@ -651,7 +672,7 @@ async fn expired_download_requests_phone_reupload_then_streams_refreshed_https_m
             socket
                 .download_media_message_to(
                     &mut message,
-                    &Default::default(),
+                    &options,
                     writer,
                     true,
                     Some(Duration::from_secs(2))
