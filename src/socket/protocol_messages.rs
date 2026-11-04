@@ -47,7 +47,10 @@ impl Socket {
                 if !history_eligible {
                     return Ok(());
                 }
-                let demand = notification.sync_type == Some(6);
+                let demand = matches!(
+                    notification.sync_type,
+                    Some(6 | crate::history::RECENT_CONVERSATIONS_ON_DEMAND)
+                );
                 let latest = if demand {
                     None
                 } else {

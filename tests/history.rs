@@ -18,6 +18,31 @@ fn fixtures() -> Value {
     serde_json::from_str(include_str!("fixtures/history.json")).unwrap()
 }
 #[test]
+fn a_recent_conversations_answer_is_processed_like_on_demand_history() {
+    let mut item = proto::HistorySync {
+        sync_type: RECENT_CONVERSATIONS_ON_DEMAND,
+        conversations: vec![proto::Conversation {
+            id: "200@s.whatsapp.net".into(),
+            messages: vec![proto::HistorySyncMsg {
+                message: Some(proto::WebMessageInfo {
+                    key: Some(proto::MessageKey {
+                        id: Some("OLD".into()),
+                        remote_jid: Some("200@s.whatsapp.net".into()),
+                        ..Default::default()
+                    }),
+                    ..Default::default()
+                }),
+                ..Default::default()
+            }],
+            ..Default::default()
+        }],
+        ..Default::default()
+    };
+    let result = process(&mut item).unwrap();
+    assert_eq!(result.chats.len(), 1);
+    assert_eq!(result.messages.len(), 1);
+}
+#[test]
 fn history_privacy_tokens_match_original_snapshot_comparisons_and_index_order() {
     use baileys_rs::{
         auth::{KeyCategory, KeyMutation, KeyStore, KeyValue, SqliteAuthStore, TcToken},
@@ -246,18 +271,18 @@ async fn inline_history_precedes_transport_and_policy_preserves_source_defaults(
             .await,
         Err(Error::Truncated)
     ));
-    for sync_type in [None, Some(0), Some(2), Some(6), Some(99)] {
+    for sync_type in [None, Some(0), Some(2), Some(6), Some(9), Some(99)] {
         let n = proto::message::HistorySyncNotification {
             sync_type,
             ..Default::default()
         };
         assert_eq!(
             Policy::default().should_process(&n),
-            matches!(sync_type, Some(0 | 6))
+            matches!(sync_type, Some(0 | 6 | 9))
         );
         assert_eq!(
             Policy::new(|_| true).should_process(&n),
-            matches!(sync_type, Some(0 | 2 | 6))
+            matches!(sync_type, Some(0 | 2 | 6 | 9))
         );
     }
     let n = proto::message::HistorySyncNotification {

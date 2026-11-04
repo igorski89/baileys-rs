@@ -182,7 +182,7 @@ pub fn process(item: &mut proto::HistorySync) -> Result<Processed, Error> {
         }
     }
     match item.sync_type {
-        0 | 2 | 3 | 6 => {
+        0 | 2 | 3 | 6 | RECENT_CONVERSATIONS_ON_DEMAND => {
             for chat in &mut item.conversations {
                 result.contacts.push(Contact {
                     id: chat.id.clone(),
@@ -457,6 +457,9 @@ async fn decode_kept(
     .map_err(|_| Error::Task)??;
     Ok((history, keep.then_some(bytes)))
 }
+/// The sync type answering a `RecentConversationsOnDemandRequest`, handled like
+/// `ON_DEMAND`. Upstream does not process it.
+pub const RECENT_CONVERSATIONS_ON_DEMAND: i32 = 9;
 type ShouldSync = dyn Fn(&proto::message::HistorySyncNotification) -> bool + Send + Sync;
 #[derive(Clone)]
 pub struct Policy(Arc<ShouldSync>);
@@ -477,7 +480,9 @@ impl Policy {
         Self(Arc::new(predicate))
     }
     pub fn should_process(&self, n: &proto::message::HistorySyncNotification) -> bool {
-        (self.0)(n) && n.sync_type.is_some_and(|t| (0..=6).contains(&t))
+        (self.0)(n)
+            && n.sync_type
+                .is_some_and(|t| (0..=6).contains(&t) || t == RECENT_CONVERSATIONS_ON_DEMAND)
     }
 }
 
