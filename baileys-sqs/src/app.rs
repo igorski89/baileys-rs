@@ -48,22 +48,74 @@ pub fn open_session(db: &SessionDb) -> Result<SqliteAuthStore, baileys_rs::auth:
     Ok(store)
 }
 
-/// `WHATSAPP_VERSION` when it parses, otherwise the latest published version.
-pub async fn whatsapp_version(settings: &Settings, http: &reqwest::Client) -> [u32; 3] {
-    if let Some(raw) = &settings.whatsapp_version {
-        match serde_json::from_str::<[u32; 3]>(raw) {
-            Ok(version) => {
-                tracing::debug!(version = ?version, "using WHATSAPP_VERSION from env");
-                return version;
-            }
-            Err(err) => {
-                tracing::error!(%err, whatsapp_version = raw, "Failed to parse WHATSAPP_VERSION, falling back to latest");
-            }
+/// How long `WHATSAPP_VERSION=latest` waits for GitHub before using the built-in version.
+pub const VERSION_FETCH_TIMEOUT: Duration = Duration::from_secs(5);
+
+/// What `WHATSAPP_VERSION` asks for.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum VersionChoice {
+    /// Unset, empty or unparsable: the library's built-in version.
+    BuiltIn,
+    /// `latest`: the version upstream's master currently defaults to.
+    Latest,
+    /// A JSON array such as `[2,3000,1052559453]`.
+    Pinned([u32; 3]),
+}
+
+pub fn version_choice(raw: Option<&str>) -> VersionChoice {
+    let Some(raw) = raw.map(str::trim).filter(|raw| !raw.is_empty()) else {
+        return VersionChoice::BuiltIn;
+    };
+    if raw.eq_ignore_ascii_case("latest") {
+        return VersionChoice::Latest;
+    }
+    match serde_json::from_str::<[u32; 3]>(raw) {
+        Ok(version) => VersionChoice::Pinned(version),
+        Err(err) => {
+            tracing::error!(%err, whatsapp_version = raw, "Failed to parse WHATSAPP_VERSION, using the built-in version");
+            VersionChoice::BuiltIn
         }
     }
-    let latest = baileys_rs::version::fetch_latest_baileys_version(http).await;
-    tracing::debug!(version = ?latest.version, is_latest = latest.is_latest, "using latest WA version");
-    latest.version
+}
+
+/// The version upstream's master defaults to, or the built-in one when `url`
+/// fails or takes longer than `limit`.
+pub async fn latest_version(http: &reqwest::Client, url: &str, limit: Duration) -> [u32; 3] {
+    match tokio::time::timeout(
+        limit,
+        baileys_rs::version::fetch_baileys_version_from(http, url),
+    )
+    .await
+    {
+        Ok(latest) => {
+            if let Some(error) = &latest.error {
+                tracing::warn!(%error, "could not fetch the latest WA version, using the built-in version");
+            }
+            latest.version
+        }
+        Err(_) => {
+            tracing::warn!(timeout = ?limit, "fetching the latest WA version timed out, using the built-in version");
+            baileys_rs::defaults::WA_VERSION
+        }
+    }
+}
+
+/// The built-in version unless `WHATSAPP_VERSION` pins one or asks for `latest`.
+pub async fn whatsapp_version(settings: &Settings, http: &reqwest::Client) -> [u32; 3] {
+    let version = match version_choice(settings.whatsapp_version.as_deref()) {
+        VersionChoice::BuiltIn => baileys_rs::defaults::WA_VERSION,
+        VersionChoice::Pinned(version) => version,
+        VersionChoice::Latest => {
+            latest_version(
+                http,
+                baileys_rs::version::BAILEYS_DEFAULTS_URL,
+                VERSION_FETCH_TIMEOUT,
+            )
+            .await
+        }
+    };
+    tracing::info!(version = ?version, "using WA version");
+    version
 }
 
 /// Move events into an unbounded queue as they arrive, so slow handling

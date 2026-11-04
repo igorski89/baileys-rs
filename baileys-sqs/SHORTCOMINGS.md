@@ -23,6 +23,7 @@ Known gaps and deliberate deviations from the TypeScript baileys-sqs (commit `6e
 - The session is a SQLite file, not Baileys' multi-file JSON, and the disappearing-messages cache is a table in the same file rather than `ephemeral-cache.json`. A TypeScript session folder and its cache file are imported once; going back to the TypeScript connector with the same folder needs the original files, which are left in place but no longer updated.
 - There is no separate `creds.update` save step or signal-key cache: the store writes through.
 - `from`, `me_lid` and `/health`'s `connected` read the account from the store, as `sock.user` reads upstream's credentials.
+- With `WHATSAPP_VERSION=latest` the version is fetched once at start; the TypeScript connector fetches it again on every reconnect. Unset, both use their library's built-in version, which for baileys-rs can be newer than the TypeScript library's (see baileys-rs's SHORTCOMINGS).
 
 ## Commands
 
