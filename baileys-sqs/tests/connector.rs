@@ -272,6 +272,114 @@ async fn http_endpoint_authenticates_validates_and_dispatches() {
     assert_eq!(health, json!({"ok":true,"connected":false}));
 }
 
+/// A key WhatsApp delivers to this device stays here: a queue consumer gets the
+/// rest of the message, and a poll's `messageSecret`.
+#[tokio::test]
+async fn key_material_is_not_published() {
+    let queues = Queues::start(&[("output", false)]).await;
+    let dir = tempfile::tempdir().unwrap();
+    let fake = Arc::new(Fake::default());
+    let commands = commands(&queues, "output", Some(fake.clone()), &dir);
+    let mut settings = Settings::from_env();
+    settings.session_db = SessionDb::File(dir.path().join("auth.sqlite3"));
+    let app = WhatsAppLoop {
+        settings,
+        store: baileys_rs::auth::SqliteAuthStore::in_memory().unwrap(),
+        version: [2, 3000, 1],
+        commands,
+        storage: None,
+        missing: Default::default(),
+    };
+    let sender_key = || proto::message::SenderKeyDistributionMessage {
+        group_id: Some("1@g.us".into()),
+        axolotl_sender_key_distribution_message: Some(b"SENDERKEY".to_vec()),
+    };
+    let share = proto::Message {
+        protocol_message: Some(Box::new(proto::message::ProtocolMessage {
+            r#type: Some(proto::message::protocol_message::Type::AppStateSyncKeyShare as i32),
+            app_state_sync_key_share: Some(proto::message::AppStateSyncKeyShare {
+                keys: vec![proto::message::AppStateSyncKey {
+                    key_data: Some(proto::message::AppStateSyncKeyData {
+                        key_data: Some(b"APPSTATEKEY".to_vec()),
+                        ..Default::default()
+                    }),
+                    ..Default::default()
+                }],
+            }),
+            ..Default::default()
+        })),
+        ..Default::default()
+    };
+    let group_text = proto::Message {
+        conversation: Some("hello".into()),
+        sender_key_distribution_message: Some(sender_key()),
+        fast_ratchet_key_sender_key_distribution_message: Some(sender_key()),
+        message_context_info: Some(proto::MessageContextInfo {
+            message_secret: Some(b"SECRET".to_vec()),
+            ..Default::default()
+        }),
+        ..Default::default()
+    };
+    let wrapped = proto::Message {
+        device_sent_message: Some(Box::new(proto::message::DeviceSentMessage {
+            destination_jid: Some("1@g.us".into()),
+            message: Some(Box::new(proto::Message {
+                sender_key_distribution_message: Some(sender_key()),
+                ..Default::default()
+            })),
+            ..Default::default()
+        })),
+        ..Default::default()
+    };
+    let messages = [share, group_text, wrapped]
+        .into_iter()
+        .enumerate()
+        .map(|(i, message)| proto::WebMessageInfo {
+            key: Some(proto::MessageKey {
+                remote_jid: Some("1@g.us".into()),
+                from_me: Some(false),
+                id: Some(format!("M{i}")),
+                participant: None,
+            }),
+            message: Some(message),
+            ..Default::default()
+        })
+        .collect();
+    app.forward(
+        fake.as_ref(),
+        &Event::MessagesUpserted(baileys_rs::messages::own::Upsert {
+            messages,
+            kind: baileys_rs::messages::own::UpsertKind::Notify,
+            request_id: None,
+            metadata: vec![],
+            metadata_indices: vec![],
+            runtime_fields: vec![],
+        }),
+    )
+    .await;
+    let events = queues.drain("output", 1).await;
+    let text = events[0].to_string();
+    for field in [
+        "appStateSyncKeyShare",
+        "senderKeyDistributionMessage",
+        "fastRatchetKeySenderKeyDistributionMessage",
+    ] {
+        assert!(!text.contains(field), "{field} published: {text}");
+    }
+    let messages = &events[0]["payload"]["messages"];
+    assert_eq!(messages.as_array().unwrap().len(), 3);
+    assert_eq!(
+        messages[0]["message"]["protocolMessage"]["type"],
+        "APP_STATE_SYNC_KEY_SHARE"
+    );
+    assert_eq!(messages[1]["message"]["conversation"], "hello");
+    assert!(messages[1]["message"]["messageContextInfo"]["messageSecret"].is_string());
+    assert_eq!(
+        messages[2]["message"]["deviceSentMessage"]["destinationJid"],
+        "1@g.us"
+    );
+}
+
 #[tokio::test]
 async fn events_are_forwarded_with_metadata_media_and_ephemeral_learning() {
     let queues = Queues::start(&[("output", false)]).await;

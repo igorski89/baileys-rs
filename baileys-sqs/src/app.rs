@@ -4,7 +4,7 @@ use crate::{
     config::{SessionDb, Settings},
     js,
     media::{self, S3Storage},
-    telemetry,
+    output, telemetry,
     whatsapp::{Live, WhatsApp},
 };
 use baileys_rs::{
@@ -320,6 +320,7 @@ impl WhatsAppLoop {
             if name == "connection.update" || name == "creds.update" {
                 continue;
             }
+            output::strip_key_material(&mut data);
             let mut meta = Map::new();
             if name == "chats.update"
                 && let Some(chats) = data.as_array()

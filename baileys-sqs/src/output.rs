@@ -4,6 +4,28 @@ use aws_sdk_sqs::Client;
 use serde_json::Value;
 use sha2::{Digest, Sha256};
 
+/// Keys WhatsApp delivers to this device, which only the connection needs. They
+/// open a chat's app state or a group's messages, so they never leave it.
+const KEY_MATERIAL: [&str; 3] = [
+    "appStateSyncKeyShare",
+    "senderKeyDistributionMessage",
+    "fastRatchetKeySenderKeyDistributionMessage",
+];
+
+/// Remove key material from an event, at any depth: messages can wrap messages.
+pub fn strip_key_material(value: &mut Value) {
+    match value {
+        Value::Object(fields) => {
+            for field in KEY_MATERIAL {
+                fields.remove(field);
+            }
+            fields.values_mut().for_each(strip_key_material);
+        }
+        Value::Array(items) => items.iter_mut().for_each(strip_key_material),
+        _ => {}
+    }
+}
+
 /// FIFO queues (name contains "fifo", e.g. ending in ".fifo") require
 /// MessageGroupId + MessageDeduplicationId on every send. Standard queues
 /// reject these fields, so they're only added when the queue is FIFO.
