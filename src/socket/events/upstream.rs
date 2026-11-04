@@ -82,7 +82,7 @@ fn native(event: &Event) -> Result<Vec<(&'static str, Value)>, Error> {
             ("connection.update", json!({ "reachoutTimeLock": lock }))
         }
         Event::CredentialsUpdated => ("creds.update", json!({})),
-        Event::Node(_) | Event::HistorySyncPayload(_) => return Ok(vec![]),
+        Event::Node(_) | Event::HistorySyncPayload(_) | Event::RawMessage(_) => return Ok(vec![]),
         Event::PresenceUpdated(update) => ("presence.update", serialize(update)?),
         Event::Calls(calls) => (
             "call",

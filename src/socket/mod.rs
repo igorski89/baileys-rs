@@ -252,6 +252,12 @@ pub struct Config {
     /// default (not upstream). A custom `history_downloader` must be made with
     /// `Downloader::new_raw` for downloaded payloads to be kept.
     pub emit_history_payloads: bool,
+    /// Also emit each decrypted incoming message's protobuf, unknown fields
+    /// included, as `Event::RawMessage`, for callers that keep everything or
+    /// want to see what this schema drops. Off by default (not upstream). The
+    /// bytes hold what events hide, such as key shares, so protect them like
+    /// the session itself.
+    pub emit_raw_messages: bool,
 }
 impl Default for Config {
     fn default() -> Self {
@@ -304,6 +310,7 @@ impl Default for Config {
             history_policy: Default::default(),
             history_downloader: None,
             emit_history_payloads: false,
+            emit_raw_messages: false,
         }
     }
 }
@@ -456,6 +463,10 @@ pub enum Event {
     /// with `Config::emit_history_payloads`. Not upstream; never buffered and
     /// without an upstream JSON form.
     HistorySyncPayload(crate::history::Payload),
+    /// A decrypted incoming message's protobuf, sent only with
+    /// `Config::emit_raw_messages`. Not upstream; never buffered and without an
+    /// upstream JSON form.
+    RawMessage(crate::messages::RawMessage),
 }
 impl std::fmt::Debug for Event {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
@@ -463,6 +474,11 @@ impl std::fmt::Debug for Event {
             Self::MessagingHistoryStatus(status) => f
                 .debug_tuple("MessagingHistoryStatus")
                 .field(status)
+                .finish(),
+            Self::RawMessage(v) => f
+                .debug_struct("RawMessage")
+                .field("id", &v.key.id)
+                .field("bytes", &v.bytes.len())
                 .finish(),
             Self::HistorySyncPayload(v) => f
                 .debug_struct("HistorySyncPayload")
@@ -617,6 +633,7 @@ struct Inner {
     history_policy: crate::history::Policy,
     history_downloader: tokio::sync::OnceCell<crate::history::Downloader>,
     emit_history_payloads: bool,
+    emit_raw_messages: bool,
     media_preparation_hooks: crate::media::PreparationHooks,
     own_messages: Option<mpsc::UnboundedSender<proto::WebMessageInfo>>,
     generation_hooks: crate::messages::generation::GenerationHooks,
@@ -903,6 +920,7 @@ impl Socket {
             history_policy: config.history_policy.clone(),
             history_downloader: tokio::sync::OnceCell::new_with(config.history_downloader.clone()),
             emit_history_payloads: config.emit_history_payloads,
+            emit_raw_messages: config.emit_raw_messages,
             media_preparation_hooks: config.media_preparation_hooks.clone(),
             own_messages: config.emit_own_events.then_some(own_sender),
             generation_hooks: config.generation_hooks.clone(),

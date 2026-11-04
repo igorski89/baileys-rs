@@ -119,6 +119,17 @@ impl Socket {
             .as_ref()
             .ok_or(messages::Error::Envelope("missing received key"))?
             .clone();
+        if self.inner.emit_raw_messages {
+            for bytes in std::mem::take(&mut decrypted.raw) {
+                let _ = self
+                    .inner
+                    .events
+                    .send(Event::RawMessage(messages::RawMessage {
+                        key: key.clone(),
+                        bytes: bytes.into(),
+                    }));
+            }
+        }
         let remote = key
             .remote_jid
             .as_deref()

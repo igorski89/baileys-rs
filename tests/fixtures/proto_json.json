@@ -159,6 +159,7 @@
     "proto.HydratedTemplateButton.HydratedQuickReplyButton",
     "proto.HydratedTemplateButton.HydratedURLButton",
     "proto.IdentityKeyPairStructure",
+    "proto.InlineContact",
     "proto.InThreadSurveyMetadata",
     "proto.InThreadSurveyMetadata.InThreadSurveyOption",
     "proto.InThreadSurveyMetadata.InThreadSurveyPrivacyStatementPart",
@@ -271,6 +272,7 @@
     "proto.Message.PeerDataOperationRequestMessage.GalaxyFlowAction",
     "proto.Message.PeerDataOperationRequestMessage.HistorySyncChunkRetryRequest",
     "proto.Message.PeerDataOperationRequestMessage.HistorySyncOnDemandRequest",
+    "proto.Message.PeerDataOperationRequestMessage.RecentConversationsOnDemandRequest",
     "proto.Message.PeerDataOperationRequestMessage.PlaceholderMessageResendRequest",
     "proto.Message.PeerDataOperationRequestMessage.RequestStickerReupload",
     "proto.Message.PeerDataOperationRequestMessage.RequestUrlPreview",
@@ -343,6 +345,7 @@
     "proto.NoiseCertificate.Details",
     "proto.NotificationMessageInfo",
     "proto.NotificationSettings",
+    "proto.OmittedConversationMetadata",
     "proto.PairingRequest",
     "proto.PastParticipant",
     "proto.PastParticipants",
@@ -11651,6 +11654,64 @@
       }
     },
     {
+      "name": "proto.Conversation",
+      "label": "isMarketingMessageThread",
+      "input": {
+        "isMarketingMessageThread": true
+      },
+      "wire": "b80301",
+      "expected": {
+        "isMarketingMessageThread": true
+      }
+    },
+    {
+      "name": "proto.Conversation",
+      "label": "isSenderNewAccount",
+      "input": {
+        "isSenderNewAccount": true
+      },
+      "wire": "c00301",
+      "expected": {
+        "isSenderNewAccount": true
+      }
+    },
+    {
+      "name": "proto.Conversation",
+      "label": "appealStatus",
+      "input": {
+        "appealStatus": "NO_APPEAL"
+      },
+      "wire": "d80300",
+      "expected": {
+        "appealStatus": 0
+      },
+      "tojson": {
+        "appealStatus": "NO_APPEAL"
+      }
+    },
+    {
+      "name": "proto.Conversation",
+      "label": "appealStatus:unknown",
+      "input": {
+        "appealStatus": 99
+      },
+      "wire": "d80363",
+      "expected": {
+        "appealStatus": 99
+      }
+    },
+    {
+      "name": "proto.Conversation",
+      "label": "appealUpdateTime",
+      "input": {
+        "appealUpdateTime": "18446744073709551615"
+      },
+      "wire": "e003ffffffffffffffffff01",
+      "expected": {
+        "appealUpdateTime": "18446744073709551615"
+      }
+    },
+    {
       "name": "proto.DeviceCapabilities",
       "label": "empty",
       "input": {},
@@ -12367,6 +12428,50 @@
       "wire": "980121",
       "expected": {
         "thumbnailSyncDaysLimit": 33
+      }
+    },
+    {
+      "name": "proto.DeviceProps.HistorySyncConfig",
+      "label": "initialSyncMaxMessagesPerChat",
+      "input": {
+        "initialSyncMaxMessagesPerChat": 33
+      },
+      "wire": "a00121",
+      "expected": {
+        "initialSyncMaxMessagesPerChat": 33
+      }
+    },
+    {
+      "name": "proto.DeviceProps.HistorySyncConfig",
+      "label": "supportInlineContacts",
+      "input": {
+        "supportInlineContacts": true
+      },
+      "wire": "c00101",
+      "expected": {
+        "supportInlineContacts": true
+      }
+    },
+    {
+      "name": "proto.DeviceProps.HistorySyncConfig",
+      "label": "supportNewsletter",
+      "input": {
+        "supportNewsletter": true
+      },
+      "wire": "c80101",
+      "expected": {
+        "supportNewsletter": true
+      }
+    },
+    {
+      "name": "proto.DeviceProps.HistorySyncConfig",
+      "label": "supportOmittedConversationMetadata",
+      "input": {
+        "supportOmittedConversationMetadata": true
+      },
+      "wire": "e00101",
+      "expected": {
+        "supportOmittedConversationMetadata": true
       }
     },
     {
@@ -14563,6 +14668,140 @@
       }
     },
     {
+      "name": "proto.HistorySync",
+      "label": "nctSalt",
+      "input": {
+        "nctSalt": "AAEC/w=="
+      },
+      "wire": "9a0104000102ff",
+      "expected": {
+        "nctSalt": {
+          "type": "Buffer",
+          "data": [
+            0,
+            1,
+            2,
+            255
+          ]
+        }
+      },
+      "tojson": {
+        "nctSalt": "AAEC/w=="
+      }
+    },
+    {
+      "name": "proto.HistorySync",
+      "label": "inlineContacts",
+      "input": {
+        "inlineContacts": [
+          {
+            "pnJid": "value💚",
+            "lidJid": "value💚",
+            "fullName": "value💚"
+          }
+        ]
+      },
+      "wire": "a201210a0976616c7565f09f929a120976616c7565f09f929a1a0976616c7565f09f929a",
+      "expected": {
+        "inlineContacts": [
+          {
+            "pnJid": "value💚",
+            "lidJid": "value💚",
+            "fullName": "value💚"
+          }
+        ]
+      }
+    },
+    {
+      "name": "proto.HistorySync",
+      "label": "inlineContactsProvided",
+      "input": {
+        "inlineContactsProvided": true
+      },
+      "wire": "a80101",
+      "expected": {
+        "inlineContactsProvided": true
+      }
+    },
+    {
+      "name": "proto.HistorySync",
+      "label": "favoriteStickers",
+      "input": {
+        "favoriteStickers": [
+          {
+            "url": "value💚",
+            "fileSha256": "AAEC/w==",
+            "fileEncSha256": "AAEC/w=="
+          }
+        ]
+      },
+      "wire": "b201170a0976616c7565f09f929a1204000102ff1a04000102ff",
+      "expected": {
+        "favoriteStickers": [
+          {
+            "url": "value💚",
+            "fileSha256": {
+              "type": "Buffer",
+              "data": [
+                0,
+                1,
+                2,
+                255
+              ]
+            },
+            "fileEncSha256": {
+              "type": "Buffer",
+              "data": [
+                0,
+                1,
+                2,
+                255
+              ]
+            }
+          }
+        ]
+      },
+      "tojson": {
+        "favoriteStickers": [
+          {
+            "url": "value💚",
+            "fileSha256": "AAEC/w==",
+            "fileEncSha256": "AAEC/w=="
+          }
+        ]
+      }
+    },
+    {
+      "name": "proto.HistorySync",
+      "label": "omittedConversationMetadata",
+      "input": {
+        "omittedConversationMetadata": {
+          "snapshotId": "value💚",
+          "snapshotTimestampMs": "18446744073709551615",
+          "batchIndex": 33
+        }
+      },
+      "wire": "ca01180a0976616c7565f09f929a10ffffffffffffffffff011821",
+      "expected": {
+        "omittedConversationMetadata": {
+          "snapshotId": "value💚",
+          "snapshotTimestampMs": "18446744073709551615",
+          "batchIndex": 33
+        }
+      }
+    },
+    {
+      "name": "proto.HistorySync",
+      "label": "omittedConversationMetadataSnapshotId",
+      "input": {
+        "omittedConversationMetadataSnapshotId": "value💚"
+      },
+      "wire": "d2010976616c7565f09f929a",
+      "expected": {
+        "omittedConversationMetadataSnapshotId": "value💚"
+      }
+    },
+    {
       "name": "proto.HistorySyncMsg",
       "label": "empty",
       "input": {},
@@ -14858,6 +15097,68 @@
       },
       "tojson": {
         "privateKey": "AAEC/w=="
+      }
+    },
+    {
+      "name": "proto.InlineContact",
+      "label": "empty",
+      "input": {},
+      "wire": "",
+      "expected": {}
+    },
+    {
+      "name": "proto.InlineContact",
+      "label": "pnJid",
+      "input": {
+        "pnJid": "value💚"
+      },
+      "wire": "0a0976616c7565f09f929a",
+      "expected": {
+        "pnJid": "value💚"
+      }
+    },
+    {
+      "name": "proto.InlineContact",
+      "label": "lidJid",
+      "input": {
+        "lidJid": "value💚"
+      },
+      "wire": "120976616c7565f09f929a",
+      "expected": {
+        "lidJid": "value💚"
+      }
+    },
+    {
+      "name": "proto.InlineContact",
+      "label": "fullName",
+      "input": {
+        "fullName": "value💚"
+      },
+      "wire": "1a0976616c7565f09f929a",
+      "expected": {
+        "fullName": "value💚"
+      }
+    },
+    {
+      "name": "proto.InlineContact",
+      "label": "firstName",
+      "input": {
+        "firstName": "value💚"
+      },
+      "wire": "220976616c7565f09f929a",
+      "expected": {
+        "firstName": "value💚"
+      }
+    },
+    {
+      "name": "proto.InlineContact",
+      "label": "username",
+      "input": {
+        "username": "value💚"
+      },
+      "wire": "2a0976616c7565f09f929a",
+      "expected": {
+        "username": "value💚"
       }
     },
     {
@@ -18991,7 +19292,7 @@
           }
         }
       },
-      "wire": "9207270a0976616c7565f09f929a12001a180a0976616c7565f09f929a120976616c7565f09f929a1a00",
+      "wire": "9a07270a0976616c7565f09f929a12001a180a0976616c7565f09f929a120976616c7565f09f929a1a00",
       "expected": {
         "pollResultSnapshotMessageV3": {
           "name": "value💚",
@@ -27171,6 +27472,23 @@
       }
     },
     {
+      "name": "proto.Message.PeerDataOperationRequestMessage",
+      "label": "recentConversationsOnDemandRequest",
+      "input": {
+        "recentConversationsOnDemandRequest": {
+          "conversationCount": 33,
+          "messagesPerConversation": 33
+        }
+      },
+      "wire": "6a0408211021",
+      "expected": {
+        "recentConversationsOnDemandRequest": {
+          "conversationCount": 33,
+          "messagesPerConversation": 33
+        }
+      }
+    },
+    {
       "name": "proto.Message.PeerDataOperationRequestMessage.FullHistorySyncOnDemandRequest",
       "label": "empty",
       "input": {},
@@ -27401,6 +27719,71 @@
       "wire": "320976616c7565f09f929a",
       "expected": {
         "accountLid": "value💚"
+      }
+    },
+    {
+      "name": "proto.Message.PeerDataOperationRequestMessage.HistorySyncOnDemandRequest",
+      "label": "supportInlineResponse",
+      "input": {
+        "supportInlineResponse": true
+      },
+      "wire": "3801",
+      "expected": {
+        "supportInlineResponse": true
+      }
+    },
+    {
+      "name": "proto.Message.PeerDataOperationRequestMessage.HistorySyncOnDemandRequest",
+      "label": "mode",
+      "input": {
+        "mode": "MODE_UNSPECIFIED"
+      },
+      "wire": "4000",
+      "expected": {
+        "mode": 0
+      },
+      "tojson": {
+        "mode": "MODE_UNSPECIFIED"
+      }
+    },
+    {
+      "name": "proto.Message.PeerDataOperationRequestMessage.HistorySyncOnDemandRequest",
+      "label": "mode:unknown",
+      "input": {
+        "mode": 99
+      },
+      "wire": "4063",
+      "expected": {
+        "mode": 99
+      }
+    },
+    {
+      "name": "proto.Message.PeerDataOperationRequestMessage.RecentConversationsOnDemandRequest",
+      "label": "empty",
+      "input": {},
+      "wire": "",
+      "expected": {}
+    },
+    {
+      "name": "proto.Message.PeerDataOperationRequestMessage.RecentConversationsOnDemandRequest",
+      "label": "conversationCount",
+      "input": {
+        "conversationCount": 33
+      },
+      "wire": "0821",
+      "expected": {
+        "conversationCount": 33
+      }
+    },
+    {
+      "name": "proto.Message.PeerDataOperationRequestMessage.RecentConversationsOnDemandRequest",
+      "label": "messagesPerConversation",
+      "input": {
+        "messagesPerConversation": 33
+      },
+      "wire": "1021",
+      "expected": {
+        "messagesPerConversation": 33
       }
     },
     {
@@ -34867,6 +35250,95 @@
       "wire": "320976616c7565f09f929a",
       "expected": {
         "callVibrate": "value💚"
+      }
+    },
+    {
+      "name": "proto.OmittedConversationMetadata",
+      "label": "empty",
+      "input": {},
+      "wire": "",
+      "expected": {}
+    },
+    {
+      "name": "proto.OmittedConversationMetadata",
+      "label": "snapshotId",
+      "input": {
+        "snapshotId": "value💚"
+      },
+      "wire": "0a0976616c7565f09f929a",
+      "expected": {
+        "snapshotId": "value💚"
+      }
+    },
+    {
+      "name": "proto.OmittedConversationMetadata",
+      "label": "snapshotTimestampMs",
+      "input": {
+        "snapshotTimestampMs": "18446744073709551615"
+      },
+      "wire": "10ffffffffffffffffff01",
+      "expected": {
+        "snapshotTimestampMs": "18446744073709551615"
+      }
+    },
+    {
+      "name": "proto.OmittedConversationMetadata",
+      "label": "batchIndex",
+      "input": {
+        "batchIndex": 33
+      },
+      "wire": "1821",
+      "expected": {
+        "batchIndex": 33
+      }
+    },
+    {
+      "name": "proto.OmittedConversationMetadata",
+      "label": "batchCount",
+      "input": {
+        "batchCount": 33
+      },
+      "wire": "2021",
+      "expected": {
+        "batchCount": 33
+      }
+    },
+    {
+      "name": "proto.OmittedConversationMetadata",
+      "label": "complete",
+      "input": {
+        "complete": true
+      },
+      "wire": "2801",
+      "expected": {
+        "complete": true
+      }
+    },
+    {
+      "name": "proto.OmittedConversationMetadata",
+      "label": "conversations",
+      "input": {
+        "conversations": [
+          {
+            "id": "value💚",
+            "messages": [
+              {}
+            ],
+            "newJid": "value💚"
+          }
+        ]
+      },
+      "wire": "32180a0976616c7565f09f929a12001a0976616c7565f09f929a",
+      "expected": {
+        "conversations": [
+          {
+            "id": "value💚",
+            "messages": [
+              {}
+            ],
+            "newJid": "value💚"
+          }
+        ]
       }
     },
     {
@@ -46846,6 +47318,17 @@
           "originalData": "AAEC/w==",
           "extractedText": "value💚"
         }
+      }
+    },
+    {
+      "name": "proto.WebMessageInfo",
+      "label": "hsmTag",
+      "input": {
+        "hsmTag": "value💚"
+      },
+      "wire": "fa040976616c7565f09f929a",
+      "expected": {
+        "hsmTag": "value💚"
       }
     },
     {

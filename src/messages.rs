@@ -477,6 +477,18 @@ pub struct Decrypted {
     pub envelope: Envelope,
     pub distribution_errors: Vec<Error>,
     pub mapping_errors: Vec<Error>,
+    /// Each decrypted `Message` protobuf before decoding, unknown fields included.
+    pub raw: Vec<Vec<u8>>,
+}
+
+/// One decrypted `Message` protobuf of a received stanza, exactly as the sender
+/// encoded it, including what this library's schema does not know and what it
+/// hides from events (key shares inside protocol messages, sender-key
+/// distributions), so treat it like the session's own secrets. Not upstream.
+#[derive(Debug, Clone, PartialEq)]
+pub struct RawMessage {
+    pub key: proto::MessageKey,
+    pub bytes: std::sync::Arc<Vec<u8>>,
 }
 
 pub fn decrypt_node(
@@ -489,6 +501,7 @@ pub fn decrypt_node(
     let mut decryptables = 0;
     let mut distribution_errors = Vec::new();
     let mut mapping_errors = Vec::new();
+    let mut raw = Vec::new();
     for child in node.all_children() {
         if child.tag == "unavailable" && child.attrs.get("type").is_some_and(|s| s == "view_once") {
             envelope.key_metadata.is_view_once = true;
@@ -551,6 +564,7 @@ pub fn decrypt_node(
             } else {
                 unpad(&buffer)?
             };
+            raw.push(payload.to_vec());
             let mut message = proto::Message::decode(payload)?;
             if let Some(inner) = message
                 .device_sent_message
@@ -587,6 +601,7 @@ pub fn decrypt_node(
         envelope,
         distribution_errors,
         mapping_errors,
+        raw,
     })
 }
 fn ciphertext_stub(envelope: &mut Envelope, error: String) {
