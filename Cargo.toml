@@ -21,7 +21,7 @@ reqwest = { version = "0.12", default-features = false, features = ["rustls-tls-
 tokio-util = { version = "0.7", features = ["io", "io-util"] }
 tracing = "0.1"
 base64 = "0.22"
-rusqlite = { version = "0.38", features = ["bundled"] }
+rusqlite = { version = ">=0.38, <0.40", features = ["bundled"] }
 serde_json = { version = "1", features = ["preserve_order"] }
 aes = "0.8"
 aes-gcm = "0.10"
