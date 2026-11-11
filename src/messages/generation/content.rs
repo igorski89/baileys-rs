@@ -257,6 +257,10 @@ pub struct Modifiers {
 // JS \s excludes U+0085 and includes the byte-order mark; preserve that character set.
 const SPACE: &str =
     r"\x09-\x0d \u{00a0}\u{1680}\u{2000}-\u{200a}\u{2028}\u{2029}\u{202f}\u{205f}\u{3000}\u{feff}";
+/// The server of a deviceless JID: its text after the `@`.
+fn server(jid: &str) -> &str {
+    jid.split_once('@').map_or("", |(_, server)| server)
+}
 fn js_space(c: char) -> bool {
     matches!(c, '\u{0009}'..='\u{000d}' | ' ' | '\u{00a0}' | '\u{1680}' | '\u{2000}'..='\u{200a}' | '\u{2028}' | '\u{2029}' | '\u{202f}' | '\u{205f}' | '\u{3000}' | '\u{feff}')
 }
@@ -553,6 +557,19 @@ pub async fn content(
                         value: value.clone(),
                     });
                 }
+                if !matches!(server(value), "lid" | "s.whatsapp.net") {
+                    return Err(Error::PollVoteServer {
+                        field,
+                        value: value.clone(),
+                    });
+                }
+            }
+            // Both come from the chat's addressing mode; a mixed pair encrypts a vote the creator cannot decrypt.
+            if server(&vote.poll_creator_jid) != server(&vote.voter_jid) {
+                return Err(Error::PollVoteMixed {
+                    creator: vote.poll_creator_jid.clone(),
+                    voter: vote.voter_jid.clone(),
+                });
             }
             let id = vote.poll_key.id.as_deref().unwrap_or_default();
             let encrypted = messages::encrypt_poll_vote(

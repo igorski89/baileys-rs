@@ -20,6 +20,12 @@ pub enum Error {
     PollCount { max: usize },
     #[error("pollVote.{field} must be a JID without device, got {value}")]
     PollVoteJid { field: &'static str, value: String },
+    #[error("pollVote.{field} must be a LID or phone-number JID, got {value}")]
+    PollVoteServer { field: &'static str, value: String },
+    #[error(
+        "pollVote.pollCreatorJid and pollVote.voterJid must use the same addressing mode, got {creator} and {voter}"
+    )]
+    PollVoteMixed { creator: String, voter: String },
     #[error("message generation hook failed: {0}")]
     Hook(String),
     #[error(transparent)]
@@ -38,6 +44,8 @@ impl Error {
             | Self::EmptyContacts
             | Self::PollCount { .. }
             | Self::PollVoteJid { .. }
+            | Self::PollVoteServer { .. }
+            | Self::PollVoteMixed { .. }
             | Self::InvalidMediaType
             | Self::Json(_) => Some(400),
             Self::Hook(_) => None,

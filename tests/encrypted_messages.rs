@@ -239,3 +239,73 @@ async fn votes_reject_jids_with_a_device() {
         );
     }
 }
+#[tokio::test]
+async fn votes_reject_other_servers_and_mixed_addressing() {
+    use baileys_rs::messages::generation::{self, Content, PollVote};
+    let vote = |creator: &str, voter: &str| {
+        Content::PollVote(Box::new(PollVote {
+            poll_key: proto::MessageKey {
+                id: Some("3EB0POLL".into()),
+                ..Default::default()
+            },
+            poll_creator_jid: creator.into(),
+            voter_jid: voter.into(),
+            message_secret: vec![5; 32],
+            selected_options: vec!["Yes".into()],
+        }))
+    };
+    for (creator, voter, message) in [
+        (
+            "123456@g.us",
+            "111@lid",
+            "pollVote.pollCreatorJid must be a LID or phone-number JID",
+        ),
+        (
+            "222@lid",
+            "111@newsletter",
+            "pollVote.voterJid must be a LID or phone-number JID",
+        ),
+        (
+            "222@lid",
+            "41700000000@s.whatsapp.net",
+            "pollVote.pollCreatorJid and pollVote.voterJid must use the same addressing mode",
+        ),
+        (
+            "41700000001@s.whatsapp.net",
+            "111@lid",
+            "pollVote.pollCreatorJid and pollVote.voterJid must use the same addressing mode",
+        ),
+    ] {
+        let error = generation::content(
+            &vote(creator, voter),
+            &Default::default(),
+            &Default::default(),
+            &generation::DefaultContentHooks,
+        )
+        .await
+        .unwrap_err();
+        assert_eq!(error.status_code(), Some(400));
+        assert!(error.to_string().starts_with(message), "{error}");
+    }
+    // Both phone numbers is a supported pair.
+    let content = generation::content(
+        &vote("41700000001@s.whatsapp.net", "41700000000@s.whatsapp.net"),
+        &Default::default(),
+        &Default::default(),
+        &generation::DefaultContentHooks,
+    )
+    .await
+    .unwrap();
+    let update = content.poll_update_message.unwrap();
+    let decrypted = messages::decrypt_poll_vote(
+        update.vote.as_ref().unwrap(),
+        &PollContext {
+            poll_creator_jid: "41700000001@s.whatsapp.net",
+            poll_msg_id: "3EB0POLL",
+            poll_enc_key: &[5; 32],
+            voter_jid: "41700000000@s.whatsapp.net",
+        },
+    )
+    .unwrap();
+    assert_eq!(decrypted.selected_options.len(), 1);
+}
