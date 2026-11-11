@@ -89,6 +89,7 @@ Not gaps, but worth knowing: like upstream, the socket does not reconnect by its
 - The remote download limit counts received bytes exactly; upstream counts each chunk twice, so its effective limit is lower and depends on chunk sizes.
 
 ### USync and device cache
+- Backported from upstream's unreleased `develop` (#2751): a hosted device's domain applies to that device only. On master (`0af2386`) it carries over to every later device of the same user, which is then addressed on the hosted server. The usync and devices fixtures are corrected to the fixed result after generation (`scripts/generate-usync-fixtures.mjs`, `scripts/generate-device-fixtures.mjs`).
 - A USync query assembled through its public fields rather than the builder methods lists built-in protocols before custom ones.
 - The external device store holds the encoded JID with each device; upstream recomputes it on every read.
 

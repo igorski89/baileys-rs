@@ -111,9 +111,9 @@
         {
           "user": "200",
           "device": 2,
-          "domainType": 128,
-          "server": "hosted",
-          "jid": "200:2@hosted"
+          "domainType": 0,
+          "server": "s.whatsapp.net",
+          "jid": "200:2@s.whatsapp.net"
         }
       ],
       "toFetch": [
@@ -172,9 +172,9 @@
         {
           "user": "200",
           "device": 2,
-          "domainType": 128,
-          "server": "hosted",
-          "jid": "200:2@hosted"
+          "domainType": 0,
+          "server": "s.whatsapp.net",
+          "jid": "200:2@s.whatsapp.net"
         },
         {
           "user": "100",
@@ -236,9 +236,9 @@
         {
           "user": "200",
           "device": 2,
-          "domainType": 128,
-          "server": "hosted",
-          "jid": "200:2@hosted"
+          "domainType": 0,
+          "server": "s.whatsapp.net",
+          "jid": "200:2@s.whatsapp.net"
         }
       ],
       "toFetch": [],
@@ -315,9 +315,9 @@
         {
           "user": "200",
           "device": 2,
-          "domainType": 128,
-          "server": "hosted",
-          "jid": "200:2@hosted"
+          "domainType": 0,
+          "server": "s.whatsapp.net",
+          "jid": "200:2@s.whatsapp.net"
         }
       ],
       "toFetch": [
@@ -408,9 +408,9 @@
         {
           "user": "200",
           "device": 2,
-          "domainType": 128,
-          "server": "hosted",
-          "jid": "200:2@hosted"
+          "domainType": 0,
+          "server": "s.whatsapp.net",
+          "jid": "200:2@s.whatsapp.net"
         }
       ],
       "toFetch": [
@@ -510,9 +510,9 @@
         {
           "user": "200",
           "device": 2,
-          "domainType": 128,
-          "server": "hosted",
-          "jid": "200:2@hosted"
+          "domainType": 0,
+          "server": "s.whatsapp.net",
+          "jid": "200:2@s.whatsapp.net"
         }
       ],
       "toFetch": [

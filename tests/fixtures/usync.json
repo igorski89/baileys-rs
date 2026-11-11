@@ -288,8 +288,8 @@
         {
           "user": "100",
           "device": 8,
-          "domainType": 128,
-          "server": "hosted"
+          "domainType": 0,
+          "server": "s.whatsapp.net"
         }
       ]
     },
@@ -305,8 +305,8 @@
         {
           "user": "100",
           "device": 8,
-          "domainType": 128,
-          "server": "hosted"
+          "domainType": 0,
+          "server": "s.whatsapp.net"
         }
       ]
     }

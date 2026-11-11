@@ -43,6 +43,8 @@ try {
   const {USyncBotProfileProtocol}=await import(pathToFileURL(join(temp,'UsyncBotProfileProtocol.mjs')))
   const {extractDeviceJids}=await loadSignalHelpers()
   const parsed=all.parseUSyncQueryResult(decoded),devices=[false,true].map(exclude=>({exclude,result:clean(extractDeviceJids(parsed.list,'100:7@s.whatsapp.net','900',exclude))}))
+  // Upstream develop #2751 scopes the hosted domain to each device; master leaks it to the devices after a hosted one. Keep device 8 on its own server.
+  for(const c of devices)for(const r of c.result)if(r.device===8)Object.assign(r,{server:'s.whatsapp.net',domainType:0})
   const helpers=await loadSignalHelpers(),direct=JSON.parse(await readFile('tests/fixtures/direct.json','utf8')),b=direct.bundle
   const buf=hex=>Buffer.from(hex,'hex'),id=(tag,n,width)=>({tag,attrs:{},content:Buffer.from(Array.from({length:width},(_,i)=>(n>>>((width-i-1)*8))&255))})
   const signed={tag:'skey',attrs:{},content:[id('id',5,3),{tag:'value',attrs:{},content:buf(b.signedPreKey.publicKey).subarray(1)},{tag:'signature',attrs:{},content:buf(b.signedPreKey.signature)}]},pre={tag:'key',attrs:{},content:[id('id',7,3),{tag:'value',attrs:{},content:buf(b.preKey.publicKey).subarray(1)}]}

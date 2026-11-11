@@ -549,7 +549,6 @@ pub fn extract_device_jids(
         let Some(Value::Devices(devices)) = result.protocols.get("devices") else {
             continue;
         };
-        let mut domain = decoded.domain_type;
         for device in &devices.device_list {
             let Some(id) = device.id else { continue };
             if (exclude_zero && id == 0)
@@ -558,6 +557,9 @@ pub fn extract_device_jids(
             {
                 continue;
             }
+            // Per device, as upstream's develop (#2751): a hosted device must
+            // not move the devices listed after it to the hosted server.
+            let mut domain = decoded.domain_type;
             if device.is_hosted {
                 domain = if domain == 1 { 129 } else { 128 };
             }

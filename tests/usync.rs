@@ -39,7 +39,7 @@ fn query_bytes_and_all_protocol_results_match_upstream() {
     assert!(Protocol::Bot.parse(&BinaryNode::new("bot")).is_err());
 }
 #[test]
-fn device_selection_matches_hosted_domain_propagation_and_own_device_filtering() {
+fn device_selection_scopes_the_hosted_domain_per_device_and_filters_own_device() {
     let f = fixture();
     let query = Query::default().with_protocol(Protocol::Devices);
     let parsed = query.parse(&node(&f, "response")).unwrap().unwrap();

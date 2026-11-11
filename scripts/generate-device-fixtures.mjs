@@ -31,6 +31,8 @@ try {
   const {make:makeAssert}=await import(pathToFileURL(join(temp,'assert.mjs')))
   const assertions=[]
   for(const config of [{jids:[],force:false,valid:[],maps:{}},{jids:['100@s.whatsapp.net','100@s.whatsapp.net'],force:false,valid:['100@s.whatsapp.net'],maps:{}},{jids:['200:1@s.whatsapp.net','800@lid','200:1@s.whatsapp.net','400@s.whatsapp.net'],force:false,valid:[],maps:{'200:1@s.whatsapp.net':'900:1@lid'}},{jids:['200@s.whatsapp.net','800:7@lid','800:7@lid'],force:true,valid:['200@s.whatsapp.net'],maps:{'200@s.whatsapp.net':'900@lid'}},{jids:['400@s.whatsapp.net'],force:true,valid:[],maps:{}}]){const repo=makeAssert(config);const fetched=await repo.assertSessions(config.jids,config.force);assertions.push({config,fetched,queries:repo.queries,validated:repo.validated,mapped:repo.mapped})}
+  // Upstream develop #2751 scopes the hosted domain to each device; master leaks it to device 2 after hosted device 99.
+  for(const st of steps)for(const r of st.result)if(r.user==='200'&&r.device===2&&r.server==='hosted')Object.assign(r,{domainType:0,server:'s.whatsapp.net',jid:'200:2@s.whatsapp.net'})
   await writeFile('tests/fixtures/devices.json',JSON.stringify({response,me:'100:7@s.whatsapp.net',lid:'900:7@lid',steps,assertions},null,2)+'\n')
   console.log(`Generated ${steps.length} device-discovery operations from upstream`)
 }finally{await rm(temp,{recursive:true,force:true})}
