@@ -11,7 +11,7 @@ impl Socket {
         let _serial = self.inner.receipt_lock.lock().await;
         let result = self.receipt_work(node).await;
         if let Err(error) = self.send_message_ack(node, None).await {
-            tracing::debug!(?error, "receipt acknowledgement failed");
+            tracing::error!(?error, "failed to ack receipt");
         }
         result
     }
@@ -66,7 +66,12 @@ impl Socket {
                         .send_messages_again(&parsed.key, &parsed.ids, node)
                         .await
                     {
-                        tracing::debug!(?error, "retry resend failed");
+                        tracing::error!(
+                            ?error,
+                            key_id = ?parsed.key.id,
+                            ids = ?parsed.ids,
+                            "error in sending message again"
+                        );
                     }
                 }
             }
@@ -127,7 +132,11 @@ impl Socket {
                 match repository.inject_session(&target, &bundle) {
                     Ok(()) => true,
                     Err(error) => {
-                        tracing::debug!(?error, "retry bundle injection failed");
+                        tracing::warn!(
+                            ?error,
+                            participant = %target,
+                            "failed to inject session from retry receipt"
+                        );
                         false
                     }
                 }
@@ -158,6 +167,11 @@ impl Socket {
                     manager.save_base_key(&address, id, &base)?;
                 } else if count > 2.0 {
                     if manager.has_same_base_key(&address, id, &base)? {
+                        tracing::warn!(
+                            participant = %target,
+                            retry_count = count,
+                            "base key collision on retry, forcing fresh session"
+                        );
                         repository.delete_sessions(std::slice::from_ref(&target))?;
                     }
                     manager.delete_base_key(&address, id)?;
@@ -177,7 +191,11 @@ impl Socket {
                     Ok::<_, Error>(())
                 })();
                 if let Err(error) = check {
-                    tracing::debug!(?error, "outgoing recreation check failed");
+                    tracing::warn!(
+                        ?error,
+                        participant = %target,
+                        "failed to check session recreation for outgoing retry"
+                    );
                 }
             }
             Ok::<_, Error>(injected)

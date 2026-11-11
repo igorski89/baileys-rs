@@ -295,7 +295,11 @@ impl Socket {
             .map_err(|_| Error::Task)?
             {
                 Ok(recreate) => force_include_keys |= recreate,
-                Err(error) => tracing::debug!(?error, "session recreation check failed"),
+                Err(error) => tracing::warn!(
+                    ?error,
+                    from_jid = ?node.attrs.get("from"),
+                    "failed to check session recreation"
+                ),
             }
         }
         if count <= 2 {

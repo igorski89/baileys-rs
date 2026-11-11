@@ -136,6 +136,9 @@ impl Coordinator {
             if self.phase != Phase::AwaitingInitialSync {
                 return Effects::default();
             }
+            tracing::warn!(
+                "Timeout in AwaitingInitialSync, forcing state to Online and flushing buffer"
+            );
             self.phase = Phase::Online;
         }
         Effects {

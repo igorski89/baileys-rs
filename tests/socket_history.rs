@@ -248,6 +248,8 @@ async fn history_status_precedes_download_checks_policy_once_and_accepts_nonself
         }));
         let server=tokio::spawn(async move{let mut peer=Peer::accept(listener.accept().await.unwrap().0).await;peer.closed().await;});
         let(socket,mut events)=Socket::connect(config,store(false)).await.unwrap();
+        // Upstream's startup sync-disabled check asks once per processable type.
+        assert_eq!(count.load(Ordering::SeqCst),7);count.store(0,Ordering::SeqCst);
         let mut envelope=messages::Envelope {
             message:proto::WebMessageInfo {key:Some(proto::MessageKey {remote_jid:Some("100@s.whatsapp.net".into()),id:Some("BOOT".into()),from_me:Some(true),participant:None}),message:Some(proto::Message {protocol_message:Some(Box::new(proto::message::ProtocolMessage {r#type:Some(5),history_sync_notification:Some(proto::message::HistorySyncNotification {sync_type:Some(0),..Default::default()}),..Default::default()})),..Default::default()}),..Default::default()},
             key_metadata:Default::default(),category:None,retry_count:None,author:"100@s.whatsapp.net".into(),sender:"100@s.whatsapp.net".into(),protobuf:false,

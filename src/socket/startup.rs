@@ -133,7 +133,7 @@ pub(super) fn spawn_worker(inner: &Arc<Inner>, enabled: bool) {
                     if let Some(inner) = weak.upgrade() {
                         tokio::spawn(async move {
                             if let Err(error) = (Socket { inner }).execute_init_queries().await {
-                                tracing::warn!(?error, "startup queries failed");
+                                tracing::error!(?error, "unexpected error in 'init queries'");
                             }
                         });
                     }

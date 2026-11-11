@@ -130,6 +130,7 @@ pub fn decode(node: &BinaryNode, ignore: &IgnoreJid) -> Result<Option<Update>, E
         },
         "chatstate" => {
             let Some(NodeContent::Children(children)) = &node.content else {
+                tracing::error!(tag = %node.tag, attrs = ?node.attrs, "recv invalid presence node");
                 return Ok(None);
             };
             let child = children.first().ok_or(Error::Config)?;

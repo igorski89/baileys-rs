@@ -126,7 +126,14 @@ pub(super) fn spawn_worker(inner: &Arc<Inner>, mut receiver: mpsc::UnboundedRece
                 !matches!(*inner.state.borrow(), ConnectionState::Closed { .. })
             })
         },
-        |failure, context| tracing::warn!(?failure, context, "offline node processing failed"),
+        |failure, context| match context {
+            // Upstream's message and call handlers catch and log their own
+            // errors ("error in handling message/call"), so its wrapper stays quiet.
+            "processing offline message" | "processing offline call" => {
+                tracing::debug!(?failure, context, "offline node processing failed")
+            }
+            _ => tracing::error!(error = ?failure, "unexpected error in '{context}'"),
+        },
     );
     let processor = offline::Processor::new(handlers, deps);
     tokio::spawn(async move {

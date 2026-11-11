@@ -293,6 +293,11 @@ impl Manager {
             let reason = if !has_session {
                 Some("we don't have a Signal session with them".to_owned())
             } else if let Some(error) = error.filter(|e| e.is_mac_error()) {
+                tracing::warn!(
+                    jid,
+                    error_code = error.mac_name(),
+                    "MAC error detected, forcing immediate session recreation"
+                );
                 Some(format!(
                     "MAC error (code {}: {}), immediate session recreation",
                     error as u8,

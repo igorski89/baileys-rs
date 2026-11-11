@@ -521,14 +521,24 @@ pub fn mex_notification(node: &BinaryNode, now_ms: f64) -> Result<Vec<Effect>, E
         return legacy_notification(node);
     };
     let Some(operation) = update.attrs.get("op_name").filter(|name| !name.is_empty()) else {
+        tracing::warn!("mex notification missing op_name, fallback to legacy");
         return legacy_notification(node);
     };
-    let Some(Ok(response)) = update
+    let response = match update
         .content
         .as_ref()
         .map(|content| serde_json::from_str::<Value>(&content_string(content)))
-    else {
-        return Ok(vec![]);
+    {
+        Some(Ok(response)) => response,
+        Some(Err(error)) => {
+            tracing::error!(?error, op_name = %operation, "failed to parse mex notification JSON");
+            return Ok(vec![]);
+        }
+        // Upstream's `content!.toString()` throws inside the same try.
+        None => {
+            tracing::error!(op_name = %operation, "failed to parse mex notification JSON");
+            return Ok(vec![]);
+        }
     };
     if response.is_null() {
         return Err(Error::Malformed);
@@ -540,7 +550,16 @@ pub fn mex_notification(node: &BinaryNode, now_ms: f64) -> Result<Vec<Effect>, E
         Some(errors) => get(errors, "length").is_some_and(truthy),
         None => false,
     };
-    let Some(data) = get(&response, "data").filter(|data| !failed && truthy(data)) else {
+    if failed {
+        tracing::warn!(
+            errors = ?get(&response, "errors"),
+            op_name = %operation,
+            "mex notification has GQL errors"
+        );
+        return Ok(vec![]);
+    }
+    let Some(data) = get(&response, "data").filter(|data| truthy(data)) else {
+        tracing::warn!(op_name = %operation, "mex notification has null data");
         return Ok(vec![]);
     };
     Ok(match operation.as_str() {
@@ -548,6 +567,7 @@ pub fn mex_notification(node: &BinaryNode, now_ms: f64) -> Result<Vec<Effect>, E
             let Some(payload) =
                 get(data, "xwa2_notify_account_reachout_timelock").filter(|p| truthy(p))
             else {
+                tracing::warn!("reachout timelock notification missing payload");
                 return Ok(vec![]);
             };
             if !get(payload, "is_active").is_some_and(truthy) {
@@ -579,14 +599,14 @@ pub fn mex_notification(node: &BinaryNode, now_ms: f64) -> Result<Vec<Effect>, E
             })]
         }
         "MessageCappingInfoNotification" => {
-            get(data, "xwa2_notify_new_chat_messages_capping_info_update")
+            let Some(payload) = get(data, "xwa2_notify_new_chat_messages_capping_info_update")
                 .filter(|payload| truthy(payload))
-                .map(|payload| {
-                    tracing::info!(%payload, "received message capping update");
-                    Effect::MessageCapping(payload.clone())
-                })
-                .into_iter()
-                .collect()
+            else {
+                tracing::warn!("message capping notification missing payload");
+                return Ok(vec![]);
+            };
+            tracing::info!(%payload, "received message capping update");
+            vec![Effect::MessageCapping(payload.clone())]
         }
         "NotificationNewsletterUpdate"
         | "NotificationLinkedProfilesUpdates"
@@ -611,15 +631,27 @@ pub fn mex_notification(node: &BinaryNode, now_ms: f64) -> Result<Vec<Effect>, E
 fn legacy_notification(node: &BinaryNode) -> Result<Vec<Effect>, Error> {
     let mex = node.child("mex").filter(|mex| present(Some(mex)).is_some());
     let Some(payload) = mex.or_else(|| node.child("update").or(node.all_children().first())) else {
+        tracing::warn!("invalid mex newsletter notification");
         return Ok(vec![]);
     };
     let bytes = match present(Some(payload)) {
         Some(NodeContent::Text(text)) => binary_bytes(text),
         Some(NodeContent::Bytes(bytes)) => bytes.clone(),
-        _ => return Ok(vec![]),
+        Some(NodeContent::Children(_)) => {
+            tracing::warn!("invalid mex newsletter notification payload format");
+            return Ok(vec![]);
+        }
+        None => {
+            tracing::warn!("invalid mex newsletter notification");
+            return Ok(vec![]);
+        }
     };
-    let Ok(data) = serde_json::from_str::<Value>(&String::from_utf8_lossy(&bytes)) else {
-        return Ok(vec![]);
+    let data = match serde_json::from_str::<Value>(&String::from_utf8_lossy(&bytes)) {
+        Ok(data) => data,
+        Err(error) => {
+            tracing::error!(?error, "failed to parse mex newsletter notification");
+            return Ok(vec![]);
+        }
     };
     let operation = get(&data, "operation")
         .filter(|operation| !operation.is_null())
@@ -635,6 +667,7 @@ fn legacy_notification(node: &BinaryNode) -> Result<Vec<Effect>, Error> {
                 .map(|profiles| json!([profiles]))
         });
     let (Some(updates), Some(operation)) = (updates, operation.filter(truthy)) else {
+        tracing::warn!("invalid mex newsletter notification content");
         return Ok(vec![]);
     };
     tracing::info!(%operation, "got mex newsletter notification");

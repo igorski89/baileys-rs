@@ -162,10 +162,15 @@ impl Socket {
                 {
                     Ok(()) => break,
                     Err(error) if attempt >= options.max_commit_attempts.max(1) => {
+                        tracing::warn!(?error, "failed to commit mutations, retries left=0");
                         return Err(error.into());
                     }
                     Err(error) => {
-                        tracing::warn!(attempt, ?error, "retrying app-state patch commit");
+                        let retries_left = options.max_commit_attempts.max(1) - attempt;
+                        tracing::warn!(
+                            ?error,
+                            "failed to commit mutations, retries left={retries_left}"
+                        );
                         tokio::time::sleep(options.commit_retry_delay).await;
                     }
                 }
@@ -457,7 +462,7 @@ impl Socket {
             let Some(inner) = weak.upgrade() else { return };
             let socket = Socket { inner };
             if let Err(error) = socket.resync_app_state(&collections, false).await {
-                tracing::warn!(?error, "blocked app-state collection resync failed");
+                tracing::error!(?error, "unexpected error in 'blocked collections resync'");
             }
         });
     }

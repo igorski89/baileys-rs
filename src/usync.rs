@@ -582,6 +582,7 @@ pub fn contact_query(inputs: &[String]) -> Query {
     let mut query = Query::default().with_protocol(Protocol::Contact);
     for input in inputs {
         if Jid::parse(input).is_some_and(|j| j.is_lid_user()) {
+            tracing::warn!("LIDs are not supported with onWhatsApp");
             continue;
         }
         let phone = input.replacen('+', "", 1);

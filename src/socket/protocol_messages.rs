@@ -20,6 +20,28 @@ impl Socket {
         let kind = protocol.r#type.and_then(|t| Type::try_from(t).ok());
         // These operations are only accepted from another device on our account.
         if message.key.as_ref().and_then(|k| k.from_me) != Some(true) {
+            if matches!(
+                kind,
+                Some(
+                    Type::HistorySyncNotification
+                        | Type::AppStateSyncKeyShare
+                        | Type::LidMigrationMappingSync
+                        | Type::PeerDataOperationRequestResponseMessage
+                )
+            ) {
+                let key = message.key.as_ref();
+                tracing::warn!(
+                    msg_id = ?key.and_then(|k| k.id.as_deref()),
+                    "type" = ?protocol.r#type,
+                    from = ?key.and_then(|k| {
+                        k.participant
+                            .as_deref()
+                            .filter(|p| !p.is_empty())
+                            .or(k.remote_jid.as_deref())
+                    }),
+                    "dropping spoofed self-only protocolMessage from non-self origin"
+                );
+            }
             return Ok(());
         }
         match kind {

@@ -486,7 +486,7 @@ impl Socket {
             .send_node(receipts::acknowledgement(node, None, None))
             .await
         {
-            tracing::warn!(?error, "failed to acknowledge app-state notification");
+            tracing::error!(?error, "failed to ack notification");
         }
         result?;
         Ok(true)
@@ -536,7 +536,7 @@ pub(super) fn spawn_worker(
                 let result = socket.process_notification(&node).await;
                 drop(guard);
                 if let Err(error) = socket.finish_app_state_notification(&node, result).await {
-                    tracing::warn!(?error, "app-state notification processing failed");
+                    tracing::error!(?error, "unexpected error in 'handling notification'");
                 }
             });
         }

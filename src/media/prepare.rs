@@ -505,7 +505,7 @@ pub async fn prepare(
             enrich(&mut payload, file.original(), options, hooks)
         );
         if let Err(error) = extra {
-            tracing::debug!(?error, "media metadata unavailable");
+            tracing::warn!(?error, "failed to obtain extra info");
         }
         upload?
     };

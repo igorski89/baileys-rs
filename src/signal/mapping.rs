@@ -177,15 +177,15 @@ impl Store {
         let validated: Vec<_> = pairs
             .iter()
             .filter_map(|pair| {
-                let pn = Jid::parse(&pair.pn)?;
-                let lid = Jid::parse(&pair.lid)?;
+                let parsed = Jid::parse(&pair.pn).zip(Jid::parse(&pair.lid));
                 // Preserve upstream's accepted reversed-field case; it does not swap
                 // the fields after validation. Hosted pairs are not accepted here.
-                if !((pn.is_pn_user() && lid.is_lid_user())
-                    || (pn.is_lid_user() && lid.is_pn_user()))
-                {
+                let Some((pn, lid)) = parsed.filter(|(pn, lid)| {
+                    (pn.is_pn_user() && lid.is_lid_user()) || (pn.is_lid_user() && lid.is_pn_user())
+                }) else {
+                    tracing::warn!("Invalid LID-PN mapping: {}, {}", pair.lid, pair.pn);
                     return None;
-                }
+                };
                 Some((pn.user, lid.user))
             })
             .collect();
@@ -381,6 +381,9 @@ impl Store {
             && let Some(resolver) = &self.inner.resolver
         {
             let resolved = resolver.resolve(&fetch.keys().cloned().collect::<Vec<_>>())?;
+            if resolved.is_empty() {
+                tracing::warn!("USync fetch yielded no results for pending PNs");
+            }
             self.store_mappings(&resolved)?;
             for pair in resolved {
                 let (Some(pn), Some(lid), Some(devices)) = (

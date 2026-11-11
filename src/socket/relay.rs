@@ -395,7 +395,11 @@ impl Socket {
                     include_identity |= nodes.participants.should_include_device_identity;
                     participants.extend(nodes.participants.nodes);
                     for failure in nodes.participants.failures {
-                        tracing::debug!(?failure.error, "recipient encryption failed");
+                        tracing::error!(
+                            jid = %failure.jid,
+                            error = ?failure.error,
+                            "Failed to encrypt for recipient"
+                        );
                     }
                 } else {
                     for (targets, payload, override_dsm) in [
@@ -417,7 +421,11 @@ impl Socket {
                         include_identity |= nodes.should_include_device_identity;
                         participants.extend(nodes.nodes);
                         for failure in nodes.failures {
-                            tracing::debug!(?failure.error, "recipient encryption failed");
+                            tracing::error!(
+                                jid = %failure.jid,
+                                error = ?failure.error,
+                                "Failed to encrypt for recipient"
+                            );
                         }
                     }
                 }
@@ -425,7 +433,11 @@ impl Socket {
                     let distribution =
                         relay::retry_distribution(tx, &destination_owned, &me, me_lid.as_deref())?;
                     if let Some(error) = distribution.warning {
-                        tracing::debug!(?error, "retry distribution unavailable");
+                        tracing::warn!(
+                            ?error,
+                            jid = %destination_owned,
+                            "failed to build SKDM for retry, sending without it"
+                        );
                     }
                     let payload = relay::retry_payload(
                         &destination_owned,
@@ -458,7 +470,11 @@ impl Socket {
                     match messages::encode(reporting_message.as_ref().unwrap()) {
                         Ok(bytes) => Some(bytes),
                         Err(error) => {
-                            tracing::debug!(?error, "report token encoding failed");
+                            tracing::warn!(
+                                ?error,
+                                jid = %destination_owned,
+                                "failed to attach reporting token"
+                            );
                             None
                         }
                     }
@@ -482,7 +498,11 @@ impl Socket {
                     privacy_token_on_1_to_1: props.privacy_token_on_1_to_1,
                 })?;
                 if let Some(error) = assembled.reporting_error {
-                    tracing::debug!(?error, "report token unavailable");
+                    tracing::warn!(
+                        ?error,
+                        jid = %destination_owned,
+                        "failed to attach reporting token"
+                    );
                 }
                 binary::encode(&assembled.node)?;
                 Ok((assembled.node, sender_timestamp))

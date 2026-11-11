@@ -757,6 +757,29 @@ impl Socket {
         config: Config,
         store: SqliteAuthStore,
     ) -> Result<(Self, broadcast::Receiver<Event>), Error> {
+        if config.payload.browser.1.to_lowercase().contains("android") {
+            tracing::warn!(
+                "⚠️ Using the Android browser is experimental and may lead to unexpected behavior. Use at your own risk."
+            );
+        }
+        // Upstream asks the predicate about each of PROCESSABLE_HISTORY_TYPES
+        // (0..=6), every one of them, before counting the refusals.
+        let refused = (0..=6)
+            .filter(|&sync_type| {
+                !config.history_policy.should_process(
+                    &crate::proto::message::HistorySyncNotification {
+                        sync_type: Some(sync_type),
+                        ..Default::default()
+                    },
+                )
+            })
+            .count();
+        let sync_disabled = refused == 7;
+        if sync_disabled {
+            tracing::warn!(
+                "⚠️ DANGER: DISABLING ALL SYNC BY shouldSyncHistoryMsg PREVENTS BAILEYS FROM ACCESSING INITIAL LID MAPPINGS, LEADING TO INSTABILIY AND SESSION ERRORS"
+            );
+        }
         if config.connect_timeout.is_zero()
             || config.query_timeout.is_zero()
             || config.keep_alive_interval.is_zero()
@@ -961,7 +984,7 @@ impl Socket {
                     break;
                 };
                 if let Err(error) = (Socket { inner }).handle_receipt(&node).await {
-                    tracing::debug!(?error, "receipt handling failed");
+                    tracing::error!(?error, "unexpected error in 'handling receipt'");
                 }
             }
         });
@@ -1149,7 +1172,13 @@ impl Socket {
         query.context = "background".into();
         query.users = jids
             .iter()
-            .filter(|jid| !crate::jid::Jid::parse(jid).is_some_and(|j| j.is_lid_user()))
+            .filter(|jid| {
+                let lid = crate::jid::Jid::parse(jid).is_some_and(|j| j.is_lid_user());
+                if lid {
+                    tracing::warn!("LID user found in LID fetch call");
+                }
+                !lid
+            })
             .map(crate::usync::User::with_id)
             .collect();
         if query.users.is_empty() {
@@ -1202,6 +1231,9 @@ impl Socket {
         let fetched = self
             .fetch_lid_mappings(&missing.into_iter().collect::<Vec<_>>())
             .await?;
+        if fetched.is_empty() {
+            tracing::warn!("USync fetch yielded no results for pending PNs");
+        }
         let mapping = self.inner.decryptor.direct.lid_mapping().clone();
         let inputs = pns.to_vec();
         Ok(tokio::task::spawn_blocking(move || {

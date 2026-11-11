@@ -185,7 +185,13 @@ impl Buffer {
         {
             self.timers.remove(position);
             let flush = match timer.kind {
-                TimerKind::Auto | TimerKind::Pending => true,
+                TimerKind::Auto => {
+                    if self.active {
+                        tracing::warn!("Buffer timeout reached, auto-flushing");
+                    }
+                    true
+                }
+                TimerKind::Pending => true,
                 TimerKind::Single => self.active && self.count == 1,
             };
             if flush {

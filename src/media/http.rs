@@ -133,7 +133,7 @@ where
     let mut headers = options.headers.clone();
     headers.insert(CONTENT_TYPE, "application/octet-stream".parse().unwrap());
     headers.insert(ORIGIN, defaults::DEFAULT_ORIGIN.parse().unwrap());
-    for host in hosts {
+    for host in &hosts {
         let result = transport
             .upload(UploadRequest {
                 url: upload_url(&host.hostname, kind, hash, &connection.auth),
@@ -149,14 +149,48 @@ where
             {
                 return Ok(result);
             }
-            Ok(_) => match refresh(true).await {
-                Ok(updated) => connection = updated,
-                Err(error) => tracing::debug!(?error, "media connection refresh failed"),
+            Ok(result) => match refresh(true).await {
+                Ok(updated) => {
+                    connection = updated;
+                    tracing::warn!(
+                        upload_result = ?result,
+                        "{}",
+                        upload_error_message(&hosts, &connection, &host.hostname)
+                    );
+                }
+                Err(error) => tracing::warn!(
+                    ?error,
+                    upload_result = ?result,
+                    "{}",
+                    upload_error_message(&hosts, &connection, &host.hostname)
+                ),
             },
-            Err(error) => tracing::debug!(?error, "media upload host failed"),
+            Err(error) => tracing::warn!(
+                ?error,
+                "{}",
+                upload_error_message(&hosts, &connection, &host.hostname)
+            ),
         }
     }
     Err(Error::UploadFailed)
+}
+
+// Upstream indexes the combined host list with the server host count to tell the last host.
+fn upload_error_message(
+    hosts: &[UploadHost],
+    connection: &MediaConnection,
+    hostname: &str,
+) -> String {
+    let last = connection
+        .hosts
+        .len()
+        .checked_sub(1)
+        .and_then(|index| hosts.get(index))
+        .is_some_and(|last| last.hostname == hostname);
+    format!(
+        "Error in uploading to {hostname} {}",
+        if last { "" } else { ", retrying..." }
+    )
 }
 
 /// Reusable native HTTP clients; the upload client must disable automatic redirects

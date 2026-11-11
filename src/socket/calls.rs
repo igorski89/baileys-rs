@@ -13,7 +13,7 @@ impl Socket {
                 if let Err(error) = self.inner.events.send(Event::Calls(vec![call.clone()])) {
                     tracing::warn!(?error, "call event publication failed");
                     if let Err(error) = self.send_message_ack(node, None).await {
-                        tracing::warn!(?error, "call acknowledgement failed");
+                        tracing::error!(?error, "failed to ack call");
                     }
                     return Ok(());
                 }
@@ -42,10 +42,10 @@ impl Socket {
                     Err(error) => tracing::warn!(?error, "call message generation failed"),
                 }
             }
-            Err(error) => tracing::warn!(?error, "call processing failed"),
+            Err(error) => tracing::error!(?error, "error in handling call"),
         }
         if let Err(error) = self.send_message_ack(node, None).await {
-            tracing::warn!(?error, "call acknowledgement failed");
+            tracing::error!(?error, "failed to ack call");
         }
         Ok(())
     }

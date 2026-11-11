@@ -283,7 +283,7 @@ impl SqliteAuthStore {
         self.transaction_with_error(work)
     }
     /// Run application work atomically while preserving its own typed errors.
-    pub fn transaction_with_error<T, E: From<Error>>(
+    pub fn transaction_with_error<T, E: From<Error> + std::fmt::Debug>(
         &self,
         work: impl FnOnce(&mut AuthTransaction<'_>) -> Result<T, E>,
     ) -> Result<T, E> {
@@ -298,8 +298,12 @@ impl SqliteAuthStore {
             sql,
             cache: BTreeMap::new(),
         };
-        let result = work(&mut tx)?;
-        tx.sql.commit().map_err(Error::from)?;
+        let result = work(&mut tx)
+            .and_then(|result| {
+                tx.sql.commit().map_err(Error::from)?;
+                Ok(result)
+            })
+            .inspect_err(|error| tracing::error!(?error, "transaction failed, rolling back"))?;
         Ok(result)
     }
     /// Import a snapshot from the TypeScript multi-file adapter. IDs containing
@@ -517,6 +521,7 @@ impl AuthTransaction<'_> {
                 && mutation.value.is_none()
                 && !matches!(self.cache.get(&address), Some(Some(_)))
             {
+                tracing::warn!("Skipping deletion of non-existent pre-key: {}", mutation.id);
                 continue;
             }
             write_key(&self.sql, mutation)?;

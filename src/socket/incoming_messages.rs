@@ -24,11 +24,14 @@ impl Socket {
         let _serial = self.inner.message_lock.lock().await;
         let mut acked = false;
         let result = self.incoming_message_work(node, &mut acked).await;
+        if let Err(error) = &result {
+            tracing::error!(?error, "error in handling message");
+        }
         if result.is_err()
             && !acked
             && let Err(error) = self.send_message_ack(node, Some(500)).await
         {
-            tracing::debug!(?error, "incoming error acknowledgement failed");
+            tracing::error!(?error, "failed to ack message after error");
         }
         result
     }
@@ -105,12 +108,15 @@ impl Socket {
         })
         .await
         .map_err(|_| Error::Task)??;
-        for error in decrypted
-            .mapping_errors
-            .iter()
-            .chain(&decrypted.distribution_errors)
-        {
-            tracing::debug!(?error, "received message mapping/distribution warning");
+        for error in &decrypted.mapping_errors {
+            tracing::warn!(?error, "Failed to store LID mapping");
+        }
+        for error in &decrypted.distribution_errors {
+            tracing::error!(
+                ?error,
+                key = ?decrypted.envelope.message.key,
+                "failed to process sender key distribution message"
+            );
         }
         let envelope = &mut decrypted.envelope;
         let key = envelope
@@ -176,7 +182,7 @@ impl Socket {
                 ) && let Err(error) =
                     Box::pin(self.send_retry_request(node, node.child("enc").is_none())).await
                 {
-                    tracing::debug!(?error, "incoming decrypt retry failed");
+                    tracing::error!(?error, "Failed to send retry");
                 }
                 if !self.inner.retry_request_delay.is_zero() {
                     tokio::time::sleep(self.inner.retry_request_delay).await;

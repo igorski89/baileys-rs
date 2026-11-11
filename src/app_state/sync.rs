@@ -273,8 +273,10 @@ impl Synchronizer {
                             tracing::warn!(
                                 name,
                                 attempt = *attempt,
+                                version,
                                 ?error,
-                                "app-state collection synchronization failed"
+                                "{name} blocked on missing key from v{version}, parking after {} attempts",
+                                *attempt
                             );
                         } else if error.is_missing_key() {
                             force_snapshot.insert(name.clone());
@@ -306,8 +308,9 @@ impl Synchronizer {
                             tracing::warn!(
                                 name,
                                 attempt = *attempt,
+                                version,
                                 ?error,
-                                "app-state collection synchronization failed"
+                                "failed to sync {name} from v{version}, giving up"
                             );
                         } else {
                             force_snapshot.insert(name.clone());
@@ -348,10 +351,15 @@ impl Synchronizer {
                 {
                     Ok(()) => break,
                     Err(error) if attempt >= options.max_commit_attempts.max(1) => {
+                        tracing::warn!(?error, "failed to commit mutations, retries left=0");
                         return Err(error.into());
                     }
                     Err(error) => {
-                        tracing::warn!(attempt, ?error, "retrying app-state transaction commit");
+                        let retries_left = options.max_commit_attempts.max(1) - attempt;
+                        tracing::warn!(
+                            ?error,
+                            "failed to commit mutations, retries left={retries_left}"
+                        );
                         tokio::time::sleep(options.commit_retry_delay).await;
                     }
                 }

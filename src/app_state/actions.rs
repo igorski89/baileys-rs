@@ -179,6 +179,12 @@ pub fn process_action(
     }
     if let Some(contact) = a.and_then(|a| a.contact_action.as_ref()) {
         let Some(id) = id.filter(|s| !s.is_empty()) else {
+            tracing::warn!(
+                has_full_name = nonempty(&contact.full_name).is_some(),
+                has_lid_jid = nonempty(&contact.lid_jid).is_some(),
+                has_pn_jid = nonempty(&contact.pn_jid).is_some(),
+                "contactAction sync: missing id in index"
+            );
             return Ok(vec![]);
         };
         // Source classification uses suffix checks rather than strict JID parsing.

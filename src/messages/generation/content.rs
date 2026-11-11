@@ -338,7 +338,7 @@ pub async fn content(
                         match hooks.link_preview(url.into()).await {
                             Ok(preview) => preview,
                             Err(error) => {
-                                tracing::debug!(?error, "url generation failed");
+                                tracing::warn!(?error, "url generation failed");
                                 None
                             }
                         }

@@ -668,12 +668,16 @@ impl Actor<'_> {
                     let ack = node.clone();
                     tokio::spawn(async move {
                         if let Err(error) = (super::Socket { inner }).handle_bad_ack(&ack).await {
-                            tracing::warn!(?error, "handling bad ack failed");
+                            tracing::error!(?error, "unexpected error in 'handling bad ack'");
                         }
                     });
                 }
             }
             "stream:error" => {
+                tracing::error!(
+                    reason_node = ?node.all_children().first().map(|n| &n.tag),
+                    "stream errored out"
+                );
                 let code = node
                     .attrs
                     .get("code")
@@ -748,7 +752,7 @@ impl Actor<'_> {
                             "Own LID session created successfully"
                         ),
                         Err(error) => {
-                            tracing::warn!(?error, "failed to initialize own LID session")
+                            tracing::error!(?error, lid = %lid, "Failed to create own LID session")
                         }
                     }
                 }
@@ -851,7 +855,7 @@ impl Actor<'_> {
                     // handler (onUnexpectedError) and the ack still goes out,
                     // so the connection stays up for the pair-success.
                     Err(error) => {
-                        tracing::error!(?error, "unexpected error in 'processing notification'")
+                        tracing::error!(?error, "unexpected error in 'handling notification'")
                     }
                 }
                 if let (Some(id), Some(from)) = (node.attrs.get("id"), node.attrs.get("from")) {
@@ -967,7 +971,11 @@ impl Actor<'_> {
                 let result = node.assert_error_free().map(|()| node).map_err(Error::from);
                 let _ = reply.send(result);
             }
-            PendingKind::Heartbeat => (),
+            PendingKind::Heartbeat => {
+                if let Err(error) = node.assert_error_free() {
+                    tracing::error!(?error, "error in sending keep alive");
+                }
+            }
             PendingKind::CodeFinish => match node.assert_error_free() {
                 Ok(()) => {
                     self.credentials.registered = true;
@@ -976,10 +984,22 @@ impl Actor<'_> {
                 // The query throws inside the notification handler, which
                 // only logs it: registered stays false.
                 Err(error) => {
-                    tracing::error!(?error, "unexpected error in 'processing notification'")
+                    tracing::error!(?error, "unexpected error in 'handling notification'")
                 }
             },
             PendingKind::InitCount => {
+                // Upstream throws on an error reply or a missing count child,
+                // not on an unparsable count.
+                match node.assert_error_free() {
+                    Err(error) => tracing::error!(
+                        ?error,
+                        "Failed to check/upload pre-keys during initialization"
+                    ),
+                    Ok(()) if node.child("count").is_none() => {
+                        tracing::error!("Failed to check/upload pre-keys during initialization")
+                    }
+                    Ok(()) => (),
+                }
                 let count = node
                     .child("count")
                     .and_then(|n| n.attrs.get("value"))
@@ -1034,6 +1054,9 @@ impl Actor<'_> {
                     self.emit(Event::CredentialsUpdated);
                     tracing::info!(count, "uploaded pre-keys successfully");
                 }
+                if let Err(error) = node.assert_error_free() {
+                    tracing::error!(?error, count, "Failed to upload pre-keys to server");
+                }
                 if !valid {
                     self.retry_upload(count, attempt, after).await?;
                 } else {
@@ -1041,6 +1064,9 @@ impl Actor<'_> {
                 }
             }
             PendingKind::InitActive => {
+                if let Err(error) = node.assert_error_free() {
+                    tracing::warn!(?error, "failed to send initial passive iq");
+                }
                 self.internal_query(
                     BinaryNode::new("iq")
                         .attr("to", "@s.whatsapp.net")
@@ -1052,6 +1078,9 @@ impl Actor<'_> {
                 .await?;
             }
             PendingKind::InitDigest => {
+                if let Err(error) = node.assert_error_free() {
+                    tracing::warn!(?error, "failed to run digest after login");
+                }
                 if valid && node.child("digest").is_none() {
                     self.upload(5, 0, After::Open).await?;
                 } else {
@@ -1139,6 +1168,15 @@ impl Actor<'_> {
             return Ok(());
         }
         self.upload_deadline = None;
+        match after {
+            // Upstream's digest throws after its upload whether or not it succeeded.
+            After::Open => tracing::warn!(uploaded, "failed to run digest after login"),
+            After::Active if !uploaded => tracing::error!(
+                error = ?Error::PreKeyUpload,
+                "Failed to check/upload pre-keys during initialization"
+            ),
+            _ => (),
+        }
         for waiter in self.upload_waiters.drain(..) {
             let _ = waiter.send(if uploaded {
                 Ok(())
@@ -1200,7 +1238,7 @@ impl Actor<'_> {
         if self.config.announce_presence_on_connect
             && let Err(error) = self.presence(presence, None).await
         {
-            tracing::warn!(?error, "startup presence failed");
+            tracing::error!(?error, "unexpected error in 'presence update requests'");
         }
         self.unified_session().await
     }
@@ -1211,6 +1249,7 @@ impl Actor<'_> {
     ) -> Result<(), Error> {
         let me = self.credentials.me.as_ref().ok_or(Error::Config)?;
         let Some(node) = super::presence::update_node(me, presence, to)? else {
+            tracing::warn!("no name present, ignoring presence update request...");
             return Ok(());
         };
         if presence.is_global() {
@@ -1319,8 +1358,20 @@ impl Actor<'_> {
                 let _ = waiter.send(Err(Error::PreKeyUploadTimeout));
             }
             match after {
-                After::Open => self.open().await?,
-                After::Active => self.active().await?,
+                After::Open => {
+                    tracing::warn!(
+                        error = ?Error::PreKeyUploadTimeout,
+                        "failed to run digest after login"
+                    );
+                    self.open().await?
+                }
+                After::Active => {
+                    tracing::error!(
+                        error = ?Error::PreKeyUploadTimeout,
+                        "Failed to check/upload pre-keys during initialization"
+                    );
+                    self.active().await?
+                }
                 After::Waiters | After::Detached => {}
             }
         }
@@ -1345,19 +1396,41 @@ impl Actor<'_> {
                         }
                         let _ = reply.send(Err(Error::Timeout));
                     }
-                    PendingKind::InitCount => self.active().await?,
+                    PendingKind::InitCount => {
+                        tracing::error!(
+                            error = ?Error::Timeout,
+                            "Failed to check/upload pre-keys during initialization"
+                        );
+                        self.active().await?
+                    }
                     PendingKind::InitUpload {
                         count,
                         attempt,
                         after,
                         ..
-                    } => self.retry_upload(count, attempt, after).await?,
-                    PendingKind::InitActive | PendingKind::InitDigest => self.open().await?,
+                    } => {
+                        tracing::error!(
+                            error = ?Error::Timeout,
+                            count,
+                            "Failed to upload pre-keys to server"
+                        );
+                        self.retry_upload(count, attempt, after).await?
+                    }
+                    PendingKind::InitActive => {
+                        tracing::warn!(error = ?Error::Timeout, "failed to send initial passive iq");
+                        self.open().await?
+                    }
+                    PendingKind::InitDigest => {
+                        tracing::warn!(error = ?Error::Timeout, "failed to run digest after login");
+                        self.open().await?
+                    }
                     PendingKind::CodeFinish => tracing::error!(
                         error = ?Error::Timeout,
-                        "unexpected error in 'processing notification'"
+                        "unexpected error in 'handling notification'"
                     ),
-                    PendingKind::Heartbeat => (),
+                    PendingKind::Heartbeat => {
+                        tracing::error!(error = ?Error::Timeout, "error in sending keep alive")
+                    }
                 }
             }
         }

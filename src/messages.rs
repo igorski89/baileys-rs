@@ -595,6 +595,23 @@ pub fn decrypt_node(
                 _ => "other",
             };
             crate::metrics::count("baileys_decrypt_failures_total", &[("type", kind)]);
+            let message_type = if child.tag == "plaintext" {
+                Some("plaintext")
+            } else {
+                child.attrs.get("type").map(String::as_str)
+            };
+            // libsignal's "No session record" is a direct-session lookup miss.
+            let is_session_record_error = matches!(kind, "pkmsg" | "msg")
+                && matches!(error, Error::Signal(signal::Error::NoSession));
+            tracing::error!(
+                ?error,
+                key = ?envelope.message.key,
+                message_type,
+                sender = %envelope.sender,
+                author = %envelope.author,
+                is_session_record_error,
+                "failed to decrypt message"
+            );
             let reason = if matches!(error, Error::Signal(signal::Error::MissingPreKey)) {
                 incoming::MISSING_KEYS.into()
             } else {
