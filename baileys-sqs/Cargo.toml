@@ -23,7 +23,7 @@ qrcode = { version = "0.14", default-features = false }
 rand = "0.9"
 regex = "1"
 reqwest = { version = "0.12", default-features = false, features = ["rustls-tls-native-roots"] }
-rusqlite = { version = "0.38", features = ["bundled"] }
+rusqlite = { version = "0.39", features = ["bundled"] }
 rustls = { version = "0.23", default-features = false, features = ["ring"] }
 serde_json = { version = "1", features = ["preserve_order"] }
 sha2 = "0.10"
@@ -35,5 +35,5 @@ tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 uuid = { version = "1", features = ["v4"] }
 
 [dev-dependencies]
-rusticmq = { git = "https://github.com/igorski89/rusticmq.git", rev = "ee7053fe970940bff1fa7dfa57eb55dc01638637" }
+rusticmq = { git = "https://github.com/igorski89/rusticmq.git", rev = "e1ce2957d4f5c4eb96e7a8670c8e52514c744315" }
 tempfile = "3"

@@ -1831,7 +1831,7 @@ dependencies = [
 [[package]]
 name = "hocon"
 version = "0.9.0"
-source = "git+https://github.com/igorski89/rusticmq.git?rev=ee7053fe970940bff1fa7dfa57eb55dc01638637#ee7053fe970940bff1fa7dfa57eb55dc01638637"
+source = "git+https://github.com/igorski89/rusticmq.git?rev=e1ce2957d4f5c4eb96e7a8670c8e52514c744315#e1ce2957d4f5c4eb96e7a8670c8e52514c744315"
 dependencies = [
  "aho-corasick 0.7.20",
  "java-properties",
@@ -2296,9 +2296,9 @@ checksum = "b6d2cec3eae94f9f509c767b45932f1ada8350c4bdb85af2fcab4a3c14807981"
 
 [[package]]
 name = "libsqlite3-sys"
-version = "0.36.0"
+version = "0.37.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "95b4103cffefa72eb8428cb6b47d6627161e51c2739fc5e3b734584157bc642a"
+checksum = "b1f111c8c41e7c61a49cd34e44c7619462967221a6443b0ec299e0ac30cfb9b1"
 dependencies = [
  "cc",
  "pkg-config",
@@ -3321,9 +3321,9 @@ dependencies = [
 
 [[package]]
 name = "rusqlite"
-version = "0.38.0"
+version = "0.39.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f1c93dd1c9683b438c392c492109cb702b8090b2bfc8fed6f6e4eb4523f17af3"
+checksum = "a0d2b0146dd9661bf67bb107c0bb2a55064d556eeb3fc314151b957f313bcd4e"
 dependencies = [
  "bitflags 2.13.2",
  "fallible-iterator",
@@ -3351,8 +3351,8 @@ dependencies = [
 
 [[package]]
 name = "rusticmq"
-version = "0.1.0"
-source = "git+https://github.com/igorski89/rusticmq.git?rev=ee7053fe970940bff1fa7dfa57eb55dc01638637#ee7053fe970940bff1fa7dfa57eb55dc01638637"
+version = "0.5.0"
+source = "git+https://github.com/igorski89/rusticmq.git?rev=e1ce2957d4f5c4eb96e7a8670c8e52514c744315#e1ce2957d4f5c4eb96e7a8670c8e52514c744315"
 dependencies = [
  "axum",
  "base64 0.22.1",
