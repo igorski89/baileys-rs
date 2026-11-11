@@ -160,6 +160,7 @@ pub(super) async fn run(
                 _ = maintenance.tick() => actor.maintain().await?,
                 _ = heartbeat.tick() => {
                     if actor.last_recv.elapsed() > actor.config.keep_alive_interval + Duration::from_secs(5) {
+                        crate::metrics::count("baileys_keepalive_timeouts_total", &[]);
                         return Err(actor.close(408, "Connection was lost"));
                     }
                     if !actor.pending.values().any(|p| matches!(p.kind, PendingKind::Heartbeat)) {
@@ -451,6 +452,12 @@ impl Actor<'_> {
                             self.emit(Event::CredentialsUpdated);
                         }
                         let result = self.send(&receipt).await;
+                        if result.is_ok() {
+                            crate::metrics::count(
+                                "baileys_retry_receipts_total",
+                                &[("direction", "sent")],
+                            );
+                        }
                         if result.is_err() {
                             let _ = reply.send(Err(Error::Closed(428)));
                             result?;
@@ -1123,6 +1130,10 @@ impl Actor<'_> {
     }
     /// Continue startup after its upload, and release callers waiting for any upload.
     async fn finish_upload(&mut self, after: After, uploaded: bool) -> Result<(), Error> {
+        crate::metrics::count(
+            "baileys_prekey_uploads_total",
+            &[("result", if uploaded { "ok" } else { "failed" })],
+        );
         if matches!(after, After::Detached) {
             // Whoever waited on this upload was released when it timed out.
             return Ok(());
@@ -1329,6 +1340,9 @@ impl Actor<'_> {
             if let Some(p) = self.pending.remove(&id) {
                 match p.kind {
                     PendingKind::Query { reply, .. } => {
+                        if !reply.is_closed() {
+                            crate::metrics::count("baileys_query_timeouts_total", &[]);
+                        }
                         let _ = reply.send(Err(Error::Timeout));
                     }
                     PendingKind::InitCount => self.active().await?,

@@ -683,6 +683,7 @@ dependencies = [
  "image",
  "indexmap",
  "md-5 0.10.6",
+ "metrics",
  "pbkdf2",
  "prost",
  "prost-build",

@@ -125,7 +125,20 @@ With `METRICS_PORT` set (the documented port is 9464), `GET http://<host>:<METRI
 | `baileys_events_dropped_total` | counter | | Events dropped because handling lagged |
 | `baileys_prekeys`, `baileys_signal_sessions` | gauge | | Pre-keys and Signal sessions in `auth.sqlite3`, counted every minute |
 
-Some alerts that would have caught past incidents: `baileys_pairing_code_requests_total > 0` or `baileys_qr_codes_total > 0` on a paired device (lost session); `baileys_connection_state{state="open"} == 0` for a few minutes; `time() - baileys_last_message_received_timestamp_seconds` above what the account normally sees; `increase(baileys_messages_without_content_total[1h]) > 0`; `baileys_signal_sessions` not growing while contacts write.
+These come from inside the library (its `metrics` feature, which the connector turns on):
+
+| Metric | Type | Labels | Meaning |
+|---|---|---|---|
+| `baileys_decrypt_failures_total` | counter | `type`: pkmsg, msg, skmsg, plaintext, other | Encrypted parts of incoming messages that failed to decrypt. One message can carry several parts, so this counts parts by Signal message type, where `baileys_messages_without_content_total` counts the resulting messages by reason |
+| `baileys_retry_receipts_total` | counter | `direction`: sent, received | Retry receipts we sent (asking a sender to resend) and received (a recipient asking us) |
+| `baileys_prekey_uploads_total` | counter | `result`: ok, failed | Pre-key uploads; failed means it gave up after the retries |
+| `baileys_app_state_syncs_total` | counter | `collection` (the five app-state collections); `result`: ok, retry, blocked, failed | App-state collection syncs; blocked means a key is missing and the collection waits for it |
+| `baileys_history_notifications_total` | counter | `sync_type` (`INITIAL_BOOTSTRAP`, `RECENT`, `FULL`, …); `processed`: true, false | History sync notifications received |
+| `baileys_lid_lookups_total` | counter | `direction`: pn_to_lid, lid_to_pn; `result`: hit, miss | JIDs looked up in the PN-LID mapping (after asking the server when needed) |
+| `baileys_keepalive_timeouts_total` | counter | | Connections closed because the server stopped answering (408) |
+| `baileys_query_timeouts_total` | counter | | Queries to the server that got no answer in time |
+
+Some alerts that would have caught past incidents: `baileys_pairing_code_requests_total > 0` or `baileys_qr_codes_total > 0` on a paired device (lost session); `baileys_connection_state{state="open"} == 0` for a few minutes; `time() - baileys_last_message_received_timestamp_seconds` above what the account normally sees; `increase(baileys_messages_without_content_total[1h]) > 0`; `increase(baileys_prekey_uploads_total{result="failed"}[1h]) > 0`; `baileys_app_state_syncs_total{result="blocked"}` rising; `baileys_signal_sessions` not growing while contacts write.
 
 ## Local development
 

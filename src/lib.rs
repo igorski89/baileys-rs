@@ -19,6 +19,7 @@ pub mod jid;
 pub mod link_preview;
 pub mod media;
 pub mod messages;
+pub mod metrics;
 pub mod newsletters;
 pub mod noise;
 pub mod notifications;

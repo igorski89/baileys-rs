@@ -586,6 +586,15 @@ pub fn decrypt_node(
             Ok::<_, Error>(())
         })();
         if let Err(error) = result {
+            let kind = match child.attrs.get("type").map(String::as_str) {
+                _ if child.tag == "plaintext" => "plaintext",
+                Some("pkmsg") => "pkmsg",
+                Some("msg") => "msg",
+                Some("skmsg") => "skmsg",
+                Some("plaintext") => "plaintext",
+                _ => "other",
+            };
+            crate::metrics::count("baileys_decrypt_failures_total", &[("type", kind)]);
             let reason = if matches!(error, Error::Signal(signal::Error::MissingPreKey)) {
                 incoming::MISSING_KEYS.into()
             } else {

@@ -23,6 +23,8 @@ Build and check:
 ```sh
 cargo test
 cargo clippy --all-targets -- -D warnings
+# The connector turns on the library's `metrics` feature, so check the library alone too:
+cargo clippy -p baileys-rs --all-targets -- -D warnings
 cargo fmt --check
 ```
 

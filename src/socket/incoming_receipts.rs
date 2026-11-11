@@ -35,6 +35,7 @@ impl Socket {
                 .send(Event::MessageReceiptsUpdated(parsed.users));
         }
         if parsed.retry {
+            crate::metrics::count("baileys_retry_receipts_total", &[("direction", "received")]);
             parsed.key.participant = parsed
                 .key
                 .participant

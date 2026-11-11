@@ -12,6 +12,9 @@ Not gaps, but worth knowing: like upstream, the socket does not reconnect by its
 
 ## Deviations from upstream behaviour
 
+### Metrics
+- The optional `metrics` feature (off by default) counts socket internals with the `metrics` crate: decrypt failures, retry receipts, pre-key uploads, app-state syncs, history notifications, PN-LID lookups, keep-alive and query timeouts (`baileys_rs::metrics::COUNTERS`). Upstream has no metrics. Without the feature the calls compile to nothing; with it, nothing is kept until the application installs a recorder. `baileys_rs::metrics::describe()` gives the help texts. The baileys-sqs connector turns it on.
+
 ### Link previews
 - Opt-in through `Config::link_previews.enabled`. Upstream generates previews whenever its optional `link-preview-js` dependency is installed.
 - Page parsing is a reimplementation of `link-preview-js` on the `scraper` crate (html5ever), pinned by 126 upstream cases. A new upstream release of that package would need the fixtures regenerated; the generator needs `link-preview-js` installed in `.cache/fixture-tools`.

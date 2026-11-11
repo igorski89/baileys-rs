@@ -8,7 +8,7 @@ authors = ["Igor Ievsiukov <igor.ievsiukov@gmail.com>"]
 default-run = "baileys-sqs"
 
 [dependencies]
-baileys-rs = { path = ".." }
+baileys-rs = { path = "..", features = ["metrics"] }
 aws-config = { version = "1", features = ["behavior-version-latest"] }
 aws-credential-types = "1"
 aws-sdk-sqs = "1"

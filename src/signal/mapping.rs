@@ -244,10 +244,14 @@ impl Store {
             .map(|p| p.pn))
     }
     pub fn get_lids_for_pns(&self, pns: &[String]) -> Result<Vec<Mapping>, Error> {
-        self.lookup(pns, true)
+        let found = self.lookup(pns, true)?;
+        count_lookups("pn_to_lid", pns, found.len());
+        Ok(found)
     }
     pub fn get_pns_for_lids(&self, lids: &[String]) -> Result<Vec<Mapping>, Error> {
-        self.lookup(lids, false)
+        let found = self.lookup(lids, false)?;
+        count_lookups("lid_to_pn", lids, found.len());
+        Ok(found)
     }
     fn lookup(&self, jids: &[String], forward: bool) -> Result<Vec<Mapping>, Error> {
         if jids.is_empty() {
@@ -478,4 +482,12 @@ impl Store {
             None => Ok(address.clone()),
         }
     }
+}
+/// Count a lookup's distinct JIDs as hits (mapped) and misses.
+fn count_lookups(direction: &'static str, jids: &[String], found: usize) {
+    let asked = jids.iter().collect::<std::collections::BTreeSet<_>>().len() as u64;
+    let hits = (found as u64).min(asked);
+    let labels = |result| [("direction", direction), ("result", result)];
+    crate::metrics::add("baileys_lid_lookups_total", &labels("hit"), hits);
+    crate::metrics::add("baileys_lid_lookups_total", &labels("miss"), asked - hits);
 }

@@ -227,6 +227,13 @@ impl Synchronizer {
                         // Source deliberately does not update states[name] here;
                         // the next request reloads the staged version instead.
                         tracing::info!("synced {name} to v{}", decoded.state.version);
+                        crate::metrics::count(
+                            "baileys_app_state_syncs_total",
+                            &[
+                                ("collection", crate::metrics::collection(&name)),
+                                ("result", "ok"),
+                            ],
+                        );
                         initial_versions.insert(name.clone(), decoded.state.version);
                         cached_states.insert(name.clone(), Some(decoded.state.clone()));
                         staged.insert(name.clone(), decoded.state);
@@ -256,6 +263,13 @@ impl Synchronizer {
                         if error.is_missing_key() && *attempt >= MAX_SYNC_ATTEMPTS {
                             self.blocked.lock().await.insert(name.clone());
                             remaining.shift_remove(&name);
+                            crate::metrics::count(
+                                "baileys_app_state_syncs_total",
+                                &[
+                                    ("collection", crate::metrics::collection(&name)),
+                                    ("result", "blocked"),
+                                ],
+                            );
                             tracing::warn!(
                                 name,
                                 attempt = *attempt,
@@ -264,6 +278,13 @@ impl Synchronizer {
                             );
                         } else if error.is_missing_key() {
                             force_snapshot.insert(name.clone());
+                            crate::metrics::count(
+                                "baileys_app_state_syncs_total",
+                                &[
+                                    ("collection", crate::metrics::collection(&name)),
+                                    ("result", "retry"),
+                                ],
+                            );
                             tracing::info!(
                                 name,
                                 attempt = *attempt,
@@ -275,6 +296,13 @@ impl Synchronizer {
                         {
                             gave_up.push(name.clone());
                             remaining.shift_remove(&name);
+                            crate::metrics::count(
+                                "baileys_app_state_syncs_total",
+                                &[
+                                    ("collection", crate::metrics::collection(&name)),
+                                    ("result", "failed"),
+                                ],
+                            );
                             tracing::warn!(
                                 name,
                                 attempt = *attempt,
@@ -283,6 +311,13 @@ impl Synchronizer {
                             );
                         } else {
                             force_snapshot.insert(name.clone());
+                            crate::metrics::count(
+                                "baileys_app_state_syncs_total",
+                                &[
+                                    ("collection", crate::metrics::collection(&name)),
+                                    ("result", "retry"),
+                                ],
+                            );
                             tracing::info!(
                                 name,
                                 attempt = *attempt,

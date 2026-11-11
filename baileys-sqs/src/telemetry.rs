@@ -168,6 +168,8 @@ fn describe() {
         "baileys_signal_sessions",
         "Signal sessions in the session database"
     );
+    // The library's own counters (socket internals).
+    baileys_rs::metrics::describe();
     // Exported from the start, so an alert sees 0 rather than no series.
     for name in [
         "baileys_logged_out_total",

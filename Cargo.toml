@@ -48,6 +48,13 @@ tempfile = "3"
 image = { version = "0.25", default-features = false, features = ["jpeg", "png", "gif", "webp", "bmp", "tiff"] }
 symphonia = { version = "0.5.5", features = ["all"] }
 scraper = { version = "0.27.0", default-features = false }
+metrics = { version = "0.24", optional = true }
+
+[features]
+# Counters for socket internals (decrypt failures, retry receipts, pre-key
+# uploads, app-state syncs, history notifications, LID lookups, timeouts),
+# recorded with the `metrics` crate. Rust-only; see `baileys_rs::metrics`.
+metrics = ["dep:metrics"]
 
 [build-dependencies]
 heck = "0.5"

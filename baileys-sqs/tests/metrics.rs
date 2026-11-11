@@ -236,3 +236,55 @@ async fn the_connector_counts_what_it_does_and_serves_it() {
     assert!(text.contains("# HELP baileys_pairing_code_requests_total"));
     expect("baileys_pairing_code_requests_total", 0.0);
 }
+
+/// The library's counters (the `metrics` feature) reach the same endpoint.
+#[test]
+fn library_counters_are_described_and_counted() {
+    use baileys_rs::{
+        auth::{Credentials, SqliteAuthStore},
+        binary::{BinaryNode, NodeContent},
+        messages::{self, SignalDecryptor},
+    };
+    let runtime = tokio::runtime::Runtime::new().unwrap();
+    let handle = runtime.block_on(async { telemetry::install() });
+    let store = SqliteAuthStore::in_memory().unwrap();
+    store
+        .save_credentials(&Credentials::generate().unwrap())
+        .unwrap();
+    // A Signal message from a sender without a session cannot be decrypted.
+    let node = BinaryNode::new("message")
+        .attr("id", "ABC")
+        .attr("t", "1700000000")
+        .attr("from", "100:1@s.whatsapp.net")
+        .with_content(NodeContent::Children(vec![
+            BinaryNode::new("enc")
+                .attr("type", "msg")
+                .with_content(NodeContent::Bytes(vec![3; 40])),
+        ]));
+    let decrypted = messages::decrypt_node(
+        &node,
+        "200@s.whatsapp.net",
+        "800@lid",
+        &SignalDecryptor::new(store),
+    )
+    .unwrap();
+    assert!(decrypted.envelope.message.message_stub_type.is_some());
+    let text = handle.render();
+    assert_eq!(
+        value(&text, r#"baileys_decrypt_failures_total{type="msg"}"#),
+        Some(1.0)
+    );
+    assert_eq!(value(&text, "baileys_keepalive_timeouts_total"), Some(0.0));
+    assert_eq!(value(&text, "baileys_query_timeouts_total"), Some(0.0));
+    // The exporter writes help text only for counters that have a series.
+    for name in [
+        "baileys_decrypt_failures_total",
+        "baileys_keepalive_timeouts_total",
+        "baileys_query_timeouts_total",
+    ] {
+        assert!(
+            text.contains(&format!("# HELP {name} ")),
+            "{name} is described"
+        );
+    }
+}

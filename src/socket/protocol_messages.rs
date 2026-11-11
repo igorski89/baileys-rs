@@ -44,6 +44,16 @@ impl Socket {
                     id = ?message.key.as_ref().and_then(|k| k.id.as_deref()),
                     "got history notification"
                 );
+                crate::metrics::count(
+                    "baileys_history_notifications_total",
+                    &[
+                        (
+                            "sync_type",
+                            crate::metrics::history_sync_type(notification.sync_type),
+                        ),
+                        ("processed", if history_eligible { "true" } else { "false" }),
+                    ],
+                );
                 if !history_eligible {
                     return Ok(());
                 }
