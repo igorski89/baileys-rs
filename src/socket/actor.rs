@@ -343,9 +343,8 @@ impl Actor<'_> {
                         matches!(&p.kind, PendingKind::InitUpload { after, .. } if !matches!(after, After::Detached))
                     });
                 self.upload_waiters.push(reply);
-                if !busy && let Err(error) = self.upload(count, 0, After::Waiters).await {
-                    tracing::warn!(?error, "pre-key upload preparation failed");
-                    self.finish_upload(After::Waiters, false).await?;
+                if !busy {
+                    self.upload(count, 0, After::Waiters).await?;
                 }
             }
             Command::SignedPreKey { key, reply } => {
@@ -1013,7 +1012,19 @@ impl Actor<'_> {
                             .map(|keys| last > 0 && keys.contains_key(&last.to_string()))
                     })
                     .await
-                    .map_err(|_| Error::Task)??;
+                    .map_err(|_| Error::Task)
+                    .and_then(|r| r.map_err(Error::from));
+                    // Upstream logs a failed check and carries on.
+                    let exists = match exists {
+                        Ok(exists) => exists,
+                        Err(error) => {
+                            tracing::error!(
+                                ?error,
+                                "Failed to check/upload pre-keys during initialization"
+                            );
+                            return self.active().await;
+                        }
+                    };
                     let missing = last > 0 && !exists;
                     tracing::info!("{count} pre-keys found on server");
                     tracing::info!("Current prekey ID: {last}, exists in storage: {exists}");
@@ -1060,12 +1071,14 @@ impl Actor<'_> {
                 if !valid {
                     self.retry_upload(count, attempt, after).await?;
                 } else {
-                    self.finish_upload(after, true).await?;
+                    self.finish_upload(after, Ok(())).await?;
                 }
             }
             PendingKind::InitActive => {
+                // Upstream's passive IQ throws past the digest check.
                 if let Err(error) = node.assert_error_free() {
                     tracing::warn!(?error, "failed to send initial passive iq");
+                    return self.open().await;
                 }
                 self.internal_query(
                     BinaryNode::new("iq")
@@ -1090,11 +1103,31 @@ impl Actor<'_> {
         }
         Ok(())
     }
+    /// Upload `count` pre-keys. As upstream, a failure to generate them is
+    /// not retried: it fails the upload at once, and startup carries on.
     async fn upload(&mut self, count: u32, attempt: u8, after: After) -> Result<(), Error> {
         if attempt == 0 {
             self.upload_deadline = Some(Instant::now() + self.config.pre_key_upload_timeout);
         }
         tracing::info!(count, retry_count = attempt, "uploading pre-keys");
+        match self.upload_node(count).await {
+            Ok((node, last)) => {
+                self.internal_query(
+                    node,
+                    PendingKind::InitUpload {
+                        last,
+                        count,
+                        attempt,
+                        after,
+                    },
+                )
+                .await
+            }
+            Err(error) => self.finish_upload(after, Err(error)).await,
+        }
+    }
+    /// Generate and store the next `count` pre-keys, and build their upload.
+    async fn upload_node(&mut self, count: u32) -> Result<(BinaryNode, u32), Error> {
         let store = self.store.clone();
         let (batch, keys, credentials) = tokio::task::spawn_blocking(move || {
             store.transaction(|tx| {
@@ -1146,19 +1179,11 @@ impl Actor<'_> {
                     bytes_node("signature", signed.signature.clone()),
                 ])),
             ]));
-        self.internal_query(
-            node,
-            PendingKind::InitUpload {
-                last: batch.last_pre_key_id,
-                count,
-                attempt,
-                after,
-            },
-        )
-        .await
+        Ok((node, batch.last_pre_key_id))
     }
     /// Continue startup after its upload, and release callers waiting for any upload.
-    async fn finish_upload(&mut self, after: After, uploaded: bool) -> Result<(), Error> {
+    async fn finish_upload(&mut self, after: After, result: Result<(), Error>) -> Result<(), Error> {
+        let uploaded = result.is_ok();
         crate::metrics::count(
             "baileys_prekey_uploads_total",
             &[("result", if uploaded { "ok" } else { "failed" })],
@@ -1168,11 +1193,12 @@ impl Actor<'_> {
             return Ok(());
         }
         self.upload_deadline = None;
-        match after {
+        match (after, &result) {
             // Upstream's digest throws after its upload whether or not it succeeded.
-            After::Open => tracing::warn!(uploaded, "failed to run digest after login"),
-            After::Active if !uploaded => tracing::error!(
-                error = ?Error::PreKeyUpload,
+            (After::Open, Ok(())) => tracing::warn!(uploaded, "failed to run digest after login"),
+            (After::Open, Err(error)) => tracing::warn!(?error, "failed to run digest after login"),
+            (After::Active, Err(error)) => tracing::error!(
+                ?error,
                 "Failed to check/upload pre-keys during initialization"
             ),
             _ => (),
@@ -1200,7 +1226,7 @@ impl Actor<'_> {
                 after,
             ));
         } else {
-            self.finish_upload(after, false).await?;
+            self.finish_upload(after, Err(Error::PreKeyUpload)).await?;
         }
         Ok(())
     }

@@ -20,7 +20,7 @@ Not gaps, but worth knowing: like upstream, the socket does not reconnect by its
 - "transaction failed, rolling back" is logged for every failed `transaction_with_error`; upstream wraps only explicit key-store transactions.
 - Offline messages and calls are logged once, by their handler ("error in handling message/call"), not again by the offline wrapper, as upstream.
 - Whole stanzas, newsletter `data` and call nodes are not logged where upstream logs them; their tags, ids and types are.
-- Upstream's error log on a failed pre-key check or upload at startup is there, but the behaviour around it differs: a failed upload-preparation step (`upload`) during that check ends the connection, where upstream logs it and carries on. After a failed initial passive IQ, the digest query is still sent; upstream skips it.
+- A failure to generate pre-keys for an upload is reported to callers waiting on `upload_pre_keys` as `Error::PreKeyUpload`, not as the store error that caused it (upstream rethrows the cause).
 - The socket's PN-LID mapping store has no resolver; the socket resolves unknown PNs itself (`resolve_lid_mappings`). The store's own USync fallback, and its "USync fetch yielded no results" warning, only run for a store given a resolver.
 
 ### Metrics

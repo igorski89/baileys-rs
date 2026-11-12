@@ -1082,6 +1082,143 @@ async fn prekey_retry_reuses_keys_and_missing_digest_uploads_again() {
     .unwrap();
 }
 
+fn count_reply(count: &BinaryNode, value: &str) -> BinaryNode {
+    BinaryNode::new("iq")
+        .attr("id", &count.attrs["id"])
+        .attr("type", "result")
+        .with_content(NodeContent::Children(vec![
+            BinaryNode::new("count").attr("value", value),
+        ]))
+}
+fn error_reply(request: &BinaryNode) -> BinaryNode {
+    BinaryNode::new("iq")
+        .attr("id", &request.attrs["id"])
+        .attr("type", "error")
+        .with_content(NodeContent::Children(vec![
+            BinaryNode::new("error").attr("code", "500"),
+        ]))
+}
+fn sqlite(temp: &tempfile::TempDir) -> rusqlite::Connection {
+    rusqlite::Connection::open(temp.path().join("auth.sqlite3")).unwrap()
+}
+
+/// Upstream catches a failure to generate pre-keys at startup, logs it and
+/// carries on with the passive IQ; it does not end the connection.
+#[tokio::test]
+async fn prekey_generation_failure_at_startup_still_opens() {
+    timeout(Duration::from_secs(8), async {
+        let temp = tempfile::tempdir().unwrap();
+        let store = store(&temp, true);
+        let before = store.load_credentials().unwrap().next_pre_key_id;
+        sqlite(&temp)
+            .execute_batch(
+                "CREATE TRIGGER no_prekeys BEFORE INSERT ON signal_keys WHEN NEW.category='pre-key'
+                 BEGIN SELECT RAISE(ABORT, 'disk full'); END;",
+            )
+            .unwrap();
+        let (listener, mut config) = listener().await;
+        config.initialize_session = true;
+        let server = tokio::spawn(async move {
+            let mut peer = Peer::accept(listener.accept().await.unwrap().0).await;
+            peer.send(BinaryNode::new("success")).await;
+            let count = peer.read().await;
+            peer.send(count_reply(&count, "0")).await;
+            // No upload: generating the keys failed.
+            let active = peer.read().await;
+            assert!(active.child("active").is_some());
+            peer.result(&active).await;
+            let digest = peer.read().await;
+            assert!(digest.child("digest").is_some());
+            peer.send(
+                BinaryNode::new("iq")
+                    .attr("type", "result")
+                    .attr("id", &digest.attrs["id"])
+                    .with_content(NodeContent::Children(vec![BinaryNode::new("digest")])),
+            )
+            .await;
+            assert!(peer.read().await.child("unified_session").is_some());
+            peer.closed().await;
+        });
+        let (socket, _) = Socket::connect(config, store.clone()).await.unwrap();
+        socket.wait_for_open(Duration::from_secs(3)).await.unwrap();
+        assert_eq!(store.load_credentials().unwrap().next_pre_key_id, before);
+        socket.close().await.unwrap();
+        server.await.unwrap();
+    })
+    .await
+    .unwrap();
+}
+
+/// The same when the store cannot be read for the current pre-key.
+#[tokio::test]
+async fn prekey_store_failure_at_startup_still_opens() {
+    timeout(Duration::from_secs(8), async {
+        let temp = tempfile::tempdir().unwrap();
+        let store = store(&temp, true);
+        let (listener, mut config) = listener().await;
+        config.initialize_session = true;
+        let server = tokio::spawn(async move {
+            let mut peer = Peer::accept(listener.accept().await.unwrap().0).await;
+            peer.send(BinaryNode::new("success")).await;
+            let count = peer.read().await;
+            sqlite(&temp)
+                .execute_batch("ALTER TABLE signal_keys RENAME TO gone;")
+                .unwrap();
+            peer.send(count_reply(&count, "100")).await;
+            let active = peer.read().await;
+            assert!(active.child("active").is_some());
+            peer.result(&active).await;
+            let digest = peer.read().await;
+            assert!(digest.child("digest").is_some());
+            peer.send(
+                BinaryNode::new("iq")
+                    .attr("type", "result")
+                    .attr("id", &digest.attrs["id"])
+                    .with_content(NodeContent::Children(vec![BinaryNode::new("digest")])),
+            )
+            .await;
+            assert!(peer.read().await.child("unified_session").is_some());
+            peer.closed().await;
+            temp
+        });
+        let (socket, _) = Socket::connect(config, store).await.unwrap();
+        socket.wait_for_open(Duration::from_secs(3)).await.unwrap();
+        socket.close().await.unwrap();
+        server.await.unwrap();
+    })
+    .await
+    .unwrap();
+}
+
+/// Upstream's failed passive IQ throws past the key-bundle digest check.
+#[tokio::test]
+async fn failed_passive_iq_skips_the_digest() {
+    timeout(Duration::from_secs(8), async {
+        let temp = tempfile::tempdir().unwrap();
+        let store = store(&temp, true);
+        let (listener, mut config) = listener().await;
+        config.initialize_session = true;
+        let server = tokio::spawn(async move {
+            let mut peer = Peer::accept(listener.accept().await.unwrap().0).await;
+            peer.send(BinaryNode::new("success")).await;
+            let count = peer.read().await;
+            peer.send(count_reply(&count, "100")).await;
+            let active = peer.read().await;
+            assert!(active.child("active").is_some());
+            peer.send(error_reply(&active)).await;
+            // Straight to the open connection's first stanza, no digest.
+            assert!(peer.read().await.child("unified_session").is_some());
+            peer.closed().await;
+        });
+        let (socket, _) = Socket::connect(config, store).await.unwrap();
+        socket.wait_for_open(Duration::from_secs(3)).await.unwrap();
+        socket.close().await.unwrap();
+        server.await.unwrap();
+    })
+    .await
+    .unwrap();
+}
+
 #[tokio::test]
 async fn rejects_untrusted_server_before_client_finish() {
     timeout(Duration::from_secs(5), async {
