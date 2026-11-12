@@ -391,9 +391,17 @@ async fn manual_dispatch_and_self_pushname_updates_use_persistent_actor_credenti
             peer.send(BinaryNode::new("success")).await;
             assert_eq!(peer.read().await.tag, "ib");
             peer.send(node).await;
-            let receipt = peer.read().await;
-            assert_eq!(receipt.tag, "receipt");
-            assert_eq!(receipt.attrs["type"], "sender");
+            // The new push name goes to the server.
+            let mut sent = [peer.read().await, peer.read().await];
+            sent.sort_by(|a, b| a.tag.cmp(&b.tag));
+            assert_eq!(sent[0].tag, "presence");
+            assert_eq!(
+                sent[0].attrs.get("name").map(String::as_str),
+                Some("New Name")
+            );
+            assert_eq!(sent[0].attrs.len(), 1);
+            assert_eq!(sent[1].tag, "receipt");
+            assert_eq!(sent[1].attrs["type"], "sender");
             peer.closed().await;
         });
         let (socket, mut events) = Socket::connect(config, auth.clone()).await.unwrap();

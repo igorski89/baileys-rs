@@ -316,7 +316,19 @@ impl Actor<'_> {
                     if me.name.as_ref() == Some(&name) {
                         Ok(())
                     } else {
-                        me.name = Some(name);
+                        me.name = Some(name.clone());
+                        // As upstream, tell the server the new name; a failed
+                        // send is only logged. Upstream also sends a bare
+                        // `<presence/>` on credential updates without `me`;
+                        // that is not copied.
+                        tracing::debug!(name, "updated pushName");
+                        let node = BinaryNode::new("presence").attr("name", &name);
+                        if let Err(error) = self.send(&node).await {
+                            tracing::warn!(
+                                ?error,
+                                "error in sending presence update on name change"
+                            );
+                        }
                         self.persist().await
                     }
                 } else {
@@ -804,11 +816,23 @@ impl Actor<'_> {
                     platform = ?pairing.platform,
                     "pairing configured successfully, expect to restart the connection..."
                 );
+                let old_name = self.credentials.me.as_ref().and_then(|m| m.name.clone());
                 pairing.apply(&mut self.credentials);
                 self.persist().await?;
                 self.qr_refs.clear();
                 self.qr_deadline = None;
                 self.emit(Event::PairingComplete);
+                // Upstream's creds.update handler sends a business account's
+                // name before the pairing reply.
+                if let Some(name) = self.credentials.me.as_ref().and_then(|m| m.name.clone())
+                    && Some(&name) != old_name.as_ref()
+                {
+                    tracing::debug!(name, "updated pushName");
+                    let node = BinaryNode::new("presence").attr("name", &name);
+                    if let Err(error) = self.send(&node).await {
+                        tracing::warn!(?error, "error in sending presence update on name change");
+                    }
+                }
                 self.send(&pairing.reply).await?;
                 self.unified_session().await?;
             }
@@ -1182,7 +1206,11 @@ impl Actor<'_> {
         Ok((node, batch.last_pre_key_id))
     }
     /// Continue startup after its upload, and release callers waiting for any upload.
-    async fn finish_upload(&mut self, after: After, result: Result<(), Error>) -> Result<(), Error> {
+    async fn finish_upload(
+        &mut self,
+        after: After,
+        result: Result<(), Error>,
+    ) -> Result<(), Error> {
         let uploaded = result.is_ok();
         crate::metrics::count(
             "baileys_prekey_uploads_total",

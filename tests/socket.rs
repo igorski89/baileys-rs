@@ -770,10 +770,15 @@ async fn qr_pairing_persistence_and_reconnect_routing() {
             assert_eq!(peer.read().await.attrs["type"], "result");
             let fixture: serde_json::Value =
                 serde_json::from_str(include_str!("fixtures/connection.json")).unwrap();
+            // The fixture is a business account: its name goes to the server
+            // before the reply.
             peer.send(
                 binary::decode(&hex(fixture["pair"][0]["stanza"].as_str().unwrap())).unwrap(),
             )
             .await;
+            let presence = peer.read().await;
+            assert_eq!(presence.tag, "presence");
+            assert_eq!(presence.attrs.get("name").map(String::as_str), Some("Test"));
             let reply = peer.read().await;
             assert_eq!(reply.attrs["type"], "result");
             assert!(reply.child("pair-device-sign").is_some());
