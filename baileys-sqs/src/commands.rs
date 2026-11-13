@@ -518,6 +518,17 @@ impl Commands {
                         poll.options.join(", ")
                     )));
                 }
+                // 0 allows any number; a poll stored before the limit was
+                // kept, or not seen at all, is not checked.
+                if let Some(limit) = cached.as_ref().and_then(|p| p.selectable)
+                    && limit > 0
+                    && selected.len() > limit as usize
+                {
+                    return Err(fail(format!(
+                        "vote_poll: poll {id} allows at most {limit} selected option(s), got {}",
+                        selected.len()
+                    )));
+                }
                 let secret = match js::get(cmd, "message_secret") {
                     Some(secret) => js::base64_lenient(&js::string(secret)),
                     None => cached.as_ref().map(|p| p.secret.clone()).ok_or_else(|| {

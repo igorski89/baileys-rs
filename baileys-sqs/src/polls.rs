@@ -24,6 +24,9 @@ pub struct Poll {
     pub key: Value,
     pub secret: Vec<u8>,
     pub options: Vec<String>,
+    /// The most options a vote may select: 0 for any number, `None` when
+    /// unknown (a poll stored before the limit was kept).
+    pub selectable: Option<u32>,
 }
 
 #[derive(Clone)]
@@ -31,8 +34,9 @@ pub struct PollCache {
     connection: Arc<Mutex<Connection>>,
 }
 
-/// The poll creation message inside `message`, with its secret.
-fn creation(message: &proto::Message) -> Option<(Vec<String>, Vec<u8>)> {
+/// The poll creation message inside `message`: its options, secret and
+/// selectable-option limit.
+fn creation(message: &proto::Message) -> Option<(Vec<String>, Vec<u8>, u32)> {
     let content = relay::normalize(Some(message))?;
     let poll = content
         .poll_creation_message
@@ -48,7 +52,7 @@ fn creation(message: &proto::Message) -> Option<(Vec<String>, Vec<u8>)> {
         .iter()
         .map(|o| o.option_name.clone().unwrap_or_default())
         .collect();
-    Some((options, secret))
+    Some((options, secret, poll.selectable_options_count.unwrap_or(0)))
 }
 
 impl PollCache {
@@ -61,8 +65,18 @@ impl PollCache {
         connection.busy_timeout(Duration::from_secs(30))?;
         connection.pragma_update(None, "synchronous", "FULL")?;
         connection.execute_batch(&format!(
-            "CREATE TABLE IF NOT EXISTS {TABLE} (id TEXT PRIMARY KEY, key TEXT NOT NULL, secret BLOB NOT NULL, options TEXT NOT NULL)"
+            "CREATE TABLE IF NOT EXISTS {TABLE} (id TEXT PRIMARY KEY, key TEXT NOT NULL, secret BLOB NOT NULL, options TEXT NOT NULL, selectable INTEGER)"
         ))?;
+        // Tables made before the limit was kept gain the column; their
+        // polls' limit stays unknown.
+        let has_limit = connection
+            .prepare(&format!("SELECT selectable FROM {TABLE} LIMIT 0"))
+            .is_ok();
+        if !has_limit {
+            connection.execute_batch(&format!(
+                "ALTER TABLE {TABLE} ADD COLUMN selectable INTEGER"
+            ))?;
+        }
         Ok(Self {
             connection: Arc::new(Mutex::new(connection)),
         })
@@ -70,7 +84,8 @@ impl PollCache {
 
     /// Remember the message if it creates a poll; `key` is its JSON key.
     pub fn learn(&self, message: &proto::WebMessageInfo, key: &Value) {
-        let Some((options, secret)) = message.message.as_ref().and_then(creation) else {
+        let Some((options, secret, selectable)) = message.message.as_ref().and_then(creation)
+        else {
             return;
         };
         let Some(id) = key.get("id").and_then(Value::as_str) else {
@@ -79,13 +94,14 @@ impl PollCache {
         let connection = self.connection.lock().expect("poll cache connection");
         let result = connection.execute(
             &format!(
-                "INSERT OR REPLACE INTO {TABLE} (id, key, secret, options) VALUES (?1, ?2, ?3, ?4)"
+                "INSERT OR REPLACE INTO {TABLE} (id, key, secret, options, selectable) VALUES (?1, ?2, ?3, ?4, ?5)"
             ),
             rusqlite::params![
                 id,
                 key.to_string(),
                 secret,
-                Value::from(options).to_string()
+                Value::from(options).to_string(),
+                selectable
             ],
         );
         match result {
@@ -98,18 +114,19 @@ impl PollCache {
         let connection = self.connection.lock().expect("poll cache connection");
         let row = connection
             .query_row(
-                &format!("SELECT key, secret, options FROM {TABLE} WHERE id=?1"),
+                &format!("SELECT key, secret, options, selectable FROM {TABLE} WHERE id=?1"),
                 [id],
                 |r| {
                     Ok((
                         r.get::<_, String>(0)?,
                         r.get::<_, Vec<u8>>(1)?,
                         r.get::<_, String>(2)?,
+                        r.get::<_, Option<u32>>(3)?,
                     ))
                 },
             )
             .optional();
-        let (key, secret, options) = match row {
+        let (key, secret, options, selectable) = match row {
             Ok(row) => row?,
             Err(err) => {
                 tracing::warn!(%err, id, "failed to read poll cache");
@@ -120,6 +137,7 @@ impl PollCache {
             key: serde_json::from_str(&key).ok()?,
             secret,
             options: serde_json::from_str(&options).ok()?,
+            selectable,
         })
     }
 }
@@ -236,6 +254,7 @@ mod tests {
         let cache = PollCache::open(&db).unwrap();
         let poll = proto::message::PollCreationMessage {
             name: Some("T&C".into()),
+            selectable_options_count: Some(1),
             options: ["Yes", "No"]
                 .map(|name| proto::message::poll_creation_message::Option {
                     option_name: Some(name.into()),
@@ -271,8 +290,27 @@ mod tests {
                 key,
                 secret: vec![9; 32],
                 options: vec!["Yes".into(), "No".into()],
+                selectable: Some(1),
             })
         );
         assert_eq!(cache.get("T1"), None);
+    }
+
+    #[test]
+    fn a_table_without_the_limit_gains_it_with_old_polls_unknown() {
+        let dir = tempfile::tempdir().unwrap();
+        let path = dir.path().join("auth.sqlite3");
+        let old = Connection::open(&path).unwrap();
+        old.execute_batch(&format!(
+            "CREATE TABLE {TABLE} (id TEXT PRIMARY KEY, key TEXT NOT NULL, secret BLOB NOT NULL, options TEXT NOT NULL);
+             INSERT INTO {TABLE} VALUES ('OLD', '{{\"id\":\"OLD\"}}', x'09', '[\"Yes\"]');"
+        ))
+        .unwrap();
+        drop(old);
+        let cache = PollCache::open(&SessionDb::File(path.clone())).unwrap();
+        assert_eq!(cache.get("OLD").unwrap().selectable, None);
+        // Opening again finds the column already there.
+        drop(cache);
+        PollCache::open(&SessionDb::File(path)).unwrap();
     }
 }

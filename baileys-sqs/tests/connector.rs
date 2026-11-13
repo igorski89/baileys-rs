@@ -559,6 +559,8 @@ async fn votes_use_the_cached_poll_and_the_chat_addressing_mode() {
         message: Some(proto::Message {
             poll_creation_message_v3: Some(Box::new(proto::message::PollCreationMessage {
                 name: Some("T&C".into()),
+                // A single-choice poll.
+                selectable_options_count: Some(1),
                 options: ["Yes, I accept", "No"]
                     .map(|name| proto::message::poll_creation_message::Option {
                         option_name: Some(name.into()),
@@ -587,6 +589,10 @@ async fn votes_use_the_cached_poll_and_the_chat_addressing_mode() {
         (
             json!({"type":"vote_poll","to":"15551234","message_key":{"id":"P1"},"selected_options":["Maybe"]}),
             "vote_poll: \"Maybe\" is not an option of poll P1 (Yes, I accept, No)",
+        ),
+        (
+            json!({"type":"vote_poll","to":"15551234","message_key":{"id":"P1"},"selected_options":["Yes, I accept","No"]}),
+            "vote_poll: poll P1 allows at most 1 selected option(s), got 2",
         ),
         (
             json!({"type":"vote_poll","to":"15551234","message_key":{"id":"P2"},"selected_options":[]}),
