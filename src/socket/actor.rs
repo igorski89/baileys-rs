@@ -685,8 +685,11 @@ impl Actor<'_> {
                 }
             }
             "stream:error" => {
+                // As upstream, the whole node: its code and the reason's
+                // attributes (a conflict's type) say why the server ended it.
                 tracing::error!(
                     reason_node = ?node.all_children().first().map(|n| &n.tag),
+                    full_error_node = %node.to_tree_string(),
                     "stream errored out"
                 );
                 let code = node
