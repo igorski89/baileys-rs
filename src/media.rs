@@ -182,6 +182,7 @@ pub fn upload_token(base64: &str) -> String {
     )
 }
 pub const DEFAULT_MEDIA_HOST: &str = "mmg.whatsapp.net";
+const PLACEHOLDER_MEDIA_HOST: &str = "a.whatsapp.net";
 pub fn direct_path_url(path: &str, host: Option<&str>) -> String {
     format!("https://{}{}", host.unwrap_or(DEFAULT_MEDIA_HOST), path)
 }
@@ -195,13 +196,19 @@ pub fn download_url(
         let parsed = original_url
             .filter(|u| !u.is_empty())
             .and_then(|u| url::Url::parse(u).ok());
-        let original_host = parsed.as_ref().map(|url| {
-            let h = url.host_str().unwrap_or("");
-            match url.port() {
-                Some(port) => format!("{h}:{port}"),
-                None => h.to_owned(),
-            }
-        });
+        let original_host = parsed
+            .as_ref()
+            .map(|url| {
+                let h = url.host_str().unwrap_or("");
+                match url.port() {
+                    Some(port) => format!("{h}:{port}"),
+                    None => h.to_owned(),
+                }
+            })
+            // Upstream #2900: some media carry a `url` on this placeholder
+            // host, which does not resolve; their direct path goes to the
+            // default host.
+            .filter(|h| h != PLACEHOLDER_MEDIA_HOST);
         return Ok(direct_path_url(path, host.or(original_host.as_deref())));
     }
     original_url

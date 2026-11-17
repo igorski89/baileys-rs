@@ -1,6 +1,6 @@
 # baileys-rs
 
-A Rust port in progress of [WhiskeySockets/Baileys](https://github.com/WhiskeySockets/Baileys), based on upstream commit `0af2386292907f7d9742d8d41f830d8c48208fa1` (7.0.0-rc14).
+A Rust port in progress of [WhiskeySockets/Baileys](https://github.com/WhiskeySockets/Baileys), based on upstream commit `0af2386292907f7d9742d8d41f830d8c48208fa1` (7.0.0-rc14), with master's later media fix #2900 (`a5c3ee7`) ported.
 
 Currently provides the full generated WhatsApp protobuf model, JID helpers, binary stanza encoding/decoding, crypto primitives, the Noise handshake and encrypted framing, persistent authentication/key storage, connection/pairing protocol helpers, an async WebSocket connection, persistent Signal direct/group sessions, USync query protocols, and message envelope/payload decoding. This is not yet a usable WhatsApp messaging client: synchronization, automatic message processing, and remaining high-level socket APIs still need to be ported. See [PORT_STATUS.md](PORT_STATUS.md) for scope and validation.
 

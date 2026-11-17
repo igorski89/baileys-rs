@@ -174,6 +174,34 @@ fn download_ranges_and_host_selection_match_upstream() {
             assert_eq!(result.unwrap(), case["url"].as_str().unwrap(), "{case}");
         }
     }
+    // Upstream #2900 (master a5c3ee7): the a.whatsapp.net placeholder host
+    // is ignored, a real host in `url` is kept.
+    let path = "/v/t62.15575-24/123_456_n.enc?ccb=11-4&oh=abc&oe=def&_nc_sid=5e03e0";
+    for (url, host, expected) in [
+        (
+            Some(format!("https://a.whatsapp.net{path}&mms3=true")),
+            None,
+            "mmg.whatsapp.net",
+        ),
+        (
+            Some(format!(
+                "https://media-cdn-1.cdn.whatsapp.net{path}&mms3=true"
+            )),
+            None,
+            "media-cdn-1.cdn.whatsapp.net",
+        ),
+        (None, None, "mmg.whatsapp.net"),
+        (
+            Some(format!("https://a.whatsapp.net{path}")),
+            Some("media.example"),
+            "media.example",
+        ),
+    ] {
+        assert_eq!(
+            download_url(Some(path), url.as_deref(), host).unwrap(),
+            format!("https://{expected}{path}")
+        );
+    }
     assert!(
         DownloadPlan::new(Range {
             end_byte: Some(u64::MAX),
